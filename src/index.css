@@ -95,4 +95,42 @@
   .text-gradient {
     @apply bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent;
   }
+  
+  .bg-blur {
+    backdrop-filter: blur(10px);
+  }
+}
+
+.wavy-divider {
+  position: relative;
+  height: 100px;
+  overflow: hidden;
+}
+
+.wavy-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: radial-gradient(ellipse at center, #a8e6ff 0%, #ffffff 70%);
+  border-radius: 100%;
+  transform: translateY(50%);
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.gradient-text {
+  @apply bg-gradient-to-r from-[#223b0a] to-[#4c7c2a] bg-clip-text text-transparent;
 }

@@ -50,8 +50,13 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-slate-200 mt-8 pt-8 text-center text-slate-500">
+        <div className="border-t border-slate-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
           <p>© {new Date().getFullYear()} Eloura. The first real operating system for family care—of every generation.</p>
+          <div className="flex gap-4 mt-4 md:mt-0">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Cookies</a>
+          </div>
         </div>
       </div>
     </footer>

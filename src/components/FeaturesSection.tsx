@@ -2,6 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Calendar, Users, Brain, PieChart, Folder } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const FeaturesSection = () => {
   const features = [
@@ -49,9 +50,9 @@ const FeaturesSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {features.map((feature, index) => (
-            <Card key={index} className="border-0 shadow-md hover-scale bg-white overflow-hidden">
+            <Card key={index} className="border border-slate-100 shadow-sm hover:shadow-md transition-shadow bg-white overflow-hidden rounded-xl">
               <CardContent className="p-6">
                 <div className={`w-12 h-12 rounded-lg ${feature.color} flex items-center justify-center mb-4`}>
                   <feature.icon className="h-6 w-6 text-white" />
@@ -61,6 +62,12 @@ const FeaturesSection = () => {
               </CardContent>
             </Card>
           ))}
+        </div>
+        
+        <div className="text-center">
+          <Button className="bg-[#223b0a] hover:bg-[#1a2e08] text-white rounded-full">
+            See all features
+          </Button>
         </div>
       </div>
     </section>
