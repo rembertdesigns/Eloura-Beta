@@ -8,14 +8,14 @@ const HeroSection = () => {
     <section className="relative bg-gradient-to-r from-[#a8e6ff]/30 to-white py-16 md:py-20 overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row items-center">
-          <div className="lg:w-1/2 z-10 mb-10 lg:mb-0">
+          <div className="lg:w-1/2 z-10 mb-10 lg:mb-0 text-center lg:text-left">
             <h1 className="text-4xl md:text-5xl font-medium leading-tight text-[#223b0a] mb-6">
               Compassionate Home Caregiving Support
             </h1>
-            <p className="text-lg md:text-xl text-slate-700 max-w-xl mb-8">
+            <p className="text-lg md:text-xl text-slate-700 max-w-xl mb-8 mx-auto lg:mx-0">
               Whether you're raising children, supporting aging parents, or both—Eloura helps you carry it all with less stress and more support.
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
               <Button size="lg" className="bg-[#223b0a] hover:bg-[#1a2e08] text-white rounded-md">
                 GET STARTED <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

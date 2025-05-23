@@ -38,13 +38,13 @@ const ServiceHighlights = () => {
               className={`flex flex-col ${service.alignment === 'left' ? 'md:flex-row-reverse' : 'md:flex-row'} 
               bg-white rounded-lg overflow-hidden shadow-sm`}
             >
-              <div className="md:w-1/2 bg-[#a8e6ff]/20 p-8">
+              <div className="md:w-1/2 bg-[#a8e6ff]/20 p-8 flex flex-col items-center md:items-start text-center md:text-left">
                 <div className="h-full flex flex-col justify-center">
                   <h3 className="text-2xl font-medium text-[#223b0a] mb-3">{service.title}</h3>
                   <p className="mb-6 text-slate-600">{service.description}</p>
                   <Button 
                     variant="outline" 
-                    className="self-start border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white"
+                    className="self-center md:self-start border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white"
                   >
                     {service.buttonText}
                   </Button>
