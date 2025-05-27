@@ -1,12 +1,9 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Leaf, Sun, Wind, ArrowRight } from 'lucide-react';
-
 const CombinedHomepage = () => {
-  return (
-    <div className="min-h-screen bg-white">
+  return <div className="min-h-screen bg-white">
       {/* Navigation - Clean and professional */}
       <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-50 py-4 border-b border-[#E1CFE3]/20">
         <div className="container mx-auto px-4">
@@ -46,9 +43,7 @@ const CombinedHomepage = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-              <Button size="lg" className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 text-lg">
-                Start Your Free Trial
-              </Button>
+              <Button size="lg" className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 text-lg">Get Started</Button>
               <Button size="lg" variant="outline" className="border-[#D7642A] text-[#D7642A] hover:bg-[#D7642A] hover:text-white rounded-full px-8 text-lg">
                 Watch Demo
               </Button>
@@ -214,27 +209,22 @@ const CombinedHomepage = () => {
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                quote: "Eloura completely transformed how I manage care for my kids and aging parents. I finally feel like I have my life back.",
-                author: "Sarah M.",
-                role: "Working Mom of 2, Caring for Dad",
-                rating: 5
-              },
-              {
-                quote: "The village feature saved my relationship with my siblings. We're finally coordinated on mom's care instead of stressed and scattered.",
-                author: "Marcus K.",
-                role: "Tech Professional, Sandwich Generation",
-                rating: 5
-              },
-              {
-                quote: "As someone juggling toddler tantrums and parent doctor visits, Eloura gives me the structure and peace of mind I desperately needed.",
-                author: "Priya L.",
-                role: "Entrepreneur & Caregiver",
-                rating: 5
-              }
-            ].map((testimonial, index) => (
-              <Card key={index} className="border-none shadow-lg rounded-2xl bg-gradient-to-br from-[#FFE5C4]/20 to-[#E1CFE3]/20">
+            {[{
+            quote: "Eloura completely transformed how I manage care for my kids and aging parents. I finally feel like I have my life back.",
+            author: "Sarah M.",
+            role: "Working Mom of 2, Caring for Dad",
+            rating: 5
+          }, {
+            quote: "The village feature saved my relationship with my siblings. We're finally coordinated on mom's care instead of stressed and scattered.",
+            author: "Marcus K.",
+            role: "Tech Professional, Sandwich Generation",
+            rating: 5
+          }, {
+            quote: "As someone juggling toddler tantrums and parent doctor visits, Eloura gives me the structure and peace of mind I desperately needed.",
+            author: "Priya L.",
+            role: "Entrepreneur & Caregiver",
+            rating: 5
+          }].map((testimonial, index) => <Card key={index} className="border-none shadow-lg rounded-2xl bg-gradient-to-br from-[#FFE5C4]/20 to-[#E1CFE3]/20">
                 <CardContent className="p-8">
                   <div className="text-[#FCC931] mb-4 text-lg">
                     {'★'.repeat(testimonial.rating)}
@@ -245,8 +235,7 @@ const CombinedHomepage = () => {
                     <div className="text-sm text-[#302D2C]/70">{testimonial.role}</div>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -322,8 +311,6 @@ const CombinedHomepage = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default CombinedHomepage;
