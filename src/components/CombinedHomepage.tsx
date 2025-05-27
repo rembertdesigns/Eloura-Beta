@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator } from 'lucide-react';
+import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator, Clock, CheckCircle, Star } from 'lucide-react';
 const CombinedHomepage = () => {
   return <div className="min-h-screen bg-white">
       {/* Navigation - Clean and professional */}
@@ -251,19 +252,87 @@ const CombinedHomepage = () => {
         </div>
       </section>
 
-      {/* Mental Load Test Section */}
-      <section className="py-16 bg-gradient-to-r from-[#FCC931] to-[#D7642A]">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#302D2C] mb-4">
-            Lead generating test to find out their mental load score.
-          </h2>
-          <p className="text-lg text-[#302D2C]/80 mb-8 max-w-2xl mx-auto">
-            Take our 2-minute assessment to discover how much mental energy you're spending on caregiving and get personalized recommendations.
-          </p>
-          <Button size="lg" className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 text-lg">
-            <Brain className="mr-2 h-5 w-5" />
-            Take the Mental Load Test
-          </Button>
+      {/* Enhanced Mental Load Test Section */}
+      <section className="py-20 bg-gradient-to-br from-[#FCC931] via-[#D7642A] to-[#223B0A]">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left side - Image/Visual */}
+            <div className="relative">
+              <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-8 border border-white/30">
+                <img 
+                  src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=600&h=400&fit=crop&crop=center" 
+                  alt="Woman taking assessment on laptop"
+                  className="rounded-2xl w-full h-64 object-cover mb-6"
+                />
+                <div className="grid grid-cols-3 gap-4 mb-6">
+                  <div className="bg-white/90 rounded-xl p-4 text-center">
+                    <Clock className="h-6 w-6 text-[#223B0A] mx-auto mb-2" />
+                    <div className="text-sm font-semibold text-[#223B0A]">2 mins</div>
+                    <div className="text-xs text-[#302D2C]">Quick test</div>
+                  </div>
+                  <div className="bg-white/90 rounded-xl p-4 text-center">
+                    <CheckCircle className="h-6 w-6 text-[#223B0A] mx-auto mb-2" />
+                    <div className="text-sm font-semibold text-[#223B0A]">Free</div>
+                    <div className="text-xs text-[#302D2C]">No cost</div>
+                  </div>
+                  <div className="bg-white/90 rounded-xl p-4 text-center">
+                    <Star className="h-6 w-6 text-[#223B0A] mx-auto mb-2" />
+                    <div className="text-sm font-semibold text-[#223B0A]">Personal</div>
+                    <div className="text-xs text-[#302D2C]">Custom tips</div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Floating testimonial */}
+              <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl p-4 shadow-xl max-w-xs border border-[#E1CFE3]/20">
+                <div className="flex gap-1 mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-[#FCC931] text-[#FCC931]" />
+                  ))}
+                </div>
+                <p className="text-sm text-[#302D2C] italic mb-2">
+                  "This test opened my eyes to how much I was carrying mentally. Game changer!"
+                </p>
+                <div className="text-xs text-[#302D2C]/70">- Sarah M., Mom of 2</div>
+              </div>
+            </div>
+
+            {/* Right side - Content */}
+            <div className="text-white">
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2 w-fit mb-6">
+                <span className="text-sm font-medium text-white/90">🧠 Mental Health Assessment</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+                What's Your Mental Load Score?
+              </h2>
+              
+              <p className="text-xl text-white/90 mb-8 leading-relaxed">
+                Take our scientifically-backed 2-minute assessment to discover how much mental energy you're spending on caregiving and get personalized recommendations to lighten your load.
+              </p>
+
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-white/30">
+                  <div className="text-2xl font-bold text-white mb-1">15,847</div>
+                  <div className="text-sm text-white/80">Caregivers tested</div>
+                </div>
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-white/30">
+                  <div className="text-2xl font-bold text-white mb-1">73%</div>
+                  <div className="text-sm text-white/80">Reduced their load</div>
+                </div>
+              </div>
+
+              <Button size="lg" className="bg-white hover:bg-white/90 text-[#223B0A] rounded-full px-8 text-lg font-semibold shadow-lg">
+                <Brain className="mr-3 h-6 w-6" />
+                Take the Mental Load Test
+                <ArrowRight className="ml-3 h-5 w-5" />
+              </Button>
+              
+              <p className="text-sm text-white/70 mt-4">
+                ✓ No email required • ✓ Instant results • ✓ Evidence-based assessment
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
