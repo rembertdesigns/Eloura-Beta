@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator } from 'lucide-react';
+
 const CombinedHomepage = () => {
   return <div className="min-h-screen bg-white">
       {/* Navigation - Clean and professional */}
@@ -248,6 +250,22 @@ const CombinedHomepage = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Mental Load Test Section */}
+      <section className="py-16 bg-gradient-to-r from-[#FCC931] to-[#D7642A]">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#302D2C] mb-4">
+            Lead generating test to find out their mental load score.
+          </h2>
+          <p className="text-lg text-[#302D2C]/80 mb-8 max-w-2xl mx-auto">
+            Take our 2-minute assessment to discover how much mental energy you're spending on caregiving and get personalized recommendations.
+          </p>
+          <Button size="lg" className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 text-lg">
+            <Brain className="mr-2 h-5 w-5" />
+            Take the Mental Load Test
+          </Button>
         </div>
       </section>
 
@@ -586,4 +604,5 @@ const CombinedHomepage = () => {
       </footer>
     </div>;
 };
+
 export default CombinedHomepage;
