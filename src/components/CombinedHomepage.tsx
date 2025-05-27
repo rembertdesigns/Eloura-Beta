@@ -17,8 +17,8 @@ const CombinedHomepage = () => {
             <div className="hidden md:flex items-center gap-8">
               <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">About Us</a>
               <a href="#how-it-works" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Features</a>
-              <a href="#testimonials" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Reviews</a>
-              <a href="#" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Log In</a>
+              <a href="#testimonials" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Pricing</a>
+              <a href="#" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Community</a>
             </div>
             <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6">Log In</Button>
           </div>
