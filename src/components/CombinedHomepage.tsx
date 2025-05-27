@@ -2,10 +2,8 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator } from 'lucide-react';
-
 const CombinedHomepage = () => {
-  return (
-    <div className="min-h-screen bg-white">
+  return <div className="min-h-screen bg-white">
       {/* Navigation - Clean and professional */}
       <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-50 py-4 border-b border-[#E1CFE3]/20">
         <div className="container mx-auto px-4">
@@ -79,9 +77,7 @@ const CombinedHomepage = () => {
       <section className="py-20 bg-gradient-to-br from-[#FFE5C4]/40 to-[#E1CFE3]/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <div className="bg-[#223B0A] text-white py-3 px-8 rounded-full inline-block mb-8">
-              <span className="text-sm font-medium">Banner of PR coverage/ notable mentions</span>
-            </div>
+            
             <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
               For Every Family Type
             </h2>
@@ -588,8 +584,6 @@ const CombinedHomepage = () => {
           </div>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default CombinedHomepage;
