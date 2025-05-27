@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Clock, CheckCircle, Star, Quote, ExternalLink } from 'lucide-react';
+import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator, Clock, CheckCircle, Star, Quote, ExternalLink } from 'lucide-react';
 
 const CombinedHomepage = () => {
   return <div className="min-h-screen bg-white">
