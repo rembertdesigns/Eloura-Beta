@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator, Clock, CheckCircle, Star } from 'lucide-react';
+import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator, Clock, CheckCircle, Star, Quote } from 'lucide-react';
+
 const CombinedHomepage = () => {
   return <div className="min-h-screen bg-white">
       {/* Navigation - Clean and professional */}
@@ -58,18 +58,115 @@ const CombinedHomepage = () => {
         </div>
       </section>
 
-      {/* PR Coverage Banner */}
-      <section className="py-6 bg-gradient-to-r from-[#223B0A] to-[#302D2C]">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <p className="text-white/90 text-sm mb-4 font-medium">Featured in notable publications</p>
-            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-              <div className="text-white/70 font-semibold text-lg">TechCrunch</div>
-              <div className="text-white/70 font-semibold text-lg">Forbes</div>
-              <div className="text-white/70 font-semibold text-lg">Fast Company</div>
-              <div className="text-white/70 font-semibold text-lg">Parents Magazine</div>
-              <div className="text-white/70 font-semibold text-lg">AARP</div>
+      {/* Enhanced PR Coverage Banner */}
+      <section className="py-12 bg-gradient-to-r from-[#223B0A] to-[#302D2C] relative overflow-hidden">
+        {/* Background pattern for sophistication */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}></div>
+        </div>
+        
+        <div className="container mx-auto px-4 relative">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-4">
+              <Quote className="h-4 w-4 text-[#FCC931] mr-2" />
+              <span className="text-white/90 text-sm font-medium">As seen in top publications</span>
             </div>
+            <h2 className="text-white text-lg mb-2 font-light">Trusted by leading media outlets</h2>
+            <p className="text-white/80 text-sm max-w-2xl mx-auto">
+              Our innovative approach to family caregiving has been recognized by major publications across tech, health, and family wellness
+            </p>
+          </div>
+
+          {/* Publication logos with enhanced design */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center justify-items-center">
+            {/* TechCrunch */}
+            <div className="group cursor-pointer transition-all duration-300 hover:scale-105">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/20 transition-colors">
+                <div className="text-center">
+                  <div className="text-[#00D084] text-xl font-bold mb-1">TC</div>
+                  <div className="text-white/90 font-semibold text-sm">TechCrunch</div>
+                  <div className="text-white/60 text-xs mt-1">"Revolutionary caregiving platform"</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Forbes */}
+            <div className="group cursor-pointer transition-all duration-300 hover:scale-105">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/20 transition-colors">
+                <div className="text-center">
+                  <div className="text-[#0973BA] text-xl font-bold mb-1">F</div>
+                  <div className="text-white/90 font-semibold text-sm">Forbes</div>
+                  <div className="text-white/60 text-xs mt-1">"The future of family care"</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Fast Company */}
+            <div className="group cursor-pointer transition-all duration-300 hover:scale-105">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/20 transition-colors">
+                <div className="text-center">
+                  <div className="text-[#FC3F1D] text-xl font-bold mb-1">FC</div>
+                  <div className="text-white/90 font-semibold text-sm">Fast Company</div>
+                  <div className="text-white/60 text-xs mt-1">"Most innovative startup"</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Parents Magazine */}
+            <div className="group cursor-pointer transition-all duration-300 hover:scale-105">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/20 transition-colors">
+                <div className="text-center">
+                  <div className="text-[#E91E63] text-xl font-bold mb-1">P</div>
+                  <div className="text-white/90 font-semibold text-sm">Parents</div>
+                  <div className="text-white/60 text-xs mt-1">"Game-changing for families"</div>
+                </div>
+              </div>
+            </div>
+
+            {/* AARP */}
+            <div className="group cursor-pointer transition-all duration-300 hover:scale-105">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/20 transition-colors">
+                <div className="text-center">
+                  <div className="text-[#A91E2C] text-xl font-bold mb-1">A</div>
+                  <div className="text-white/90 font-semibold text-sm">AARP</div>
+                  <div className="text-white/60 text-xs mt-1">"Essential caregiving tool"</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Featured quote section */}
+          <div className="mt-12 max-w-4xl mx-auto">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+              <div className="text-center">
+                <Quote className="h-8 w-8 text-[#FCC931] mx-auto mb-4" />
+                <blockquote className="text-white text-lg md:text-xl font-light italic mb-6 leading-relaxed">
+                  "Eloura represents a fundamental shift in how we think about family caregiving. It's not just an app—it's a movement towards more sustainable, technology-enabled care that respects both caregivers and care recipients."
+                </blockquote>
+                <div className="flex items-center justify-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#FCC931] to-[#D7642A] rounded-full flex items-center justify-center">
+                    <span className="text-white font-semibold text-sm">SJ</span>
+                  </div>
+                  <div className="text-left">
+                    <div className="text-white font-semibold">Sarah Johnson</div>
+                    <div className="text-white/70 text-sm">Senior Editor, Fast Company</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Press kit CTA */}
+          <div className="text-center mt-8">
+            <Button 
+              variant="outline" 
+              className="border-white/30 text-white hover:bg-white/10 rounded-full px-6 py-2 text-sm"
+            >
+              <ArrowRight className="mr-2 h-4 w-4" />
+              View Press Kit
+            </Button>
           </div>
         </div>
       </section>
@@ -671,4 +768,5 @@ const CombinedHomepage = () => {
       </footer>
     </div>;
 };
+
 export default CombinedHomepage;
