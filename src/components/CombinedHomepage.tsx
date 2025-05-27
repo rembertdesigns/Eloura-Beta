@@ -1,9 +1,7 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator, Clock, CheckCircle, Star, Quote, ExternalLink } from 'lucide-react';
-
 const CombinedHomepage = () => {
   return <div className="min-h-screen bg-white">
       {/* Navigation - Clean and professional */}
@@ -68,8 +66,8 @@ const CombinedHomepage = () => {
         {/* Background pattern for sophistication */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}></div>
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+        }}></div>
         </div>
         
         <div className="container mx-auto px-4 relative">
@@ -165,10 +163,7 @@ const CombinedHomepage = () => {
 
           {/* Press kit CTA */}
           <div className="text-center mt-8">
-            <Button 
-              variant="outline" 
-              className="border-white/30 text-white hover:bg-white/10 rounded-full px-6 py-2 text-sm"
-            >
+            <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-full px-6 py-2 text-sm">
               <ArrowRight className="mr-2 h-4 w-4" />
               View Press Kit
             </Button>
@@ -361,11 +356,7 @@ const CombinedHomepage = () => {
             {/* Left side - Image/Visual */}
             <div className="relative">
               <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-8 border border-white/30">
-                <img 
-                  src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=600&h=400&fit=crop&crop=center" 
-                  alt="Woman taking assessment on laptop"
-                  className="rounded-2xl w-full h-64 object-cover mb-6"
-                />
+                <img src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=600&h=400&fit=crop&crop=center" alt="Woman taking assessment on laptop" className="rounded-2xl w-full h-64 object-cover mb-6" />
                 <div className="grid grid-cols-3 gap-4 mb-6">
                   <div className="bg-white/90 rounded-xl p-4 text-center">
                     <Clock className="h-6 w-6 text-[#223B0A] mx-auto mb-2" />
@@ -388,9 +379,7 @@ const CombinedHomepage = () => {
               {/* Floating testimonial */}
               <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl p-4 shadow-xl max-w-xs border border-[#E1CFE3]/20">
                 <div className="flex gap-1 mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-[#FCC931] text-[#FCC931]" />
-                  ))}
+                  {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-[#FCC931] text-[#FCC931]" />)}
                 </div>
                 <p className="text-sm text-[#302D2C] italic mb-2">
                   "This test opened my eyes to how much I was carrying mentally. Game changer!"
@@ -439,111 +428,7 @@ const CombinedHomepage = () => {
       </section>
 
       {/* Mental Load Worth Section */}
-      <section className="py-24 bg-gradient-to-br from-[#E1CFE3]/20 to-[#FFE5C4]/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
-              How Much Is Your Mental Load Worth?
-            </h2>
-            <p className="text-xl text-[#302D2C] max-w-4xl mx-auto leading-relaxed">
-              Stop feeling overwhelmed by family caregiving. Eloura organizes everything so you can focus on what matters most - being present with your loved ones.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {/* Before Eloura */}
-            <Card className="border-none shadow-lg rounded-2xl overflow-hidden">
-              <div className="bg-[#FCC931] p-6 text-center">
-                <div className="text-4xl mb-4">🤯</div>
-                <h3 className="text-xl font-bold text-white mb-2">Before Eloura</h3>
-              </div>
-              <CardContent className="p-6 bg-white">
-                <ul className="space-y-3 text-[#302D2C]">
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#D7642A] rounded-full"></div>
-                    <span>Forgetting appointments</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#D7642A] rounded-full"></div>
-                    <span>Family miscommunication</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#D7642A] rounded-full"></div>
-                    <span>Constant mental juggling</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#D7642A] rounded-full"></div>
-                    <span>Stress and overwhelm</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            {/* After Eloura */}
-            <Card className="border-none shadow-lg rounded-2xl overflow-hidden bg-gradient-to-br from-[#223B0A] to-[#302D2C] text-white">
-              <div className="bg-[#D7642A] p-6 text-center">
-                <div className="text-4xl mb-4">😌</div>
-                <h3 className="text-xl font-bold text-white mb-2">After Eloura</h3>
-              </div>
-              <CardContent className="p-6">
-                <ul className="space-y-3 text-white">
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#FCC931] rounded-full"></div>
-                    <span>Everything organized automatically</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#FCC931] rounded-full"></div>
-                    <span>Family stays in sync</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#FCC931] rounded-full"></div>
-                    <span>Mental load reduced by 70%</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#FCC931] rounded-full"></div>
-                    <span>More quality time together</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-
-            {/* The Result */}
-            <Card className="border-none shadow-lg rounded-2xl overflow-hidden">
-              <div className="bg-[#E1CFE3] p-6 text-center">
-                <div className="text-4xl mb-4">💪</div>
-                <h3 className="text-xl font-bold text-[#302D2C] mb-2">The Result</h3>
-              </div>
-              <CardContent className="p-6 bg-white">
-                <ul className="space-y-3 text-[#302D2C]">
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#223B0A] rounded-full"></div>
-                    <span>Confident caregiving</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#223B0A] rounded-full"></div>
-                    <span>Better family relationships</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#223B0A] rounded-full"></div>
-                    <span>Peace of mind daily</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#223B0A] rounded-full"></div>
-                    <span>Time for self-care</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="text-center">
-            <Button size="lg" className="bg-[#D7642A] hover:bg-[#223B0A] text-white rounded-full px-8 text-lg">
-              <Calculator className="mr-2 h-5 w-5" />
-              Calculate My Savings
-            </Button>
-          </div>
-        </div>
-      </section>
+      
 
       {/* What Makes Us Different Section */}
       <section className="py-24 bg-white">
@@ -773,5 +658,4 @@ const CombinedHomepage = () => {
       </footer>
     </div>;
 };
-
 export default CombinedHomepage;
