@@ -1,9 +1,7 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator } from 'lucide-react';
-
 const CombinedHomepage = () => {
   return <div className="min-h-screen bg-white">
       {/* Navigation - Clean and professional */}
@@ -51,27 +49,9 @@ const CombinedHomepage = () => {
 
             {/* Hero Feature Preview */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                <div className="bg-gradient-to-br from-[#FCC931]/20 to-[#D7642A]/20 rounded-full p-4 w-fit mx-auto mb-4">
-                  <Sun className="h-8 w-8 text-[#D7642A]" />
-                </div>
-                <h3 className="font-semibold text-[#223B0A] mb-2">Daily Brief</h3>
-                <p className="text-sm text-[#302D2C]/80">AI-powered morning overview of your caregiving priorities</p>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                <div className="bg-gradient-to-br from-[#E1CFE3]/40 to-[#223B0A]/20 rounded-full p-4 w-fit mx-auto mb-4">
-                  <Wind className="h-8 w-8 text-[#223B0A]" />
-                </div>
-                <h3 className="font-semibold text-[#223B0A] mb-2">Village Support</h3>
-                <p className="text-sm text-[#302D2C]/80">Coordinate seamlessly with your support network</p>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-                <div className="bg-gradient-to-br from-[#FFE5C4]/60 to-[#FCC931]/30 rounded-full p-4 w-fit mx-auto mb-4">
-                  <Leaf className="h-8 w-8 text-[#223B0A]" />
-                </div>
-                <h3 className="font-semibold text-[#223B0A] mb-2">Mindful Care</h3>
-                <p className="text-sm text-[#302D2C]/80">Personalized guidance for confident decisions</p>
-              </div>
+              
+              
+              
             </div>
           </div>
         </div>
@@ -419,17 +399,10 @@ const CombinedHomepage = () => {
           </h2>
           
           <div className="max-w-3xl mx-auto space-y-4">
-            {[
-              "Is Eloura suitable for all types of caregiving?",
-              "How does the village coordination work?",
-              "Can I use Eloura offline?",
-              "What makes Eloura different from other apps?"
-            ].map((question, index) => (
-              <div key={index} className="bg-[#FFE5C4]/60 rounded-2xl p-6 flex items-center justify-between hover:bg-[#FFE5C4]/80 transition-colors cursor-pointer">
+            {["Is Eloura suitable for all types of caregiving?", "How does the village coordination work?", "Can I use Eloura offline?", "What makes Eloura different from other apps?"].map((question, index) => <div key={index} className="bg-[#FFE5C4]/60 rounded-2xl p-6 flex items-center justify-between hover:bg-[#FFE5C4]/80 transition-colors cursor-pointer">
                 <span className="text-[#302D2C] font-medium">{question}</span>
                 <ArrowRight className="h-5 w-5 text-[#223B0A]" />
-              </div>
-            ))}
+              </div>)}
           </div>
           
           <div className="text-center mt-12">
@@ -513,5 +486,4 @@ const CombinedHomepage = () => {
       </footer>
     </div>;
 };
-
 export default CombinedHomepage;
