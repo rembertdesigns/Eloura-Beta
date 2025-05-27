@@ -2,8 +2,10 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator } from 'lucide-react';
+
 const CombinedHomepage = () => {
-  return <div className="min-h-screen bg-white">
+  return (
+    <div className="min-h-screen bg-white">
       {/* Navigation - Clean and professional */}
       <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-50 py-4 border-b border-[#E1CFE3]/20">
         <div className="container mx-auto px-4">
@@ -57,6 +59,108 @@ const CombinedHomepage = () => {
         </div>
       </section>
 
+      {/* PR Coverage Banner */}
+      <section className="py-6 bg-gradient-to-r from-[#223B0A] to-[#302D2C]">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <p className="text-white/90 text-sm mb-4 font-medium">Featured in notable publications</p>
+            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+              <div className="text-white/70 font-semibold text-lg">TechCrunch</div>
+              <div className="text-white/70 font-semibold text-lg">Forbes</div>
+              <div className="text-white/70 font-semibold text-lg">Fast Company</div>
+              <div className="text-white/70 font-semibold text-lg">Parents Magazine</div>
+              <div className="text-white/70 font-semibold text-lg">AARP</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* For Every Family Type Section */}
+      <section className="py-20 bg-gradient-to-br from-[#FFE5C4]/40 to-[#E1CFE3]/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <div className="bg-[#223B0A] text-white py-3 px-8 rounded-full inline-block mb-8">
+              <span className="text-sm font-medium">Banner of PR coverage/ notable mentions</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
+              For Every Family Type
+            </h2>
+            <p className="text-xl text-[#302D2C] max-w-3xl mx-auto leading-relaxed">
+              Whether you're flying solo, juggling dual careers, co-parenting, or managing multiple generations—Eloura adapts to your unique caregiving situation.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            {/* Solo */}
+            <div className="text-center">
+              <div className="bg-white rounded-3xl p-8 shadow-lg mb-6 h-40 flex items-center justify-center">
+                <div className="relative">
+                  <div className="w-16 h-16 bg-[#223B0A] rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-white rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+              <h3 className="text-2xl font-semibold text-[#223B0A] mb-3">Solo</h3>
+              <p className="text-[#302D2C] text-sm leading-relaxed">
+                Single parents and independent caregivers managing it all
+              </p>
+            </div>
+
+            {/* Dual */}
+            <div className="text-center">
+              <div className="bg-white rounded-3xl p-8 shadow-lg mb-6 h-40 flex items-center justify-center">
+                <div className="flex gap-2">
+                  <div className="w-12 h-12 bg-[#D7642A] rounded-full"></div>
+                  <div className="w-12 h-12 bg-[#223B0A] rounded-full flex items-center justify-center">
+                    <div className="w-6 h-6 bg-white rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+              <h3 className="text-2xl font-semibold text-[#223B0A] mb-3">Dual</h3>
+              <p className="text-[#302D2C] text-sm leading-relaxed">
+                Partners coordinating care together as a team
+              </p>
+            </div>
+
+            {/* Split/Co-Parent */}
+            <div className="text-center">
+              <div className="bg-white rounded-3xl p-8 shadow-lg mb-6 h-40 flex items-center justify-center">
+                <div className="flex gap-3">
+                  <div className="relative">
+                    <div className="w-12 h-12 bg-[#FCC931] rounded-full border-2 border-[#223B0A]"></div>
+                    <Heart className="w-4 h-4 text-[#223B0A] absolute top-1 left-1" />
+                  </div>
+                  <div className="relative">
+                    <div className="w-12 h-12 bg-[#E1CFE3] rounded-full border-2 border-[#223B0A]"></div>
+                    <Heart className="w-4 h-4 text-[#223B0A] absolute top-1 left-1" />
+                  </div>
+                </div>
+              </div>
+              <h3 className="text-2xl font-semibold text-[#223B0A] mb-3">Split/Co-Parent</h3>
+              <p className="text-[#302D2C] text-sm leading-relaxed">
+                Shared custody and co-parenting coordination
+              </p>
+            </div>
+
+            {/* Multi-Gen */}
+            <div className="text-center">
+              <div className="bg-white rounded-3xl p-8 shadow-lg mb-6 h-40 flex items-center justify-center">
+                <div className="flex items-end gap-1">
+                  <div className="w-6 h-8 bg-[#223B0A] rounded-full"></div>
+                  <div className="w-8 h-12 bg-[#D7642A] rounded-full"></div>
+                  <div className="w-6 h-6 bg-[#FCC931] rounded-full"></div>
+                  <div className="w-4 h-4 bg-[#E1CFE3] rounded-full"></div>
+                </div>
+              </div>
+              <h3 className="text-2xl font-semibold text-[#223B0A] mb-3">Multi-Gen</h3>
+              <p className="text-[#302D2C] text-sm leading-relaxed">
+                Sandwich generation caring for kids and parents
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section - Professional and detailed */}
       <section id="features" className="py-24 bg-white">
         <div className="container mx-auto px-4">
@@ -97,11 +201,11 @@ const CombinedHomepage = () => {
                 </li>
                 <li className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-[#D7642A] rounded-full"></div>
-                  <span className="text-[#302D2C]">Calendar integration</span>
+                  <span>Calendar integration</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-[#223B0A] rounded-full"></div>
-                  <span className="text-[#302D2C]">Gentle reminders</span>
+                  <span>Gentle reminders</span>
                 </li>
               </ul>
               <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full">
@@ -126,11 +230,11 @@ const CombinedHomepage = () => {
                 </li>
                 <li className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-[#FCC931] rounded-full"></div>
-                  <span className="text-[#302D2C]">Real-time updates</span>
+                  <span>Real-time updates</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-[#D7642A] rounded-full"></div>
-                  <span className="text-[#302D2C]">Shared calendars</span>
+                  <span>Shared calendars</span>
                 </li>
               </ul>
               <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full">
@@ -484,6 +588,8 @@ const CombinedHomepage = () => {
           </div>
         </div>
       </footer>
-    </div>;
+    </div>
+  );
 };
+
 export default CombinedHomepage;
