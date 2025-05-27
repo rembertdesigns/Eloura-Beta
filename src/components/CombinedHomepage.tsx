@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator, Clock, CheckCircle, Star, Quote } from 'lucide-react';
+import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator, Clock, CheckCircle, Star, Quote, ExternalLink } from 'lucide-react';
 
 const CombinedHomepage = () => {
   return <div className="min-h-screen bg-white">
@@ -16,10 +17,14 @@ const CombinedHomepage = () => {
               <span className="text-2xl font-medium text-[#302D2C]">Eloura</span>
             </div>
             <div className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">About Us</a>
-              <a href="#how-it-works" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Features</a>
-              <a href="#testimonials" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Pricing</a>
-              <a href="#" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Community</a>
+              <a href="#about" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">About Us</a>
+              <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Features</a>
+              <a href="#pricing" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Pricing</a>
+              <a href="#community" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors flex items-center gap-1">
+                Community
+                <ExternalLink className="h-3 w-3" />
+              </a>
+              <a href="#resources" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Resources</a>
             </div>
             <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6">Log In</Button>
           </div>
