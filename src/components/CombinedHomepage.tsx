@@ -15,14 +15,12 @@ const CombinedHomepage = () => {
               <span className="text-2xl font-medium text-[#302D2C]">Eloura</span>
             </div>
             <div className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Features</a>
-              <a href="#how-it-works" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">How It Works</a>
+              <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">About Us</a>
+              <a href="#how-it-works" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Features</a>
               <a href="#testimonials" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Reviews</a>
               <a href="#" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Log In</a>
             </div>
-            <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6">
-              Get Started Free
-            </Button>
+            <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6">Log In</Button>
           </div>
         </div>
       </nav>
