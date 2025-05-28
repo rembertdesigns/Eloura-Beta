@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -33,8 +32,8 @@ const KidsSummary = () => {
     localStorage.setItem('kids', JSON.stringify(kids));
     console.log('Saved kids to localStorage:', kids);
     
-    // Navigate to dashboard
-    navigate('/dashboard');
+    // Navigate to challenges page
+    navigate('/top-challenges');
   };
 
   return (
