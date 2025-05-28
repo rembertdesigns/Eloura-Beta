@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Heart, Menu } from 'lucide-react';
+import { Heart, Menu, UserPlus } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ const Navigation = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
             <div className="bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] p-2 rounded-xl">
               <Heart className="h-6 w-6 text-white" />
             </div>
@@ -42,8 +42,13 @@ const Navigation = () => {
             <Button variant="ghost" className="text-slate-600 hover:text-slate-800">
               About
             </Button>
-            <Button variant="ghost" className="text-slate-600 hover:text-slate-800">
-              FAQ
+            <Button 
+              variant="ghost" 
+              className="text-slate-600 hover:text-slate-800"
+              onClick={() => navigate('/invite')}
+            >
+              <UserPlus className="h-4 w-4 mr-2" />
+              Invite Team
             </Button>
           </div>
 
