@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FolderOpen, Plus, Share2, Lock, FileText, Phone, Calendar, Utensils, Baby, Heart, Upload } from 'lucide-react';
 import Navigation from '@/components/Navigation';
+import FeatureFooter from '@/components/FeatureFooter';
 
 const HomeBaseToolkit = () => {
   const [activeTab, setActiveTab] = useState('childcare');
@@ -76,7 +78,7 @@ const HomeBaseToolkit = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50 pb-20">
       <Navigation />
       
       <div className="container mx-auto px-4 py-8 max-w-6xl space-y-6">
@@ -219,6 +221,8 @@ const HomeBaseToolkit = () => {
           </CardContent>
         </Card>
       </div>
+      
+      <FeatureFooter />
     </div>
   );
 };

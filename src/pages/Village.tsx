@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Users, UserPlus, CheckCircle, HelpCircle, MessageSquare, Phone } from 'lucide-react';
 import Navigation from '@/components/Navigation';
+import FeatureFooter from '@/components/FeatureFooter';
 
 const Village = () => {
   const [selectedPerson, setSelectedPerson] = useState(null);
@@ -35,7 +36,7 @@ const Village = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50 pb-20">
       <Navigation />
       
       <div className="container mx-auto px-4 py-8 max-w-6xl space-y-6">
@@ -167,6 +168,8 @@ const Village = () => {
           </div>
         </div>
       </div>
+      
+      <FeatureFooter />
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, Heart, Brain, Edit3, Pause } from 'lucide-react';
 import Navigation from '@/components/Navigation';
+import FeatureFooter from '@/components/FeatureFooter';
 
 const DailyBrief = () => {
   const [moodChecked, setMoodChecked] = useState(false);
@@ -19,7 +20,7 @@ const DailyBrief = () => {
   const aiSummary = "Good morning! Today looks manageable with 3 key priorities. Your energy seems focused on family coordination. Remember to take a moment for yourself between pickup and dinner prep.";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50 pb-20">
       <Navigation />
       
       <div className="container mx-auto px-4 py-8 max-w-4xl space-y-6">
@@ -156,6 +157,8 @@ const DailyBrief = () => {
           </div>
         </div>
       </div>
+      
+      <FeatureFooter />
     </div>
   );
 };

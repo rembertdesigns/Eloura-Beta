@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Calendar, BarChart3, Clock, Target, TrendingUp, AlertTriangle } from 'lucide-react';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import Navigation from '@/components/Navigation';
+import FeatureFooter from '@/components/FeatureFooter';
 
 const PlannerInsights = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -38,7 +39,7 @@ const PlannerInsights = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50 pb-20">
       <Navigation />
       
       <div className="container mx-auto px-4 py-8 max-w-7xl space-y-6">
@@ -232,6 +233,8 @@ const PlannerInsights = () => {
           </div>
         )}
       </div>
+      
+      <FeatureFooter />
     </div>
   );
 };
