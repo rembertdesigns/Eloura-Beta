@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import FamilySetup from "./pages/FamilySetup";
 import PersonalInfo from "./pages/PersonalInfo";
+import FamilyStructure from "./pages/FamilyStructure";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/family-setup" element={<FamilySetup />} />
             <Route path="/personal-info" element={<PersonalInfo />} />
+            <Route path="/family-structure" element={<FamilyStructure />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
