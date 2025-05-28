@@ -5,9 +5,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Navigation from '@/components/Navigation';
+import LoadingScreen from '@/components/LoadingScreen';
 
 const OnboardingSummary = () => {
   const navigate = useNavigate();
+  const [showLoading, setShowLoading] = useState(false);
   const [summary, setSummary] = useState({
     familyType: '',
     personalInfo: '',
@@ -40,8 +42,16 @@ const OnboardingSummary = () => {
   }, []);
 
   const handleFinish = () => {
+    setShowLoading(true);
+  };
+
+  const handleLoadingComplete = () => {
     navigate('/dashboard');
   };
+
+  if (showLoading) {
+    return <LoadingScreen onComplete={handleLoadingComplete} title="Creating your personalized dashboard" />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50">
