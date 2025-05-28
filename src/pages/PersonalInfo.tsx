@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -27,77 +28,90 @@ const PersonalInfo = () => {
   });
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!user) {
-      navigate('/auth');
-      return;
-    }
-
     const loadExistingData = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('user_onboarding')
-          .select('*')
-          .eq('user_id', user.id)
-          .single();
+      if (user) {
+        try {
+          const { data, error } = await supabase
+            .from('user_onboarding')
+            .select('*')
+            .eq('user_id', user.id)
+            .single();
 
-        if (data && !error) {
-          setFormData({
-            firstName: data.first_name || '',
-            lastName: data.last_name || '',
-            email: data.email || user.email || '',
-            phone: data.phone || '',
-            dateOfBirth: data.date_of_birth || '',
-            address: data.address || '',
-            city: data.city || '',
-            state: data.state || '',
-            zipCode: data.zip_code || '',
-            emergencyContactName: data.emergency_contact_name || '',
-            emergencyContactPhone: data.emergency_contact_phone || '',
-            emergencyContactRelationship: data.emergency_contact_relationship || '',
-          });
-        } else if (user.email) {
-          setFormData(prev => ({ ...prev, email: user.email }));
+          if (data && !error) {
+            setFormData({
+              firstName: data.first_name || '',
+              lastName: data.last_name || '',
+              email: data.email || user.email || '',
+              phone: data.phone || '',
+              dateOfBirth: data.date_of_birth || '',
+              address: data.address || '',
+              city: data.city || '',
+              state: data.state || '',
+              zipCode: data.zip_code || '',
+              emergencyContactName: data.emergency_contact_name || '',
+              emergencyContactPhone: data.emergency_contact_phone || '',
+              emergencyContactRelationship: data.emergency_contact_relationship || '',
+            });
+          } else if (user.email) {
+            setFormData(prev => ({ ...prev, email: user.email }));
+          }
+        } catch (error) {
+          console.error('Error loading existing data:', error);
         }
-      } catch (error) {
-        console.error('Error loading existing data:', error);
-      } finally {
-        setInitialLoading(false);
       }
+      setInitialLoading(false);
     };
 
     loadExistingData();
-  }, [user, navigate]);
+  }, [user]);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required';
+    }
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Last name is required';
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        newErrors.email = 'Please enter a valid email address';
+      }
+    }
+    if (!formData.phone.trim()) {
+      newErrors.phone = 'Phone number is required';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleContinue = async () => {
-    // Validate required fields
-    if (!formData.firstName.trim() || !formData.lastName.trim() || 
-        !formData.email.trim() || !formData.phone.trim()) {
+    if (!validateForm()) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      toast({
-        title: "Invalid Email",
-        description: "Please enter a valid email address",
         variant: "destructive",
       });
       return;
@@ -109,6 +123,7 @@ const PersonalInfo = () => {
         description: "Please sign in to continue",
         variant: "destructive",
       });
+      navigate('/auth');
       return;
     }
 
@@ -225,9 +240,12 @@ const PersonalInfo = () => {
                         id="firstName"
                         value={formData.firstName}
                         onChange={(e) => handleInputChange('firstName', e.target.value)}
-                        className="mt-1"
+                        className={`mt-1 ${errors.firstName ? 'border-red-500' : ''}`}
                         placeholder="Enter your first name"
                       />
+                      {errors.firstName && (
+                        <p className="text-sm text-red-500 mt-1">{errors.firstName}</p>
+                      )}
                     </div>
                     
                     <div>
@@ -238,9 +256,12 @@ const PersonalInfo = () => {
                         id="lastName"
                         value={formData.lastName}
                         onChange={(e) => handleInputChange('lastName', e.target.value)}
-                        className="mt-1"
+                        className={`mt-1 ${errors.lastName ? 'border-red-500' : ''}`}
                         placeholder="Enter your last name"
                       />
+                      {errors.lastName && (
+                        <p className="text-sm text-red-500 mt-1">{errors.lastName}</p>
+                      )}
                     </div>
                   </div>
 
@@ -254,23 +275,29 @@ const PersonalInfo = () => {
                         type="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="mt-1"
+                        className={`mt-1 ${errors.email ? 'border-red-500' : ''}`}
                         placeholder="Enter your email"
                       />
+                      {errors.email && (
+                        <p className="text-sm text-red-500 mt-1">{errors.email}</p>
+                      )}
                     </div>
                     
                     <div>
                       <Label htmlFor="phone" className="text-sm font-medium text-slate-700">
-                        Phone Number
+                        Phone Number *
                       </Label>
                       <Input
                         id="phone"
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
-                        className="mt-1"
+                        className={`mt-1 ${errors.phone ? 'border-red-500' : ''}`}
                         placeholder="(555) 123-4567"
                       />
+                      {errors.phone && (
+                        <p className="text-sm text-red-500 mt-1">{errors.phone}</p>
+                      )}
                     </div>
                   </div>
 
@@ -434,7 +461,7 @@ const PersonalInfo = () => {
         {/* Progress Indicator */}
         <div className="text-center mt-4 sm:mt-6">
           <p className="text-xs sm:text-sm text-slate-500">
-            Step 1 of 7 • Personal Information
+            Step 2 of 4 • Personal Information
           </p>
         </div>
       </div>
