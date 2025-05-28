@@ -1,5 +1,5 @@
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import Navigation from '@/components/Navigation';
 
 const Invite = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [selectedRole, setSelectedRole] = useState('helper');
   const [invitedMembers, setInvitedMembers] = useState([
@@ -102,6 +103,15 @@ const Invite = () => {
             Caregiving is a team effort. Invite family members, friends, and professional caregivers 
             to help manage your family's needs together.
           </p>
+          
+          {/* Go to Dashboard Button */}
+          <Button
+            variant="outline"
+            onClick={() => navigate('/dashboard')}
+            className="mt-4 border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white"
+          >
+            Go to Dashboard
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
