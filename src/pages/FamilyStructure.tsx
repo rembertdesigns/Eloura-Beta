@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, ArrowLeft, ArrowRight, Users, Edit, Trash2 } from 'lucide-react';
+import { Plus, ArrowLeft, ArrowRight, Users, Edit, Trash2, UserPlus } from 'lucide-react';
 import { Cat, Dog } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -264,6 +265,16 @@ const FamilyStructure = () => {
           <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto px-2 sm:px-0">
             Add your family members and pets so we can help you coordinate care and support for everyone
           </p>
+          
+          {/* Invite Support Button */}
+          <Button
+            variant="outline"
+            onClick={() => navigate('/invite')}
+            className="mt-4 border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white"
+          >
+            <UserPlus className="h-4 w-4 mr-2" />
+            Invite Support Team
+          </Button>
         </div>
 
         {/* Family Members */}

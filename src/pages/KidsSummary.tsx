@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlusCircle, MinusCircle } from 'lucide-react';
+import { PlusCircle, MinusCircle, UserPlus } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 
 const KidsSummary = () => {
@@ -43,6 +44,16 @@ const KidsSummary = () => {
         <Card className="border-0 shadow-lg">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold">Kids Summary</CardTitle>
+            <div className="flex justify-center">
+              <Button
+                variant="outline"
+                onClick={() => navigate('/invite')}
+                className="border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white"
+              >
+                <UserPlus className="h-4 w-4 mr-2" />
+                Invite Support Team
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             {kids.map(kid => (
