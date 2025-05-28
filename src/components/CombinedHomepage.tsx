@@ -1,8 +1,21 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, Leaf, Sun, Wind, ArrowRight, Users, Brain, Shield, Calculator, Clock, CheckCircle, Star, Quote, ExternalLink } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
 const CombinedHomepage = () => {
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    navigate('/auth');
+  };
+
+  const handleLogin = () => {
+    navigate('/auth');
+  };
+
   return <div className="min-h-screen bg-white">
       {/* Navigation - Clean and professional */}
       <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-50 py-4 border-b border-[#E1CFE3]/20">
@@ -24,7 +37,12 @@ const CombinedHomepage = () => {
               </a>
               <a href="#resources" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Resources</a>
             </div>
-            <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6">Log In</Button>
+            <Button 
+              className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6"
+              onClick={handleLogin}
+            >
+              Log In
+            </Button>
           </div>
         </div>
       </nav>
@@ -45,7 +63,13 @@ const CombinedHomepage = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-              <Button size="lg" className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 text-lg">Get Started</Button>
+              <Button 
+                size="lg" 
+                className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 text-lg"
+                onClick={handleGetStarted}
+              >
+                Get Started
+              </Button>
               <Button size="lg" variant="outline" className="border-[#D7642A] text-[#D7642A] hover:bg-[#D7642A] hover:text-white rounded-full px-8 text-lg">
                 Watch Demo
               </Button>
@@ -597,7 +621,11 @@ const CombinedHomepage = () => {
             Join thousands of families finding calm in the chaos. Start your free trial today—no credit card required.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
-            <Button size="lg" className="bg-[#FCC931] hover:bg-[#D7642A] text-[#302D2C] rounded-full px-8 text-lg font-semibold">
+            <Button 
+              size="lg" 
+              className="bg-[#FCC931] hover:bg-[#D7642A] text-[#302D2C] rounded-full px-8 text-lg font-semibold"
+              onClick={handleGetStarted}
+            >
               Start 14-Day Free Trial
             </Button>
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 rounded-full px-8 text-lg">
