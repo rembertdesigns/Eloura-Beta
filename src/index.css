@@ -84,6 +84,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #f5f1eb 0%, #f8f4ed 25%, #faf6ef 50%, #fcf8f1 75%, #fefaf3 100%);
+    min-height: 100vh;
   }
 }
 
@@ -93,11 +95,27 @@
   }
   
   .text-gradient {
-    @apply bg-gradient-to-r from-emerald-600 to-blue-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-emerald-600 to-orange-500 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-green {
+    @apply bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-orange {
+    @apply bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent;
   }
   
   .bg-blur {
     backdrop-filter: blur(10px);
+  }
+
+  .warm-gradient {
+    background: linear-gradient(135deg, #f5f1eb 0%, #f8f4ed 25%, #faf6ef 50%, #fcf8f1 75%, #fefaf3 100%);
+  }
+
+  .card-warm {
+    @apply bg-white/90 backdrop-blur-sm border border-white/50 shadow-lg;
   }
 }
 
@@ -113,7 +131,7 @@
   left: 0;
   right: 0;
   height: 100px;
-  background: radial-gradient(ellipse at center, #a8e6ff 0%, #ffffff 70%);
+  background: radial-gradient(ellipse at center, #f5f1eb 0%, #ffffff 70%);
   border-radius: 100%;
   transform: translateY(50%);
 }
@@ -132,5 +150,5 @@
 }
 
 .gradient-text {
-  @apply bg-gradient-to-r from-[#223b0a] to-[#4c7c2a] bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent;
 }

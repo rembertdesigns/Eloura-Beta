@@ -20,14 +20,14 @@ const DailyBrief = () => {
   const aiSummary = "Good morning! Today looks manageable with 3 key priorities. Your energy seems focused on family coordination. Remember to take a moment for yourself between pickup and dinner prep.";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50 pb-20">
+    <div className="min-h-screen warm-gradient pb-20">
       <Navigation />
       
       <div className="container mx-auto px-4 py-8 max-w-4xl space-y-6">
         {/* Header */}
         <div className="text-center space-y-2 animate-fade-in">
-          <h1 className="text-3xl font-light text-slate-800">
-            Daily <span className="font-medium text-emerald-600">Brief</span>
+          <h1 className="text-3xl md:text-4xl font-light text-slate-800">
+            Daily <span className="text-gradient-orange font-medium">Brief</span>
           </h1>
           <p className="text-slate-600">Your calm, personalized snapshot for today</p>
         </div>
@@ -36,10 +36,10 @@ const DailyBrief = () => {
           {/* Left Column - Main Brief */}
           <div className="lg:col-span-2 space-y-6">
             {/* AI Summary */}
-            <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-green-50">
+            <Card className="card-warm">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-3 text-slate-700">
-                  <Brain className="h-5 w-5 text-blue-500" />
+                  <Brain className="h-5 w-5 text-green-600" />
                   Today's Overview
                 </CardTitle>
               </CardHeader>
@@ -49,23 +49,23 @@ const DailyBrief = () => {
             </Card>
 
             {/* Top 3 Things Today */}
-            <Card className="border-0 shadow-lg">
+            <Card className="card-warm">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center justify-between text-slate-700">
                   <span className="flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-emerald-500" />
+                    <Calendar className="h-5 w-5 text-green-600" />
                     Top 3 Things Today
                   </span>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="hover:bg-orange-50">
                     <Edit3 className="h-4 w-4" />
                   </Button>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {topTasks.map((task) => (
-                  <div key={task.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                  <div key={task.id} className="flex items-center justify-between p-3 bg-white/60 rounded-lg border border-white/50">
                     <div className="flex items-center gap-3">
-                      <div className="h-2 w-2 bg-emerald-400 rounded-full"></div>
+                      <div className="h-2 w-2 bg-orange-400 rounded-full"></div>
                       <div>
                         <p className="text-slate-700 font-medium">{task.text}</p>
                         <p className="text-sm text-slate-500 flex items-center gap-1">
@@ -75,10 +75,12 @@ const DailyBrief = () => {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant={task.category === 'childcare' ? 'default' : task.category === 'eldercare' ? 'secondary' : 'outline'}>
+                      <Badge variant={task.category === 'childcare' ? 'default' : task.category === 'eldercare' ? 'secondary' : 'outline'} 
+                             className={task.category === 'childcare' ? 'bg-green-100 text-green-700 hover:bg-green-200' : 
+                                       task.category === 'eldercare' ? 'bg-orange-100 text-orange-700 hover:bg-orange-200' : ''}>
                         {task.category}
                       </Badge>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" className="hover:bg-orange-50">
                         <Pause className="h-4 w-4" />
                       </Button>
                     </div>
@@ -91,10 +93,10 @@ const DailyBrief = () => {
           {/* Right Column - Mood Check & Filters */}
           <div className="space-y-6">
             {/* Mood Check-in */}
-            <Card className="border-0 shadow-lg">
+            <Card className="card-warm">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-3 text-slate-700">
-                  <Heart className="h-5 w-5 text-rose-500" />
+                  <Heart className="h-5 w-5 text-orange-500" />
                   How are you feeling?
                 </CardTitle>
               </CardHeader>
@@ -111,7 +113,7 @@ const DailyBrief = () => {
                             setSelectedMood(mood);
                             setMoodChecked(true);
                           }}
-                          className="text-sm"
+                          className="text-sm border-orange-200 hover:bg-orange-50 hover:border-orange-300"
                         >
                           {mood}
                         </Button>
@@ -120,8 +122,8 @@ const DailyBrief = () => {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <p className="text-sm text-slate-600">You're feeling: <span className="font-medium">{selectedMood}</span></p>
-                    <div className="p-3 bg-blue-50 rounded-lg">
+                    <p className="text-sm text-slate-600">You're feeling: <span className="font-medium text-orange-600">{selectedMood}</span></p>
+                    <div className="p-3 bg-green-50 rounded-lg border border-green-100">
                       <p className="text-sm text-slate-600">
                         {selectedMood === 'Overwhelmed' && "Remember: You don't have to do everything today. Focus on your top 3."}
                         {selectedMood === 'Tired' && "Be gentle with yourself. Consider delegating one task today."}
@@ -135,21 +137,21 @@ const DailyBrief = () => {
             </Card>
 
             {/* Context Filters */}
-            <Card className="border-0 shadow-lg">
+            <Card className="card-warm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-slate-700">Quick Filters</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <Button variant="outline" size="sm" className="w-full justify-start">
+                <Button variant="outline" size="sm" className="w-full justify-start border-green-200 hover:bg-green-50 hover:border-green-300">
                   👶 Childcare Only
                 </Button>
-                <Button variant="outline" size="sm" className="w-full justify-start">
+                <Button variant="outline" size="sm" className="w-full justify-start border-orange-200 hover:bg-orange-50 hover:border-orange-300">
                   👴 Eldercare Only
                 </Button>
-                <Button variant="outline" size="sm" className="w-full justify-start">
+                <Button variant="outline" size="sm" className="w-full justify-start border-green-200 hover:bg-green-50 hover:border-green-300">
                   🏠 Household Tasks
                 </Button>
-                <Button variant="outline" size="sm" className="w-full justify-start">
+                <Button variant="outline" size="sm" className="w-full justify-start border-orange-200 hover:bg-orange-50 hover:border-orange-300">
                   💼 Work Related
                 </Button>
               </CardContent>

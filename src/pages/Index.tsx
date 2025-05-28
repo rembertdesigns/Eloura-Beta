@@ -4,7 +4,7 @@ import CombinedHomepage from '@/components/CombinedHomepage';
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen warm-gradient">
       <CombinedHomepage />
     </div>
   );

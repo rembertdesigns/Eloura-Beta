@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -64,14 +63,14 @@ const SmartCareAssistant = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50 pb-20">
+    <div className="min-h-screen warm-gradient pb-20">
       <Navigation />
       
       <div className="container mx-auto px-4 py-8 max-w-6xl space-y-6">
         {/* Header */}
         <div className="text-center space-y-2 animate-fade-in">
-          <h1 className="text-3xl font-light text-slate-800">
-            Smart Care <span className="font-medium text-emerald-600">Assistant</span>
+          <h1 className="text-3xl md:text-4xl font-light text-slate-800">
+            Smart Care <span className="text-gradient-orange font-medium">Assistant</span>
           </h1>
           <p className="text-slate-600">Personalized guidance for your daily caregiving decisions</p>
         </div>
@@ -80,10 +79,10 @@ const SmartCareAssistant = () => {
           {/* Left Column - Chat Interface */}
           <div className="lg:col-span-2 space-y-6">
             {/* Question Input */}
-            <Card className="border-0 shadow-lg">
+            <Card className="card-warm">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-3 text-slate-700">
-                  <Brain className="h-5 w-5 text-purple-500" />
+                  <Brain className="h-5 w-5 text-orange-600" />
                   Ask Your Care Question
                 </CardTitle>
               </CardHeader>
@@ -93,11 +92,12 @@ const SmartCareAssistant = () => {
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   rows={3}
+                  className="border-orange-200 focus:border-orange-400"
                 />
                 <Button 
                   onClick={handleSendQuestion}
                   disabled={loading || !question.trim()}
-                  className="w-full"
+                  className="w-full bg-green-600 hover:bg-green-700"
                 >
                   {loading ? (
                     <>Processing...</>
@@ -114,28 +114,30 @@ const SmartCareAssistant = () => {
             {/* Chat History */}
             <div className="space-y-4">
               {chatHistory.map((chat, index) => (
-                <Card key={index} className="border-0 shadow-lg">
+                <Card key={index} className="card-warm">
                   <CardContent className="pt-6">
                     <div className="space-y-4">
                       <div className="flex items-start gap-3">
-                        <div className="bg-slate-100 p-2 rounded-full">
-                          <Brain className="h-4 w-4 text-slate-600" />
+                        <div className="bg-orange-100 p-2 rounded-full">
+                          <Brain className="h-4 w-4 text-orange-600" />
                         </div>
                         <div className="flex-1">
                           <p className="font-medium text-slate-700 mb-2">{chat.question}</p>
-                          <div className="bg-blue-50 p-4 rounded-lg">
+                          <div className="bg-green-50 p-4 rounded-lg border border-green-100">
                             <p className="text-slate-600 leading-relaxed">{chat.answer}</p>
                           </div>
                           <div className="flex items-center gap-2 mt-3">
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" className="border-green-200 hover:bg-green-50">
                               <Bookmark className="h-4 w-4 mr-2" />
                               Save to Toolkit
                             </Button>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" className="border-orange-200 hover:bg-orange-50">
                               <CheckCircle className="h-4 w-4 mr-2" />
                               Mark as Tried
                             </Button>
-                            <Badge variant="secondary">{chat.category}</Badge>
+                            <Badge variant="secondary" className={chat.category === 'childcare' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}>
+                              {chat.category}
+                            </Badge>
                           </div>
                         </div>
                       </div>
@@ -149,7 +151,7 @@ const SmartCareAssistant = () => {
           {/* Right Column - Suggestions & Saved */}
           <div className="space-y-6">
             {/* Suggested Prompts */}
-            <Card className="border-0 shadow-lg">
+            <Card className="card-warm">
               <CardHeader className="pb-3">
                 <CardTitle className="text-slate-700">Quick Questions</CardTitle>
               </CardHeader>
@@ -159,7 +161,7 @@ const SmartCareAssistant = () => {
                     key={index}
                     variant="ghost"
                     size="sm"
-                    className="w-full justify-start text-left h-auto p-3"
+                    className="w-full justify-start text-left h-auto p-3 hover:bg-green-50"
                     onClick={() => handlePromptClick(prompt)}
                   >
                     <span className="mr-2">{prompt.icon}</span>
@@ -170,20 +172,20 @@ const SmartCareAssistant = () => {
             </Card>
 
             {/* Saved Answers */}
-            <Card className="border-0 shadow-lg">
+            <Card className="card-warm">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-3 text-slate-700">
-                  <Star className="h-5 w-5 text-yellow-500" />
+                  <Star className="h-5 w-5 text-orange-500" />
                   Saved Guidance
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {savedAnswers.map((item) => (
-                  <div key={item.id} className="p-3 border rounded-lg space-y-2">
+                  <div key={item.id} className="p-3 border border-white/50 rounded-lg space-y-2 bg-white/40">
                     <h4 className="text-sm font-medium text-slate-700">{item.question}</h4>
                     <p className="text-xs text-slate-500 line-clamp-2">{item.answer}</p>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="text-xs">
+                      <Badge variant="outline" className={`text-xs ${item.category === 'childcare' ? 'border-green-200 text-green-700' : 'border-orange-200 text-orange-700'}`}>
                         {item.category === 'childcare' ? (
                           <><Baby className="h-3 w-3 mr-1" /> Child</>
                         ) : (
@@ -191,7 +193,7 @@ const SmartCareAssistant = () => {
                         )}
                       </Badge>
                       {item.tried && (
-                        <Badge variant="secondary" className="text-xs">
+                        <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
                           ✓ Tried
                         </Badge>
                       )}
@@ -202,15 +204,15 @@ const SmartCareAssistant = () => {
             </Card>
 
             {/* Recent Insights */}
-            <Card className="border-0 shadow-lg bg-gradient-to-br from-purple-50 to-blue-50">
+            <Card className="card-warm bg-gradient-to-br from-orange-50/80 to-green-50/80">
               <CardHeader className="pb-3">
                 <CardTitle className="text-slate-700">Linked Insights</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="p-2 bg-white/60 rounded text-sm">
+                <div className="p-2 bg-white/60 rounded text-sm border border-white/50">
                   <p className="text-slate-600">💡 Added "Low-sodium recipes" to your Meal Toolkit</p>
                 </div>
-                <div className="p-2 bg-white/60 rounded text-sm">
+                <div className="p-2 bg-white/60 rounded text-sm border border-white/50">
                   <p className="text-slate-600">📅 Created reminder for dad's medication review</p>
                 </div>
               </CardContent>
