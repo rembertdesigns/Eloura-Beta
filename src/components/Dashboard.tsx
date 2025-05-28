@@ -2,13 +2,54 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Users, Brain, Heart, Plus, Bell } from 'lucide-react';
+import { Calendar, Users, Brain, Heart, Plus, Bell, FileText, BarChart3, Home } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import QuickActions from './QuickActions';
 import FamilyOverview from './FamilyOverview';
 import SupportNetwork from './SupportNetwork';
 import Navigation from './Navigation';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
+  const features = [
+    {
+      title: "Daily Brief",
+      description: "Your personalized daily snapshot",
+      icon: Calendar,
+      color: "bg-blue-500 hover:bg-blue-600",
+      route: "/daily-brief"
+    },
+    {
+      title: "Village",
+      description: "Coordinate your support network",
+      icon: Users,
+      color: "bg-green-500 hover:bg-green-600",
+      route: "/village"
+    },
+    {
+      title: "Smart Care Assistant",
+      description: "AI-powered caregiving guidance",
+      icon: Brain,
+      color: "bg-purple-500 hover:bg-purple-600",
+      route: "/smart-care-assistant"
+    },
+    {
+      title: "Planner & Insights",
+      description: "Visual insights and planning",
+      icon: BarChart3,
+      color: "bg-orange-500 hover:bg-orange-600",
+      route: "/planner-insights"
+    },
+    {
+      title: "Home Base Toolkit",
+      description: "Your essential care resources",
+      icon: Home,
+      color: "bg-indigo-500 hover:bg-indigo-600",
+      route: "/home-base-toolkit"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50">
       <Navigation />
@@ -24,6 +65,33 @@ const Dashboard = () => {
             and bring calm structure to your family life.
           </p>
         </div>
+
+        {/* Feature Navigation Cards */}
+        <Card className="border-0 shadow-lg">
+          <CardHeader>
+            <CardTitle className="text-slate-700 text-center">Your Eloura Features</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {features.map((feature, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  className="h-auto p-6 flex flex-col items-center gap-4 border-0 bg-white hover:bg-slate-50 shadow-sm hover:shadow-md transition-all duration-200 group"
+                  onClick={() => navigate(feature.route)}
+                >
+                  <div className={`p-4 rounded-xl ${feature.color} transition-transform group-hover:scale-110`}>
+                    <feature.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="text-center">
+                    <div className="font-medium text-slate-700 text-lg">{feature.title}</div>
+                    <div className="text-sm text-slate-500 mt-2">{feature.description}</div>
+                  </div>
+                </Button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Main Dashboard Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
