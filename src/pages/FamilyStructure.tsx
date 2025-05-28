@@ -1,8 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, ArrowLeft, ArrowRight, Users, Edit, Trash2 } from 'lucide-react';
+import { Cat, Dog } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -18,6 +18,9 @@ interface FamilyMember {
   gender: string | null;
   notes: string | null;
   is_primary_caregiver: boolean;
+  member_type?: 'human' | 'pet';
+  pet_type?: string | null;
+  breed?: string | null;
 }
 
 const FamilyStructure = () => {
@@ -163,8 +166,8 @@ const FamilyStructure = () => {
         description: "Moving to next step...",
       });
 
-      // Navigate to next step (dashboard for now)
-      navigate('/');
+      // Navigate to kids summary
+      navigate('/kids-summary');
     } catch (error) {
       console.error('Error saving progress:', error);
       // Don't block the user from continuing for demo purposes
@@ -172,14 +175,26 @@ const FamilyStructure = () => {
         title: "Family structure saved locally",
         description: "Moving to next step...",
       });
-      navigate('/');
+      navigate('/kids-summary');
     } finally {
       setSaving(false);
     }
   };
 
-  const getRelationshipIcon = (relationship: string) => {
-    switch (relationship.toLowerCase()) {
+  const getMemberIcon = (member: FamilyMember) => {
+    if (member.member_type === 'pet') {
+      switch (member.pet_type?.toLowerCase()) {
+        case 'dog':
+          return <Dog className="h-6 w-6 text-amber-600" />;
+        case 'cat':
+          return <Cat className="h-6 w-6 text-gray-600" />;
+        default:
+          return '🐾';
+      }
+    }
+    
+    // Human relationship icons
+    switch (member.relationship.toLowerCase()) {
       case 'spouse':
       case 'partner':
         return '💑';
@@ -209,6 +224,17 @@ const FamilyStructure = () => {
     return `${age} years old`;
   };
 
+  const getDisplayLabel = (member: FamilyMember) => {
+    if (member.member_type === 'pet') {
+      return member.pet_type ? member.pet_type.charAt(0).toUpperCase() + member.pet_type.slice(1) : 'Pet';
+    }
+    return member.relationship.charAt(0).toUpperCase() + member.relationship.slice(1);
+  };
+
+  // Separate humans and pets for better organization
+  const humans = familyMembers.filter(member => member.member_type !== 'pet');
+  const pets = familyMembers.filter(member => member.member_type === 'pet');
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center">
@@ -223,10 +249,10 @@ const FamilyStructure = () => {
         {/* Progress */}
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-slate-600">Step 3 of 4</span>
-            <span className="text-sm text-slate-600">75%</span>
+            <span className="text-sm text-slate-600">Step 3 of 5</span>
+            <span className="text-sm text-slate-600">60%</span>
           </div>
-          <Progress value={75} className="h-2" />
+          <Progress value={60} className="h-2" />
         </div>
 
         {/* Header */}
@@ -236,65 +262,137 @@ const FamilyStructure = () => {
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Family Structure</h1>
           <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto px-2 sm:px-0">
-            Add your family members so we can help you coordinate care and support for everyone
+            Add your family members and pets so we can help you coordinate care and support for everyone
           </p>
         </div>
 
-        {/* Family Members Grid */}
-        <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm mb-6">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="text-xl">Your Family</CardTitle>
-                <CardDescription>
-                  {familyMembers.length === 0 
-                    ? "No family members added yet" 
-                    : `${familyMembers.length} family member${familyMembers.length === 1 ? '' : 's'} added`}
-                </CardDescription>
-              </div>
-              <Button
-                onClick={handleAddMember}
-                className="bg-[#223b0a] hover:bg-[#1a2e08] text-white"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Add Member
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {familyMembers.length === 0 ? (
-              <div className="text-center py-12">
-                <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                <p className="text-slate-500 mb-4">Start building your family structure</p>
+        {/* Family Members */}
+        {(humans.length > 0 || pets.length === 0) && (
+          <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm mb-6">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-xl">Family Members</CardTitle>
+                  <CardDescription>
+                    {humans.length === 0 
+                      ? "No family members added yet" 
+                      : `${humans.length} family member${humans.length === 1 ? '' : 's'} added`}
+                  </CardDescription>
+                </div>
                 <Button
                   onClick={handleAddMember}
-                  variant="outline"
-                  className="border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white"
+                  className="bg-[#223b0a] hover:bg-[#1a2e08] text-white"
                 >
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Your First Family Member
+                  Add Member
                 </Button>
               </div>
-            ) : (
+            </CardHeader>
+            <CardContent>
+              {humans.length === 0 ? (
+                <div className="text-center py-8">
+                  <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+                  <p className="text-slate-500 mb-4">Start building your family structure</p>
+                </div>
+              ) : (
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {humans.map((member) => (
+                    <div
+                      key={member.id}
+                      className="relative p-4 border border-slate-200 rounded-xl hover:border-[#223b0a]/30 hover:shadow-md transition-all duration-200"
+                    >
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">{getMemberIcon(member)}</span>
+                          <div>
+                            <h3 className="font-semibold text-slate-900">{member.name}</h3>
+                            <p className="text-sm text-slate-600">{getDisplayLabel(member)}</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-1">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleEditMember(member)}
+                            className="h-8 w-8 p-0"
+                          >
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleDeleteMember(member.id)}
+                            className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                      
+                      {member.date_of_birth && (
+                        <p className="text-sm text-slate-500 mb-2">
+                          {formatAge(member.date_of_birth)}
+                        </p>
+                      )}
+                      
+                      {member.is_primary_caregiver && (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-[#223b0a]/10 text-[#223b0a]">
+                          Primary Caregiver
+                        </span>
+                      )}
+                      
+                      {member.notes && (
+                        <p className="text-sm text-slate-600 mt-2 line-clamp-2">
+                          {member.notes}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Pets */}
+        {pets.length > 0 && (
+          <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm mb-6">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-xl flex items-center gap-2">
+                    <span>🐾</span>
+                    Pets
+                  </CardTitle>
+                  <CardDescription>
+                    {pets.length} pet{pets.length === 1 ? '' : 's'} in your family
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {familyMembers.map((member) => (
+                {pets.map((pet) => (
                   <div
-                    key={member.id}
+                    key={pet.id}
                     className="relative p-4 border border-slate-200 rounded-xl hover:border-[#223b0a]/30 hover:shadow-md transition-all duration-200"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
-                        <span className="text-2xl">{getRelationshipIcon(member.relationship)}</span>
+                        <span className="text-2xl">{getMemberIcon(pet)}</span>
                         <div>
-                          <h3 className="font-semibold text-slate-900">{member.name}</h3>
-                          <p className="text-sm text-slate-600 capitalize">{member.relationship}</p>
+                          <h3 className="font-semibold text-slate-900">{pet.name}</h3>
+                          <p className="text-sm text-slate-600">{getDisplayLabel(pet)}</p>
+                          {pet.breed && (
+                            <p className="text-xs text-slate-500">{pet.breed}</p>
+                          )}
                         </div>
                       </div>
                       <div className="flex gap-1">
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => handleEditMember(member)}
+                          onClick={() => handleEditMember(pet)}
                           className="h-8 w-8 p-0"
                         >
                           <Edit className="h-3 w-3" />
@@ -302,7 +400,7 @@ const FamilyStructure = () => {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => handleDeleteMember(member.id)}
+                          onClick={() => handleDeleteMember(pet.id)}
                           className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
                         >
                           <Trash2 className="h-3 w-3" />
@@ -310,29 +408,41 @@ const FamilyStructure = () => {
                       </div>
                     </div>
                     
-                    {member.date_of_birth && (
+                    {pet.date_of_birth && (
                       <p className="text-sm text-slate-500 mb-2">
-                        {formatAge(member.date_of_birth)}
+                        {formatAge(pet.date_of_birth)}
                       </p>
                     )}
                     
-                    {member.is_primary_caregiver && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-[#223b0a]/10 text-[#223b0a]">
-                        Primary Caregiver
-                      </span>
-                    )}
-                    
-                    {member.notes && (
+                    {pet.notes && (
                       <p className="text-sm text-slate-600 mt-2 line-clamp-2">
-                        {member.notes}
+                        {pet.notes}
                       </p>
                     )}
                   </div>
                 ))}
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Empty State */}
+        {familyMembers.length === 0 && (
+          <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm mb-6">
+            <CardContent className="text-center py-12">
+              <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+              <p className="text-slate-500 mb-4">Start building your family structure</p>
+              <Button
+                onClick={handleAddMember}
+                variant="outline"
+                className="border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Your First Family Member or Pet
+              </Button>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Navigation */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -359,7 +469,7 @@ const FamilyStructure = () => {
               </div>
             ) : (
               <>
-                Continue to Dashboard
+                Continue to Kids Summary
                 <ArrowRight className="h-4 w-4 ml-2" />
               </>
             )}
@@ -378,38 +488,6 @@ const FamilyStructure = () => {
       />
     </div>
   );
-};
-
-// Helper functions
-const getRelationshipIcon = (relationship: string) => {
-  switch (relationship.toLowerCase()) {
-    case 'spouse':
-    case 'partner':
-      return '💑';
-    case 'child':
-    case 'son':
-    case 'daughter':
-      return '👶';
-    case 'parent':
-    case 'mother':
-    case 'father':
-      return '👨‍👩‍👧‍👦';
-    default:
-      return '👤';
-  }
-};
-
-const formatAge = (dateOfBirth: string | null) => {
-  if (!dateOfBirth) return '';
-  const today = new Date();
-  const birth = new Date(dateOfBirth);
-  const age = today.getFullYear() - birth.getFullYear();
-  const monthDiff = today.getMonth() - birth.getMonth();
-  
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-    return `${age - 1} years old`;
-  }
-  return `${age} years old`;
 };
 
 export default FamilyStructure;
