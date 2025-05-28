@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -60,26 +59,40 @@ const FamilySetup = () => {
     try {
       setLoading(true);
       
-      const { error } = await supabase
+      // Save family type to profiles table
+      const { error: profileError } = await supabase
         .from('profiles')
         .update({ family_type: selectedType })
         .eq('id', user.id);
 
-      if (error) {
+      if (profileError) {
         toast({
           title: "Error",
-          description: error.message,
+          description: profileError.message,
           variant: "destructive",
         });
         return;
       }
 
+      // Also save to onboarding table if it exists, or create new record
+      const { error: onboardingError } = await supabase
+        .from('user_onboarding')
+        .upsert({
+          user_id: user.id,
+          family_type: selectedType,
+        });
+
+      if (onboardingError) {
+        console.error('Onboarding error:', onboardingError);
+        // Don't show error to user as this is secondary
+      }
+
       toast({
-        title: "Welcome to Eloura!",
-        description: "Your account has been set up successfully",
+        title: "Family type selected",
+        description: "Let's continue with your personal information",
       });
 
-      navigate('/');
+      navigate('/personal-info');
     } catch (error) {
       toast({
         title: "Error",
@@ -164,7 +177,7 @@ const FamilySetup = () => {
                   <span className="text-sm sm:text-base">Setting up your account...</span>
                 </div>
               ) : (
-                'Continue to Dashboard'
+                'Continue to Personal Info'
               )}
             </Button>
           </CardContent>
