@@ -10,6 +10,7 @@ import Auth from "./pages/Auth";
 import FamilySetup from "./pages/FamilySetup";
 import PersonalInfo from "./pages/PersonalInfo";
 import FamilyStructure from "./pages/FamilyStructure";
+import KidsSummary from "./pages/KidsSummary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
             <Route path="/family-setup" element={<FamilySetup />} />
             <Route path="/personal-info" element={<PersonalInfo />} />
             <Route path="/family-structure" element={<FamilyStructure />} />
+            <Route path="/kids-summary" element={<KidsSummary />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
