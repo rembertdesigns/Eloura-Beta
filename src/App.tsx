@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +17,11 @@ import NotFound from "./pages/NotFound";
 import TopChallenges from "./pages/TopChallenges";
 import Priorities from "./pages/Priorities";
 import OnboardingSummary from "./pages/OnboardingSummary";
+import DailyBrief from "./pages/DailyBrief";
+import Village from "./pages/Village";
+import SmartCareAssistant from "./pages/SmartCareAssistant";
+import PlannerInsights from "./pages/PlannerInsights";
+import HomeBaseToolkit from "./pages/HomeBaseToolkit";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +43,11 @@ const App = () => (
             <Route path="/priorities" element={<Priorities />} />
             <Route path="/onboarding-summary" element={<OnboardingSummary />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/daily-brief" element={<DailyBrief />} />
+            <Route path="/village" element={<Village />} />
+            <Route path="/smart-care-assistant" element={<SmartCareAssistant />} />
+            <Route path="/planner-insights" element={<PlannerInsights />} />
+            <Route path="/home-base-toolkit" element={<HomeBaseToolkit />} />
             <Route path="/invite" element={<Invite />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -1,0 +1,224 @@
+
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Brain, Send, Bookmark, CheckCircle, Star, Baby, Heart } from 'lucide-react';
+import Navigation from '@/components/Navigation';
+
+const SmartCareAssistant = () => {
+  const [question, setQuestion] = useState('');
+  const [chatHistory, setChatHistory] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const suggestedPrompts = [
+    { text: "What's a low-sodium dinner for Dad?", category: "eldercare", icon: "🍽️" },
+    { text: "My 3-year-old won't nap—help?", category: "childcare", icon: "😴" },
+    { text: "How to prepare for memory decline?", category: "eldercare", icon: "🧠" },
+    { text: "Toddler dinner ideas for picky eaters", category: "childcare", icon: "🥕" },
+    { text: "Managing medication schedules", category: "eldercare", icon: "💊" },
+    { text: "Gentle potty training tips", category: "childcare", icon: "🚽" }
+  ];
+
+  const savedAnswers = [
+    {
+      id: 1,
+      question: "What's a good bedtime routine for toddlers?",
+      answer: "A consistent bedtime routine typically includes: bath time (15 mins), quiet story reading (10 mins), gentle lullabies or soft music...",
+      category: "childcare",
+      saved: true,
+      tried: false
+    },
+    {
+      id: 2,
+      question: "How to make home safer for seniors?",
+      answer: "Start with these key areas: Install grab bars in bathroom, improve lighting throughout the house, remove tripping hazards...",
+      category: "eldercare",
+      saved: true,
+      tried: true
+    }
+  ];
+
+  const handleSendQuestion = async () => {
+    if (!question.trim()) return;
+    
+    setLoading(true);
+    // Simulate AI response
+    setTimeout(() => {
+      const mockResponse = {
+        question: question,
+        answer: "Here's a personalized suggestion based on your family's needs and preferences. This takes into account any dietary restrictions and care requirements you've shared with Eloura...",
+        category: question.toLowerCase().includes('dad') || question.toLowerCase().includes('senior') ? 'eldercare' : 'childcare'
+      };
+      setChatHistory([mockResponse, ...chatHistory]);
+      setQuestion('');
+      setLoading(false);
+    }, 2000);
+  };
+
+  const handlePromptClick = (prompt) => {
+    setQuestion(prompt.text);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50">
+      <Navigation />
+      
+      <div className="container mx-auto px-4 py-8 max-w-6xl space-y-6">
+        {/* Header */}
+        <div className="text-center space-y-2 animate-fade-in">
+          <h1 className="text-3xl font-light text-slate-800">
+            Smart Care <span className="font-medium text-emerald-600">Assistant</span>
+          </h1>
+          <p className="text-slate-600">Personalized guidance for your daily caregiving decisions</p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Left Column - Chat Interface */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Question Input */}
+            <Card className="border-0 shadow-lg">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-3 text-slate-700">
+                  <Brain className="h-5 w-5 text-purple-500" />
+                  Ask Your Care Question
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Textarea 
+                  placeholder="What caregiving challenge can I help you with today? Be as specific as possible..."
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  rows={3}
+                />
+                <Button 
+                  onClick={handleSendQuestion}
+                  disabled={loading || !question.trim()}
+                  className="w-full"
+                >
+                  {loading ? (
+                    <>Processing...</>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4 mr-2" />
+                      Get Personalized Guidance
+                    </>
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Chat History */}
+            <div className="space-y-4">
+              {chatHistory.map((chat, index) => (
+                <Card key={index} className="border-0 shadow-lg">
+                  <CardContent className="pt-6">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="bg-slate-100 p-2 rounded-full">
+                          <Brain className="h-4 w-4 text-slate-600" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-slate-700 mb-2">{chat.question}</p>
+                          <div className="bg-blue-50 p-4 rounded-lg">
+                            <p className="text-slate-600 leading-relaxed">{chat.answer}</p>
+                          </div>
+                          <div className="flex items-center gap-2 mt-3">
+                            <Button variant="outline" size="sm">
+                              <Bookmark className="h-4 w-4 mr-2" />
+                              Save to Toolkit
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <CheckCircle className="h-4 w-4 mr-2" />
+                              Mark as Tried
+                            </Button>
+                            <Badge variant="secondary">{chat.category}</Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Column - Suggestions & Saved */}
+          <div className="space-y-6">
+            {/* Suggested Prompts */}
+            <Card className="border-0 shadow-lg">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-slate-700">Quick Questions</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {suggestedPrompts.map((prompt, index) => (
+                  <Button
+                    key={index}
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start text-left h-auto p-3"
+                    onClick={() => handlePromptClick(prompt)}
+                  >
+                    <span className="mr-2">{prompt.icon}</span>
+                    <span className="text-sm">{prompt.text}</span>
+                  </Button>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Saved Answers */}
+            <Card className="border-0 shadow-lg">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-3 text-slate-700">
+                  <Star className="h-5 w-5 text-yellow-500" />
+                  Saved Guidance
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {savedAnswers.map((item) => (
+                  <div key={item.id} className="p-3 border rounded-lg space-y-2">
+                    <h4 className="text-sm font-medium text-slate-700">{item.question}</h4>
+                    <p className="text-xs text-slate-500 line-clamp-2">{item.answer}</p>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="text-xs">
+                        {item.category === 'childcare' ? (
+                          <><Baby className="h-3 w-3 mr-1" /> Child</>
+                        ) : (
+                          <><Heart className="h-3 w-3 mr-1" /> Elder</>
+                        )}
+                      </Badge>
+                      {item.tried && (
+                        <Badge variant="secondary" className="text-xs">
+                          ✓ Tried
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            {/* Recent Insights */}
+            <Card className="border-0 shadow-lg bg-gradient-to-br from-purple-50 to-blue-50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-slate-700">Linked Insights</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="p-2 bg-white/60 rounded text-sm">
+                  <p className="text-slate-600">💡 Added "Low-sodium recipes" to your Meal Toolkit</p>
+                </div>
+                <div className="p-2 bg-white/60 rounded text-sm">
+                  <p className="text-slate-600">📅 Created reminder for dad's medication review</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SmartCareAssistant;
