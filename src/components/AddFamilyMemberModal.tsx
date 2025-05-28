@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -130,8 +129,6 @@ const AddFamilyMemberModal: React.FC<AddFamilyMemberModalProps> = ({
         breed: formData.member_type === 'pet' ? formData.breed || null : null
       };
 
-      // For demo purposes, we'll work with localStorage
-      // In a real app with authentication, this would go to Supabase
       onSave(memberData);
       
       toast({
@@ -190,14 +187,14 @@ const AddFamilyMemberModal: React.FC<AddFamilyMemberModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg max-w-[95vw] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="text-lg sm:text-xl">
             {editingMember 
               ? `Edit ${editingMember.member_type === 'pet' ? 'Pet' : 'Family Member'}` 
               : 'Add Family Member or Pet'}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-sm">
             {editingMember 
               ? `Update the ${editingMember.member_type === 'pet' ? 'pet' : 'family member'} information below.`
               : 'Add a new family member or pet to your care network.'
@@ -205,17 +202,17 @@ const AddFamilyMemberModal: React.FC<AddFamilyMemberModalProps> = ({
           </DialogDescription>
         </DialogHeader>
         
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 px-1">
           <div className="space-y-2">
-            <Label htmlFor="member_type">Type</Label>
+            <Label htmlFor="member_type" className="text-sm font-medium">Type</Label>
             <Select 
               value={formData.member_type} 
               onValueChange={(value: 'human' | 'pet') => handleInputChange('member_type', value)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full h-10">
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="z-50 bg-white border border-gray-200 shadow-lg">
                 <SelectItem value="human">Family Member</SelectItem>
                 <SelectItem value="pet">Pet</SelectItem>
               </SelectContent>
@@ -223,27 +220,28 @@ const AddFamilyMemberModal: React.FC<AddFamilyMemberModalProps> = ({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="name">Name *</Label>
+            <Label htmlFor="name" className="text-sm font-medium">Name *</Label>
             <Input
               id="name"
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
               placeholder={formData.member_type === 'pet' ? "Enter pet's name" : "Enter full name"}
               required
+              className="w-full h-10"
             />
           </div>
 
           {formData.member_type === 'human' && (
             <div className="space-y-2">
-              <Label htmlFor="relationship">Relationship *</Label>
+              <Label htmlFor="relationship" className="text-sm font-medium">Relationship *</Label>
               <Select 
                 value={formData.relationship} 
                 onValueChange={(value) => handleInputChange('relationship', value)}
               >
-                <SelectTrigger>
+                <SelectTrigger className="w-full h-10">
                   <SelectValue placeholder="Select relationship" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="z-50 bg-white border border-gray-200 shadow-lg max-h-[200px] overflow-y-auto">
                   {relationshipOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
@@ -257,15 +255,15 @@ const AddFamilyMemberModal: React.FC<AddFamilyMemberModalProps> = ({
           {formData.member_type === 'pet' && (
             <>
               <div className="space-y-2">
-                <Label htmlFor="pet_type">Pet Type</Label>
+                <Label htmlFor="pet_type" className="text-sm font-medium">Pet Type</Label>
                 <Select 
                   value={formData.pet_type} 
                   onValueChange={(value) => handleInputChange('pet_type', value)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full h-10">
                     <SelectValue placeholder="Select pet type" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="z-50 bg-white border border-gray-200 shadow-lg max-h-[200px] overflow-y-auto">
                     {petTypeOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
@@ -276,19 +274,20 @@ const AddFamilyMemberModal: React.FC<AddFamilyMemberModalProps> = ({
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="breed">Breed</Label>
+                <Label htmlFor="breed" className="text-sm font-medium">Breed</Label>
                 <Input
                   id="breed"
                   value={formData.breed}
                   onChange={(e) => handleInputChange('breed', e.target.value)}
                   placeholder="Enter breed (optional)"
+                  className="w-full h-10"
                 />
               </div>
             </>
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="date_of_birth">
+            <Label htmlFor="date_of_birth" className="text-sm font-medium">
               {formData.member_type === 'pet' ? 'Date of Birth (or adoption)' : 'Date of Birth'}
             </Label>
             <Input
@@ -296,19 +295,20 @@ const AddFamilyMemberModal: React.FC<AddFamilyMemberModalProps> = ({
               type="date"
               value={formData.date_of_birth}
               onChange={(e) => handleInputChange('date_of_birth', e.target.value)}
+              className="w-full h-10"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="gender">Gender</Label>
+            <Label htmlFor="gender" className="text-sm font-medium">Gender</Label>
             <Select 
               value={formData.gender} 
               onValueChange={(value) => handleInputChange('gender', value)}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full h-10">
                 <SelectValue placeholder="Select gender (optional)" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="z-50 bg-white border border-gray-200 shadow-lg">
                 {genderOptions.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
@@ -319,20 +319,20 @@ const AddFamilyMemberModal: React.FC<AddFamilyMemberModalProps> = ({
           </div>
 
           {formData.member_type === 'human' && (
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 py-2">
               <Switch
                 id="is_primary_caregiver"
                 checked={formData.is_primary_caregiver}
                 onCheckedChange={(checked) => handleInputChange('is_primary_caregiver', checked)}
               />
-              <Label htmlFor="is_primary_caregiver" className="text-sm">
+              <Label htmlFor="is_primary_caregiver" className="text-sm font-medium">
                 Primary caregiver for this family member
               </Label>
             </div>
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="notes">Notes</Label>
+            <Label htmlFor="notes" className="text-sm font-medium">Notes</Label>
             <Textarea
               id="notes"
               value={formData.notes}
@@ -343,15 +343,16 @@ const AddFamilyMemberModal: React.FC<AddFamilyMemberModalProps> = ({
                   : "Any additional notes or special considerations..."
               }
               rows={3}
+              className="w-full resize-none"
             />
           </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 pt-4 pb-2">
             <Button
               type="button"
               variant="outline"
               onClick={onClose}
-              className="flex-1"
+              className="flex-1 h-11 border-gray-300 text-gray-700 hover:bg-gray-50"
               disabled={loading}
             >
               Cancel
@@ -359,7 +360,7 @@ const AddFamilyMemberModal: React.FC<AddFamilyMemberModalProps> = ({
             <Button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-[#223b0a] hover:bg-[#1a2e08] text-white"
+              className="flex-1 h-11 bg-[#223b0a] hover:bg-[#1a2e08] text-white"
             >
               {loading ? (
                 <div className="flex items-center gap-2">

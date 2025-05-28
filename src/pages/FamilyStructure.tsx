@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -238,14 +237,14 @@ const FamilyStructure = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center">
+      <div className="min-h-screen warm-gradient flex items-center justify-center">
         <div className="w-8 h-8 border-4 border-[#223b0a]/30 border-t-[#223b0a] rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 p-4 sm:p-6">
+    <div className="min-h-screen warm-gradient p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
         {/* Progress */}
         <div className="mb-6 sm:mb-8">
@@ -277,97 +276,114 @@ const FamilyStructure = () => {
           </Button>
         </div>
 
+        {/* Add Member Button - Fixed position for mobile */}
+        <div className="fixed bottom-4 right-4 z-40 sm:hidden">
+          <Button
+            onClick={handleAddMember}
+            size="lg"
+            className="bg-[#223b0a] hover:bg-[#1a2e08] text-white h-14 w-14 rounded-full shadow-lg"
+          >
+            <Plus className="h-6 w-6" />
+          </Button>
+        </div>
+
         {/* Family Members */}
-        {(humans.length > 0 || pets.length === 0) && (
-          <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm mb-6">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <div>
-                  <CardTitle className="text-xl">Family Members</CardTitle>
-                  <CardDescription>
-                    {humans.length === 0 
-                      ? "No family members added yet" 
-                      : `${humans.length} family member${humans.length === 1 ? '' : 's'} added`}
-                  </CardDescription>
-                </div>
+        <Card className="card-warm mb-6">
+          <CardHeader>
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div>
+                <CardTitle className="text-xl">Family Members</CardTitle>
+                <CardDescription>
+                  {humans.length === 0 
+                    ? "No family members added yet" 
+                    : `${humans.length} family member${humans.length === 1 ? '' : 's'} added`}
+                </CardDescription>
+              </div>
+              <Button
+                onClick={handleAddMember}
+                className="bg-[#223b0a] hover:bg-[#1a2e08] text-white hidden sm:flex"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Member
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {humans.length === 0 ? (
+              <div className="text-center py-8">
+                <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
+                <p className="text-slate-500 mb-4">Start building your family structure</p>
                 <Button
                   onClick={handleAddMember}
-                  className="bg-[#223b0a] hover:bg-[#1a2e08] text-white"
+                  variant="outline"
+                  className="border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white sm:hidden"
                 >
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Member
+                  Add Your First Family Member
                 </Button>
               </div>
-            </CardHeader>
-            <CardContent>
-              {humans.length === 0 ? (
-                <div className="text-center py-8">
-                  <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                  <p className="text-slate-500 mb-4">Start building your family structure</p>
-                </div>
-              ) : (
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {humans.map((member) => (
-                    <div
-                      key={member.id}
-                      className="relative p-4 border border-slate-200 rounded-xl hover:border-[#223b0a]/30 hover:shadow-md transition-all duration-200"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <span className="text-2xl">{getMemberIcon(member)}</span>
-                          <div>
-                            <h3 className="font-semibold text-slate-900">{member.name}</h3>
-                            <p className="text-sm text-slate-600">{getDisplayLabel(member)}</p>
-                          </div>
-                        </div>
-                        <div className="flex gap-1">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => handleEditMember(member)}
-                            className="h-8 w-8 p-0"
-                          >
-                            <Edit className="h-3 w-3" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => handleDeleteMember(member.id)}
-                            className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
+            ) : (
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {humans.map((member) => (
+                  <div
+                    key={member.id}
+                    className="relative p-4 border border-slate-200 rounded-xl hover:border-[#223b0a]/30 hover:shadow-md transition-all duration-200 bg-white/80"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-3 flex-1">
+                        <span className="text-2xl">{getMemberIcon(member)}</span>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="font-semibold text-slate-900 truncate">{member.name}</h3>
+                          <p className="text-sm text-slate-600">{getDisplayLabel(member)}</p>
                         </div>
                       </div>
-                      
-                      {member.date_of_birth && (
-                        <p className="text-sm text-slate-500 mb-2">
-                          {formatAge(member.date_of_birth)}
-                        </p>
-                      )}
-                      
-                      {member.is_primary_caregiver && (
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-[#223b0a]/10 text-[#223b0a]">
-                          Primary Caregiver
-                        </span>
-                      )}
-                      
-                      {member.notes && (
-                        <p className="text-sm text-slate-600 mt-2 line-clamp-2">
-                          {member.notes}
-                        </p>
-                      )}
+                      <div className="flex gap-1 flex-shrink-0">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleEditMember(member)}
+                          className="h-8 w-8 p-0"
+                        >
+                          <Edit className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteMember(member.id)}
+                          className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        )}
+                    
+                    {member.date_of_birth && (
+                      <p className="text-sm text-slate-500 mb-2">
+                        {formatAge(member.date_of_birth)}
+                      </p>
+                    )}
+                    
+                    {member.is_primary_caregiver && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-[#223b0a]/10 text-[#223b0a]">
+                        Primary Caregiver
+                      </span>
+                    )}
+                    
+                    {member.notes && (
+                      <p className="text-sm text-slate-600 mt-2 line-clamp-2">
+                        {member.notes}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Pets */}
         {pets.length > 0 && (
-          <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm mb-6">
+          <Card className="card-warm mb-6">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
@@ -386,20 +402,20 @@ const FamilyStructure = () => {
                 {pets.map((pet) => (
                   <div
                     key={pet.id}
-                    className="relative p-4 border border-slate-200 rounded-xl hover:border-[#223b0a]/30 hover:shadow-md transition-all duration-200"
+                    className="relative p-4 border border-slate-200 rounded-xl hover:border-[#223b0a]/30 hover:shadow-md transition-all duration-200 bg-white/80"
                   >
                     <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 flex-1">
                         <span className="text-2xl">{getMemberIcon(pet)}</span>
-                        <div>
-                          <h3 className="font-semibold text-slate-900">{pet.name}</h3>
+                        <div className="min-w-0 flex-1">
+                          <h3 className="font-semibold text-slate-900 truncate">{pet.name}</h3>
                           <p className="text-sm text-slate-600">{getDisplayLabel(pet)}</p>
                           {pet.breed && (
-                            <p className="text-xs text-slate-500">{pet.breed}</p>
+                            <p className="text-xs text-slate-500 truncate">{pet.breed}</p>
                           )}
                         </div>
                       </div>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 flex-shrink-0">
                         <Button
                           size="sm"
                           variant="ghost"
@@ -439,7 +455,7 @@ const FamilyStructure = () => {
 
         {/* Empty State */}
         {familyMembers.length === 0 && (
-          <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm mb-6">
+          <Card className="card-warm mb-6">
             <CardContent className="text-center py-12">
               <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
               <p className="text-slate-500 mb-4">Start building your family structure</p>
@@ -455,8 +471,8 @@ const FamilyStructure = () => {
           </Card>
         )}
 
-        {/* Navigation */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+        {/* Navigation - Add padding bottom for mobile FAB */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pb-20 sm:pb-0">
           <Button
             variant="outline"
             onClick={() => navigate('/personal-info')}
