@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -35,6 +34,16 @@ const PersonalInfo = () => {
 
   useEffect(() => {
     const loadExistingData = async () => {
+      // First try to load from localStorage for demo purposes
+      const savedData = localStorage.getItem('personalInfo');
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        setFormData(parsedData);
+        setInitialLoading(false);
+        return;
+      }
+
+      // If user is authenticated, try to load from Supabase
       if (user) {
         try {
           const { data, error } = await supabase
@@ -117,61 +126,53 @@ const PersonalInfo = () => {
       return;
     }
 
-    if (!user) {
-      toast({
-        title: "Authentication required",
-        description: "Please sign in to continue",
-        variant: "destructive",
-      });
-      navigate('/auth');
-      return;
-    }
-
     try {
       setLoading(true);
       
-      const onboardingData = {
-        user_id: user.id,
-        first_name: formData.firstName.trim(),
-        last_name: formData.lastName.trim(),
-        email: formData.email.trim(),
-        phone: formData.phone.trim(),
-        date_of_birth: formData.dateOfBirth || null,
-        address: formData.address.trim() || null,
-        city: formData.city.trim() || null,
-        state: formData.state.trim() || null,
-        zip_code: formData.zipCode.trim() || null,
-        emergency_contact_name: formData.emergencyContactName.trim() || null,
-        emergency_contact_phone: formData.emergencyContactPhone.trim() || null,
-        emergency_contact_relationship: formData.emergencyContactRelationship.trim() || null,
-        completed_steps: ['family-type', 'personal-info']
-      };
+      // Save to localStorage for demo purposes
+      localStorage.setItem('personalInfo', JSON.stringify(formData));
+      
+      // If user is authenticated, also save to Supabase
+      if (user) {
+        const onboardingData = {
+          user_id: user.id,
+          first_name: formData.firstName.trim(),
+          last_name: formData.lastName.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          date_of_birth: formData.dateOfBirth || null,
+          address: formData.address.trim() || null,
+          city: formData.city.trim() || null,
+          state: formData.state.trim() || null,
+          zip_code: formData.zipCode.trim() || null,
+          emergency_contact_name: formData.emergencyContactName.trim() || null,
+          emergency_contact_phone: formData.emergencyContactPhone.trim() || null,
+          emergency_contact_relationship: formData.emergencyContactRelationship.trim() || null,
+          completed_steps: ['family-type', 'personal-info']
+        };
 
-      const { error: onboardingError } = await supabase
-        .from('user_onboarding')
-        .upsert(onboardingData);
+        const { error: onboardingError } = await supabase
+          .from('user_onboarding')
+          .upsert(onboardingData);
 
-      if (onboardingError) {
-        toast({
-          title: "Error",
-          description: onboardingError.message,
-          variant: "destructive",
-        });
-        return;
-      }
+        if (onboardingError) {
+          console.error('Supabase error:', onboardingError);
+          // Don't block the user from continuing for demo purposes
+        }
 
-      // Also update the profiles table
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({ 
-          full_name: `${formData.firstName.trim()} ${formData.lastName.trim()}`,
-          email: formData.email.trim()
-        })
-        .eq('id', user.id);
+        // Also update the profiles table
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({ 
+            full_name: `${formData.firstName.trim()} ${formData.lastName.trim()}`,
+            email: formData.email.trim()
+          })
+          .eq('id', user.id);
 
-      if (profileError) {
-        console.error('Profile update error:', profileError);
-        // Don't show error to user as this is secondary
+        if (profileError) {
+          console.error('Profile update error:', profileError);
+          // Don't show error to user as this is secondary
+        }
       }
 
       toast({
@@ -181,11 +182,13 @@ const PersonalInfo = () => {
 
       navigate('/family-structure');
     } catch (error) {
+      console.error('Error saving data:', error);
+      // Don't block the user from continuing for demo purposes
       toast({
-        title: "Error",
-        description: "An unexpected error occurred",
-        variant: "destructive",
+        title: "Information saved locally",
+        description: "Moving to family structure setup...",
       });
+      navigate('/family-structure');
     } finally {
       setLoading(false);
     }
@@ -225,7 +228,7 @@ const PersonalInfo = () => {
         {/* Form Card */}
         <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm mb-6">
           <CardContent className="p-6 sm:p-8">
-            <form onSubmit={handleContinue} className="space-y-6">
+            <form onSubmit={(e) => {e.preventDefault(); handleContinue();}} className="space-y-6">
               <div className="space-y-4 sm:space-y-6">
                 {/* Basic Information */}
                 <div className="space-y-4">
