@@ -166,8 +166,8 @@ const FamilyStructure = () => {
         description: "Moving to next step...",
       });
 
-      // Navigate to kids summary
-      navigate('/kids-summary');
+      // Navigate to top challenges
+      navigate('/top-challenges');
     } catch (error) {
       console.error('Error saving progress:', error);
       // Don't block the user from continuing for demo purposes
@@ -175,7 +175,7 @@ const FamilyStructure = () => {
         title: "Family structure saved locally",
         description: "Moving to next step...",
       });
-      navigate('/kids-summary');
+      navigate('/top-challenges');
     } finally {
       setSaving(false);
     }
@@ -496,7 +496,7 @@ const FamilyStructure = () => {
               </div>
             ) : (
               <>
-                Continue to Kids Summary
+                Continue to Challenges
                 <ArrowRight className="h-4 w-4 ml-2" />
               </>
             )}

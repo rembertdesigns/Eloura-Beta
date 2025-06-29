@@ -11,7 +11,6 @@ import Auth from "./pages/Auth";
 import FamilySetup from "./pages/FamilySetup";
 import PersonalInfo from "./pages/PersonalInfo";
 import FamilyStructure from "./pages/FamilyStructure";
-import KidsSummary from "./pages/KidsSummary";
 import DashboardPage from "./pages/Dashboard";
 import Invite from "./pages/Invite";
 import NotFound from "./pages/NotFound";
@@ -40,7 +39,6 @@ const App = () => (
             <Route path="/family-setup" element={<FamilySetup />} />
             <Route path="/personal-info" element={<PersonalInfo />} />
             <Route path="/family-structure" element={<FamilyStructure />} />
-            <Route path="/kids-summary" element={<KidsSummary />} />
             <Route path="/top-challenges" element={<TopChallenges />} />
             <Route path="/priorities" element={<Priorities />} />
             <Route path="/onboarding-summary" element={<OnboardingSummary />} />
