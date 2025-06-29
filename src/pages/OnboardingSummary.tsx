@@ -12,7 +12,13 @@ const OnboardingSummary = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [summary, setSummary] = useState({
     familyType: '',
-    personalInfo: '',
+    personalInfo: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      dateOfBirth: ''
+    },
     children: [],
     challenges: [],
     priorities: [],
@@ -22,15 +28,33 @@ const OnboardingSummary = () => {
   useEffect(() => {
     // Load data from localStorage
     const familyType = localStorage.getItem('familyType') || 'Not specified';
-    const personalInfo = localStorage.getItem('personalInfo') || 'Not specified';
-    const children = JSON.parse(localStorage.getItem('kids') || '[]');
+    
+    // Parse personal info properly
+    let personalInfo = {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      dateOfBirth: ''
+    };
+    
+    const savedPersonalInfo = localStorage.getItem('personalInfo');
+    if (savedPersonalInfo) {
+      try {
+        personalInfo = JSON.parse(savedPersonalInfo);
+      } catch (e) {
+        console.error('Error parsing personal info:', e);
+      }
+    }
+
+    const familyMembers = JSON.parse(localStorage.getItem('familyMembers') || '[]');
     const challenges = JSON.parse(localStorage.getItem('topChallenges') || '[]');
     const priorities = JSON.parse(localStorage.getItem('topPriorities') || '[]');
 
     setSummary({
       familyType,
       personalInfo,
-      children,
+      children: familyMembers,
       challenges,
       priorities,
       goals: [
@@ -49,6 +73,27 @@ const OnboardingSummary = () => {
     navigate('/dashboard');
   };
 
+  const formatPersonalInfo = () => {
+    const { firstName, lastName, email, phone, dateOfBirth } = summary.personalInfo;
+    const parts = [];
+    
+    if (firstName && lastName) {
+      parts.push(`${firstName} ${lastName}`);
+    }
+    if (email) {
+      parts.push(email);
+    }
+    if (phone) {
+      parts.push(phone);
+    }
+    if (dateOfBirth) {
+      const date = new Date(dateOfBirth);
+      parts.push(`Born: ${date.toLocaleDateString()}`);
+    }
+    
+    return parts.length > 0 ? parts.join(' • ') : 'Not specified';
+  };
+
   if (showLoading) {
     return <LoadingScreen onComplete={handleLoadingComplete} title="Creating your personalized dashboard" />;
   }
@@ -61,7 +106,7 @@ const OnboardingSummary = () => {
           <CardHeader>
             <CardTitle className="text-2xl font-semibold">Here's what you entered</CardTitle>
             <p className="text-slate-600">
-              Choose up to 3 priorities that align with your primary goals
+              Review your information before we create your personalized dashboard
             </p>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -75,33 +120,39 @@ const OnboardingSummary = () => {
               {/* Personal Info */}
               <div>
                 <h3 className="font-medium text-slate-700 mb-2">PERSONAL INFO</h3>
-                <p className="text-slate-600">{summary.personalInfo}</p>
+                <p className="text-slate-600">{formatPersonalInfo()}</p>
               </div>
 
-              {/* Children */}
+              {/* Family Members */}
               <div>
-                <h3 className="font-medium text-slate-700 mb-2">CHILDREN</h3>
+                <h3 className="font-medium text-slate-700 mb-2">FAMILY MEMBERS</h3>
                 <div className="space-y-1">
                   {summary.children.length > 0 ? (
-                    summary.children.map((child: any, index: number) => (
+                    summary.children.map((member: any, index: number) => (
                       <p key={index} className="text-slate-600">
-                        {child.name}, {child.age}
+                        {member.name} ({member.relationship})
+                        {member.date_of_birth && (
+                          <span className="text-slate-500 text-sm">
+                            {' • '}
+                            {new Date().getFullYear() - new Date(member.date_of_birth).getFullYear()} years old
+                          </span>
+                        )}
                       </p>
                     ))
                   ) : (
-                    <p className="text-slate-400">No children added</p>
+                    <p className="text-slate-400">No family members added</p>
                   )}
                 </div>
               </div>
 
               {/* Challenges */}
               <div>
-                <h3 className="font-medium text-slate-700 mb-2">CHALLENGES</h3>
+                <h3 className="font-medium text-slate-700 mb-2">TOP CHALLENGES</h3>
                 <div className="space-y-1">
                   {summary.challenges.length > 0 ? (
                     summary.challenges.map((challenge: string, index: number) => (
                       <p key={index} className="text-slate-600 text-sm">
-                        {challenge}
+                        • {challenge}
                       </p>
                     ))
                   ) : (
@@ -113,10 +164,10 @@ const OnboardingSummary = () => {
               {/* Priorities */}
               <div>
                 <h3 className="font-medium text-slate-700 mb-2">PRIORITIES</h3>
-                <div className="space-y-1">
+                <div className="flex flex-wrap gap-2">
                   {summary.priorities.length > 0 ? (
                     summary.priorities.map((priority: string, index: number) => (
-                      <Badge key={index} variant="secondary" className="mr-2 mb-1">
+                      <Badge key={index} variant="secondary" className="text-xs">
                         {priority}
                       </Badge>
                     ))
@@ -128,11 +179,11 @@ const OnboardingSummary = () => {
 
               {/* Goals */}
               <div>
-                <h3 className="font-medium text-slate-700 mb-2">GOALS</h3>
+                <h3 className="font-medium text-slate-700 mb-2">YOUR GOALS</h3>
                 <div className="space-y-1">
                   {summary.goals.map((goal: string, index: number) => (
                     <p key={index} className="text-slate-600 text-sm">
-                      {goal}
+                      • {goal}
                     </p>
                   ))}
                 </div>
