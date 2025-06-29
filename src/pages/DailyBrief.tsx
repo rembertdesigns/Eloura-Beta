@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -306,7 +307,7 @@ const DailyBrief = () => {
                 </CardContent>
               </Card>
 
-              {/* Top 3 Things Today - Desktop */}
+              {/* Combined Top 3 Things Today & Quick Filters - Desktop */}
               <Card className="card-warm shadow-md hover:shadow-lg transition-shadow duration-200 rounded-xl">
                 <CardHeader className="pb-6 px-8 pt-8">
                   <CardTitle className="flex items-center justify-between">
@@ -320,6 +321,71 @@ const DailyBrief = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="px-8 pb-8">
+                  {/* Filter buttons at the top */}
+                  <div className="flex flex-wrap gap-3 mb-6 pb-4 border-b border-gray-200">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleFilterClick('all')}
+                      className={`py-2 px-4 h-auto border-2 transition-all duration-200 rounded-lg text-sm ${
+                        activeFilter === 'all' 
+                          ? 'bg-slate-100 border-slate-300 text-slate-700' 
+                          : 'border-slate-200 hover:bg-slate-50 hover:border-slate-300 hover:text-slate-700'
+                      }`}
+                    >
+                      All Tasks
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleFilterClick('childcare')}
+                      className={`py-2 px-4 h-auto border-2 transition-all duration-200 rounded-lg text-sm ${
+                        activeFilter === 'childcare' 
+                          ? 'bg-green-100 border-green-300 text-green-700' 
+                          : 'border-green-200 hover:bg-green-50 hover:border-green-300 hover:text-green-700'
+                      }`}
+                    >
+                      👶 Childcare Only
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleFilterClick('eldercare')}
+                      className={`py-2 px-4 h-auto border-2 transition-all duration-200 rounded-lg text-sm ${
+                        activeFilter === 'eldercare' 
+                          ? 'bg-orange-100 border-orange-300 text-orange-700' 
+                          : 'border-orange-200 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-700'
+                      }`}
+                    >
+                      👴 Eldercare Only
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleFilterClick('household')}
+                      className={`py-2 px-4 h-auto border-2 transition-all duration-200 rounded-lg text-sm ${
+                        activeFilter === 'household' 
+                          ? 'bg-blue-100 border-blue-300 text-blue-700' 
+                          : 'border-blue-200 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700'
+                      }`}
+                    >
+                      🏠 Household Tasks
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handleFilterClick('work')}
+                      className={`py-2 px-4 h-auto border-2 transition-all duration-200 rounded-lg text-sm ${
+                        activeFilter === 'work' 
+                          ? 'bg-purple-100 border-purple-300 text-purple-700' 
+                          : 'border-purple-200 hover:bg-purple-50 hover:border-purple-300 hover:text-purple-700'
+                      }`}
+                    >
+                      💼 Work Related
+                    </Button>
+                  </div>
+
+                  {/* Task list */}
                   <div className="space-y-4">
                     {isLoading ? (
                       <div className="space-y-4">
@@ -421,65 +487,6 @@ const DailyBrief = () => {
                       </Button>
                     </div>
                   )}
-                </CardContent>
-              </Card>
-
-              {/* Quick Filters - Desktop */}
-              <Card className="card-warm shadow-md hover:shadow-lg transition-shadow duration-200 rounded-xl">
-                <CardHeader className="pb-6 px-8 pt-8">
-                  <CardTitle className="text-xl font-semibold text-slate-700">Quick Filters</CardTitle>
-                </CardHeader>
-                <CardContent className="px-8 pb-8">
-                  <div className="space-y-3">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => handleFilterClick('childcare')}
-                      className={`w-full justify-start py-6 px-4 h-auto min-h-[56px] border-2 transition-all duration-200 rounded-xl text-base ${
-                        activeFilter === 'childcare' 
-                          ? 'bg-green-100 border-green-300 text-green-700' 
-                          : 'border-green-200 hover:bg-green-50 hover:border-green-300 hover:text-green-700'
-                      }`}
-                    >
-                      👶 Childcare Only
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => handleFilterClick('eldercare')}
-                      className={`w-full justify-start py-6 px-4 h-auto min-h-[56px] border-2 transition-all duration-200 rounded-xl text-base ${
-                        activeFilter === 'eldercare' 
-                          ? 'bg-orange-100 border-orange-300 text-orange-700' 
-                          : 'border-orange-200 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-700'
-                      }`}
-                    >
-                      👴 Eldercare Only
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => handleFilterClick('household')}
-                      className={`w-full justify-start py-6 px-4 h-auto min-h-[56px] border-2 transition-all duration-200 rounded-xl text-base ${
-                        activeFilter === 'household' 
-                          ? 'bg-blue-100 border-blue-300 text-blue-700' 
-                          : 'border-blue-200 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700'
-                      }`}
-                    >
-                      🏠 Household Tasks
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={() => handleFilterClick('work')}
-                      className={`w-full justify-start py-6 px-4 h-auto min-h-[56px] border-2 transition-all duration-200 rounded-xl text-base ${
-                        activeFilter === 'work' 
-                          ? 'bg-purple-100 border-purple-300 text-purple-700' 
-                          : 'border-purple-200 hover:bg-purple-50 hover:border-purple-300 hover:text-purple-700'
-                      }`}
-                    >
-                      💼 Work Related
-                    </Button>
-                  </div>
                 </CardContent>
               </Card>
             </div>
