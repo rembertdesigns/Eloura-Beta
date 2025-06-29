@@ -11,12 +11,34 @@ const DailyBrief = () => {
   const [moodChecked, setMoodChecked] = useState(false);
   const [selectedMood, setSelectedMood] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('all');
 
-  const topTasks = [
+  const allTasks = [
     { id: 1, text: "Pick up Sarah from soccer practice", time: "3:30 PM", category: "childcare" },
     { id: 2, text: "Dad's blood pressure medication", time: "6:00 PM", category: "eldercare" },
-    { id: 3, text: "Grocery shopping for dinner", time: "4:30 PM", category: "general" }
+    { id: 3, text: "Grocery shopping for dinner", time: "4:30 PM", category: "general" },
+    { id: 4, text: "Emily's piano lesson", time: "4:00 PM", category: "childcare" },
+    { id: 5, text: "Mom's doctor appointment", time: "2:00 PM", category: "eldercare" },
+    { id: 6, text: "Team meeting", time: "10:00 AM", category: "work" },
+    { id: 7, text: "Laundry and dishes", time: "7:00 PM", category: "household" }
   ];
+
+  const getFilteredTasks = () => {
+    switch (activeFilter) {
+      case 'childcare':
+        return allTasks.filter(task => task.category === 'childcare').slice(0, 3);
+      case 'eldercare':
+        return allTasks.filter(task => task.category === 'eldercare').slice(0, 3);
+      case 'household':
+        return allTasks.filter(task => task.category === 'general').slice(0, 3);
+      case 'work':
+        return allTasks.filter(task => task.category === 'work').slice(0, 3);
+      default:
+        return allTasks.slice(0, 3);
+    }
+  };
+
+  const topTasks = getFilteredTasks();
 
   const aiOverviewPoints = [
     { icon: CheckCircle, text: "3 key priorities scheduled for today", color: "text-green-600" },
@@ -33,42 +55,47 @@ const DailyBrief = () => {
     }, 500);
   };
 
+  const handleFilterClick = (filter: string) => {
+    setActiveFilter(filter);
+  };
+
   return (
     <div className="min-h-screen warm-gradient pb-24">
       <Navigation />
       
-      <div className="container mx-auto px-6 py-10 max-w-7xl">
-        {/* Enhanced Header */}
-        <div className="text-center space-y-4 mb-10 animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-light text-slate-800">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        {/* Header Section - Mobile Optimized */}
+        <div className="text-center space-y-3 mb-8 animate-fade-in">
+          <h1 className="text-2xl md:text-4xl lg:text-5xl font-light text-slate-800">
             Daily <span className="text-gradient-orange font-medium">Brief</span>
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
             Your calm, personalized snapshot for today
           </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Main Content - Flexible Width */}
-          <div className="flex-1 space-y-8">
-            {/* AI Summary with Visual Elements */}
-            <Card className="card-warm shadow-md hover:shadow-lg transition-shadow duration-200">
-              <CardHeader className="pb-6 px-8 pt-8">
-                <CardTitle className="flex items-center gap-3 text-xl font-semibold text-slate-700">
-                  <Brain className="h-6 w-6 text-green-600" />
+        {/* Mobile: Single Column Stack, Desktop: Two Column */}
+        <div className="flex flex-col lg:flex-row gap-4 lg:gap-8">
+          {/* Main Content - Mobile Full Width, Desktop Flexible */}
+          <div className="flex-1 space-y-4 lg:space-y-8">
+            {/* AI Summary - Mobile Optimized */}
+            <Card className="card-warm shadow-md hover:shadow-lg transition-shadow duration-200 rounded-xl">
+              <CardHeader className="pb-4 lg:pb-6 px-6 lg:px-8 pt-6 lg:pt-8">
+                <CardTitle className="flex items-center gap-3 text-lg lg:text-xl font-semibold text-slate-700">
+                  <Brain className="h-5 w-5 lg:h-6 lg:w-6 text-green-600" />
                   Today's Overview
                 </CardTitle>
               </CardHeader>
-              <CardContent className="px-8 pb-8">
+              <CardContent className="px-6 lg:px-8 pb-6 lg:pb-8">
                 <div className="space-y-4">
-                  <p className="text-slate-600 leading-relaxed text-base mb-6">
+                  <p className="text-slate-600 leading-relaxed text-base mb-4 lg:mb-6">
                     Good morning! Here's what your day looks like:
                   </p>
                   <div className="space-y-3">
                     {aiOverviewPoints.map((point, index) => (
-                      <div key={index} className="flex items-center gap-3 p-3 bg-white/60 rounded-lg">
-                        <point.icon className={`h-5 w-5 ${point.color}`} />
-                        <span className="text-slate-700">{point.text}</span>
+                      <div key={index} className="flex items-center gap-3 p-3 lg:p-4 bg-white/60 rounded-lg">
+                        <point.icon className={`h-5 w-5 ${point.color} shrink-0`} />
+                        <span className="text-slate-700 text-sm lg:text-base">{point.text}</span>
                       </div>
                     ))}
                   </div>
@@ -76,60 +103,61 @@ const DailyBrief = () => {
               </CardContent>
             </Card>
 
-            {/* Enhanced Top 3 Things Today */}
-            <Card className="card-warm shadow-md hover:shadow-lg transition-shadow duration-200">
-              <CardHeader className="pb-6 px-8 pt-8">
+            {/* Top 3 Things Today - Mobile Optimized */}
+            <Card className="card-warm shadow-md hover:shadow-lg transition-shadow duration-200 rounded-xl">
+              <CardHeader className="pb-4 lg:pb-6 px-6 lg:px-8 pt-6 lg:pt-8">
                 <CardTitle className="flex items-center justify-between">
-                  <span className="flex items-center gap-3 text-xl font-semibold text-slate-700">
-                    <Calendar className="h-6 w-6 text-green-600" />
+                  <span className="flex items-center gap-3 text-lg lg:text-xl font-semibold text-slate-700">
+                    <Calendar className="h-5 w-5 lg:h-6 lg:w-6 text-green-600" />
                     Top 3 Things Today
                   </span>
-                  <Button variant="ghost" size="sm" className="hover:bg-orange-50 text-orange-600">
+                  <Button variant="ghost" size="sm" className="hover:bg-orange-50 text-orange-600 h-9 w-9 p-0">
                     <Edit3 className="h-4 w-4" />
                   </Button>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="px-8 pb-8">
-                <div className="space-y-4">
+              <CardContent className="px-6 lg:px-8 pb-6 lg:pb-8">
+                <div className="space-y-3 lg:space-y-4">
                   {isLoading ? (
                     <div className="space-y-3">
                       {[1, 2, 3].map((i) => (
                         <div key={i} className="animate-pulse">
-                          <div className="h-16 bg-gray-200 rounded-lg"></div>
+                          <div className="h-16 lg:h-20 bg-gray-200 rounded-lg"></div>
                         </div>
                       ))}
                     </div>
                   ) : (
                     topTasks.map((task, index) => (
-                      <div key={task.id} className="flex items-center justify-between p-4 bg-white/70 rounded-lg border border-white/60 hover:bg-white/80 transition-colors group">
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-3">
+                      <div key={task.id} className="flex items-start justify-between p-4 lg:p-5 bg-white/70 rounded-lg border border-white/60 hover:bg-white/80 transition-colors group min-h-[44px]">
+                        <div className="flex items-start gap-3 lg:gap-4 flex-1">
+                          <div className="flex items-center gap-2 lg:gap-3 shrink-0">
                             <div className="h-3 w-3 bg-orange-400 rounded-full"></div>
                             <span className="text-sm font-medium text-orange-600">#{index + 1}</span>
                           </div>
-                          <div className="space-y-1">
-                            <p className="text-slate-700 font-medium text-base">{task.text}</p>
-                            <p className="text-sm text-slate-500 flex items-center gap-2">
-                              <Clock className="h-3 w-3" />
-                              <span className="font-mono">{task.time}</span>
-                            </p>
+                          <div className="space-y-1 lg:space-y-2 flex-1 min-w-0">
+                            <p className="text-slate-700 font-medium text-base leading-tight">{task.text}</p>
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                              <p className="text-sm text-slate-500 flex items-center gap-2">
+                                <Clock className="h-3 w-3 shrink-0" />
+                                <span className="font-mono">{task.time}</span>
+                              </p>
+                              <Badge 
+                                variant={task.category === 'childcare' ? 'default' : task.category === 'eldercare' ? 'secondary' : 'outline'} 
+                                className={`text-xs font-medium px-3 py-1 w-fit ${
+                                  task.category === 'childcare' ? 'bg-green-100 text-green-700 hover:bg-green-200 border-green-200' : 
+                                  task.category === 'eldercare' ? 'bg-orange-100 text-orange-700 hover:bg-orange-200 border-orange-200' : 
+                                  task.category === 'work' ? 'bg-purple-100 text-purple-700 hover:bg-purple-200 border-purple-200' :
+                                  'bg-gray-100 text-gray-700 hover:bg-gray-200 border-gray-200'
+                                }`}
+                              >
+                                {task.category}
+                              </Badge>
+                            </div>
                           </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <Badge 
-                            variant={task.category === 'childcare' ? 'default' : task.category === 'eldercare' ? 'secondary' : 'outline'} 
-                            className={`text-xs font-medium px-3 py-1 ${
-                              task.category === 'childcare' ? 'bg-green-100 text-green-700 hover:bg-green-200 border-green-200' : 
-                              task.category === 'eldercare' ? 'bg-orange-100 text-orange-700 hover:bg-orange-200 border-orange-200' : 
-                              'bg-gray-100 text-gray-700 hover:bg-gray-200 border-gray-200'
-                            }`}
-                          >
-                            {task.category}
-                          </Badge>
-                          <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity hover:bg-orange-50">
-                            <Pause className="h-4 w-4" />
-                          </Button>
-                        </div>
+                        <Button variant="ghost" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity hover:bg-orange-50 h-9 w-9 p-0 shrink-0">
+                          <Pause className="h-4 w-4" />
+                        </Button>
                       </div>
                     ))
                   )}
@@ -138,28 +166,28 @@ const DailyBrief = () => {
             </Card>
           </div>
 
-          {/* Right Sidebar - Fixed Width */}
-          <div className="w-full lg:w-80 space-y-8">
-            {/* Enhanced Mood Check-in */}
-            <Card className="card-warm shadow-md hover:shadow-lg transition-shadow duration-200 h-fit">
-              <CardHeader className="pb-6 px-8 pt-8">
-                <CardTitle className="flex items-center gap-3 text-xl font-semibold text-slate-700">
-                  <Heart className="h-6 w-6 text-orange-500" />
+          {/* Mobile: Full Width Cards, Desktop: Fixed Width Sidebar */}
+          <div className="w-full lg:w-80 space-y-4 lg:space-y-8">
+            {/* How are you feeling? - Mobile Optimized */}
+            <Card className="card-warm shadow-md hover:shadow-lg transition-shadow duration-200 h-fit rounded-xl">
+              <CardHeader className="pb-4 lg:pb-6 px-6 lg:px-8 pt-6 lg:pt-8">
+                <CardTitle className="flex items-center gap-3 text-lg lg:text-xl font-semibold text-slate-700">
+                  <Heart className="h-5 w-5 lg:h-6 lg:w-6 text-orange-500" />
                   How are you feeling?
                 </CardTitle>
               </CardHeader>
-              <CardContent className="px-8 pb-8">
+              <CardContent className="px-6 lg:px-8 pb-6 lg:pb-8">
                 {!moodChecked ? (
                   <div className="space-y-4">
+                    {/* Mobile: 2x2 Grid, Desktop: 2x2 Grid */}
                     <div className="grid grid-cols-2 gap-3">
                       {['Energized', 'Calm', 'Overwhelmed', 'Tired'].map((mood) => (
                         <Button
                           key={mood}
                           variant="outline"
-                          size="sm"
                           onClick={() => handleMoodSelection(mood)}
                           disabled={isLoading}
-                          className="text-sm font-medium py-3 px-4 border-2 border-orange-200 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-700 transition-all duration-200 disabled:opacity-50"
+                          className="text-sm font-medium py-4 px-3 h-auto min-h-[44px] border-2 border-orange-200 bg-orange-50/50 hover:bg-orange-100 hover:border-orange-300 hover:text-orange-700 transition-all duration-200 disabled:opacity-50 rounded-lg"
                         >
                           {isLoading ? '...' : mood}
                         </Button>
@@ -168,7 +196,7 @@ const DailyBrief = () => {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <div className="text-center p-3 bg-orange-50 rounded-lg border border-orange-100">
+                    <div className="text-center p-4 bg-orange-50 rounded-lg border border-orange-100">
                       <p className="text-sm text-slate-600">
                         You're feeling: <span className="font-semibold text-orange-600">{selectedMood}</span>
                       </p>
@@ -185,7 +213,7 @@ const DailyBrief = () => {
                       variant="ghost" 
                       size="sm" 
                       onClick={() => setMoodChecked(false)}
-                      className="w-full text-orange-600 hover:bg-orange-50"
+                      className="w-full text-orange-600 hover:bg-orange-50 min-h-[44px] rounded-lg"
                     >
                       Change mood
                     </Button>
@@ -194,23 +222,59 @@ const DailyBrief = () => {
               </CardContent>
             </Card>
 
-            {/* Enhanced Quick Filters */}
-            <Card className="card-warm shadow-md hover:shadow-lg transition-shadow duration-200">
-              <CardHeader className="pb-6 px-8 pt-8">
-                <CardTitle className="text-xl font-semibold text-slate-700">Quick Filters</CardTitle>
+            {/* Quick Filters - Mobile Optimized */}
+            <Card className="card-warm shadow-md hover:shadow-lg transition-shadow duration-200 rounded-xl">
+              <CardHeader className="pb-4 lg:pb-6 px-6 lg:px-8 pt-6 lg:pt-8">
+                <CardTitle className="text-lg lg:text-xl font-semibold text-slate-700">Quick Filters</CardTitle>
               </CardHeader>
-              <CardContent className="px-8 pb-8">
+              <CardContent className="px-6 lg:px-8 pb-6 lg:pb-8">
                 <div className="space-y-3">
-                  <Button variant="outline" size="sm" className="w-full justify-start py-3 px-4 border-2 border-green-200 hover:bg-green-50 hover:border-green-300 hover:text-green-700 transition-all duration-200">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => handleFilterClick('childcare')}
+                    className={`w-full justify-start py-4 px-4 h-auto min-h-[44px] border-2 transition-all duration-200 rounded-lg ${
+                      activeFilter === 'childcare' 
+                        ? 'bg-green-100 border-green-300 text-green-700' 
+                        : 'border-green-200 hover:bg-green-50 hover:border-green-300 hover:text-green-700'
+                    }`}
+                  >
                     👶 Childcare Only
                   </Button>
-                  <Button variant="outline" size="sm" className="w-full justify-start py-3 px-4 border-2 border-orange-200 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-700 transition-all duration-200">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => handleFilterClick('eldercare')}
+                    className={`w-full justify-start py-4 px-4 h-auto min-h-[44px] border-2 transition-all duration-200 rounded-lg ${
+                      activeFilter === 'eldercare' 
+                        ? 'bg-orange-100 border-orange-300 text-orange-700' 
+                        : 'border-orange-200 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-700'
+                    }`}
+                  >
                     👴 Eldercare Only
                   </Button>
-                  <Button variant="outline" size="sm" className="w-full justify-start py-3 px-4 border-2 border-blue-200 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-all duration-200">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => handleFilterClick('household')}
+                    className={`w-full justify-start py-4 px-4 h-auto min-h-[44px] border-2 transition-all duration-200 rounded-lg ${
+                      activeFilter === 'household' 
+                        ? 'bg-blue-100 border-blue-300 text-blue-700' 
+                        : 'border-blue-200 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700'
+                    }`}
+                  >
                     🏠 Household Tasks
                   </Button>
-                  <Button variant="outline" size="sm" className="w-full justify-start py-3 px-4 border-2 border-purple-200 hover:bg-purple-50 hover:border-purple-300 hover:text-purple-700 transition-all duration-200">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => handleFilterClick('work')}
+                    className={`w-full justify-start py-4 px-4 h-auto min-h-[44px] border-2 transition-all duration-200 rounded-lg ${
+                      activeFilter === 'work' 
+                        ? 'bg-purple-100 border-purple-300 text-purple-700' 
+                        : 'border-purple-200 hover:bg-purple-50 hover:border-purple-300 hover:text-purple-700'
+                    }`}
+                  >
                     💼 Work Related
                   </Button>
                 </div>
