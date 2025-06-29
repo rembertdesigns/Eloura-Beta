@@ -141,6 +141,16 @@ const FamilyStructure = () => {
   };
 
   const handleContinue = async () => {
+    // Check if at least one family member has been added
+    if (familyMembers.length === 0) {
+      toast({
+        title: "Family members required",
+        description: "Please add at least one family member before continuing",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       setSaving(true);
       
@@ -468,8 +478,8 @@ const FamilyStructure = () => {
           
           <Button
             onClick={handleContinue}
-            disabled={saving}
-            className="flex-1 sm:flex-none h-12 bg-[#223b0a] hover:bg-[#1a2e08] text-white px-8"
+            disabled={saving || familyMembers.length === 0}
+            className="flex-1 sm:flex-none h-12 bg-[#223b0a] hover:bg-[#1a2e08] text-white px-8 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? (
               <div className="flex items-center gap-2">
@@ -484,6 +494,15 @@ const FamilyStructure = () => {
             )}
           </Button>
         </div>
+
+        {/* Requirement Notice */}
+        {familyMembers.length === 0 && (
+          <div className="text-center mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+            <p className="text-amber-800 text-sm">
+              <strong>Note:</strong> You must add at least one family member to continue to the next step.
+            </p>
+          </div>
+        )}
       </div>
 
       <AddFamilyMemberModal
