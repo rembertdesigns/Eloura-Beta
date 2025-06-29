@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -48,7 +47,7 @@ const CombinedHomepage = () => {
       </nav>
 
       {/* Hero Section - Warm and inviting */}
-      <section className="bg-gradient-to-br from-[#FFE5C4] via-[#E1CFE3]/30 to-[#FCC931]/20 py-[20px]">
+      <section className="bg-gradient-to-br from-[#FFE5C4] via-[#E1CFE3]/30 to-[#FCC931]/20 py-32">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto text-center">
             <h1 className="text-5xl md:text-7xl font-light text-[#223B0A] mb-8 leading-tight">
