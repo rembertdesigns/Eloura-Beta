@@ -36,14 +36,14 @@ const DailyBrief = () => {
           {/* Left Column - Main Brief */}
           <div className="lg:col-span-2 space-y-6">
             {/* AI Summary */}
-            <Card className="card-warm">
+            <Card className="card-warm h-full flex flex-col">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-3 text-slate-700">
                   <Brain className="h-5 w-5 text-green-600" />
                   Today's Overview
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1 flex items-center">
                 <p className="text-slate-600 leading-relaxed">{aiSummary}</p>
               </CardContent>
             </Card>
@@ -93,14 +93,14 @@ const DailyBrief = () => {
           {/* Right Column - Mood Check & Filters */}
           <div className="space-y-6">
             {/* Mood Check-in */}
-            <Card className="card-warm">
+            <Card className="card-warm h-full flex flex-col">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-3 text-slate-700">
                   <Heart className="h-5 w-5 text-orange-500" />
                   How are you feeling?
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1 flex flex-col justify-center">
                 {!moodChecked ? (
                   <div className="space-y-3">
                     <div className="grid grid-cols-2 gap-2">
