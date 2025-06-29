@@ -10,29 +10,14 @@ import FeatureFooter from '@/components/FeatureFooter';
 const DailyBrief = () => {
   const [moodChecked, setMoodChecked] = useState(false);
   const [selectedMood, setSelectedMood] = useState('');
-  const [activeFilter, setActiveFilter] = useState('all');
 
-  const allTasks = [
+  const topTasks = [
     { id: 1, text: "Pick up Sarah from soccer practice", time: "3:30 PM", category: "childcare" },
     { id: 2, text: "Dad's blood pressure medication", time: "6:00 PM", category: "eldercare" },
-    { id: 3, text: "Grocery shopping for dinner", time: "4:30 PM", category: "household" },
-    { id: 4, text: "Finish quarterly report", time: "2:00 PM", category: "work" },
-    { id: 5, text: "Schedule pediatrician appointment", time: "Morning", category: "childcare" },
-    { id: 6, text: "Pick up prescription for Mom", time: "5:00 PM", category: "eldercare" }
+    { id: 3, text: "Grocery shopping for dinner", time: "4:30 PM", category: "general" }
   ];
 
-  const getFilteredTasks = () => {
-    if (activeFilter === 'all') return allTasks.slice(0, 3);
-    return allTasks.filter(task => task.category === activeFilter).slice(0, 3);
-  };
-
-  const topTasks = getFilteredTasks();
-
   const aiSummary = "Good morning! Today looks manageable with 3 key priorities. Your energy seems focused on family coordination. Remember to take a moment for yourself between pickup and dinner prep.";
-
-  const handleFilterClick = (filter: string) => {
-    setActiveFilter(filter);
-  };
 
   return (
     <div className="min-h-screen warm-gradient pb-20">
@@ -70,11 +55,6 @@ const DailyBrief = () => {
                   <span className="flex items-center gap-3">
                     <Calendar className="h-5 w-5 text-green-600" />
                     Top 3 Things Today
-                    {activeFilter !== 'all' && (
-                      <Badge variant="outline" className="ml-2 text-xs">
-                        {activeFilter}
-                      </Badge>
-                    )}
                   </span>
                   <Button variant="ghost" size="sm" className="hover:bg-orange-50">
                     <Edit3 className="h-4 w-4" />
@@ -82,34 +62,30 @@ const DailyBrief = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                {topTasks.length > 0 ? (
-                  topTasks.map((task) => (
-                    <div key={task.id} className="flex items-center justify-between p-3 bg-white/60 rounded-lg border border-white/50">
-                      <div className="flex items-center gap-3">
-                        <div className="h-2 w-2 bg-orange-400 rounded-full"></div>
-                        <div>
-                          <p className="text-slate-700 font-medium">{task.text}</p>
-                          <p className="text-sm text-slate-500 flex items-center gap-1">
-                            <Clock className="h-3 w-3" />
-                            {task.time}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge variant={task.category === 'childcare' ? 'default' : task.category === 'eldercare' ? 'secondary' : 'outline'} 
-                               className={task.category === 'childcare' ? 'bg-green-100 text-green-700 hover:bg-green-200' : 
-                                         task.category === 'eldercare' ? 'bg-orange-100 text-orange-700 hover:bg-orange-200' : ''}>
-                          {task.category}
-                        </Badge>
-                        <Button variant="ghost" size="sm" className="hover:bg-orange-50">
-                          <Pause className="h-4 w-4" />
-                        </Button>
+                {topTasks.map((task) => (
+                  <div key={task.id} className="flex items-center justify-between p-3 bg-white/60 rounded-lg border border-white/50">
+                    <div className="flex items-center gap-3">
+                      <div className="h-2 w-2 bg-orange-400 rounded-full"></div>
+                      <div>
+                        <p className="text-slate-700 font-medium">{task.text}</p>
+                        <p className="text-sm text-slate-500 flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          {task.time}
+                        </p>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <p className="text-slate-500 text-center py-4">No tasks found for this filter</p>
-                )}
+                    <div className="flex items-center gap-2">
+                      <Badge variant={task.category === 'childcare' ? 'default' : task.category === 'eldercare' ? 'secondary' : 'outline'} 
+                             className={task.category === 'childcare' ? 'bg-green-100 text-green-700 hover:bg-green-200' : 
+                                       task.category === 'eldercare' ? 'bg-orange-100 text-orange-700 hover:bg-orange-200' : ''}>
+                        {task.category}
+                      </Badge>
+                      <Button variant="ghost" size="sm" className="hover:bg-orange-50">
+                        <Pause className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
               </CardContent>
             </Card>
           </div>
@@ -166,44 +142,16 @@ const DailyBrief = () => {
                 <CardTitle className="text-slate-700">Quick Filters</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <Button 
-                  variant={activeFilter === 'all' ? 'default' : 'outline'} 
-                  size="sm" 
-                  className="w-full justify-start"
-                  onClick={() => handleFilterClick('all')}
-                >
-                  📋 All Tasks
-                </Button>
-                <Button 
-                  variant={activeFilter === 'childcare' ? 'default' : 'outline'} 
-                  size="sm" 
-                  className="w-full justify-start border-green-200 hover:bg-green-50 hover:border-green-300"
-                  onClick={() => handleFilterClick('childcare')}
-                >
+                <Button variant="outline" size="sm" className="w-full justify-start border-green-200 hover:bg-green-50 hover:border-green-300">
                   👶 Childcare Only
                 </Button>
-                <Button 
-                  variant={activeFilter === 'eldercare' ? 'default' : 'outline'} 
-                  size="sm" 
-                  className="w-full justify-start border-orange-200 hover:bg-orange-50 hover:border-orange-300"
-                  onClick={() => handleFilterClick('eldercare')}
-                >
+                <Button variant="outline" size="sm" className="w-full justify-start border-orange-200 hover:bg-orange-50 hover:border-orange-300">
                   👴 Eldercare Only
                 </Button>
-                <Button 
-                  variant={activeFilter === 'household' ? 'default' : 'outline'} 
-                  size="sm" 
-                  className="w-full justify-start border-green-200 hover:bg-green-50 hover:border-green-300"
-                  onClick={() => handleFilterClick('household')}
-                >
+                <Button variant="outline" size="sm" className="w-full justify-start border-green-200 hover:bg-green-50 hover:border-green-300">
                   🏠 Household Tasks
                 </Button>
-                <Button 
-                  variant={activeFilter === 'work' ? 'default' : 'outline'} 
-                  size="sm" 
-                  className="w-full justify-start border-orange-200 hover:bg-orange-50 hover:border-orange-300"
-                  onClick={() => handleFilterClick('work')}
-                >
+                <Button variant="outline" size="sm" className="w-full justify-start border-orange-200 hover:bg-orange-50 hover:border-orange-300">
                   💼 Work Related
                 </Button>
               </CardContent>
