@@ -453,24 +453,6 @@ const FamilyStructure = () => {
           </Card>
         )}
 
-        {/* Empty State */}
-        {familyMembers.length === 0 && (
-          <Card className="card-warm mb-6">
-            <CardContent className="text-center py-12">
-              <Users className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-              <p className="text-slate-500 mb-4">Start building your family structure</p>
-              <Button
-                onClick={handleAddMember}
-                variant="outline"
-                className="border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Add Your First Family Member or Pet
-              </Button>
-            </CardContent>
-          </Card>
-        )}
-
         {/* Navigation - Add padding bottom for mobile FAB */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pb-20 sm:pb-0">
           <Button
