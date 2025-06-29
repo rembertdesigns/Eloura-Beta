@@ -18,9 +18,6 @@ const PersonalInfo = () => {
     email: '',
     phone: '',
     dateOfBirth: '',
-    emergencyContactName: '',
-    emergencyContactPhone: '',
-    emergencyContactRelationship: '',
   });
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -56,9 +53,6 @@ const PersonalInfo = () => {
               email: data.email || user.email || '',
               phone: data.phone || '',
               dateOfBirth: data.date_of_birth || '',
-              emergencyContactName: data.emergency_contact_name || '',
-              emergencyContactPhone: data.emergency_contact_phone || '',
-              emergencyContactRelationship: data.emergency_contact_relationship || '',
             });
           } else if (user.email) {
             setFormData(prev => ({ ...prev, email: user.email }));
@@ -134,9 +128,6 @@ const PersonalInfo = () => {
           email: formData.email.trim(),
           phone: formData.phone.trim(),
           date_of_birth: formData.dateOfBirth || null,
-          emergency_contact_name: formData.emergencyContactName.trim() || null,
-          emergency_contact_phone: formData.emergencyContactPhone.trim() || null,
-          emergency_contact_relationship: formData.emergencyContactRelationship.trim() || null,
           completed_steps: ['family-type', 'personal-info']
         };
 
@@ -303,53 +294,6 @@ const PersonalInfo = () => {
                       value={formData.dateOfBirth}
                       onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
                       className="mt-1"
-                    />
-                  </div>
-                </div>
-
-                {/* Emergency Contact */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-slate-900">Emergency Contact</h3>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="emergencyContactName" className="text-sm font-medium text-slate-700">
-                        Contact Name
-                      </Label>
-                      <Input
-                        id="emergencyContactName"
-                        value={formData.emergencyContactName}
-                        onChange={(e) => handleInputChange('emergencyContactName', e.target.value)}
-                        className="mt-1"
-                        placeholder="Emergency contact name"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="emergencyContactPhone" className="text-sm font-medium text-slate-700">
-                        Contact Phone
-                      </Label>
-                      <Input
-                        id="emergencyContactPhone"
-                        type="tel"
-                        value={formData.emergencyContactPhone}
-                        onChange={(e) => handleInputChange('emergencyContactPhone', e.target.value)}
-                        className="mt-1"
-                        placeholder="(555) 123-4567"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label htmlFor="emergencyContactRelationship" className="text-sm font-medium text-slate-700">
-                      Relationship
-                    </Label>
-                    <Input
-                      id="emergencyContactRelationship"
-                      value={formData.emergencyContactRelationship}
-                      onChange={(e) => handleInputChange('emergencyContactRelationship', e.target.value)}
-                      className="mt-1"
-                      placeholder="e.g., Spouse, Parent, Sibling"
                     />
                   </div>
                 </div>
