@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Heart, ArrowRight, Star, Brain, Clock, CheckCircle, Quote, ExternalLink } from 'lucide-react';
+import { Heart, ArrowRight, Star, Brain, Clock, CheckCircle, Quote, ExternalLink, Users, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const CombinedHomepage = () => {

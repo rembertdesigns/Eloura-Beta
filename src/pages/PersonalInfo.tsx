@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -17,10 +18,6 @@ const PersonalInfo = () => {
     email: '',
     phone: '',
     dateOfBirth: '',
-    address: '',
-    city: '',
-    state: '',
-    zipCode: '',
     emergencyContactName: '',
     emergencyContactPhone: '',
     emergencyContactRelationship: '',
@@ -59,10 +56,6 @@ const PersonalInfo = () => {
               email: data.email || user.email || '',
               phone: data.phone || '',
               dateOfBirth: data.date_of_birth || '',
-              address: data.address || '',
-              city: data.city || '',
-              state: data.state || '',
-              zipCode: data.zip_code || '',
               emergencyContactName: data.emergency_contact_name || '',
               emergencyContactPhone: data.emergency_contact_phone || '',
               emergencyContactRelationship: data.emergency_contact_relationship || '',
@@ -141,10 +134,6 @@ const PersonalInfo = () => {
           email: formData.email.trim(),
           phone: formData.phone.trim(),
           date_of_birth: formData.dateOfBirth || null,
-          address: formData.address.trim() || null,
-          city: formData.city.trim() || null,
-          state: formData.state.trim() || null,
-          zip_code: formData.zipCode.trim() || null,
           emergency_contact_name: formData.emergencyContactName.trim() || null,
           emergency_contact_phone: formData.emergencyContactPhone.trim() || null,
           emergency_contact_relationship: formData.emergencyContactRelationship.trim() || null,
@@ -315,65 +304,6 @@ const PersonalInfo = () => {
                       onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
                       className="mt-1"
                     />
-                  </div>
-                </div>
-
-                {/* Address Information */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-slate-900">Address</h3>
-                  
-                  <div>
-                    <Label htmlFor="address" className="text-sm font-medium text-slate-700">
-                      Street Address
-                    </Label>
-                    <Input
-                      id="address"
-                      value={formData.address}
-                      onChange={(e) => handleInputChange('address', e.target.value)}
-                      className="mt-1"
-                      placeholder="1234 Main Street"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div>
-                      <Label htmlFor="city" className="text-sm font-medium text-slate-700">
-                        City
-                      </Label>
-                      <Input
-                        id="city"
-                        value={formData.city}
-                        onChange={(e) => handleInputChange('city', e.target.value)}
-                        className="mt-1"
-                        placeholder="City"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="state" className="text-sm font-medium text-slate-700">
-                        State
-                      </Label>
-                      <Input
-                        id="state"
-                        value={formData.state}
-                        onChange={(e) => handleInputChange('state', e.target.value)}
-                        className="mt-1"
-                        placeholder="State"
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="zipCode" className="text-sm font-medium text-slate-700">
-                        ZIP Code
-                      </Label>
-                      <Input
-                        id="zipCode"
-                        value={formData.zipCode}
-                        onChange={(e) => handleInputChange('zipCode', e.target.value)}
-                        className="mt-1"
-                        placeholder="12345"
-                      />
-                    </div>
                   </div>
                 </div>
 
