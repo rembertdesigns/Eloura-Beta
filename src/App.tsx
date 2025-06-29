@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
+import HomepageV2 from "./pages/HomepageV2";
 import Auth from "./pages/Auth";
 import FamilySetup from "./pages/FamilySetup";
 import PersonalInfo from "./pages/PersonalInfo";
@@ -34,6 +35,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/v2" element={<HomepageV2 />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/family-setup" element={<FamilySetup />} />
             <Route path="/personal-info" element={<PersonalInfo />} />
