@@ -1,171 +1,218 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Users, UserPlus, CheckCircle, HelpCircle, MessageSquare, Phone } from 'lucide-react';
+import { Users, Calendar, Heart, Star, Phone, Mail, MessageSquare, UserPlus } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import FeatureFooter from '@/components/FeatureFooter';
 
 const Village = () => {
-  const [selectedPerson, setSelectedPerson] = useState(null);
-
-  const villageMembers = [
-    { id: 1, name: "Sarah (Partner)", role: "Co-parent", availability: "Available", tasks: 3, phone: "(555) 123-4567" },
-    { id: 2, name: "Mom (Grandma)", role: "Babysitter", availability: "Weekends", tasks: 1, phone: "(555) 234-5678" },
-    { id: 3, name: "Lisa (Sister)", role: "Elder Care Helper", availability: "Evenings", tasks: 2, phone: "(555) 345-6789" },
-    { id: 4, name: "Maria (Nanny)", role: "Childcare", availability: "Mon-Fri 9-5", tasks: 0, phone: "(555) 456-7890" }
+  const stats = [
+    { icon: Users, label: "Helpers", value: "4", color: "text-green-600" },
+    { icon: Calendar, label: "Active Tasks", value: "4", color: "text-blue-600" },
+    { icon: Heart, label: "Open Requests", value: "2", color: "text-purple-600" },
+    { icon: Star, label: "Avg Rating", value: "4.6", color: "text-yellow-600" }
   ];
 
-  const activeTasks = [
-    { id: 1, task: "Pick up kids from school", assignedTo: "Sarah (Partner)", status: "pending", category: "childcare", dueTime: "3:30 PM" },
-    { id: 2, task: "Dad's grocery shopping", assignedTo: "Lisa (Sister)", status: "in-progress", category: "eldercare", dueTime: "2:00 PM" },
-    { id: 3, task: "Prepare after-school snacks", assignedTo: "Maria (Nanny)", status: "completed", category: "childcare", dueTime: "3:00 PM" },
-    { id: 4, task: "Take mom to doctor appointment", assignedTo: "Unassigned", status: "needs-help", category: "eldercare", dueTime: "Tomorrow 10 AM" }
-  ];
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'completed': return 'bg-green-100 text-green-700';
-      case 'in-progress': return 'bg-blue-100 text-blue-700';
-      case 'pending': return 'bg-yellow-100 text-yellow-700';
-      case 'needs-help': return 'bg-red-100 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
+  const careCircle = [
+    {
+      id: 1,
+      name: "Mom (Patricia)",
+      role: "Parent",
+      avatar: "M",
+      rating: 5,
+      ratingCount: 5,
+      description: "Great with kids, loves to help with meals",
+      phone: "(555) 123-4567",
+      email: "patricia@email.com",
+      lastContact: "2 days ago",
+      status: "Available",
+      statusColor: "text-green-600"
+    },
+    {
+      id: 2,
+      name: "Mike (Partner)",
+      role: "Co-parent",
+      avatar: "M",
+      rating: 5,
+      ratingCount: 5,
+      description: "Great with school stuff, weekend activities",
+      phone: "(555) 456-7890",
+      email: "mike@email.com",
+      lastContact: "Today",
+      status: "Available evenings",
+      statusColor: "text-blue-600"
     }
+  ];
+
+  const delegations = [
+    {
+      id: 1,
+      name: "Sarah Johnson",
+      role: "Neighbor",
+      avatar: "S",
+      rating: 4,
+      ratingCount: 5,
+      description: "Carpool partner, emergency contact",
+      phone: "(555) 987-6543",
+      email: "sarah.j@email.com",
+      lastContact: "1 week ago",
+      status: "Busy this week",
+      statusColor: "text-orange-600"
+    }
+  ];
+
+  const helpRequests = [
+    {
+      id: 1,
+      name: "Lisa Martinez",
+      role: "Friend",
+      avatar: "L",
+      rating: 4,
+      ratingCount: 5,
+      description: "Babysitting, emotional support",
+      phone: "(555) 234-5678",
+      email: "lisa.m@email.com",
+      lastContact: "3 days ago",
+      status: "Available weekends",
+      statusColor: "text-purple-600"
+    }
+  ];
+
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, i) => (
+      <Star
+        key={i}
+        className={`h-4 w-4 ${i < rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
+      />
+    ));
   };
+
+  const renderPersonCard = (person: any) => (
+    <Card key={person.id} className="bg-white border border-gray-200 hover:shadow-md transition-shadow">
+      <CardContent className="p-6">
+        <div className="flex items-start gap-4">
+          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-semibold text-lg">
+            {person.avatar}
+          </div>
+          <div className="flex-1">
+            <div className="flex items-center justify-between mb-2">
+              <div>
+                <h3 className="font-semibold text-gray-900">{person.name}</h3>
+                <p className="text-sm text-gray-500">{person.role}</p>
+              </div>
+              <Badge variant="outline" className={`${person.statusColor} border-current`}>
+                {person.status}
+              </Badge>
+            </div>
+            
+            <div className="flex items-center gap-1 mb-2">
+              {renderStars(person.rating)}
+              <span className="text-sm text-gray-500 ml-1">({person.ratingCount}/5)</span>
+            </div>
+            
+            <p className="text-sm text-gray-600 mb-3">{person.description}</p>
+            
+            <div className="space-y-1 mb-4">
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <Phone className="h-4 w-4" />
+                <span>{person.phone}</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <Mail className="h-4 w-4" />
+                <span>{person.email}</span>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-gray-400">Last contact: {person.lastContact}</span>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" className="h-8">
+                  <MessageSquare className="h-4 w-4 mr-1" />
+                  Message
+                </Button>
+                <Button variant="outline" size="sm" className="h-8">
+                  <Phone className="h-4 w-4 mr-1" />
+                  Call
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <div className="min-h-screen warm-gradient pb-20">
       <Navigation />
       
-      <div className="container mx-auto px-4 py-8 max-w-6xl space-y-6">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
-        <div className="text-center space-y-2 animate-fade-in">
-          <h1 className="text-3xl md:text-4xl font-light text-slate-800">
-            Your <span className="text-gradient-green font-medium">Village</span>
-          </h1>
-          <p className="text-slate-600">Coordinate your support network with calm responsibility</p>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-semibold text-gray-900 mb-2">My Village</h1>
+            <p className="text-gray-600">Your support network and helping hands</p>
+          </div>
+          <div className="flex gap-3">
+            <Button variant="outline" className="flex items-center gap-2">
+              <MessageSquare className="h-4 w-4" />
+              Send Message
+            </Button>
+            <Button className="bg-green-600 hover:bg-green-700 flex items-center gap-2">
+              <UserPlus className="h-4 w-4" />
+              Add Helper
+            </Button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - People */}
-          <div className="lg:col-span-1 space-y-6">
-            <Card className="card-warm">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center justify-between text-slate-700">
-                  <span className="flex items-center gap-3">
-                    <Users className="h-5 w-5 text-green-600" />
-                    Your People
-                  </span>
-                  <Button variant="ghost" size="sm" className="hover:bg-green-50">
-                    <UserPlus className="h-4 w-4" />
-                  </Button>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {villageMembers.map((person) => (
-                  <div key={person.id} className="p-3 border border-white/50 rounded-lg hover:bg-white/60 cursor-pointer transition-colors bg-white/40">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-medium text-slate-700">{person.name}</h4>
-                      <Badge variant="outline" className="text-xs border-orange-200 text-orange-700">{person.tasks} tasks</Badge>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          {stats.map((stat, index) => {
+            const IconComponent = stat.icon;
+            return (
+              <Card key={index} className="bg-white border-0 shadow-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gray-50 rounded-lg">
+                      <IconComponent className={`h-5 w-5 ${stat.color}`} />
                     </div>
-                    <p className="text-sm text-slate-500">{person.role}</p>
-                    <p className="text-xs text-slate-400">{person.availability}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <Button variant="ghost" size="sm" className="h-6 px-2 hover:bg-green-50">
-                        <Phone className="h-3 w-3" />
-                      </Button>
-                      <Button variant="ghost" size="sm" className="h-6 px-2 hover:bg-orange-50">
-                        <MessageSquare className="h-3 w-3" />
-                      </Button>
+                    <div>
+                      <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                      <div className="text-sm text-gray-500">{stat.label}</div>
                     </div>
                   </div>
-                ))}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
 
-            {/* Quick Add Task */}
-            <Card className="card-warm">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-slate-700">Quick Assign</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Input placeholder="What needs to be done?" className="border-orange-200 focus:border-orange-400" />
-                <select className="w-full p-2 border border-orange-200 rounded-md text-sm focus:border-orange-400">
-                  <option>Choose category</option>
-                  <option>Childcare</option>
-                  <option>Eldercare</option>
-                  <option>General</option>
-                </select>
-                <select className="w-full p-2 border border-orange-200 rounded-md text-sm focus:border-orange-400">
-                  <option>Assign to...</option>
-                  {villageMembers.map((person) => (
-                    <option key={person.id}>{person.name}</option>
-                  ))}
-                </select>
-                <Button className="w-full bg-green-600 hover:bg-green-700" size="sm">Add Task</Button>
-              </CardContent>
-            </Card>
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Care Circle */}
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Care Circle</h2>
+            <div className="space-y-4">
+              {careCircle.map(renderPersonCard)}
+            </div>
           </div>
 
-          {/* Right Column - Active Tasks */}
-          <div className="lg:col-span-2 space-y-6">
-            <Card className="card-warm">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-slate-700">Active Tasks & Coordination</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {activeTasks.map((task) => (
-                  <div key={task.id} className="p-4 border border-white/50 rounded-lg space-y-3 bg-white/40">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <h4 className="font-medium text-slate-700">{task.task}</h4>
-                        <p className="text-sm text-slate-500">Due: {task.dueTime}</p>
-                        <p className="text-sm text-slate-600">Assigned to: {task.assignedTo}</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline" className={getStatusColor(task.status)}>
-                          {task.status.replace('-', ' ')}
-                        </Badge>
-                        <Badge variant="secondary" className={task.category === 'childcare' ? 'bg-green-100 text-green-700' : 'bg-orange-100 text-orange-700'}>
-                          {task.category}
-                        </Badge>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-2">
-                      {task.status === 'needs-help' ? (
-                        <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                          <CheckCircle className="h-4 w-4 mr-2" />
-                          I've Got It
-                        </Button>
-                      ) : task.status === 'pending' ? (
-                        <Button variant="outline" size="sm" className="border-orange-200 hover:bg-orange-50">
-                          <HelpCircle className="h-4 w-4 mr-2" />
-                          Need Help
-                        </Button>
-                      ) : null}
-                      
-                      <Button variant="ghost" size="sm" className="hover:bg-green-50">
-                        <MessageSquare className="h-4 w-4 mr-2" />
-                        Add Note
-                      </Button>
-                    </div>
+          {/* Delegations */}
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Delegations</h2>
+            <div className="space-y-4">
+              {delegations.map(renderPersonCard)}
+            </div>
+          </div>
 
-                    {task.status === 'in-progress' && (
-                      <div className="mt-3 p-3 bg-blue-50 rounded-lg border border-blue-100">
-                        <p className="text-sm text-blue-700">
-                          <strong>Lisa:</strong> "At the store now, should I grab anything extra for dad?"
-                        </p>
-                        <div className="mt-2">
-                          <Input placeholder="Reply..." className="text-sm border-blue-200" />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+          {/* Help Requests */}
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Help Requests</h2>
+            <div className="space-y-4">
+              {helpRequests.map(renderPersonCard)}
+            </div>
           </div>
         </div>
       </div>
