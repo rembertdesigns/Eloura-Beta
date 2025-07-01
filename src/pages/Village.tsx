@@ -6,117 +6,132 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Calendar, Heart, Star, Phone, Mail, MessageSquare, UserPlus, Edit } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import FeatureFooter from '@/components/FeatureFooter';
+
 const Village = () => {
-  const stats = [{
-    icon: Users,
-    label: "Helpers",
-    value: "4",
-    color: "text-green-600"
-  }, {
-    icon: Calendar,
-    label: "Active Tasks",
-    value: "4",
-    color: "text-blue-600"
-  }, {
-    icon: Heart,
-    label: "Open Requests",
-    value: "2",
-    color: "text-purple-600"
-  }, {
-    icon: Star,
-    label: "Avg Rating",
-    value: "4.6",
-    color: "text-yellow-600"
-  }];
-  const careCircleMembers = [{
-    id: 1,
-    name: "Mom (Patricia)",
-    role: "Parent",
-    avatar: "M",
-    rating: 5,
-    ratingCount: 5,
-    description: "Great with kids, loves to help with meals",
-    phone: "(555) 123-4567",
-    email: "patricia@email.com",
-    lastContact: "2 days ago",
-    status: "Available",
-    statusColor: "bg-green-100 text-green-700"
-  }, {
-    id: 2,
-    name: "Mike (Partner)",
-    role: "Co-parent",
-    avatar: "M",
-    rating: 5,
-    ratingCount: 5,
-    description: "Great with school stuff, weekend activities",
-    phone: "(555) 456-7890",
-    email: "mike@email.com",
-    lastContact: "Today",
-    status: "Available evenings",
-    statusColor: "bg-blue-100 text-blue-700"
-  }];
-  const delegationTasks = [{
-    id: 1,
-    title: "Grocery shopping",
-    assignedTo: "Mike (Partner)",
-    due: "Today, 6 PM",
-    priority: "High",
-    priorityColor: "bg-red-100 text-red-700",
-    status: "In Progress",
-    statusColor: "bg-blue-100 text-blue-700",
-    description: "Don't forget organic milk and vegetables for dinner"
-  }, {
-    id: 2,
-    title: "Pick up dry cleaning",
-    assignedTo: "Mom (Patricia)",
-    due: "Yesterday",
-    priority: "Low",
-    priorityColor: "bg-gray-100 text-gray-700",
-    status: "Completed",
-    statusColor: "bg-green-100 text-green-700",
-    description: "Thank you! ❤️"
-  }, {
-    id: 3,
-    title: "Soccer carpool",
-    assignedTo: "Sarah Johnson",
-    due: "Wednesday, 3 PM",
-    priority: "Medium",
-    priorityColor: "bg-yellow-100 text-yellow-700",
-    status: "Scheduled",
-    statusColor: "bg-purple-100 text-purple-700",
-    description: "Taking kids to practice, I'll pick up after"
-  }];
-  const helpRequests = [{
-    id: 1,
-    title: "Need babysitter for date night",
-    category: "Childcare",
-    categoryColor: "bg-pink-100 text-pink-700",
-    date: "Saturday, Dec 16",
-    time: "6:00 PM - 11:00 PM",
-    responses: 2,
-    status: "Open",
-    statusColor: "bg-green-100 text-green-700"
-  }, {
-    id: 2,
-    title: "School pickup emergency",
-    category: "Transportation",
-    categoryColor: "bg-blue-100 text-blue-700",
-    date: "Today",
-    time: "3:15 PM",
-    responses: 1,
-    status: "Fulfilled",
-    statusColor: "bg-blue-100 text-blue-700"
-  }, {
-    id: 3,
-    title: "Help with moving furniture",
-    category: "Household",
-    categoryColor: "bg-green-100 text-green-700",
-    date: "This weekend",
-    time: "Morning",
-    responses: 0,
-    status: "Open",
-    statusColor: "bg-green-100 text-green-700"
-  }];
+  const careCircleMembers = [
+    {
+      id: 1,
+      name: "Mom (Patricia)",
+      role: "Parent",
+      avatar: "M",
+      rating: 5,
+      ratingCount: 5,
+      description: "Great with kids, loves to help with meals",
+      phone: "(555) 123-4567",
+      email: "patricia@email.com",
+      lastContact: "2 days ago",
+      status: "Available",
+      statusColor: "bg-green-100 text-green-700"
+    },
+    {
+      id: 2,
+      name: "Mike (Partner)",
+      role: "Co-parent",
+      avatar: "M",
+      rating: 5,
+      ratingCount: 5,
+      description: "Great with school stuff, weekend activities",
+      phone: "(555) 456-7890",
+      email: "mike@email.com",
+      lastContact: "Today",
+      status: "Available evenings",
+      statusColor: "bg-blue-100 text-blue-700"
+    }
+  ];
+
+  const delegationTasks = [
+    {
+      id: 1,
+      title: "Grocery shopping",
+      assignedTo: "Mike (Partner)",
+      due: "Today, 6 PM",
+      priority: "High",
+      priorityColor: "bg-red-100 text-red-700",
+      status: "In Progress",
+      statusColor: "bg-blue-100 text-blue-700",
+      description: "Don't forget organic milk and vegetables for dinner"
+    },
+    {
+      id: 2,
+      title: "Pick up dry cleaning",
+      assignedTo: "Mom (Patricia)",
+      due: "Yesterday",
+      priority: "Low",
+      priorityColor: "bg-gray-100 text-gray-700",
+      status: "Completed",
+      statusColor: "bg-green-100 text-green-700",
+      description: "Thank you! ❤️"
+    },
+    {
+      id: 3,
+      title: "Soccer carpool",
+      assignedTo: "Sarah Johnson",
+      due: "Wednesday, 3 PM",
+      priority: "Medium",
+      priorityColor: "bg-yellow-100 text-yellow-700",
+      status: "Scheduled",
+      statusColor: "bg-purple-100 text-purple-700",
+      description: "Taking kids to practice, I'll pick up after"
+    },
+    {
+      id: 4,
+      title: "Help with homework",
+      assignedTo: "Mike (Partner)",
+      due: "Daily, 4 PM",
+      priority: "Medium",
+      priorityColor: "bg-yellow-100 text-yellow-700",
+      status: "Recurring",
+      statusColor: "bg-blue-100 text-blue-700",
+      description: "Math and science support needed"
+    }
+  ];
+
+  const helpRequests = [
+    {
+      id: 1,
+      title: "Need babysitter for date night",
+      category: "Childcare",
+      categoryColor: "bg-pink-100 text-pink-700",
+      date: "Saturday, Dec 16",
+      time: "6:00 PM - 11:00 PM",
+      responses: 2,
+      status: "Open",
+      statusColor: "bg-green-100 text-green-700"
+    },
+    {
+      id: 2,
+      title: "School pickup emergency",
+      category: "Transportation",
+      categoryColor: "bg-blue-100 text-blue-700",
+      date: "Today",
+      time: "3:15 PM",
+      responses: 1,
+      status: "Fulfilled",
+      statusColor: "bg-blue-100 text-blue-700"
+    }
+  ];
+
+  const stats = [
+    {
+      icon: Users,
+      label: "Helpers",
+      value: careCircleMembers.length.toString(),
+      color: "text-green-600"
+    },
+    {
+      icon: Calendar,
+      label: "Active Tasks",
+      value: delegationTasks.length.toString(),
+      color: "text-blue-600"
+    },
+    {
+      icon: Heart,
+      label: "Open Requests",
+      value: helpRequests.length.toString(),
+      color: "text-purple-600"
+    }
+  ];
+
   const renderStars = (rating: number) => {
     return Array.from({
       length: 5
@@ -239,7 +254,9 @@ const Village = () => {
         </div>
       </CardContent>
     </Card>;
-  return <div className="min-h-screen warm-gradient pb-20">
+
+  return (
+    <div className="min-h-screen warm-gradient pb-20">
       <Navigation />
       
       <div className="container mx-auto px-4 py-8 max-w-7xl">
@@ -261,11 +278,12 @@ const Village = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        {/* Stats Cards - Now 3 equal width cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           {stats.map((stat, index) => {
-          const IconComponent = stat.icon;
-          return <Card key={index} className="bg-white border-0 shadow-sm">
+            const IconComponent = stat.icon;
+            return (
+              <Card key={index} className="bg-white border-0 shadow-sm">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-gray-50 rounded-lg">
@@ -277,8 +295,9 @@ const Village = () => {
                     </div>
                   </div>
                 </CardContent>
-              </Card>;
-        })}
+              </Card>
+            );
+          })}
         </div>
 
         {/* Tabs Section */}
@@ -325,6 +344,8 @@ const Village = () => {
       </div>
       
       <FeatureFooter />
-    </div>;
+    </div>
+  );
 };
+
 export default Village;
