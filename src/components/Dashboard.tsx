@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import QuickActions from './QuickActions';
 import FamilyOverview from './FamilyOverview';
 import SupportNetwork from './SupportNetwork';
-import Navigation from './Navigation';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -52,8 +51,6 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen warm-gradient">
-      <Navigation />
-      
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Welcome Header */}
         <div className="text-center space-y-4 animate-fade-in">
