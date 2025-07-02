@@ -22,6 +22,7 @@ import Village from "./pages/Village";
 import SmartCareAssistant from "./pages/SmartCareAssistant";
 import PlannerInsights from "./pages/PlannerInsights";
 import HomeBaseToolkit from "./pages/HomeBaseToolkit";
+import Messages from "./pages/Messages";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => (
             <Route path="/smart-care-assistant" element={<SmartCareAssistant />} />
             <Route path="/planner-insights" element={<PlannerInsights />} />
             <Route path="/home-base-toolkit" element={<HomeBaseToolkit />} />
+            <Route path="/messages" element={<Messages />} />
             <Route path="/invite" element={<Invite />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
