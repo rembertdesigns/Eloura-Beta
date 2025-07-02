@@ -6,9 +6,15 @@ import ChatMessages from '@/components/smartcare/ChatMessages';
 import ChatInput from '@/components/smartcare/ChatInput';
 import SavedContent from '@/components/smartcare/SavedContent';
 
+interface ChatMessage {
+  type: 'user' | 'assistant';
+  message: string;
+  time: string;
+}
+
 const SmartCareAssistant = () => {
   const [question, setQuestion] = useState('');
-  const [chatHistory, setChatHistory] = useState([
+  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([
     {
       type: 'assistant' as const,
       message: "Hi! I'm Eloura, your personal AI assistant. I'm here to help you navigate your busy life as a parent, caregiver, and goal-achiever. How can I support you today?",
@@ -38,8 +44,8 @@ const SmartCareAssistant = () => {
     if (!question.trim()) return;
     
     // Add user message
-    const userMessage = {
-      type: 'user' as const,
+    const userMessage: ChatMessage = {
+      type: 'user',
       message: question,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
@@ -50,8 +56,8 @@ const SmartCareAssistant = () => {
     
     // Simulate AI response
     setTimeout(() => {
-      const assistantMessage = {
-        type: 'assistant' as const,
+      const assistantMessage: ChatMessage = {
+        type: 'assistant',
         message: "I understand you're looking for guidance on this. Let me provide you with some personalized suggestions based on your family's needs and preferences. This takes into account any care requirements and preferences you've shared with me...",
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
