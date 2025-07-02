@@ -12,17 +12,17 @@ import FamilySetup from "./pages/FamilySetup";
 import PersonalInfo from "./pages/PersonalInfo";
 import FamilyStructure from "./pages/FamilyStructure";
 import DashboardPage from "./pages/Dashboard";
+import DailyBriefLayout from "./pages/DailyBriefLayout";
+import VillageLayout from "./pages/VillageLayout";
+import SmartCareAssistantLayout from "./pages/SmartCareAssistantLayout";
+import PlannerInsightsLayout from "./pages/PlannerInsightsLayout";
+import HomeBaseToolkitLayout from "./pages/HomeBaseToolkitLayout";
+import MessagesLayout from "./pages/MessagesLayout";
 import Invite from "./pages/Invite";
 import NotFound from "./pages/NotFound";
 import TopChallenges from "./pages/TopChallenges";
 import Priorities from "./pages/Priorities";
 import OnboardingSummary from "./pages/OnboardingSummary";
-import DailyBrief from "./pages/DailyBrief";
-import Village from "./pages/Village";
-import SmartCareAssistant from "./pages/SmartCareAssistant";
-import PlannerInsights from "./pages/PlannerInsights";
-import HomeBaseToolkit from "./pages/HomeBaseToolkit";
-import Messages from "./pages/Messages";
 
 const queryClient = new QueryClient();
 
@@ -44,12 +44,12 @@ const App = () => (
             <Route path="/priorities" element={<Priorities />} />
             <Route path="/onboarding-summary" element={<OnboardingSummary />} />
             <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/daily-brief" element={<DailyBrief />} />
-            <Route path="/village" element={<Village />} />
-            <Route path="/smart-care-assistant" element={<SmartCareAssistant />} />
-            <Route path="/planner-insights" element={<PlannerInsights />} />
-            <Route path="/home-base-toolkit" element={<HomeBaseToolkit />} />
-            <Route path="/messages" element={<Messages />} />
+            <Route path="/daily-brief" element={<DailyBriefLayout />} />
+            <Route path="/village" element={<VillageLayout />} />
+            <Route path="/smart-care-assistant" element={<SmartCareAssistantLayout />} />
+            <Route path="/planner-insights" element={<PlannerInsightsLayout />} />
+            <Route path="/home-base-toolkit" element={<HomeBaseToolkitLayout />} />
+            <Route path="/messages" element={<MessagesLayout />} />
             <Route path="/invite" element={<Invite />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Home, Calendar, BarChart3, Users, MessageSquare, Settings } from 'lucide-react';
+import { Home, Calendar, BarChart3, Users, MessageSquare, Settings, Brain, FolderOpen } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -38,6 +38,16 @@ const navigationItems = [
     title: 'Messages',
     url: '/messages',
     icon: MessageSquare,
+  },
+  {
+    title: 'Smart Care Assistant',
+    url: '/smart-care-assistant',
+    icon: Brain,
+  },
+  {
+    title: 'Home Base Toolkit',
+    url: '/home-base-toolkit',
+    icon: FolderOpen,
   },
   {
     title: 'Settings',
