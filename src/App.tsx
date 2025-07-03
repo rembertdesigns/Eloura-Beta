@@ -50,6 +50,7 @@ const App = () => (
             <Route path="/planner-insights" element={<PlannerInsightsLayout />} />
             <Route path="/home-base-toolkit" element={<HomeBaseToolkitLayout />} />
             <Route path="/messages" element={<MessagesLayout />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="/invite" element={<Invite />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
