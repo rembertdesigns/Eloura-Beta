@@ -18,6 +18,7 @@ import SmartCareAssistantLayout from "./pages/SmartCareAssistantLayout";
 import PlannerInsightsLayout from "./pages/PlannerInsightsLayout";
 import HomeBaseToolkitLayout from "./pages/HomeBaseToolkitLayout";
 import MessagesLayout from "./pages/MessagesLayout";
+import Settings from "./pages/Settings";
 import Invite from "./pages/Invite";
 import NotFound from "./pages/NotFound";
 import TopChallenges from "./pages/TopChallenges";
