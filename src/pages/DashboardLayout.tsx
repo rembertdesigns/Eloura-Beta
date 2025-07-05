@@ -2,9 +2,9 @@
 import React from 'react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
-import SmartCareAssistant from './SmartCareAssistant';
+import Dashboard from './Dashboard';
 
-const SmartCareAssistantLayout = () => {
+const DashboardLayout = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
@@ -12,11 +12,11 @@ const SmartCareAssistantLayout = () => {
           <AppSidebar />
         </div>
         <SidebarInset>
-          <SmartCareAssistant />
+          <Dashboard />
         </SidebarInset>
       </div>
     </SidebarProvider>
   );
 };
 
-export default SmartCareAssistantLayout;
+export default DashboardLayout;

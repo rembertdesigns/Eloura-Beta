@@ -11,7 +11,7 @@ import Auth from "./pages/Auth";
 import FamilySetup from "./pages/FamilySetup";
 import PersonalInfo from "./pages/PersonalInfo";
 import FamilyStructure from "./pages/FamilyStructure";
-import DashboardPage from "./pages/Dashboard";
+import DashboardLayout from "./pages/DashboardLayout";
 import DailyBriefLayout from "./pages/DailyBriefLayout";
 import VillageLayout from "./pages/VillageLayout";
 import SmartCareAssistantLayout from "./pages/SmartCareAssistantLayout";
@@ -44,7 +44,7 @@ const App = () => (
             <Route path="/top-challenges" element={<TopChallenges />} />
             <Route path="/priorities" element={<Priorities />} />
             <Route path="/onboarding-summary" element={<OnboardingSummary />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/dashboard" element={<DashboardLayout />} />
             <Route path="/daily-brief" element={<DailyBriefLayout />} />
             <Route path="/village" element={<VillageLayout />} />
             <Route path="/smart-care-assistant" element={<SmartCareAssistantLayout />} />

@@ -20,7 +20,9 @@ const Settings = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-slate-50">
-        <AppSidebar />
+        <div className="hidden md:block">
+          <AppSidebar />
+        </div>
         <SidebarInset className="flex-1">
           <div className="container mx-auto p-6 max-w-6xl">
             {/* Header */}
