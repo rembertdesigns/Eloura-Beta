@@ -3,6 +3,7 @@ import React from 'react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
 import PlannerInsights from './PlannerInsights';
+import FeatureFooter from '@/components/FeatureFooter';
 
 const PlannerInsightsLayout = () => {
   return (
@@ -14,6 +15,9 @@ const PlannerInsightsLayout = () => {
         <SidebarInset>
           <PlannerInsights />
         </SidebarInset>
+      </div>
+      <div className="md:hidden">
+        <FeatureFooter />
       </div>
     </SidebarProvider>
   );

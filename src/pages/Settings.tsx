@@ -13,6 +13,7 @@ import AppPreferences from '@/components/settings/AppPreferences';
 import VillageSettings from '@/components/settings/VillageSettings';
 import ToolkitSettings from '@/components/settings/ToolkitSettings';
 import DataPrivacySettings from '@/components/settings/DataPrivacySettings';
+import FeatureFooter from '@/components/FeatureFooter';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('account');
@@ -83,6 +84,9 @@ const Settings = () => {
             </Tabs>
           </div>
         </SidebarInset>
+      </div>
+      <div className="md:hidden">
+        <FeatureFooter />
       </div>
     </SidebarProvider>
   );

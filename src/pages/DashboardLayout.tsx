@@ -3,6 +3,7 @@ import React from 'react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
 import Dashboard from './Dashboard';
+import FeatureFooter from '@/components/FeatureFooter';
 
 const DashboardLayout = () => {
   return (
@@ -14,6 +15,9 @@ const DashboardLayout = () => {
         <SidebarInset>
           <Dashboard />
         </SidebarInset>
+      </div>
+      <div className="md:hidden">
+        <FeatureFooter />
       </div>
     </SidebarProvider>
   );
