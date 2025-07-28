@@ -190,9 +190,7 @@ const AddFamilyMemberModal: React.FC<AddFamilyMemberModalProps> = ({
       <DialogContent className="sm:max-w-lg max-w-[95vw] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-lg sm:text-xl">
-            {editingMember 
-              ? `Edit ${editingMember.member_type === 'pet' ? 'Pet' : 'Family Member'}` 
-              : 'Add Family Member or Pet'}
+            Add Family Member
           </DialogTitle>
           <DialogDescription className="text-sm">
             {editingMember 
