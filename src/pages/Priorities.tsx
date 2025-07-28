@@ -11,8 +11,13 @@ const Priorities = () => {
   const [selectedPriorities, setSelectedPriorities] = useState<string[]>([]);
 
   const priorities = [
-    'Streamline daily planning',
-    'Manage school + routines',
+    'Daily planning and organization',
+    'Managing school activities and homework',
+    'Bedtime and morning routines',
+    'Communications and events coordination',
+    'Appointments and medical needs',
+    'Managing aging parents\' needs',
+    'Managing medically complex children',
     'Sharing tasks with others',
     'Keeping everything in one place',
     "I'm not sure yet"
@@ -42,9 +47,9 @@ const Priorities = () => {
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <Card className="border-0 shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl font-semibold">Select Top Priorities</CardTitle>
+            <CardTitle className="text-2xl font-semibold">What's most important to you?</CardTitle>
             <p className="text-slate-600">
-              Choose up to 3 priorities that align with your primary goals
+              Choose up to 3 areas you want to focus on right now. Think about your immediate needs.
             </p>
           </CardHeader>
           <CardContent className="space-y-4">
