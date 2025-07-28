@@ -3,7 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Heart, Users, Baby, UserCheck } from 'lucide-react';
+import { Users, Baby, UserCheck } from 'lucide-react';
+import familyCareIcon from '@/assets/family-care-icon.png';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -18,9 +19,9 @@ const FamilySetup = () => {
 
   const familyTypes = [
     {
-      id: 'raising-children',
-      title: 'Raising Children',
-      description: 'Supporting families with young children and parenting challenges',
+      id: 'parenting',
+      title: 'Parenting',
+      description: 'Supporting families with young children and all the joys and challenges that come with it',
       icon: Baby,
     },
     {
@@ -30,9 +31,9 @@ const FamilySetup = () => {
       icon: UserCheck,
     },
     {
-      id: 'sandwich-generation',
-      title: 'Sandwich Generation',
-      description: 'Managing both childcare and eldercare responsibilities',
+      id: 'both-parenting-and-caring',
+      title: 'Both Parenting and Caring for Aging Parents',
+      description: 'Managing the dual responsibility of raising children while also caring for elderly family members',
       icon: Users,
     },
   ];
@@ -110,11 +111,11 @@ const FamilySetup = () => {
         {/* Logo and Header */}
         <div className="text-center mb-6 sm:mb-8">
           <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] rounded-2xl mb-4 sm:mb-6 shadow-lg">
-            <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+            <img src={familyCareIcon} alt="Family Care" className="h-6 w-6 sm:h-8 sm:w-8" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Choose Your Family Type</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Your Family and Care Responsibilities</h1>
           <p className="text-slate-600 text-base sm:text-lg max-w-sm sm:max-w-md mx-auto px-2 sm:px-0">
-            Help us personalize your Eloura experience by selecting what best describes your caregiving situation
+            Help us personalize your Eloura experience by selecting what best describes your family situation
           </p>
         </div>
 
