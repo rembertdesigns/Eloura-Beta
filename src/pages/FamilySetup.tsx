@@ -25,12 +25,6 @@ const FamilySetup = () => {
       icon: Baby,
     },
     {
-      id: 'aging-parents',
-      title: 'Caring for Aging Parents',
-      description: 'Helping with elderly care and senior support needs',
-      icon: UserCheck,
-    },
-    {
       id: 'both-parenting-and-caring',
       title: 'Both Parenting and Caring for Aging Parents',
       description: 'Managing the dual responsibility of raising children while also caring for elderly family members',
