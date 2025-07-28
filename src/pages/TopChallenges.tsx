@@ -11,14 +11,14 @@ const TopChallenges = () => {
   const [selectedChallenges, setSelectedChallenges] = useState<string[]>([]);
 
   const challenges = [
-    'Juggling too many tasks',
-    "Can't keep up with school stuff",
-    'Forgetting important dates and things',
-    'Planning everything alone is exhausting',
+    "I feel overwhelmed juggling too many tasks",
+    "I can't keep up with my children's school commitments",
+    "I forget important dates and things",
+    "I feel exhausted planning everything alone",
     "I don't have time to think or reset",
-    'I feel overwhelmed by constant decisions',
-    "Others don't follow through on what I delegate",
-    'Hard to coordinate with people helping me'
+    "I feel overwhelmed by constant decisions",
+    "I get frustrated when others don't follow through on what I delegate",
+    "I struggle to coordinate with people helping me"
   ];
 
   const toggleChallenge = (challenge: string) => {
