@@ -195,7 +195,7 @@ const AddFamilyMemberModal: React.FC<AddFamilyMemberModalProps> = ({
           <DialogDescription className="text-sm">
             {editingMember 
               ? `Update the ${editingMember.member_type === 'pet' ? 'pet' : 'family member'} information below.`
-              : 'Add a new family member or pet to your care network.'
+              : 'Add a new family member or pet to your care circle.'
             }
           </DialogDescription>
         </DialogHeader>
