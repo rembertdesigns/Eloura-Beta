@@ -12,7 +12,7 @@ const DashboardLayout = () => {
         <div className="hidden md:block">
           <AppSidebar />
         </div>
-        <SidebarInset>
+        <SidebarInset className="flex-1">
           <Dashboard />
         </SidebarInset>
       </div>
