@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -7,7 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { 
   Calendar, 
   Users, 
-  Brain, 
+  Lightbulb, 
   Heart, 
   Plus, 
   Bell, 
@@ -18,16 +18,20 @@ import {
   Clock,
   CheckCircle2,
   AlertCircle,
-  ArrowRight
+  ArrowRight,
+  GripVertical,
+  Filter
 } from 'lucide-react';
 
 const Dashboard = () => {
+  const [taskFilter, setTaskFilter] = useState('all');
+  
   const mustDoTasks = [
-    { id: 1, text: "Pick up kids from school", urgent: true, completed: false },
-    { id: 2, text: "Call mom about doctor's appointment", urgent: true, completed: false },
-    { id: 3, text: "Submit project proposal", urgent: false, completed: true },
-    { id: 4, text: "Grocery shopping", urgent: false, completed: false },
-    { id: 5, text: "Schedule parent-teacher conference", urgent: false, completed: false }
+    { id: 1, text: "Pick up kids from school", urgent: true, completed: false, assignedTo: "me" },
+    { id: 2, text: "Call mom about doctor's appointment", urgent: true, completed: false, assignedTo: "me" },
+    { id: 3, text: "Submit project proposal", urgent: false, completed: true, assignedTo: "me" },
+    { id: 4, text: "Grocery shopping", urgent: false, completed: false, assignedTo: "partner" },
+    { id: 5, text: "Schedule parent-teacher conference", urgent: false, completed: false, assignedTo: "me" }
   ];
 
   const todaysSchedule = [
@@ -38,23 +42,34 @@ const Dashboard = () => {
     { time: "6:00 PM", event: "Family dinner", category: "family", color: "bg-green-100 text-green-700" }
   ];
 
+  // Focus on caretaking/essential daily tasks
   const taskCategories = [
     {
-      title: "Personal",
-      tasks: ["Exercise routine", "Read book chapter"],
-      color: "border-blue-200 bg-blue-50"
+      title: "Caretaking",
+      tasks: ["Mom's medication reminder", "Dad's physical therapy", "Kids' lunch prep"],
+      color: "border-red-200 bg-red-50",
+      assignedTo: "me"
     },
     {
-      title: "Family & Parenting",
-      tasks: ["Soccer practice", "Plan weekend activity"],
-      color: "border-green-200 bg-green-50"
+      title: "Family & Parenting", 
+      tasks: ["Soccer practice pickup", "Homework help", "Bedtime routine"],
+      color: "border-green-200 bg-green-50",
+      assignedTo: "me"
     },
     {
-      title: "Career",
-      tasks: ["Submit proposal", "Team meeting prep"],
-      color: "border-purple-200 bg-purple-50"
+      title: "Essential Daily",
+      tasks: ["Meal planning", "Laundry", "Groceries"],
+      color: "border-purple-200 bg-purple-50",
+      assignedTo: "partner"
     }
   ];
+
+  const filteredTasks = taskCategories.filter(category => {
+    if (taskFilter === 'all') return true;
+    if (taskFilter === 'my-tasks') return category.assignedTo === 'me';
+    if (taskFilter === 'others-tasks') return category.assignedTo !== 'me';
+    return true;
+  });
 
   const villageMembers = [
     { name: "Mom", status: "Available today", role: "Helper", initial: "M" },
@@ -93,15 +108,15 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Gentle Suggestion */}
+        {/* Daily Tip */}
         <Card className="border-blue-200 bg-blue-50">
           <CardContent className="p-4">
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1">
-                <Brain className="h-4 w-4 text-blue-600" />
+                <Lightbulb className="h-4 w-4 text-blue-600" />
               </div>
               <div>
-                <h3 className="font-medium text-slate-800 mb-1">Gentle Suggestion</h3>
+                <h3 className="font-medium text-slate-800 mb-1">💡 Tip</h3>
                 <p className="text-sm text-slate-600">
                   You have 2 urgent tasks today. Consider delegating grocery shopping to free up time for the important calls. 
                   Remember to take a 10-minute break after your team meeting! 💙
@@ -114,11 +129,11 @@ const Dashboard = () => {
         {/* Quick Add */}
         <Card>
           <CardContent className="p-4">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-3">
               <Plus className="h-5 w-5 text-green-600" />
               <h3 className="font-medium text-slate-800">Quick Add</h3>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
               <Button variant="outline" size="sm" className="justify-start">
                 <Plus className="h-4 w-4 mr-2" />
                 Task
@@ -139,19 +154,24 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Main Grid - Reorderable Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Must-Do Today */}
-          <Card>
+          <Card className="group">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg font-medium text-slate-800">Must-Do Today</CardTitle>
+                <div className="flex items-center gap-2">
+                  <GripVertical className="h-4 w-4 text-slate-400 group-hover:text-slate-600 cursor-move" />
+                  <CardTitle className="text-lg font-medium text-slate-800">
+                    <span className="text-blue-600 font-bold">1.</span> Must-Do Today
+                  </CardTitle>
+                </div>
                 <Badge variant="secondary" className="bg-orange-100 text-orange-700">
                   {pendingCount} pending
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-2">
               {mustDoTasks.map((task) => (
                 <div key={task.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50">
                   <Checkbox 
@@ -172,11 +192,16 @@ const Dashboard = () => {
           </Card>
 
           {/* Today's Schedule */}
-          <Card>
+          <Card className="group">
             <CardHeader className="pb-3">
-              <CardTitle className="text-lg font-medium text-slate-800">Today's Schedule</CardTitle>
+              <div className="flex items-center gap-2">
+                <GripVertical className="h-4 w-4 text-slate-400 group-hover:text-slate-600 cursor-move" />
+                <CardTitle className="text-lg font-medium text-slate-800">
+                  <span className="text-blue-600 font-bold">2.</span> Today's Schedule
+                </CardTitle>
+              </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3">
               {todaysSchedule.map((item, index) => (
                 <div key={index} className="flex items-center gap-4">
                   <div className="text-sm font-medium text-blue-600 w-16">
@@ -194,21 +219,57 @@ const Dashboard = () => {
           </Card>
         </div>
 
-        {/* Task Manager */}
+        {/* Tasks Section */}
         <Card>
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-lg font-medium text-slate-800">Task Manager</CardTitle>
-              <Button variant="ghost" size="sm" className="text-blue-600">
-                View All <ArrowRight className="h-4 w-4 ml-1" />
-              </Button>
+              <CardTitle className="text-lg font-medium text-slate-800">
+                <span className="text-blue-600 font-bold">3.</span> Tasks
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                {/* Task Filter Toggles */}
+                <div className="flex bg-slate-100 rounded-lg p-1">
+                  <Button 
+                    variant={taskFilter === 'all' ? 'default' : 'ghost'} 
+                    size="sm"
+                    onClick={() => setTaskFilter('all')}
+                    className="text-xs px-3 py-1"
+                  >
+                    All
+                  </Button>
+                  <Button 
+                    variant={taskFilter === 'my-tasks' ? 'default' : 'ghost'} 
+                    size="sm"
+                    onClick={() => setTaskFilter('my-tasks')}
+                    className="text-xs px-3 py-1"
+                  >
+                    My Tasks
+                  </Button>
+                  <Button 
+                    variant={taskFilter === 'others-tasks' ? 'default' : 'ghost'} 
+                    size="sm"
+                    onClick={() => setTaskFilter('others-tasks')}
+                    className="text-xs px-3 py-1"
+                  >
+                    Others' Tasks
+                  </Button>
+                </div>
+                <Button variant="ghost" size="sm" className="text-blue-600">
+                  View All <ArrowRight className="h-4 w-4 ml-1" />
+                </Button>
+              </div>
             </div>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {taskCategories.map((category, index) => (
+              {filteredTasks.map((category, index) => (
                 <div key={index} className={`p-4 rounded-lg border-2 ${category.color}`}>
-                  <h4 className="font-medium text-slate-800 mb-3">{category.title}</h4>
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-medium text-slate-800">{category.title}</h4>
+                    <Badge variant="outline" className="text-xs">
+                      {category.assignedTo === 'me' ? 'Mine' : 'Delegated'}
+                    </Badge>
+                  </div>
                   <div className="space-y-2">
                     {category.tasks.map((task, taskIndex) => (
                       <div key={taskIndex} className="text-sm text-slate-600 p-2 bg-white rounded">
@@ -221,79 +282,6 @@ const Dashboard = () => {
             </div>
           </CardContent>
         </Card>
-
-        {/* Bottom Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Village */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-lg font-medium text-slate-800">
-                <Users className="h-5 w-5 text-green-600" />
-                Village
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {villageMembers.map((member, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                    <span className="text-sm font-medium text-green-700">{member.initial}</span>
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm font-medium text-slate-800">{member.name}</div>
-                    <div className="text-xs text-slate-500">{member.status}</div>
-                  </div>
-                  <Badge variant="outline" className="text-xs">
-                    {member.role}
-                  </Badge>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          {/* Active Delegations */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-lg font-medium text-slate-800">
-                <ArrowRight className="h-5 w-5 text-blue-600" />
-                Active Delegations
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {activeDelegations.map((delegation, index) => (
-                <div key={index} className={`p-3 rounded-lg ${delegation.status === 'completed' ? 'bg-green-50' : 'bg-yellow-50'}`}>
-                  <div className="text-sm font-medium text-slate-800">{delegation.task}</div>
-                  <div className="text-xs text-slate-600 mt-1">
-                    Delegated to: {delegation.delegatedTo}
-                  </div>
-                  <div className="text-xs text-slate-500 mt-1">
-                    Due: {delegation.due}
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          {/* Care Circle */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-lg font-medium text-slate-800">
-                <Heart className="h-5 w-5 text-red-500" />
-                Care Circle
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {careCircle.map((item, index) => (
-                <div key={index} className="space-y-1">
-                  <div className="text-sm font-medium text-slate-800">{item.item}</div>
-                  <div className="text-xs text-slate-600">{item.time}</div>
-                  <div className={`text-xs ${item.urgent ? 'text-red-600' : 'text-green-600'}`}>
-                    {item.status}
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </div>
   );
