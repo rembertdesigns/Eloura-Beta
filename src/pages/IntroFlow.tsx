@@ -37,7 +37,7 @@ const IntroFlow = () => {
     if (currentStep < 3) {
       setCurrentStep(currentStep + 1);
     } else {
-      navigate('/family-setup');
+      navigate('/personal-info');
     }
   };
 

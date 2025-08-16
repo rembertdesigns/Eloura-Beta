@@ -18,6 +18,8 @@ const PersonalInfo = () => {
     email: '',
     phone: '',
     dateOfBirth: '',
+    pronouns: '',
+    avatar: null as File | null,
   });
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -53,6 +55,8 @@ const PersonalInfo = () => {
               email: data.email || user.email || '',
               phone: data.phone || '',
               dateOfBirth: data.date_of_birth || '',
+              pronouns: '',
+              avatar: null,
             });
           } else if (user.email) {
             setFormData(prev => ({ ...prev, email: user.email }));
@@ -67,7 +71,7 @@ const PersonalInfo = () => {
     loadExistingData();
   }, [user]);
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | File | null) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -95,8 +99,8 @@ const PersonalInfo = () => {
         newErrors.email = 'Please enter a valid email address';
       }
     }
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
+    if (!formData.dateOfBirth.trim()) {
+      newErrors.dateOfBirth = 'Date of birth is required';
     }
 
     setErrors(newErrors);
@@ -188,10 +192,10 @@ const PersonalInfo = () => {
         {/* Progress */}
         <div className="mb-6 sm:mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-slate-600">Step 2 of 4</span>
-            <span className="text-sm text-slate-600">50%</span>
+            <span className="text-sm text-slate-600">Step 1 of 4</span>
+            <span className="text-sm text-slate-600">25%</span>
           </div>
-          <Progress value={50} className="h-2" />
+          <Progress value={25} className="h-2" />
         </div>
 
         {/* Header */}
@@ -199,9 +203,9 @@ const PersonalInfo = () => {
           <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] rounded-2xl mb-4 sm:mb-6 shadow-lg">
             <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Personal Information</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Add Your Info</h1>
           <p className="text-slate-600 text-base sm:text-lg max-w-sm sm:max-w-md mx-auto px-2 sm:px-0">
-            Let's start with some basic information about you
+            Tell us about yourself to get started
           </p>
         </div>
 
@@ -210,6 +214,39 @@ const PersonalInfo = () => {
           <CardContent className="p-6 sm:p-8">
             <form onSubmit={(e) => {e.preventDefault(); handleContinue();}} className="space-y-6">
               <div className="space-y-4 sm:space-y-6">
+                {/* Avatar Upload */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-slate-900">Profile Photo (Optional)</h3>
+                  <div className="flex items-center space-x-4">
+                    <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center overflow-hidden">
+                      {formData.avatar ? (
+                        <img 
+                          src={URL.createObjectURL(formData.avatar)} 
+                          alt="Profile preview" 
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <Heart className="h-8 w-8 text-slate-400" />
+                      )}
+                    </div>
+                    <div>
+                      <Label htmlFor="avatar" className="text-sm font-medium text-slate-700 cursor-pointer">
+                        <div className="inline-flex items-center px-4 py-2 border border-slate-300 rounded-md shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50">
+                          Upload Photo
+                        </div>
+                      </Label>
+                      <Input
+                        id="avatar"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleInputChange('avatar', e.target.files?.[0] || null)}
+                        className="hidden"
+                      />
+                      <p className="text-xs text-slate-500 mt-1">JPG, PNG up to 5MB</p>
+                    </div>
+                  </div>
+                </div>
+
                 {/* Basic Information */}
                 <div className="space-y-4">
                   <h3 className="text-lg font-semibold text-slate-900">Basic Information</h3>
@@ -248,52 +285,32 @@ const PersonalInfo = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="email" className="text-sm font-medium text-slate-700">
-                        Email *
-                      </Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                        className={`mt-1 ${errors.email ? 'border-red-500' : ''}`}
-                        placeholder="Enter your email"
-                      />
-                      {errors.email && (
-                        <p className="text-sm text-red-500 mt-1">{errors.email}</p>
-                      )}
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="phone" className="text-sm font-medium text-slate-700">
-                        Phone Number *
-                      </Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) => handleInputChange('phone', e.target.value)}
-                        className={`mt-1 ${errors.phone ? 'border-red-500' : ''}`}
-                        placeholder="(555) 123-4567"
-                      />
-                      {errors.phone && (
-                        <p className="text-sm text-red-500 mt-1">{errors.phone}</p>
-                      )}
-                    </div>
-                  </div>
-
                   <div>
                     <Label htmlFor="dateOfBirth" className="text-sm font-medium text-slate-700">
-                      Date of Birth
+                      Date of Birth *
                     </Label>
                     <Input
                       id="dateOfBirth"
                       type="date"
                       value={formData.dateOfBirth}
                       onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
+                      className={`mt-1 ${errors.dateOfBirth ? 'border-red-500' : ''}`}
+                    />
+                    {errors.dateOfBirth && (
+                      <p className="text-sm text-red-500 mt-1">{errors.dateOfBirth}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="pronouns" className="text-sm font-medium text-slate-700">
+                      Pronouns (Optional)
+                    </Label>
+                    <Input
+                      id="pronouns"
+                      value={formData.pronouns}
+                      onChange={(e) => handleInputChange('pronouns', e.target.value)}
                       className="mt-1"
+                      placeholder="e.g., she/her, he/him, they/them"
                     />
                   </div>
                 </div>
@@ -304,11 +321,11 @@ const PersonalInfo = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => navigate('/family-setup')}
+                  onClick={() => navigate('/intro')}
                   className="flex-1 sm:flex-none h-12 border-slate-300 text-slate-700 hover:bg-slate-50"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to Family Type
+                  Back
                 </Button>
                 
                 <div className="flex-1" />
@@ -325,7 +342,7 @@ const PersonalInfo = () => {
                     </div>
                   ) : (
                     <>
-                      Continue to Family Structure
+                      Next
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </>
                   )}
@@ -338,7 +355,7 @@ const PersonalInfo = () => {
         {/* Progress Indicator */}
         <div className="text-center mt-4 sm:mt-6">
           <p className="text-xs sm:text-sm text-slate-500">
-            Step 2 of 4 • Personal Information
+            Step 1 of 4 • Add Your Info
           </p>
         </div>
       </div>
