@@ -25,7 +25,7 @@ const Settings = () => {
           <AppSidebar />
         </div>
         <SidebarInset className="flex-1">
-          <div className="container mx-auto p-6 max-w-6xl">
+          <div className="container mx-auto p-4 md:p-6 max-w-6xl">
             {/* Header */}
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-2">
@@ -39,16 +39,33 @@ const Settings = () => {
 
             {/* Settings Tabs */}
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-              <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 h-auto p-1">
-                <TabsTrigger value="account" className="text-xs">Account</TabsTrigger>
-                <TabsTrigger value="family" className="text-xs">Family</TabsTrigger>
-                <TabsTrigger value="notifications" className="text-xs">Notifications</TabsTrigger>
-                <TabsTrigger value="smartcare" className="text-xs">AI Assistant</TabsTrigger>
-                <TabsTrigger value="app" className="text-xs">Preferences</TabsTrigger>
-                <TabsTrigger value="village" className="text-xs">Village</TabsTrigger>
-                <TabsTrigger value="toolkit" className="text-xs">Toolkit</TabsTrigger>
-                <TabsTrigger value="privacy" className="text-xs">Privacy & Data</TabsTrigger>
-              </TabsList>
+              {/* Mobile - Scrollable tabs */}
+              <div className="md:hidden overflow-x-auto">
+                <TabsList className="flex w-max min-w-full h-auto p-1 gap-1">
+                  <TabsTrigger value="account" className="text-xs whitespace-nowrap px-3">Account</TabsTrigger>
+                  <TabsTrigger value="family" className="text-xs whitespace-nowrap px-3">Family</TabsTrigger>
+                  <TabsTrigger value="notifications" className="text-xs whitespace-nowrap px-3">Notifications</TabsTrigger>
+                  <TabsTrigger value="smartcare" className="text-xs whitespace-nowrap px-3">AI Assistant</TabsTrigger>
+                  <TabsTrigger value="app" className="text-xs whitespace-nowrap px-3">Preferences</TabsTrigger>
+                  <TabsTrigger value="village" className="text-xs whitespace-nowrap px-3">Village</TabsTrigger>
+                  <TabsTrigger value="toolkit" className="text-xs whitespace-nowrap px-3">Toolkit</TabsTrigger>
+                  <TabsTrigger value="privacy" className="text-xs whitespace-nowrap px-3">Privacy & Data</TabsTrigger>
+                </TabsList>
+              </div>
+              
+              {/* Desktop - Grid layout */}
+              <div className="hidden md:block">
+                <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 h-auto p-1">
+                  <TabsTrigger value="account" className="text-xs">Account</TabsTrigger>
+                  <TabsTrigger value="family" className="text-xs">Family</TabsTrigger>
+                  <TabsTrigger value="notifications" className="text-xs">Notifications</TabsTrigger>
+                  <TabsTrigger value="smartcare" className="text-xs">AI Assistant</TabsTrigger>
+                  <TabsTrigger value="app" className="text-xs">Preferences</TabsTrigger>
+                  <TabsTrigger value="village" className="text-xs">Village</TabsTrigger>
+                  <TabsTrigger value="toolkit" className="text-xs">Toolkit</TabsTrigger>
+                  <TabsTrigger value="privacy" className="text-xs">Privacy & Data</TabsTrigger>
+                </TabsList>
+              </div>
 
               <TabsContent value="account">
                 <AccountSettings />

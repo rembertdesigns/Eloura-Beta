@@ -65,7 +65,7 @@ const FirstTimeDashboard = () => {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-4 md:p-6 space-y-6">
       {!tourCompleted ? (
         // Initial Tour Introduction
         <div className="text-center space-y-6">
@@ -79,7 +79,7 @@ const FirstTimeDashboard = () => {
           </div>
 
           {/* Highlights Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {highlights.map((highlight) => {
               const IconComponent = highlight.icon;
               return (
@@ -97,17 +97,17 @@ const FirstTimeDashboard = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button 
               onClick={handleStartTour}
-              className="bg-[#223b0a] hover:bg-[#1a2e08] text-white px-8 py-3"
+              className="bg-[#223b0a] hover:bg-[#1a2e08] text-white px-8 py-3 w-full sm:w-auto"
             >
               Start Tour
             </Button>
             <Button 
               variant="outline" 
               onClick={handleSkipTour}
-              className="border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white px-8 py-3"
+              className="border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white px-8 py-3 w-full sm:w-auto"
             >
               Skip Tour
             </Button>
@@ -130,7 +130,7 @@ const FirstTimeDashboard = () => {
           <MiniChecklist />
 
           {/* Dashboard Preview Areas */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Daily Dashboard Preview */}
             <Card id="dashboard" className="border-2 border-dashed border-slate-200">
               <CardHeader>
