@@ -104,28 +104,28 @@ const OnboardingSummary = () => {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <Card className="border-0 shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl font-semibold">Here's what you entered</CardTitle>
+            <CardTitle className="text-2xl font-semibold">Final Step: Review and Finish</CardTitle>
             <p className="text-slate-600">
-              Review your information before we create your personalized dashboard
+              Quick summary of what was set up
             </p>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Family Type */}
               <div>
-                <h3 className="font-medium text-slate-700 mb-2">FAMILY TYPE</h3>
+                <h3 className="font-medium text-slate-700 mb-2">● Household</h3>
                 <p className="text-slate-600">{summary.familyType}</p>
               </div>
 
               {/* Personal Info */}
               <div>
-                <h3 className="font-medium text-slate-700 mb-2">PERSONAL INFO</h3>
+                <h3 className="font-medium text-slate-700 mb-2">● Your info</h3>
                 <p className="text-slate-600">{formatPersonalInfo()}</p>
               </div>
 
               {/* Family Members */}
               <div>
-                <h3 className="font-medium text-slate-700 mb-2">FAMILY MEMBERS</h3>
+                <h3 className="font-medium text-slate-700 mb-2">● Family members added</h3>
                 <div className="space-y-1">
                   {summary.children.length > 0 ? (
                     summary.children.map((member: any, index: number) => (
@@ -147,7 +147,7 @@ const OnboardingSummary = () => {
 
               {/* Challenges */}
               <div>
-                <h3 className="font-medium text-slate-700 mb-2">TOP CHALLENGES</h3>
+                <h3 className="font-medium text-slate-700 mb-2">● Challenges</h3>
                 <div className="space-y-1">
                   {summary.challenges.length > 0 ? (
                     summary.challenges.map((challenge: string, index: number) => (
@@ -163,7 +163,7 @@ const OnboardingSummary = () => {
 
               {/* Priorities */}
               <div>
-                <h3 className="font-medium text-slate-700 mb-2">PRIORITIES</h3>
+                <h3 className="font-medium text-slate-700 mb-2">● Priorities</h3>
                 <div className="flex flex-wrap gap-2">
                   {summary.priorities.length > 0 ? (
                     summary.priorities.map((priority: string, index: number) => (
@@ -177,22 +177,23 @@ const OnboardingSummary = () => {
                 </div>
               </div>
 
-              {/* Goals */}
+              {/* Invites Sent */}
               <div>
-                <h3 className="font-medium text-slate-700 mb-2">YOUR GOALS</h3>
-                <div className="space-y-1">
-                  {summary.goals.map((goal: string, index: number) => (
-                    <p key={index} className="text-slate-600 text-sm">
-                      • {goal}
-                    </p>
-                  ))}
-                </div>
+                <h3 className="font-medium text-slate-700 mb-2">● Invites sent</h3>
+                <p className="text-slate-400">No invites sent</p>
               </div>
+            </div>
+
+            {/* Final Message */}
+            <div className="text-center py-6">
+              <p className="text-lg text-slate-700 font-medium">
+                You're all set — let's take you to your Dashboard
+              </p>
             </div>
 
             <div className="pt-6 border-t">
               <Button className="w-full" onClick={handleFinish}>
-                Complete Setup & Go to Dashboard
+                Go to Dashboard
               </Button>
             </div>
           </CardContent>
