@@ -19,21 +19,33 @@ const FamilySetup = () => {
 
   const familyTypes = [
     {
-      id: 'parenting',
-      title: 'Parenting',
-      description: 'Supporting families with young children and all the joys and challenges that come with it',
+      id: 'solo-parent',
+      title: 'Solo parent',
+      description: 'Raising children on your own and managing all family responsibilities independently',
       icon: Baby,
     },
     {
-      id: 'caring-for-aging-parents',
-      title: 'Caring for Aging Parents',
-      description: 'Supporting and caring for elderly family members through their changing needs',
+      id: 'partnered',
+      title: 'Partnered',
+      description: 'Sharing parenting and family responsibilities with a partner or spouse',
+      icon: Users,
+    },
+    {
+      id: 'co-parenting',
+      title: 'Co-parenting',
+      description: 'Sharing parenting responsibilities with an ex-partner or separate households',
       icon: UserCheck,
     },
     {
-      id: 'both-parenting-and-caring',
-      title: 'Both',
-      description: 'Managing the dual responsibility of raising children while also caring for elderly family members',
+      id: 'multigenerational',
+      title: 'Multigenerational',
+      description: 'Caring for multiple generations in your family, including children and aging parents',
+      icon: Users,
+    },
+    {
+      id: 'other',
+      title: 'Other',
+      description: 'Your family structure is unique and doesn\'t fit the categories above',
       icon: Users,
     },
   ];
