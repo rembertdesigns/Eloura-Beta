@@ -38,7 +38,7 @@ const Priorities = () => {
     // Save to localStorage for demo
     localStorage.setItem('topPriorities', JSON.stringify(selectedPriorities));
     console.log('Saved priorities:', selectedPriorities);
-    navigate('/onboarding-summary');
+    navigate('/invite');
   };
 
   return (

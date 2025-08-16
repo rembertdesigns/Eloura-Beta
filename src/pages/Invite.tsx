@@ -104,13 +104,13 @@ const Invite = () => {
             to help manage your family's needs together.
           </p>
           
-          {/* Go to Dashboard Button */}
+          {/* Continue to Summary Button */}
           <Button
             variant="outline"
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/onboarding-summary')}
             className="mt-4 border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white"
           >
-            Go to Dashboard
+            Continue to Summary
           </Button>
         </div>
 

@@ -105,7 +105,7 @@ const FamilySetup = () => {
         description: "Let's continue with your personal information",
       });
 
-      navigate('/personal-info');
+      navigate('/family-structure');
     } catch (error) {
       toast({
         title: "Error",

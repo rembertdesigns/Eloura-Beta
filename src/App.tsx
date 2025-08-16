@@ -26,6 +26,7 @@ import Priorities from "./pages/Priorities";
 import OnboardingSummary from "./pages/OnboardingSummary";
 import Welcome from "./pages/Welcome";
 import IntroFlow from "./pages/IntroFlow";
+import OnboardingLayout from "./components/OnboardingLayout";
 
 const queryClient = new QueryClient();
 
@@ -42,12 +43,17 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/intro" element={<IntroFlow />} />
-            <Route path="/family-setup" element={<FamilySetup />} />
-            <Route path="/personal-info" element={<PersonalInfo />} />
-            <Route path="/family-structure" element={<FamilyStructure />} />
-            <Route path="/top-challenges" element={<TopChallenges />} />
-            <Route path="/priorities" element={<Priorities />} />
-            <Route path="/onboarding-summary" element={<OnboardingSummary />} />
+            
+            {/* Onboarding Flow with Layout */}
+            <Route path="/personal-info" element={<OnboardingLayout><PersonalInfo /></OnboardingLayout>} />
+            <Route path="/family-setup" element={<OnboardingLayout><FamilySetup /></OnboardingLayout>} />
+            <Route path="/family-structure" element={<OnboardingLayout><FamilyStructure /></OnboardingLayout>} />
+            <Route path="/top-challenges" element={<OnboardingLayout><TopChallenges /></OnboardingLayout>} />
+            <Route path="/priorities" element={<OnboardingLayout><Priorities /></OnboardingLayout>} />
+            <Route path="/invite" element={<OnboardingLayout><Invite /></OnboardingLayout>} />
+            <Route path="/onboarding-summary" element={<OnboardingLayout><OnboardingSummary /></OnboardingLayout>} />
+            
+            {/* Main App Routes */}
             <Route path="/dashboard" element={<DashboardLayout />} />
             <Route path="/daily-brief" element={<DailyBriefLayout />} />
             <Route path="/village" element={<VillageLayout />} />
@@ -56,7 +62,6 @@ const App = () => (
             <Route path="/home-base-toolkit" element={<HomeBaseToolkitLayout />} />
             <Route path="/messages" element={<MessagesLayout />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/invite" element={<Invite />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

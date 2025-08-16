@@ -164,15 +164,15 @@ const PersonalInfo = () => {
         description: "Moving to family structure setup...",
       });
 
-      navigate('/family-structure');
+      navigate('/family-setup');
     } catch (error) {
       console.error('Error saving data:', error);
       // Don't block the user from continuing for demo purposes
       toast({
         title: "Information saved locally",
-        description: "Moving to family structure setup...",
+        description: "Moving to family setup...",
       });
-      navigate('/family-structure');
+      navigate('/family-setup');
     } finally {
       setLoading(false);
     }
