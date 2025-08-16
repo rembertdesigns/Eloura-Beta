@@ -190,7 +190,7 @@ const FamilySetup = () => {
                   <span className="text-sm sm:text-base">Setting up your account...</span>
                 </div>
               ) : (
-                'Continue to Personal Info'
+                'Continue to Family Structure'
               )}
             </Button>
           </CardContent>
