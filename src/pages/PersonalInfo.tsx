@@ -187,16 +187,8 @@ const PersonalInfo = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 p-4 sm:p-6">
+    <div className="flex-1 p-4 sm:p-6">
       <div className="max-w-4xl mx-auto">
-        {/* Progress */}
-        <div className="mb-6 sm:mb-8">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm text-slate-600">Step 1 of 4</span>
-            <span className="text-sm text-slate-600">25%</span>
-          </div>
-          <Progress value={25} className="h-2" />
-        </div>
 
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
