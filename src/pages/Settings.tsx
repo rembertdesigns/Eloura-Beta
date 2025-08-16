@@ -43,11 +43,11 @@ const Settings = () => {
                 <TabsTrigger value="account" className="text-xs">Account</TabsTrigger>
                 <TabsTrigger value="family" className="text-xs">Family</TabsTrigger>
                 <TabsTrigger value="notifications" className="text-xs">Notifications</TabsTrigger>
-                <TabsTrigger value="smartcare" className="text-xs">Smart Care</TabsTrigger>
-                <TabsTrigger value="app" className="text-xs">App</TabsTrigger>
+                <TabsTrigger value="smartcare" className="text-xs">AI Assistant</TabsTrigger>
+                <TabsTrigger value="app" className="text-xs">Preferences</TabsTrigger>
                 <TabsTrigger value="village" className="text-xs">Village</TabsTrigger>
                 <TabsTrigger value="toolkit" className="text-xs">Toolkit</TabsTrigger>
-                <TabsTrigger value="privacy" className="text-xs">Privacy</TabsTrigger>
+                <TabsTrigger value="privacy" className="text-xs">Privacy & Data</TabsTrigger>
               </TabsList>
 
               <TabsContent value="account">
