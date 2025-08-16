@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import chaosIllustration from '@/assets/intro-chaos-illustration.png';
 import supportIllustration from '@/assets/intro-support-illustration.png';
-import setupIllustration from '@/assets/intro-setup-illustration.png';
+import setupIllustration from '@/assets/intro-setup-woman-illustration.png';
 
 const IntroFlow = () => {
   const [currentStep, setCurrentStep] = useState(1);
