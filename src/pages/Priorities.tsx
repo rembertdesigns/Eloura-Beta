@@ -47,9 +47,9 @@ const Priorities = () => {
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <Card className="border-0 shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl font-semibold">What's most important to you?</CardTitle>
+            <CardTitle className="text-2xl font-semibold">Set Your Priorities</CardTitle>
             <p className="text-slate-600">
-              Choose up to 3 areas you want to focus on right now. Think about your immediate needs.
+              What matters most to you right now? Select up to 3
             </p>
           </CardHeader>
           <CardContent className="space-y-4">
