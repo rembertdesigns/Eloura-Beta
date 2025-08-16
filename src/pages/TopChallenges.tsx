@@ -12,13 +12,14 @@ const TopChallenges = () => {
 
   const challenges = [
     "I feel overwhelmed juggling too many tasks",
-    "I can't keep up with my children's school commitments",
-    "I forget important dates and things",
-    "I feel exhausted planning everything alone",
-    "I don't have time to think or reset",
-    "I feel overwhelmed by constant decisions",
-    "I get frustrated when others don't follow through on what I delegate",
-    "I struggle to coordinate with people helping me"
+    "I forget important dates or things",
+    "I'm always behind on school, daycare, or activity reminders",
+    "I feel like I'm doing everything alone",
+    "I don't have time to pause or reset",
+    "I feel mentally drained from constant decisions",
+    "I get frustrated repeating myself or chasing people to follow through",
+    "I struggle to coordinate with others helping me",
+    "I have too much in my head and nowhere to put it"
   ];
 
   const toggleChallenge = (challenge: string) => {
@@ -42,8 +43,8 @@ const TopChallenges = () => {
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <Card className="border-0 shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl font-semibold">Your Top Challenges</CardTitle>
-            <p className="text-slate-600">Choose as many as you like</p>
+            <CardTitle className="text-2xl font-semibold">What Are You Dealing With Right Now?</CardTitle>
+            <p className="text-slate-600">Select anything that resonates. This helps Eloura show up where you need support most.</p>
           </CardHeader>
           <CardContent className="space-y-4">
             {challenges.map((challenge) => (
