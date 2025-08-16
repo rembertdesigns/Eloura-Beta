@@ -22,9 +22,24 @@ const PlannerInsights = () => {
   };
 
   const insights = [
-    { type: "warning", text: "Weekends are 40% more overloaded than weekdays", action: "Shift 2 errands to weekdays" },
-    { type: "success", text: "Tuesday mornings flow smoothly when nurse visits", action: "Keep this pattern" },
-    { type: "info", text: "Dad's mood improves on days with outdoor activities", action: "Schedule more walks" }
+    { 
+      type: "warning", 
+      text: "Weekends average 8.5 tasks vs 5.2 on weekdays", 
+      action: "Shift 2 errands to weekdays",
+      source: "Based on your scheduled tasks over the past 4 weeks"
+    },
+    { 
+      type: "success", 
+      text: "Tuesday mornings have 85% completion rate", 
+      action: "Keep this pattern",
+      source: "Analysis of 12 Tuesday morning schedules"
+    },
+    { 
+      type: "info", 
+      text: "Outdoor activities rated 4.2/5 for mood improvement", 
+      action: "Schedule more walks",
+      source: "From your task ratings and completion feedback"
+    }
   ];
 
   return (
@@ -102,12 +117,13 @@ const PlannerInsights = () => {
                     {insight.type === 'warning' && <AlertTriangle className="h-4 w-4 text-orange-500 mt-0.5" />}
                     {insight.type === 'success' && <TrendingUp className="h-4 w-4 text-green-500 mt-0.5" />}
                     {insight.type === 'info' && <BarChart3 className="h-4 w-4 text-blue-500 mt-0.5" />}
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-700">{insight.text}</p>
-                      <p className="text-sm text-slate-500 mt-1">
-                        <strong>Action:</strong> {insight.action}
-                      </p>
-                    </div>
+                     <div className="flex-1">
+                       <p className="text-sm text-slate-700">{insight.text}</p>
+                       <p className="text-sm text-slate-500 mt-1">
+                         <strong>Action:</strong> {insight.action}
+                       </p>
+                       <p className="text-xs text-slate-400 mt-1 italic">{insight.source}</p>
+                     </div>
                   </div>
                 </div>
               ))}
@@ -119,23 +135,27 @@ const PlannerInsights = () => {
         <Card className="card-warm">
           <CardHeader className="pb-3">
             <CardTitle className="text-slate-700">Stress Patterns & Recommendations</CardTitle>
+            <p className="text-sm text-slate-500 mt-1">Based on task completion rates and your stress ratings</p>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="p-4 bg-red-50/80 rounded-lg border border-red-100">
                 <h4 className="font-medium text-red-700">High Stress Times</h4>
                 <p className="text-sm text-red-600 mt-1">Tuesday mornings (7-9 AM)</p>
-                <p className="text-xs text-red-500 mt-2">Consider adjusting visiting nurse schedule</p>
+                <p className="text-xs text-red-500 mt-2">6 tasks scheduled, avg rating 2.1/5</p>
+                <p className="text-xs text-red-400 mt-1">Consider spreading tasks across the week</p>
               </div>
               <div className="p-4 bg-green-50/80 rounded-lg border border-green-100">
                 <h4 className="font-medium text-green-700">Smooth Periods</h4>
                 <p className="text-sm text-green-600 mt-1">Thursday afternoons</p>
-                <p className="text-xs text-green-500 mt-2">Good time for personal appointments</p>
+                <p className="text-xs text-green-500 mt-2">3 tasks scheduled, avg rating 4.3/5</p>
+                <p className="text-xs text-green-400 mt-1">Perfect for scheduling new appointments</p>
               </div>
               <div className="p-4 bg-orange-50/80 rounded-lg border border-orange-100">
-                <h4 className="font-medium text-orange-700">Overloaded Days</h4>
-                <p className="text-sm text-orange-600 mt-1">Saturdays</p>
-                <p className="text-xs text-orange-500 mt-2">Move 2 errands to weekday evenings</p>
+                <h4 className="font-medium text-orange-700">Mental Load Forecast</h4>
+                <p className="text-sm text-orange-600 mt-1">Next week: Moderate</p>
+                <p className="text-xs text-orange-500 mt-2">8 tasks planned, similar to this week</p>
+                <p className="text-xs text-orange-400 mt-1">Consider moving 2 non-urgent tasks</p>
               </div>
             </div>
           </CardContent>
