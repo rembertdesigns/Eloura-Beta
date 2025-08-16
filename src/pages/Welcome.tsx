@@ -8,7 +8,7 @@ const Welcome = () => {
   const navigate = useNavigate();
 
   const handleContinue = () => {
-    navigate('/family-setup');
+    navigate('/intro');
   };
 
   return (

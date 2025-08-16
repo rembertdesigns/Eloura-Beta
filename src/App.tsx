@@ -25,6 +25,7 @@ import TopChallenges from "./pages/TopChallenges";
 import Priorities from "./pages/Priorities";
 import OnboardingSummary from "./pages/OnboardingSummary";
 import Welcome from "./pages/Welcome";
+import IntroFlow from "./pages/IntroFlow";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/v2" element={<HomepageV2 />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/welcome" element={<Welcome />} />
+            <Route path="/intro" element={<IntroFlow />} />
             <Route path="/family-setup" element={<FamilySetup />} />
             <Route path="/personal-info" element={<PersonalInfo />} />
             <Route path="/family-structure" element={<FamilyStructure />} />
