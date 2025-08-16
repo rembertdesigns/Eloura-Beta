@@ -97,11 +97,10 @@ const Invite = () => {
         {/* Header */}
         <div className="text-center space-y-4 mb-8">
           <h1 className="text-4xl font-light text-slate-800">
-            Invite Your <span className="font-medium text-emerald-600">Support Network</span>
+            Invite Your <span className="font-medium text-emerald-600">Village</span> <span className="text-slate-500">(Optional)</span>
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Caregiving is a team effort. Invite family members, friends, and professional caregivers 
-            to help manage your family's needs together.
+            Is there anyone who helps you or could? We'll walk them through how they can support you.
           </p>
           
           {/* Continue to Summary Button */}
@@ -110,7 +109,7 @@ const Invite = () => {
             onClick={() => navigate('/onboarding-summary')}
             className="mt-4 border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white"
           >
-            Continue to Summary
+            Skip
           </Button>
         </div>
 
@@ -172,7 +171,7 @@ const Invite = () => {
 
               <Button onClick={handleSendInvite} className="w-full" disabled={!email.trim()}>
                 <Mail className="h-4 w-4 mr-2" />
-                Send Invitation
+                Send Invites
               </Button>
 
               {/* Share Link */}
