@@ -26,7 +26,7 @@ const Auth = () => {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/family-setup`,
+            emailRedirectTo: `${window.location.origin}/welcome`,
           },
         });
 
@@ -55,7 +55,7 @@ const Auth = () => {
             variant: "destructive",
           });
         } else {
-          navigate('/family-setup');
+          navigate('/welcome');
         }
       }
     } catch (error) {
@@ -75,7 +75,7 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/family-setup`,
+          redirectTo: `${window.location.origin}/welcome`,
         },
       });
 

@@ -24,6 +24,7 @@ import NotFound from "./pages/NotFound";
 import TopChallenges from "./pages/TopChallenges";
 import Priorities from "./pages/Priorities";
 import OnboardingSummary from "./pages/OnboardingSummary";
+import Welcome from "./pages/Welcome";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/v2" element={<HomepageV2 />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/welcome" element={<Welcome />} />
             <Route path="/family-setup" element={<FamilySetup />} />
             <Route path="/personal-info" element={<PersonalInfo />} />
             <Route path="/family-structure" element={<FamilyStructure />} />
