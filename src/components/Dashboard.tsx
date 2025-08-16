@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -21,9 +21,22 @@ import {
   GripVertical,
   Filter
 } from 'lucide-react';
+import FirstTimeDashboard from './FirstTimeDashboard';
 
 const Dashboard = () => {
   const [taskFilter, setTaskFilter] = useState('all');
+  const [isFirstTime, setIsFirstTime] = useState(true); // Check if user is first-time visitor
+  
+  useEffect(() => {
+    // Check if user has completed onboarding/setup
+    const hasCompletedSetup = localStorage.getItem('dashboardSetupCompleted');
+    setIsFirstTime(!hasCompletedSetup);
+  }, []);
+
+  // If first time, show the first-time dashboard experience
+  if (isFirstTime) {
+    return <FirstTimeDashboard />;
+  }
   
   const mustDoTasks = [
     { id: 1, text: "Pick up kids from school", urgent: true, completed: false, assignedTo: "me" },
