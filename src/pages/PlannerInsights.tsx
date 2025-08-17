@@ -76,8 +76,8 @@ const PlannerInsights = () => {
           </CardContent>
         </Card>
 
-        {/* Insights Section - Only show for Week and Month tabs */}
-        {activeTab !== 'goals' && (
+        {/* Insights Section - Only show for Week tab */}
+        {activeTab === 'week' && (
           <>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Time Tracking */}
