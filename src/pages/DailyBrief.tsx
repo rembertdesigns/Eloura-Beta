@@ -448,12 +448,12 @@ const DailyBrief = () => {
         </div>
 
         {/* 5. Footer Section */}
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+        <div className="mt-12 mb-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white min-h-[44px] px-6">
             <Calendar className="h-4 w-4 mr-2" />
             View Full Calendar
           </Button>
-          <Button variant="outline">
+          <Button variant="outline" className="min-h-[44px] px-6">
             <CheckCircle className="h-4 w-4 mr-2" />
             Mark Day Complete
           </Button>
