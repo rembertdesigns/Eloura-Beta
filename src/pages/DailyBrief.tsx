@@ -77,8 +77,26 @@ const DailyBrief = () => {
         return tasks.filter(task => task.category === 'household');
       case 'work':
         return tasks.filter(task => task.category === 'work');
+      case 'connections':
+        return tasks.filter(task => task.category === 'childcare' || task.category === 'eldercare');
+      case 'goals':
+        return tasks.filter(task => task.category === 'work' || task.category === 'general');
       default:
         return tasks;
+    }
+  };
+
+  const shouldShowSection = (section: string) => {
+    switch (activeFilter) {
+      case 'connections':
+        return section === 'tasks' || section === 'social';
+      case 'goals':
+        return section === 'tasks' || section === 'goals';
+      case 'completed':
+      case 'pending':
+        return section === 'tasks';
+      default:
+        return true;
     }
   };
 
@@ -245,206 +263,219 @@ const DailyBrief = () => {
         {/* 4. Main Content (3-Column Layout) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column - Priorities & Upcoming (3 columns) */}
-          <div className="lg:col-span-3 space-y-6">
-            {/* Today's Priorities */}
-            <Card>
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
-                  <AlertTriangle className="h-5 w-5 text-red-500" />
-                  Today's Priorities
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {priorities.map((priority) => (
-                  <div key={priority.id} className={`p-3 rounded-lg border-l-4 ${
-                    priority.type === 'urgent' ? 'bg-red-50 border-red-400' :
-                    priority.type === 'high' ? 'bg-yellow-50 border-yellow-400' :
-                    'bg-blue-50 border-blue-400'
-                  }`}>
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <p className="font-medium text-slate-800 text-sm">{priority.text}</p>
-                        <p className="text-xs text-slate-600 mt-1">Due: {priority.time}</p>
-                      </div>
-                      <Badge variant="outline" className={`text-xs ${
-                        priority.type === 'urgent' ? 'bg-red-100 text-red-700 border-red-200' :
-                        priority.type === 'high' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
-                        'bg-blue-100 text-blue-700 border-blue-200'
-                      }`}>
-                        {priority.type === 'urgent' ? 'Urgent' : priority.type === 'high' ? 'High' : 'Scheduled'}
-                      </Badge>
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            {/* Upcoming This Week */}
-            <Card>
-              <CardHeader className="pb-4">
-                <CardTitle className="text-lg font-semibold text-slate-800">Upcoming This Week</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {upcomingEvents.map((event, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                      event.priority === 'high' ? 'bg-red-100' :
-                      event.priority === 'medium' ? 'bg-yellow-100' : 'bg-blue-100'
+          {shouldShowSection('priorities') && (
+            <div className="lg:col-span-3 space-y-6">
+              {/* Today's Priorities */}
+              <Card>
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
+                    <AlertTriangle className="h-5 w-5 text-red-500" />
+                    Today's Priorities
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {priorities.map((priority) => (
+                    <div key={priority.id} className={`p-3 rounded-lg border-l-4 ${
+                      priority.type === 'urgent' ? 'bg-red-50 border-red-400' :
+                      priority.type === 'high' ? 'bg-yellow-50 border-yellow-400' :
+                      'bg-blue-50 border-blue-400'
                     }`}>
-                      <span className={`text-xs font-semibold ${
-                        event.priority === 'high' ? 'text-red-700' :
-                        event.priority === 'medium' ? 'text-yellow-700' : 'text-blue-700'
-                      }`}>{event.day}</span>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <p className="font-medium text-slate-800 text-sm">{priority.text}</p>
+                          <p className="text-xs text-slate-600 mt-1">Due: {priority.time}</p>
+                        </div>
+                        <Badge variant="outline" className={`text-xs ${
+                          priority.type === 'urgent' ? 'bg-red-100 text-red-700 border-red-200' :
+                          priority.type === 'high' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
+                          'bg-blue-100 text-blue-700 border-blue-200'
+                        }`}>
+                          {priority.type === 'urgent' ? 'Urgent' : priority.type === 'high' ? 'High' : 'Scheduled'}
+                        </Badge>
+                      </div>
                     </div>
-                    <span className="text-sm text-slate-700 flex-1">{event.event}</span>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              {/* Upcoming This Week */}
+              <Card>
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg font-semibold text-slate-800">Upcoming This Week</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {upcomingEvents.map((event, index) => (
+                    <div key={index} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                        event.priority === 'high' ? 'bg-red-100' :
+                        event.priority === 'medium' ? 'bg-yellow-100' : 'bg-blue-100'
+                      }`}>
+                        <span className={`text-xs font-semibold ${
+                          event.priority === 'high' ? 'text-red-700' :
+                          event.priority === 'medium' ? 'text-yellow-700' : 'text-blue-700'
+                        }`}>{event.day}</span>
+                      </div>
+                      <span className="text-sm text-slate-700 flex-1">{event.event}</span>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
           {/* Center Column - Task Overview (6 columns) */}
-          <div className="lg:col-span-6">
-            <Card>
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
-                    <Target className="h-5 w-5 text-green-600" />
-                    Task Overview
-                  </CardTitle>
-                  <Button 
-                    size="sm" 
-                    onClick={() => setShowQuickAddTask(true)}
-                    className="flex items-center gap-1"
-                  >
-                    <Plus className="h-4 w-4" />
-                    Quick Add
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {filteredTasks.map((task, index) => (
-                    <div 
-                      key={task.id} 
-                      className="flex items-center justify-between p-4 bg-white rounded-lg border hover:shadow-sm transition-shadow group cursor-move"
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, task.id)}
-                      onDragOver={handleDragOver}
-                      onDrop={(e) => handleDrop(e, index)}
+          {shouldShowSection('tasks') && (
+            <div className={`${shouldShowSection('priorities') ? 'lg:col-span-6' : shouldShowSection('social') || shouldShowSection('goals') ? 'lg:col-span-9' : 'lg:col-span-12'}`}>
+              <Card>
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
+                      <Target className="h-5 w-5 text-green-600" />
+                      {activeFilter === 'completed' ? 'Completed Tasks' : 
+                       activeFilter === 'pending' ? 'Pending Tasks' :
+                       activeFilter === 'connections' ? 'Connection-Related Tasks' :
+                       activeFilter === 'goals' ? 'Goal-Related Tasks' : 'Task Overview'}
+                    </CardTitle>
+                    <Button 
+                      size="sm" 
+                      onClick={() => setShowQuickAddTask(true)}
+                      className="flex items-center gap-1"
                     >
-                      <div className="flex items-center gap-3 flex-1">
-                        <input 
-                          type="checkbox" 
-                          checked={task.completed}
-                          onChange={() => handleTaskToggle(task.id)}
-                          className="w-4 h-4 text-green-600 rounded cursor-pointer"
-                        />
-                        <div className="flex-1">
-                          <p className={`font-medium ${task.completed ? 'line-through text-slate-400' : 'text-slate-800'}`}>
-                            {task.text}
-                          </p>
-                          <div className="flex items-center gap-4 mt-1">
-                            <p className="text-sm text-slate-500 flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
-                              {task.time}
+                      <Plus className="h-4 w-4" />
+                      Quick Add
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {filteredTasks.map((task, index) => (
+                      <div 
+                        key={task.id} 
+                        className="flex items-center justify-between p-4 bg-white rounded-lg border hover:shadow-sm transition-shadow group cursor-move"
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, task.id)}
+                        onDragOver={handleDragOver}
+                        onDrop={(e) => handleDrop(e, index)}
+                      >
+                        <div className="flex items-center gap-3 flex-1">
+                          <input 
+                            type="checkbox" 
+                            checked={task.completed}
+                            onChange={() => handleTaskToggle(task.id)}
+                            className="w-4 h-4 text-green-600 rounded cursor-pointer"
+                          />
+                          <div className="flex-1">
+                            <p className={`font-medium ${task.completed ? 'line-through text-slate-400' : 'text-slate-800'}`}>
+                              {task.text}
                             </p>
-                            <Badge variant="outline" className={`text-xs ${
-                              task.category === 'childcare' ? 'bg-green-50 text-green-700 border-green-200' : 
-                              task.category === 'eldercare' ? 'bg-orange-50 text-orange-700 border-orange-200' : 
-                              task.category === 'work' ? 'bg-purple-50 text-purple-700 border-purple-200' :
-                              task.category === 'household' ? 'bg-blue-50 text-blue-700 border-blue-200' :
-                              'bg-gray-50 text-gray-700 border-gray-200'
-                            }`}>
-                              {task.category}
+                            <div className="flex items-center gap-4 mt-1">
+                              <p className="text-sm text-slate-500 flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {task.time}
+                              </p>
+                              <Badge variant="outline" className={`text-xs ${
+                                task.category === 'childcare' ? 'bg-green-50 text-green-700 border-green-200' : 
+                                task.category === 'eldercare' ? 'bg-orange-50 text-orange-700 border-orange-200' : 
+                                task.category === 'work' ? 'bg-purple-50 text-purple-700 border-purple-200' :
+                                task.category === 'household' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                                'bg-gray-50 text-gray-700 border-gray-200'
+                              }`}>
+                                {task.category}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                        {task.urgent && !task.completed && (
+                          <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-xs ml-2">
+                            urgent
+                          </Badge>
+                        )}
+                      </div>
+                    ))}
+                    {filteredTasks.length === 0 && (
+                      <div className="text-center py-8 text-slate-500">
+                        <p>No tasks found for the selected filter.</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
+
+          {/* Right Column - Social Connection & Goals (3 columns) */}
+          {(shouldShowSection('social') || shouldShowSection('goals')) && (
+            <div className="lg:col-span-3 space-y-6">
+              {/* Social Connection - Moved up for importance */}
+              {shouldShowSection('social') && (
+                <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
+                      <Users className="h-5 w-5 text-blue-600" />
+                      Social Connection
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <div className="p-3 bg-white/60 rounded-lg">
+                      <p className="text-sm font-medium text-slate-700 mb-1">Today's connections</p>
+                      <p className="text-xs text-slate-600">Called mom, texted sister about weekend</p>
+                    </div>
+                    <div className="p-3 bg-white/60 rounded-lg">
+                      <p className="text-sm font-medium text-slate-700 mb-1">Upcoming social time</p>
+                      <p className="text-xs text-slate-600">Family movie night Friday</p>
+                    </div>
+                    <Button variant="outline" className="w-full text-sm">
+                      <Users className="h-4 w-4 mr-2" />
+                      Plan Connection Time
+                    </Button>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Your Goals */}
+              {shouldShowSection('goals') && (
+                <Card>
+                  <CardHeader className="pb-4">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
+                        <Target className="h-5 w-5 text-purple-600" />
+                        Your Goals
+                      </CardTitle>
+                      <Button 
+                        size="sm" 
+                        onClick={() => setShowAddGoalModal(true)}
+                        className="text-xs"
+                      >
+                        <Plus className="h-3 w-3 mr-1" />
+                        Add
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {goals.map((goal) => (
+                      <div key={goal.id} className="p-3 bg-purple-50 rounded-lg border border-purple-200 hover:bg-purple-100 transition-colors cursor-pointer">
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex-1">
+                            <p className="font-medium text-slate-800 text-sm">{goal.title}</p>
+                            <Badge variant="outline" className="text-xs mt-1 bg-purple-100 text-purple-700 border-purple-200">
+                              {goal.category}
                             </Badge>
                           </div>
                         </div>
+                        <div className="space-y-1">
+                          <div className="flex justify-between text-xs text-slate-600">
+                            <span>Progress</span>
+                            <span>{goal.progress}%</span>
+                          </div>
+                          <Progress value={goal.progress} className="h-2" />
+                        </div>
                       </div>
-                      {task.urgent && !task.completed && (
-                        <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-xs ml-2">
-                          urgent
-                        </Badge>
-                      )}
-                    </div>
-                  ))}
-                  {filteredTasks.length === 0 && (
-                    <div className="text-center py-8 text-slate-500">
-                      <p>No tasks found for the selected filter.</p>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Right Column - Social Connection & Goals (3 columns) */}
-          <div className="lg:col-span-3 space-y-6">
-            {/* Social Connection - Moved up for importance */}
-            <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
-                  <Users className="h-5 w-5 text-blue-600" />
-                  Social Connection
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="p-3 bg-white/60 rounded-lg">
-                  <p className="text-sm font-medium text-slate-700 mb-1">Today's connections</p>
-                  <p className="text-xs text-slate-600">Called mom, texted sister about weekend</p>
-                </div>
-                <div className="p-3 bg-white/60 rounded-lg">
-                  <p className="text-sm font-medium text-slate-700 mb-1">Upcoming social time</p>
-                  <p className="text-xs text-slate-600">Family movie night Friday</p>
-                </div>
-                <Button variant="outline" className="w-full text-sm">
-                  <Users className="h-4 w-4 mr-2" />
-                  Plan Connection Time
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Your Goals */}
-            <Card>
-              <CardHeader className="pb-4">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
-                    <Target className="h-5 w-5 text-purple-600" />
-                    Your Goals
-                  </CardTitle>
-                  <Button 
-                    size="sm" 
-                    onClick={() => setShowAddGoalModal(true)}
-                    className="text-xs"
-                  >
-                    <Plus className="h-3 w-3 mr-1" />
-                    Add
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {goals.map((goal) => (
-                  <div key={goal.id} className="p-3 bg-purple-50 rounded-lg border border-purple-200 hover:bg-purple-100 transition-colors cursor-pointer">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex-1">
-                        <p className="font-medium text-slate-800 text-sm">{goal.title}</p>
-                        <Badge variant="outline" className="text-xs mt-1 bg-purple-100 text-purple-700 border-purple-200">
-                          {goal.category}
-                        </Badge>
-                      </div>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex justify-between text-xs text-slate-600">
-                        <span>Progress</span>
-                        <span>{goal.progress}%</span>
-                      </div>
-                      <Progress value={goal.progress} className="h-2" />
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
+                    ))}
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          )}
         </div>
 
         {/* 5. Footer Section */}
