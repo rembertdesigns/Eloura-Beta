@@ -3,16 +3,49 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Calendar, Heart, Star, Phone, Mail, MessageSquare, UserPlus, Edit } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Users, Calendar, Heart, Star, Phone, Mail, MessageSquare, UserPlus, Edit, Clock, FileText, Plus } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import FeatureFooter from '@/components/FeatureFooter';
 
 const Village = () => {
+  const [newCommLog, setNewCommLog] = useState({ contact: '', type: '', notes: '' });
+  const [showCommLogForm, setShowCommLogForm] = useState(false);
+
+  // Communication logs for tracking interactions
+  const commLogs = [
+    {
+      id: 1,
+      contact: "Mom (Patricia)",
+      type: "Phone call",
+      notes: "Called to check on her appointment. She's doing well and confirmed grocery pickup tomorrow.",
+      timestamp: "Today, 2:30 PM",
+      loggedBy: "You"
+    },
+    {
+      id: 2,
+      contact: "Mike (Partner)",
+      type: "Text message",
+      notes: "Confirmed soccer practice carpool. He'll pick up kids at 3 PM.",
+      timestamp: "Yesterday, 8:45 AM",
+      loggedBy: "You"
+    },
+    {
+      id: 3,
+      contact: "Dr. Peterson",
+      type: "Visit",
+      notes: "Annual checkup completed. All vitals normal. Next appointment in 6 months.",
+      timestamp: "3 days ago",
+      loggedBy: "Mike (Partner)"
+    }
+  ];
+
   const careCircleMembers = [
     {
       id: 1,
       name: "Mom (Patricia)",
-      role: "Parent",
+      role: "Family Supporter",
       avatar: "M",
       rating: 5,
       ratingCount: 5,
@@ -26,7 +59,7 @@ const Village = () => {
     {
       id: 2,
       name: "Mike (Partner)",
-      role: "Co-parent",
+      role: "Care Partner",
       avatar: "M",
       rating: 5,
       ratingCount: 5,
@@ -114,7 +147,7 @@ const Village = () => {
   const stats = [
     {
       icon: Users,
-      label: "Helpers",
+      label: "Village Members",
       value: careCircleMembers.length.toString(),
       color: "text-green-600"
     },
@@ -255,6 +288,36 @@ const Village = () => {
       </CardContent>
     </Card>;
 
+  const renderCommLogCard = (log: any) => <Card key={log.id} className="bg-white border border-gray-200 hover:shadow-md transition-shadow">
+      <CardContent className="p-6">
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-50 rounded-lg">
+              <MessageSquare className="h-4 w-4 text-blue-600" />
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-900">{log.contact}</h4>
+              <p className="text-sm text-gray-500">{log.type}</p>
+            </div>
+          </div>
+          <div className="text-right text-xs text-gray-400">
+            <div>{log.timestamp}</div>
+            <div>by {log.loggedBy}</div>
+          </div>
+        </div>
+        <p className="text-sm text-gray-600">{log.notes}</p>
+      </CardContent>
+    </Card>;
+
+  const handleAddCommLog = () => {
+    if (newCommLog.contact && newCommLog.type && newCommLog.notes) {
+      // Here you would typically save to backend
+      console.log('Adding communication log:', newCommLog);
+      setNewCommLog({ contact: '', type: '', notes: '' });
+      setShowCommLogForm(false);
+    }
+  };
+
   return (
     <div className="min-h-screen warm-gradient pb-20">
       <Navigation />
@@ -264,7 +327,7 @@ const Village = () => {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-semibold text-gray-900 mb-2">My Village</h1>
-            <p className="text-gray-600">Your support network and helping hands</p>
+            <p className="text-gray-600">All the people in your support network - your village of care</p>
           </div>
           <div className="flex gap-3">
             <Button variant="outline" className="flex items-center gap-2">
@@ -273,7 +336,7 @@ const Village = () => {
             </Button>
             <Button className="bg-green-600 hover:bg-green-700 flex items-center gap-2">
               <UserPlus className="h-4 w-4" />
-              Add Helper
+              Add Village Member
             </Button>
           </div>
         </div>
@@ -305,10 +368,14 @@ const Village = () => {
           <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="care-circle" className="text-base">Care Circle</TabsTrigger>
             <TabsTrigger value="delegations" className="text-base">Active Tasks</TabsTrigger>
-            <TabsTrigger value="help-requests" className="text-base">Help Requests</TabsTrigger>
+            <TabsTrigger value="help-requests" className="text-base">Help Requests & Logs</TabsTrigger>
           </TabsList>
 
           <TabsContent value="care-circle" className="space-y-6">
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Your Care Circle</h3>
+              <p className="text-sm text-gray-600">Specific people in your village who provide care and support for particular situations or individuals</p>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {careCircleMembers.map(renderPersonCard)}
             </div>
@@ -321,23 +388,94 @@ const Village = () => {
           </TabsContent>
 
           <TabsContent value="help-requests" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {helpRequests.map(renderHelpRequestCard)}
-              
-              {/* Empty state card for requesting help */}
-              <Card className="bg-gray-50 border-2 border-dashed border-gray-300 hover:border-gray-400 transition-colors h-full">
-                <CardContent className="p-6 h-full flex flex-col items-center justify-center text-center">
-                  <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                    <Users className="h-8 w-8 text-gray-400" />
-                  </div>
-                  <h3 className="font-semibold text-gray-700 mb-2">Need Help?</h3>
-                  <p className="text-sm text-gray-500 mb-4">Ask your village for support</p>
-                  <Button className="bg-gray-800 hover:bg-gray-900">
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Request Help
-                  </Button>
-                </CardContent>
-              </Card>
+            {/* Help Requests Section */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Help Requests</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                {helpRequests.map(renderHelpRequestCard)}
+                
+                {/* Empty state card for requesting help */}
+                <Card className="bg-gray-50 border-2 border-dashed border-gray-300 hover:border-gray-400 transition-colors h-full">
+                  <CardContent className="p-6 h-full flex flex-col items-center justify-center text-center">
+                    <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+                      <Users className="h-8 w-8 text-gray-400" />
+                    </div>
+                    <h3 className="font-semibold text-gray-700 mb-2">Need Help?</h3>
+                    <p className="text-sm text-gray-500 mb-4">Ask your village for support</p>
+                    <Button className="bg-gray-800 hover:bg-gray-900">
+                      <UserPlus className="h-4 w-4 mr-2" />
+                      Request Help
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Communication Logs Section */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">Communication Logs</h3>
+                  <p className="text-sm text-gray-600">Track interactions and updates with village members</p>
+                </div>
+                <Button 
+                  onClick={() => setShowCommLogForm(!showCommLogForm)}
+                  className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  Log Communication
+                </Button>
+              </div>
+
+              {/* Add Communication Log Form */}
+              {showCommLogForm && (
+                <Card className="mb-6 bg-blue-50 border-blue-200">
+                  <CardContent className="p-6">
+                    <h4 className="font-semibold text-gray-900 mb-4">Add Communication Log</h4>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Contact</label>
+                        <Input
+                          placeholder="Who did you communicate with?"
+                          value={newCommLog.contact}
+                          onChange={(e) => setNewCommLog({...newCommLog, contact: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Type of Communication</label>
+                        <Input
+                          placeholder="e.g., Phone call, Text message, Visit, Email"
+                          value={newCommLog.type}
+                          onChange={(e) => setNewCommLog({...newCommLog, type: e.target.value})}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                        <Textarea
+                          placeholder="What was discussed or accomplished?"
+                          value={newCommLog.notes}
+                          onChange={(e) => setNewCommLog({...newCommLog, notes: e.target.value})}
+                          rows={3}
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <Button onClick={handleAddCommLog} className="bg-blue-600 hover:bg-blue-700">
+                          <FileText className="h-4 w-4 mr-2" />
+                          Save Log
+                        </Button>
+                        <Button variant="outline" onClick={() => setShowCommLogForm(false)}>
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Communication Logs List */}
+              <div className="space-y-4">
+                {commLogs.map(renderCommLogCard)}
+              </div>
             </div>
           </TabsContent>
         </Tabs>
