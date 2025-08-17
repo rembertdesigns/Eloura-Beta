@@ -1,322 +1,35 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Users, Calendar, Heart, Star, Phone, Mail, MessageSquare, UserPlus, Edit, Clock, FileText, Plus } from 'lucide-react';
+import { Users, Calendar, Heart, MessageSquare, UserPlus } from 'lucide-react';
 import Navigation from '@/components/Navigation';
 import FeatureFooter from '@/components/FeatureFooter';
+import CareCircleEnhanced from '@/components/village/CareCircleEnhanced';
+import ActiveTasksEnhanced from '@/components/village/ActiveTasksEnhanced';
+import HelpRequestsLogsEnhanced from '@/components/village/HelpRequestsLogsEnhanced';
 
 const Village = () => {
-  const [newCommLog, setNewCommLog] = useState({ contact: '', type: '', notes: '' });
-  const [showCommLogForm, setShowCommLogForm] = useState(false);
-
-  // Communication logs for tracking interactions
-  const commLogs = [
-    {
-      id: 1,
-      contact: "Mom (Patricia)",
-      type: "Phone call",
-      notes: "Called to check on her appointment. She's doing well and confirmed grocery pickup tomorrow.",
-      timestamp: "Today, 2:30 PM",
-      loggedBy: "You"
-    },
-    {
-      id: 2,
-      contact: "Mike (Partner)",
-      type: "Text message",
-      notes: "Confirmed soccer practice carpool. He'll pick up kids at 3 PM.",
-      timestamp: "Yesterday, 8:45 AM",
-      loggedBy: "You"
-    },
-    {
-      id: 3,
-      contact: "Dr. Peterson",
-      type: "Visit",
-      notes: "Annual checkup completed. All vitals normal. Next appointment in 6 months.",
-      timestamp: "3 days ago",
-      loggedBy: "Mike (Partner)"
-    }
-  ];
-
-  const careCircleMembers = [
-    {
-      id: 1,
-      name: "Mom (Patricia)",
-      role: "Family Supporter",
-      avatar: "M",
-      rating: 5,
-      ratingCount: 5,
-      description: "Great with kids, loves to help with meals",
-      phone: "(555) 123-4567",
-      email: "patricia@email.com",
-      lastContact: "2 days ago",
-      status: "Available",
-      statusColor: "bg-green-100 text-green-700"
-    },
-    {
-      id: 2,
-      name: "Mike (Partner)",
-      role: "Care Partner",
-      avatar: "M",
-      rating: 5,
-      ratingCount: 5,
-      description: "Great with school stuff, weekend activities",
-      phone: "(555) 456-7890",
-      email: "mike@email.com",
-      lastContact: "Today",
-      status: "Available evenings",
-      statusColor: "bg-blue-100 text-blue-700"
-    }
-  ];
-
-  const delegationTasks = [
-    {
-      id: 1,
-      title: "Grocery shopping",
-      assignedTo: "Mike (Partner)",
-      due: "Today, 6 PM",
-      priority: "High",
-      priorityColor: "bg-red-100 text-red-700",
-      status: "In Progress",
-      statusColor: "bg-blue-100 text-blue-700",
-      description: "Don't forget organic milk and vegetables for dinner"
-    },
-    {
-      id: 2,
-      title: "Pick up dry cleaning",
-      assignedTo: "Mom (Patricia)",
-      due: "Yesterday",
-      priority: "Low",
-      priorityColor: "bg-gray-100 text-gray-700",
-      status: "Completed",
-      statusColor: "bg-green-100 text-green-700",
-      description: "Thank you! ❤️"
-    },
-    {
-      id: 3,
-      title: "Soccer carpool",
-      assignedTo: "Sarah Johnson",
-      due: "Wednesday, 3 PM",
-      priority: "Medium",
-      priorityColor: "bg-yellow-100 text-yellow-700",
-      status: "Scheduled",
-      statusColor: "bg-purple-100 text-purple-700",
-      description: "Taking kids to practice, I'll pick up after"
-    },
-    {
-      id: 4,
-      title: "Help with homework",
-      assignedTo: "Mike (Partner)",
-      due: "Daily, 4 PM",
-      priority: "Medium",
-      priorityColor: "bg-yellow-100 text-yellow-700",
-      status: "Recurring",
-      statusColor: "bg-blue-100 text-blue-700",
-      description: "Math and science support needed"
-    }
-  ];
-
-  const helpRequests = [
-    {
-      id: 1,
-      title: "Need babysitter for date night",
-      category: "Childcare",
-      categoryColor: "bg-pink-100 text-pink-700",
-      date: "Saturday, Dec 16",
-      time: "6:00 PM - 11:00 PM",
-      responses: 2,
-      status: "Open",
-      statusColor: "bg-green-100 text-green-700"
-    },
-    {
-      id: 2,
-      title: "School pickup emergency",
-      category: "Transportation",
-      categoryColor: "bg-blue-100 text-blue-700",
-      date: "Today",
-      time: "3:15 PM",
-      responses: 1,
-      status: "Fulfilled",
-      statusColor: "bg-blue-100 text-blue-700"
-    }
-  ];
-
   const stats = [
     {
       icon: Users,
       label: "Village Members",
-      value: careCircleMembers.length.toString(),
+      value: "8",
       color: "text-green-600"
     },
     {
       icon: Calendar,
       label: "Active Tasks",
-      value: delegationTasks.length.toString(),
+      value: "12",
       color: "text-blue-600"
     },
     {
       icon: Heart,
       label: "Open Requests",
-      value: helpRequests.length.toString(),
+      value: "3",
       color: "text-purple-600"
     }
   ];
-
-  const renderStars = (rating: number) => {
-    return Array.from({
-      length: 5
-    }, (_, i) => <Star key={i} className={`h-4 w-4 ${i < rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} />);
-  };
-  const renderPersonCard = (person: any) => <Card key={person.id} className="bg-white border border-gray-200 hover:shadow-md transition-shadow h-full">
-      <CardContent className="p-6 h-full flex flex-col">
-        <div className="flex items-start gap-4 flex-1">
-          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-semibold text-lg flex-shrink-0">
-            {person.avatar}
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between mb-2">
-              <div className="min-w-0 flex-1">
-                <h3 className="font-semibold text-gray-900 truncate">{person.name}</h3>
-                <p className="text-sm text-gray-500">{person.role}</p>
-              </div>
-              <Badge className={`${person.statusColor} border-0 flex-shrink-0 ml-2`}>
-                {person.status}
-              </Badge>
-            </div>
-            
-            <div className="flex items-center gap-1 mb-2">
-              {renderStars(person.rating)}
-              <span className="text-sm text-gray-500 ml-1">({person.ratingCount}/5)</span>
-            </div>
-            
-            <p className="text-sm text-gray-600 mb-3 line-clamp-2">{person.description}</p>
-            
-            <div className="space-y-1 mb-4 text-sm text-gray-600">
-              <div className="flex items-center gap-2 truncate">
-                <Phone className="h-4 w-4 flex-shrink-0" />
-                <span className="truncate">{person.phone}</span>
-              </div>
-              <div className="flex items-center gap-2 truncate">
-                <Mail className="h-4 w-4 flex-shrink-0" />
-                <span className="truncate">{person.email}</span>
-              </div>
-            </div>
-            
-            <div className="mt-auto">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs text-gray-400">Last contact: {person.lastContact}</span>
-              </div>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" className="h-8 flex-1">
-                  <MessageSquare className="h-4 w-4 mr-1" />
-                  Message
-                </Button>
-                <Button variant="outline" size="sm" className="h-8 flex-1">
-                  <Phone className="h-4 w-4 mr-1" />
-                  Call
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>;
-  const renderTaskCard = (task: any) => <Card key={task.id} className="bg-white border border-gray-200 hover:shadow-md transition-shadow h-full">
-      <CardContent className="p-6 h-full flex flex-col">
-        <div className="flex items-start justify-between mb-3">
-          <h3 className="font-semibold text-gray-900 flex-1">{task.title}</h3>
-          <div className="flex gap-2 flex-shrink-0 ml-2">
-            <Badge className={`${task.statusColor} border-0`}>
-              {task.status}
-            </Badge>
-            <Badge className={`${task.priorityColor} border-0`}>
-              {task.priority}
-            </Badge>
-          </div>
-        </div>
-        
-        <div className="space-y-2 mb-4 text-sm text-gray-600">
-          <div>Assigned to: <span className="font-medium">{task.assignedTo}</span></div>
-          <div>Due: <span className="font-medium">{task.due}</span></div>
-        </div>
-        
-        <p className="text-sm text-gray-600 mb-4 flex-1">{task.description}</p>
-        
-        <div className="flex gap-2 mt-auto">
-          <Button variant="outline" size="sm" className="h-8">
-            <MessageSquare className="h-4 w-4 mr-1" />
-            Follow up
-          </Button>
-          <Button variant="outline" size="sm" className="h-8">
-            <Edit className="h-4 w-4 mr-1" />
-            Edit
-          </Button>
-        </div>
-      </CardContent>
-    </Card>;
-  const renderHelpRequestCard = (request: any) => <Card key={request.id} className="bg-white border border-gray-200 hover:shadow-md transition-shadow h-full">
-      <CardContent className="p-6 h-full flex flex-col">
-        <div className="flex items-start gap-3 mb-3">
-          <Badge className={`${request.categoryColor} border-0 flex-shrink-0`}>
-            {request.category}
-          </Badge>
-          <Badge className={`${request.statusColor} border-0 flex-shrink-0`}>
-            {request.status}
-          </Badge>
-        </div>
-        
-        <h3 className="font-semibold text-gray-900 mb-3">{request.title}</h3>
-        
-        <div className="space-y-1 mb-4 text-sm text-gray-600">
-          <div>{request.date} {request.time}</div>
-          <div>{request.responses} responses</div>
-        </div>
-        
-        <div className="flex gap-2 mt-auto">
-          <Button variant="outline" size="sm" className="h-8">
-            <MessageSquare className="h-4 w-4 mr-1" />
-            View Responses
-          </Button>
-          <Button variant="outline" size="sm" className="h-8">
-            <Edit className="h-4 w-4 mr-1" />
-            Edit Request
-          </Button>
-        </div>
-      </CardContent>
-    </Card>;
-
-  const renderCommLogCard = (log: any) => <Card key={log.id} className="bg-white border border-gray-200 hover:shadow-md transition-shadow">
-      <CardContent className="p-6">
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-50 rounded-lg">
-              <MessageSquare className="h-4 w-4 text-blue-600" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-900">{log.contact}</h4>
-              <p className="text-sm text-gray-500">{log.type}</p>
-            </div>
-          </div>
-          <div className="text-right text-xs text-gray-400">
-            <div>{log.timestamp}</div>
-            <div>by {log.loggedBy}</div>
-          </div>
-        </div>
-        <p className="text-sm text-gray-600">{log.notes}</p>
-      </CardContent>
-    </Card>;
-
-  const handleAddCommLog = () => {
-    if (newCommLog.contact && newCommLog.type && newCommLog.notes) {
-      // Here you would typically save to backend
-      console.log('Adding communication log:', newCommLog);
-      setNewCommLog({ contact: '', type: '', notes: '' });
-      setShowCommLogForm(false);
-    }
-  };
 
   return (
     <div className="min-h-screen warm-gradient pb-20">
@@ -372,111 +85,15 @@ const Village = () => {
           </TabsList>
 
           <TabsContent value="care-circle" className="space-y-6">
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Your Care Circle</h3>
-              <p className="text-sm text-gray-600">Specific people in your village who provide care and support for particular situations or individuals</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {careCircleMembers.map(renderPersonCard)}
-            </div>
+            <CareCircleEnhanced />
           </TabsContent>
 
           <TabsContent value="delegations" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {delegationTasks.map(renderTaskCard)}
-            </div>
+            <ActiveTasksEnhanced />
           </TabsContent>
 
           <TabsContent value="help-requests" className="space-y-6">
-            {/* Help Requests Section */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Help Requests</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {helpRequests.map(renderHelpRequestCard)}
-                
-                {/* Empty state card for requesting help */}
-                <Card className="bg-gray-50 border-2 border-dashed border-gray-300 hover:border-gray-400 transition-colors h-full">
-                  <CardContent className="p-6 h-full flex flex-col items-center justify-center text-center">
-                    <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mb-4">
-                      <Users className="h-8 w-8 text-gray-400" />
-                    </div>
-                    <h3 className="font-semibold text-gray-700 mb-2">Need Help?</h3>
-                    <p className="text-sm text-gray-500 mb-4">Ask your village for support</p>
-                    <Button className="bg-gray-800 hover:bg-gray-900">
-                      <UserPlus className="h-4 w-4 mr-2" />
-                      Request Help
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-
-            {/* Communication Logs Section */}
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">Communication Logs</h3>
-                  <p className="text-sm text-gray-600">Track interactions and updates with village members</p>
-                </div>
-                <Button 
-                  onClick={() => setShowCommLogForm(!showCommLogForm)}
-                  className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
-                >
-                  <Plus className="h-4 w-4" />
-                  Log Communication
-                </Button>
-              </div>
-
-              {/* Add Communication Log Form */}
-              {showCommLogForm && (
-                <Card className="mb-6 bg-blue-50 border-blue-200">
-                  <CardContent className="p-6">
-                    <h4 className="font-semibold text-gray-900 mb-4">Add Communication Log</h4>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Contact</label>
-                        <Input
-                          placeholder="Who did you communicate with?"
-                          value={newCommLog.contact}
-                          onChange={(e) => setNewCommLog({...newCommLog, contact: e.target.value})}
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Type of Communication</label>
-                        <Input
-                          placeholder="e.g., Phone call, Text message, Visit, Email"
-                          value={newCommLog.type}
-                          onChange={(e) => setNewCommLog({...newCommLog, type: e.target.value})}
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-                        <Textarea
-                          placeholder="What was discussed or accomplished?"
-                          value={newCommLog.notes}
-                          onChange={(e) => setNewCommLog({...newCommLog, notes: e.target.value})}
-                          rows={3}
-                        />
-                      </div>
-                      <div className="flex gap-2">
-                        <Button onClick={handleAddCommLog} className="bg-blue-600 hover:bg-blue-700">
-                          <FileText className="h-4 w-4 mr-2" />
-                          Save Log
-                        </Button>
-                        <Button variant="outline" onClick={() => setShowCommLogForm(false)}>
-                          Cancel
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* Communication Logs List */}
-              <div className="space-y-4">
-                {commLogs.map(renderCommLogCard)}
-              </div>
-            </div>
+            <HelpRequestsLogsEnhanced />
           </TabsContent>
         </Tabs>
       </div>
