@@ -10,6 +10,8 @@ import PlannerHeader from '@/components/planner/PlannerHeader';
 import WeekView from '@/components/planner/WeekView';
 import MonthView from '@/components/planner/MonthView';
 import GoalsView from '@/components/planner/GoalsView';
+import TaskRating from '@/components/planner/TaskRating';
+import MentalLoadForecast from '@/components/planner/MentalLoadForecast';
 
 const PlannerInsights = () => {
   const [activeTab, setActiveTab] = useState('week');
@@ -131,6 +133,12 @@ const PlannerInsights = () => {
           </Card>
         </div>
 
+        {/* Task Rating Section */}
+        <TaskRating />
+
+        {/* Mental Load Forecast */}
+        <MentalLoadForecast />
+
         {/* Stress Patterns */}
         <Card className="card-warm">
           <CardHeader className="pb-3">
@@ -152,10 +160,10 @@ const PlannerInsights = () => {
                 <p className="text-xs text-green-400 mt-1">Perfect for scheduling new appointments</p>
               </div>
               <div className="p-4 bg-orange-50/80 rounded-lg border border-orange-100">
-                <h4 className="font-medium text-orange-700">Mental Load Forecast</h4>
-                <p className="text-sm text-orange-600 mt-1">Next week: Moderate</p>
-                <p className="text-xs text-orange-500 mt-2">8 tasks planned, similar to this week</p>
-                <p className="text-xs text-orange-400 mt-1">Consider moving 2 non-urgent tasks</p>
+                <h4 className="font-medium text-orange-700">Current Week Load</h4>
+                <p className="text-sm text-orange-600 mt-1">This week: High</p>
+                <p className="text-xs text-orange-500 mt-2">8 tasks planned, above average</p>
+                <p className="text-xs text-orange-400 mt-1">See detailed forecast below</p>
               </div>
             </div>
           </CardContent>
