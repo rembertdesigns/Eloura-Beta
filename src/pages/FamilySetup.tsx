@@ -136,10 +136,10 @@ const FamilySetup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-3 sm:p-4">
-      <div className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl my-2">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-3 sm:p-6">
+      <div className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl my-1 sm:my-2">
         {/* Logo and Header */}
-        <div className="text-center mb-3">
+        <div className="text-center mb-2 sm:mb-3">
           <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] rounded-2xl mb-2 shadow-lg">
             <img src={familyCareIcon} alt="Family Care" className="h-5 w-5 sm:h-6 sm:w-6" />
           </div>
@@ -151,8 +151,8 @@ const FamilySetup = () => {
 
         {/* Family Types Card */}
         <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-          <CardContent className="p-4 sm:p-6 lg:p-8">
-            <div className="space-y-2 sm:space-y-3">
+          <CardContent className="p-3 sm:p-5 lg:p-8">
+            <div className="space-y-1.5 sm:space-y-2">
               {familyTypes.map((type) => {
                 const IconComponent = type.icon;
                 const isSelected = selectedType === type.id;
@@ -226,7 +226,7 @@ const FamilySetup = () => {
             <Button
               onClick={handleContinue}
               disabled={loading || !selectedType}
-              className="w-full mt-3 sm:mt-4 h-9 sm:h-10 text-sm font-medium bg-[#223b0a] hover:bg-[#1a2e08] text-white rounded-xl transition-all duration-200 disabled:opacity-50"
+              className="w-full mt-2 sm:mt-3 h-9 sm:h-10 text-sm font-medium bg-[#223b0a] hover:bg-[#1a2e08] text-white rounded-xl transition-all duration-200 disabled:opacity-50"
             >
               {loading ? (
                 <div className="flex items-center gap-2">
@@ -241,7 +241,7 @@ const FamilySetup = () => {
         </Card>
 
         {/* Footer Note */}
-        <div className="text-center mt-2">
+        <div className="text-center mt-1 sm:mt-2">
           <p className="text-xs text-slate-500 px-4 sm:px-0">
             You can change this selection later in your account settings
           </p>
