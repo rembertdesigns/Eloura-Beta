@@ -89,7 +89,7 @@ const Invite = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-green-50 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-4xl">
         {/* Header */}
         <div className="text-center space-y-4 mb-8">
