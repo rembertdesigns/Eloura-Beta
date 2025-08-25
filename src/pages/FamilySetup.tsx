@@ -136,23 +136,23 @@ const FamilySetup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-2 sm:p-4">
-      <div className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl my-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-2">
+      <div className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl my-2">
         {/* Logo and Header */}
-        <div className="text-center mb-4 sm:mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] rounded-2xl mb-3 sm:mb-4 shadow-lg">
-            <img src={familyCareIcon} alt="Family Care" className="h-6 w-6 sm:h-7 sm:w-7" />
+        <div className="text-center mb-3">
+          <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] rounded-2xl mb-2 shadow-lg">
+            <img src={familyCareIcon} alt="Family Care" className="h-5 w-5 sm:h-6 sm:w-6" />
           </div>
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 mb-2">Your Family and Care Responsibilities</h1>
-          <p className="text-slate-600 text-sm sm:text-base lg:text-lg max-w-sm sm:max-w-md mx-auto px-2 sm:px-0">
+          <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-900 mb-1">Your Family and Care Responsibilities</h1>
+          <p className="text-slate-600 text-xs sm:text-sm lg:text-base max-w-sm sm:max-w-md mx-auto px-2 sm:px-0">
             Help us personalize your Eloura experience by selecting what best describes your family situation
           </p>
         </div>
 
         {/* Family Types Card */}
         <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-          <CardContent className="p-4 sm:p-6 lg:p-8">
-            <div className="space-y-4 sm:space-y-5">
+          <CardContent className="p-3 sm:p-4 lg:p-5">
+            <div className="space-y-2 sm:space-y-3">
               {familyTypes.map((type) => {
                 const IconComponent = type.icon;
                 const isSelected = selectedType === type.id;
@@ -166,7 +166,7 @@ const FamilySetup = () => {
                     onClick={() => setSelectedType(type.id)}
                   >
                     <div className={`
-                      relative p-5 sm:p-6 rounded-2xl border-2 transition-all duration-300
+                      relative p-3 sm:p-4 rounded-2xl border-2 transition-all duration-300
                       bg-gradient-to-r ${type.bgColor}
                       shadow-lg hover:shadow-xl
                       ${isSelected 
@@ -176,32 +176,32 @@ const FamilySetup = () => {
                     `}>
                       {/* Selection indicator */}
                       {isSelected && (
-                        <div className="absolute top-4 right-4 w-6 h-6 bg-[#223b0a] rounded-full flex items-center justify-center">
-                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                        <div className="absolute top-3 right-3 w-5 h-5 bg-[#223b0a] rounded-full flex items-center justify-center">
+                          <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
                         </div>
                       )}
                       
-                      <div className="flex items-start space-x-4 sm:space-x-5">
+                      <div className="flex items-start space-x-3 sm:space-x-4">
                         {/* Icon */}
                         <div className={`
-                          flex-shrink-0 p-3 sm:p-4 rounded-2xl transition-all duration-300
+                          flex-shrink-0 p-2 sm:p-3 rounded-xl transition-all duration-300
                           ${isSelected 
                             ? 'bg-[#223b0a] text-white shadow-lg' 
                             : `${type.iconColor} bg-white/70 group-hover:bg-white/90 shadow-md`
                           }
                         `}>
-                          <IconComponent className="h-6 w-6 sm:h-7 sm:w-7" />
+                          <IconComponent className="h-5 w-5 sm:h-6 sm:w-6" />
                         </div>
                         
                         {/* Content */}
-                        <div className="flex-1 min-w-0 pt-1">
+                        <div className="flex-1 min-w-0 pt-0.5">
                           <h3 className={`
-                            text-lg sm:text-xl font-bold mb-2 transition-colors duration-300
+                            text-base sm:text-lg font-bold mb-1 transition-colors duration-300
                             ${isSelected ? 'text-[#223b0a]' : 'text-slate-900 group-hover:text-slate-800'}
                           `}>
                             {type.title}
                           </h3>
-                          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium">
+                          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
                             {type.description}
                           </p>
                         </div>
@@ -226,7 +226,7 @@ const FamilySetup = () => {
             <Button
               onClick={handleContinue}
               disabled={loading || !selectedType}
-              className="w-full mt-4 sm:mt-6 h-10 sm:h-12 text-sm sm:text-base font-medium bg-[#223b0a] hover:bg-[#1a2e08] text-white rounded-xl transition-all duration-200 disabled:opacity-50"
+              className="w-full mt-3 sm:mt-4 h-9 sm:h-10 text-sm font-medium bg-[#223b0a] hover:bg-[#1a2e08] text-white rounded-xl transition-all duration-200 disabled:opacity-50"
             >
               {loading ? (
                 <div className="flex items-center gap-2">
@@ -241,8 +241,8 @@ const FamilySetup = () => {
         </Card>
 
         {/* Footer Note */}
-        <div className="text-center mt-3 sm:mt-4">
-          <p className="text-xs sm:text-sm text-slate-500 px-4 sm:px-0">
+        <div className="text-center mt-2">
+          <p className="text-xs text-slate-500 px-4 sm:px-0">
             You can change this selection later in your account settings
           </p>
         </div>
