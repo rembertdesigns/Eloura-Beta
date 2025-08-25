@@ -4,11 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { UserPlus, Users, Mail, Copy, Share2, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Invite = () => {
   const navigate = useNavigate();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [selectedRole, setSelectedRole] = useState('helper');
   const [invitedMembers, setInvitedMembers] = useState([
@@ -37,17 +39,18 @@ const Invite = () => {
   ];
 
   const handleSendInvite = () => {
-    if (!email.trim()) return;
+    if (!name.trim() || !email.trim()) return;
     
     const newInvite = {
       id: Date.now(),
       email: email.trim(),
       role: selectedRole,
       status: 'pending',
-      name: email.split('@')[0]
+      name: name.trim()
     };
     
     setInvitedMembers([...invitedMembers, newInvite]);
+    setName('');
     setEmail('');
     
     toast({
@@ -125,6 +128,18 @@ const Invite = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
+              {/* Name Input */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Name</label>
+                <Input
+                  type="text"
+                  placeholder="Enter full name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+
               {/* Email Input */}
               <div className="space-y-2">
                 <label className="text-sm font-medium">Email Address</label>
@@ -140,38 +155,24 @@ const Invite = () => {
               {/* Role Selection */}
               <div className="space-y-3">
                 <label className="text-sm font-medium">Select Role</label>
-                <div className="space-y-2">
-                  {roles.map((role) => (
-                    <div
-                      key={role.value}
-                      onClick={() => setSelectedRole(role.value)}
-                      className={`p-3 rounded-lg border cursor-pointer transition-all ${
-                        selectedRole === role.value
-                          ? 'border-primary bg-primary/5'
-                          : 'border-border hover:border-primary/50'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
+                <Select value={selectedRole} onValueChange={setSelectedRole}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Choose a role" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border border-border shadow-lg z-50">
+                    {roles.map((role) => (
+                      <SelectItem key={role.value} value={role.value} className="cursor-pointer hover:bg-accent">
                         <div>
                           <div className="font-medium">{role.label}</div>
-                          <div className="text-sm text-muted-foreground">{role.description}</div>
+                          <div className="text-xs text-muted-foreground">{role.description}</div>
                         </div>
-                        <div className={`w-4 h-4 rounded-full border-2 ${
-                          selectedRole === role.value
-                            ? 'border-primary bg-primary'
-                            : 'border-muted-foreground/30'
-                        }`}>
-                          {selectedRole === role.value && (
-                            <div className="w-full h-full rounded-full bg-white scale-50"></div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
-              <Button onClick={handleSendInvite} className="w-full" disabled={!email.trim()}>
+              <Button onClick={handleSendInvite} className="w-full" disabled={!name.trim() || !email.trim()}>
                 <Mail className="h-4 w-4 mr-2" />
                 Send Invites
               </Button>
