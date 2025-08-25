@@ -13,22 +13,7 @@ const Invite = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [selectedRole, setSelectedRole] = useState('helper');
-  const [invitedMembers, setInvitedMembers] = useState([
-    {
-      id: 1,
-      email: 'sarah@email.com',
-      role: 'caregiver',
-      status: 'accepted',
-      name: 'Sarah Johnson'
-    },
-    {
-      id: 2,
-      email: 'mom.smith@email.com',
-      role: 'family',
-      status: 'pending',
-      name: 'Mom'
-    }
-  ]);
+  const [invitedMembers, setInvitedMembers] = useState([]);
   const { toast } = useToast();
 
   const roles = [
@@ -118,7 +103,7 @@ const Invite = () => {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className={`grid gap-8 ${invitedMembers.length > 0 ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1 max-w-md mx-auto'}`}>
           {/* Send Invites */}
           <Card className="border-0 shadow-lg">
             <CardHeader>
@@ -192,57 +177,51 @@ const Invite = () => {
             </CardContent>
           </Card>
 
-          {/* Current Members */}
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-3">
-                <Users className="h-5 w-5 text-primary" />
-                Your Support Network
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {invitedMembers.map((member) => (
-                  <div
-                    key={member.id}
-                    className="flex items-center justify-between p-3 bg-card rounded-lg border"
-                  >
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-medium text-sm truncate">
-                          {member.name}
-                        </h4>
-                        <Badge className={`${getStatusColor(member.status)} border-0 text-xs`}>
-                          {member.status}
+          {/* Current Members - Only show when there are invited members */}
+          {invitedMembers.length > 0 && (
+            <Card className="border-0 shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-3">
+                  <Users className="h-5 w-5 text-primary" />
+                  Your Support Network
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {invitedMembers.map((member) => (
+                    <div
+                      key={member.id}
+                      className="flex items-center justify-between p-3 bg-card rounded-lg border"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-medium text-sm truncate">
+                            {member.name}
+                          </h4>
+                          <Badge className={`${getStatusColor(member.status)} border-0 text-xs`}>
+                            {member.status}
+                          </Badge>
+                        </div>
+                        <p className="text-xs text-muted-foreground truncate">{member.email}</p>
+                        <Badge className={`${getRoleColor(member.role)} border-0 text-xs mt-1`}>
+                          {roles.find(r => r.value === member.role)?.label}
                         </Badge>
                       </div>
-                      <p className="text-xs text-muted-foreground truncate">{member.email}</p>
-                      <Badge className={`${getRoleColor(member.role)} border-0 text-xs mt-1`}>
-                        {roles.find(r => r.value === member.role)?.label}
-                      </Badge>
+                      
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeInvite(member.id)}
+                        className="text-muted-foreground hover:text-destructive"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
                     </div>
-                    
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeInvite(member.id)}
-                      className="text-muted-foreground hover:text-destructive"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ))}
-                
-                {invitedMembers.length === 0 && (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <Users className="h-12 w-12 mx-auto mb-3 text-muted-foreground/50" />
-                    <p>No team members yet</p>
-                    <p className="text-sm">Start by inviting someone to help</p>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>
