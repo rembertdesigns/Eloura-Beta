@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import Navigation from '@/components/Navigation';
+import { Target } from 'lucide-react';
 
 const Priorities = () => {
   const navigate = useNavigate();
@@ -42,13 +42,17 @@ const Priorities = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50">
-      <Navigation />
-      <div className="container mx-auto px-4 py-8 max-w-2xl">
-        <Card className="border-0 shadow-lg">
-          <CardHeader>
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8 max-w-2xl min-h-screen flex items-center">
+        <Card className="shadow-lg w-full">
+          <CardHeader className="text-center">
+            <div className="flex justify-center mb-4">
+              <div className="bg-primary text-primary-foreground rounded-full p-3">
+                <Target className="h-6 w-6 sm:h-7 sm:w-7" />
+              </div>
+            </div>
             <CardTitle className="text-2xl font-semibold">Set Your Priorities</CardTitle>
-            <p className="text-slate-600">
+            <p className="text-muted-foreground">
               What matters most to you right now? Select up to 3
             </p>
           </CardHeader>
@@ -58,8 +62,8 @@ const Priorities = () => {
                 key={priority}
                 className={`flex items-center space-x-3 p-3 rounded-lg border cursor-pointer transition-colors ${
                   selectedPriorities.includes(priority)
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-slate-200 hover:bg-slate-50'
+                    ? 'border-primary bg-primary/5'
+                    : 'border-input hover:bg-muted/50'
                 } ${
                   selectedPriorities.length >= 3 && !selectedPriorities.includes(priority)
                     ? 'opacity-50 cursor-not-allowed'
@@ -72,13 +76,13 @@ const Priorities = () => {
                   onChange={() => togglePriority(priority)}
                   disabled={selectedPriorities.length >= 3 && !selectedPriorities.includes(priority)}
                 />
-                <label className="flex-1 text-slate-700 cursor-pointer">
+                <label className="flex-1 text-foreground cursor-pointer">
                   {priority}
                 </label>
               </div>
             ))}
 
-            <div className="text-sm text-slate-500 mt-4">
+            <div className="text-sm text-muted-foreground mt-4">
               {selectedPriorities.length}/3 priorities selected
             </div>
 
