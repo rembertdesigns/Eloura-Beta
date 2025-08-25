@@ -191,15 +191,15 @@ const PersonalInfo = () => {
         <div className="w-6 h-6 border-2 border-[#223b0a]/30 border-t-[#223b0a] rounded-full animate-spin" />
       </div>;
   }
-  return <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-3 sm:p-4">
-      <div className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl my-2">
+  return <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-3 sm:p-6">
+      <div className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl my-1 sm:my-2">
 
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#223b0a] rounded-2xl mb-6 shadow-sm">
+        <div className="text-center mb-4 sm:mb-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#223b0a] rounded-2xl mb-3 sm:mb-4 shadow-sm">
             <Heart className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Add Your Info</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">Add Your Info</h1>
           <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
             Tell us about yourself to get started
           </p>
@@ -207,14 +207,14 @@ const PersonalInfo = () => {
 
         {/* Form Card */}
         <Card className="border border-border/50 shadow-lg bg-card/80 backdrop-blur-sm">
-          <CardContent className="p-4 sm:p-6 lg:p-8">
+          <CardContent className="p-3 sm:p-5 lg:p-8">
             <form onSubmit={e => {
             e.preventDefault();
             handleContinue();
-          }} className="space-y-8">
+          }} className="space-y-4 sm:space-y-6">
               
               {/* Profile Photo Section */}
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 <h3 className="text-lg font-semibold text-card-foreground">Profile Photo (Optional)</h3>
                 <div className="flex items-center space-x-6">
                   <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center overflow-hidden border-2 border-border">
@@ -239,11 +239,11 @@ const PersonalInfo = () => {
               <div className="border-t border-border/30"></div>
 
               {/* Basic Information Section */}
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-5">
                 <h3 className="text-lg font-semibold text-card-foreground">Basic Information</h3>
                 
                 {/* Name Fields Group */}
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="firstName" className="text-sm font-medium text-card-foreground">
@@ -276,7 +276,7 @@ const PersonalInfo = () => {
                 </div>
 
                 {/* Additional Info Group */}
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div>
                     <Label htmlFor="dateOfBirth" className="text-sm font-medium text-card-foreground">
                       Date of Birth *
@@ -310,7 +310,7 @@ const PersonalInfo = () => {
               <div className="border-t border-border/30"></div>
 
               {/* Navigation */}
-              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-1 sm:pt-2">
                 <Button 
                   type="button" 
                   variant="outline" 
