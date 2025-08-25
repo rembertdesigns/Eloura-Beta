@@ -238,15 +238,9 @@ const FamilyStructure = () => {
             <Users className="h-6 w-6 sm:h-7 sm:w-7 text-primary-foreground" />
           </div>
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">Family Structure</h1>
-          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto px-2 sm:px-0 mb-3 sm:mb-4">
+          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto px-2 sm:px-0">
             Add your family members and pets so we can help you coordinate care and support for everyone
           </p>
-          
-          {/* Invite Support Button */}
-          <Button variant="outline" onClick={() => navigate('/invite')} className="text-sm sm:text-base">
-            <UserPlus className="h-4 w-4 mr-2" />
-            Invite Support Team
-          </Button>
         </div>
 
         {/* Add Member Button - Fixed position for mobile */}
