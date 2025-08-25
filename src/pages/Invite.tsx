@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { UserPlus, Users, Mail, Copy, Share2, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import Navigation from '@/components/Navigation';
 
 const Invite = () => {
   const navigate = useNavigate();
@@ -90,16 +89,19 @@ const Invite = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50">
-      <Navigation />
-      
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-green-50 p-4">
+      <div className="w-full max-w-4xl">
         {/* Header */}
         <div className="text-center space-y-4 mb-8">
-          <h1 className="text-4xl font-light text-slate-800">
-            Invite Your <span className="font-medium text-emerald-600">Village</span> <span className="text-slate-500">(Optional)</span>
+          <div className="flex justify-center mb-4">
+            <div className="bg-primary text-primary-foreground rounded-full p-3">
+              <Users className="h-6 w-6 sm:h-7 sm:w-7" />
+            </div>
+          </div>
+          <h1 className="text-2xl font-semibold">
+            Invite Your <span className="text-primary">Village</span> <span className="text-muted-foreground">(Optional)</span>
           </h1>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             Is there anyone who helps you or could? We'll walk them through how they can support you.
           </p>
           
@@ -107,7 +109,7 @@ const Invite = () => {
           <Button
             variant="outline"
             onClick={() => navigate('/onboarding-summary')}
-            className="mt-4 border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white"
+            className="mt-4"
           >
             Skip
           </Button>
@@ -117,15 +119,15 @@ const Invite = () => {
           {/* Send Invites */}
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-slate-700">
-                <UserPlus className="h-5 w-5 text-blue-500" />
+              <CardTitle className="flex items-center gap-3">
+                <UserPlus className="h-5 w-5 text-primary" />
                 Send Invitation
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Email Input */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700">Email Address</label>
+                <label className="text-sm font-medium">Email Address</label>
                 <Input
                   type="email"
                   placeholder="Enter email address"
@@ -137,7 +139,7 @@ const Invite = () => {
 
               {/* Role Selection */}
               <div className="space-y-3">
-                <label className="text-sm font-medium text-slate-700">Select Role</label>
+                <label className="text-sm font-medium">Select Role</label>
                 <div className="space-y-2">
                   {roles.map((role) => (
                     <div
@@ -145,19 +147,19 @@ const Invite = () => {
                       onClick={() => setSelectedRole(role.value)}
                       className={`p-3 rounded-lg border cursor-pointer transition-all ${
                         selectedRole === role.value
-                          ? 'border-blue-500 bg-blue-50'
-                          : 'border-slate-200 hover:border-slate-300'
+                          ? 'border-primary bg-primary/5'
+                          : 'border-border hover:border-primary/50'
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <div className="font-medium text-slate-700">{role.label}</div>
-                          <div className="text-sm text-slate-500">{role.description}</div>
+                          <div className="font-medium">{role.label}</div>
+                          <div className="text-sm text-muted-foreground">{role.description}</div>
                         </div>
                         <div className={`w-4 h-4 rounded-full border-2 ${
                           selectedRole === role.value
-                            ? 'border-blue-500 bg-blue-500'
-                            : 'border-slate-300'
+                            ? 'border-primary bg-primary'
+                            : 'border-muted-foreground/30'
                         }`}>
                           {selectedRole === role.value && (
                             <div className="w-full h-full rounded-full bg-white scale-50"></div>
@@ -192,8 +194,8 @@ const Invite = () => {
           {/* Current Members */}
           <Card className="border-0 shadow-lg">
             <CardHeader>
-              <CardTitle className="flex items-center gap-3 text-slate-700">
-                <Users className="h-5 w-5 text-green-500" />
+              <CardTitle className="flex items-center gap-3">
+                <Users className="h-5 w-5 text-primary" />
                 Your Support Network
               </CardTitle>
             </CardHeader>
@@ -202,18 +204,18 @@ const Invite = () => {
                 {invitedMembers.map((member) => (
                   <div
                     key={member.id}
-                    className="flex items-center justify-between p-3 bg-white rounded-lg border border-slate-100"
+                    className="flex items-center justify-between p-3 bg-card rounded-lg border"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-medium text-slate-700 text-sm truncate">
+                        <h4 className="font-medium text-sm truncate">
                           {member.name}
                         </h4>
                         <Badge className={`${getStatusColor(member.status)} border-0 text-xs`}>
                           {member.status}
                         </Badge>
                       </div>
-                      <p className="text-xs text-slate-500 truncate">{member.email}</p>
+                      <p className="text-xs text-muted-foreground truncate">{member.email}</p>
                       <Badge className={`${getRoleColor(member.role)} border-0 text-xs mt-1`}>
                         {roles.find(r => r.value === member.role)?.label}
                       </Badge>
@@ -223,7 +225,7 @@ const Invite = () => {
                       variant="ghost"
                       size="sm"
                       onClick={() => removeInvite(member.id)}
-                      className="text-slate-400 hover:text-red-500"
+                      className="text-muted-foreground hover:text-destructive"
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -231,8 +233,8 @@ const Invite = () => {
                 ))}
                 
                 {invitedMembers.length === 0 && (
-                  <div className="text-center py-8 text-slate-500">
-                    <Users className="h-12 w-12 mx-auto mb-3 text-slate-300" />
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Users className="h-12 w-12 mx-auto mb-3 text-muted-foreground/50" />
                     <p>No team members yet</p>
                     <p className="text-sm">Start by inviting someone to help</p>
                   </div>
