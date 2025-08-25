@@ -9,6 +9,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
+import ImageCropModal from '@/components/ImageCropModal';
 const PersonalInfo = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -22,6 +23,8 @@ const PersonalInfo = () => {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const navigate = useNavigate();
   const {
     user
@@ -72,6 +75,12 @@ const PersonalInfo = () => {
     loadExistingData();
   }, [user]);
   const handleInputChange = (field: string, value: string | File | null) => {
+    if (field === 'avatar' && value instanceof File) {
+      setSelectedImageFile(value);
+      setShowCropModal(true);
+      return;
+    }
+    
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -83,6 +92,14 @@ const PersonalInfo = () => {
         [field]: ''
       }));
     }
+  };
+
+  const handleCroppedImage = (croppedImageFile: File) => {
+    setFormData(prev => ({
+      ...prev,
+      avatar: croppedImageFile
+    }));
+    setSelectedImageFile(null);
   };
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -323,6 +340,16 @@ const PersonalInfo = () => {
             </form>
           </CardContent>
         </Card>
+
+        <ImageCropModal
+          isOpen={showCropModal}
+          onClose={() => {
+            setShowCropModal(false);
+            setSelectedImageFile(null);
+          }}
+          imageFile={selectedImageFile}
+          onCropComplete={handleCroppedImage}
+        />
       </div>
     </div>;
 };
