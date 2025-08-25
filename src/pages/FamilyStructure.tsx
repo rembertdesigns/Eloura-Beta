@@ -227,8 +227,8 @@ const FamilyStructure = () => {
         <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
       </div>;
   }
-  return <div className="min-h-screen bg-background p-3 sm:p-4">
-      <div className="max-w-4xl mx-auto">
+  return <div className="min-h-screen bg-background flex items-center justify-center p-3 sm:p-4">
+      <div className="max-w-4xl w-full sm:my-8">
         {/* Progress */}
         
 
