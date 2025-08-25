@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import Navigation from '@/components/Navigation';
 
 const TopChallenges = () => {
   const navigate = useNavigate();
@@ -38,26 +37,25 @@ const TopChallenges = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50">
-      <Navigation />
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-2xl">
-        <Card className="border-0 shadow-lg">
+        <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold">What Are You Dealing With Right Now?</CardTitle>
-            <p className="text-slate-600">Select anything that resonates. This helps Eloura show up where you need support most.</p>
+            <p className="text-muted-foreground">Select anything that resonates. This helps Eloura show up where you need support most.</p>
           </CardHeader>
           <CardContent className="space-y-4">
             {challenges.map((challenge) => (
               <div
                 key={challenge}
-                className="flex items-center space-x-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer"
+                className="flex items-center space-x-3 p-3 rounded-lg border hover:bg-muted/50 cursor-pointer"
                 onClick={() => toggleChallenge(challenge)}
               >
                 <Checkbox
                   checked={selectedChallenges.includes(challenge)}
                   onChange={() => toggleChallenge(challenge)}
                 />
-                <label className="flex-1 text-slate-700 cursor-pointer">
+                <label className="flex-1 text-foreground cursor-pointer">
                   {challenge}
                 </label>
               </div>
