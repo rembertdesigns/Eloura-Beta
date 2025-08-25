@@ -180,7 +180,7 @@ const PersonalInfo = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary/10 to-primary/20 rounded-2xl mb-6 shadow-sm border border-primary/10">
-            <Heart className="h-8 w-8 text-primary" />
+            <Heart className="h-8 w-8 text-[#223b0a]" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Add Your Info</h1>
           <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
@@ -309,7 +309,7 @@ const PersonalInfo = () => {
                 <Button 
                   type="submit" 
                   disabled={loading} 
-                  className="flex-1 sm:flex-none h-12 bg-primary hover:bg-primary/90 text-primary-foreground px-8"
+                  className="flex-1 sm:flex-none h-12 bg-[#223b0a] hover:bg-[#223b0a]/90 text-white px-8"
                 >
                   {loading ? <div className="flex items-center gap-2">
                       <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
