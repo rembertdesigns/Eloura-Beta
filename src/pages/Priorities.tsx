@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Target } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 const Priorities = () => {
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ const Priorities = () => {
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
               <div className="bg-primary text-primary-foreground rounded-full p-3">
-                <Target className="h-6 w-6 sm:h-7 sm:w-7" />
+                <Star className="h-6 w-6 sm:h-7 sm:w-7" />
               </div>
             </div>
             <CardTitle className="text-2xl font-semibold">Set Your Priorities</CardTitle>
