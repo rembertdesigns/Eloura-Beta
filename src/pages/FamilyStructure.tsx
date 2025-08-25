@@ -227,23 +227,23 @@ const FamilyStructure = () => {
         <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
       </div>;
   }
-  return <div className="min-h-screen bg-background p-4 sm:p-6">
+  return <div className="min-h-screen bg-background p-3 sm:p-4">
       <div className="max-w-4xl mx-auto">
         {/* Progress */}
         
 
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-primary rounded-2xl mb-4 sm:mb-6 shadow-lg">
-            <Users className="h-6 w-6 sm:h-8 sm:w-8 text-primary-foreground" />
+        <div className="text-center mb-4 sm:mb-6">
+          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-primary rounded-2xl mb-3 sm:mb-4 shadow-lg">
+            <Users className="h-6 w-6 sm:h-7 sm:w-7 text-primary-foreground" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">Family Structure</h1>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto px-2 sm:px-0">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-foreground mb-1 sm:mb-2">Family Structure</h1>
+          <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto px-2 sm:px-0 mb-3 sm:mb-4">
             Add your family members and pets so we can help you coordinate care and support for everyone
           </p>
           
           {/* Invite Support Button */}
-          <Button variant="outline" onClick={() => navigate('/invite')} className="mt-4">
+          <Button variant="outline" onClick={() => navigate('/invite')} className="text-sm sm:text-base">
             <UserPlus className="h-4 w-4 mr-2" />
             Invite Support Team
           </Button>
@@ -251,56 +251,56 @@ const FamilyStructure = () => {
 
         {/* Add Member Button - Fixed position for mobile */}
         <div className="fixed bottom-4 right-4 z-40 sm:hidden">
-          <Button onClick={handleAddMember} size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground h-14 w-14 rounded-full shadow-xl">
-            <Plus className="h-6 w-6" />
+          <Button onClick={handleAddMember} size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground h-12 w-12 sm:h-14 sm:w-14 rounded-full shadow-xl">
+            <Plus className="h-5 w-5 sm:h-6 sm:w-6" />
           </Button>
         </div>
 
         {/* Family Members */}
-        <Card className="shadow-lg border-border bg-card mb-6">
-          <CardHeader>
-            <div className="flex items-center justify-between flex-wrap gap-4">
+        <Card className="shadow-lg border-border bg-card mb-4 sm:mb-6">
+          <CardHeader className="pb-3 sm:pb-4">
+            <div className="flex items-center justify-between flex-wrap gap-3 sm:gap-4">
               <div>
-                <CardTitle className="text-xl">Family Members</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-lg sm:text-xl">Family Members</CardTitle>
+                <CardDescription className="text-sm">
                   {humans.length === 0 ? "No family members added yet" : `${humans.length} family member${humans.length === 1 ? '' : 's'} added`}
                 </CardDescription>
               </div>
-              <Button onClick={handleAddMember} className="bg-primary hover:bg-primary/90 text-primary-foreground hidden sm:flex">
+              <Button onClick={handleAddMember} className="bg-primary hover:bg-primary/90 text-primary-foreground hidden sm:flex text-sm">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Member
               </Button>
             </div>
           </CardHeader>
-          <CardContent>
-            {humans.length === 0 ? <div className="text-center py-8">
-                <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground mb-4">Start building your family structure</p>
-                <Button onClick={handleAddMember} variant="outline" className="sm:hidden">
+          <CardContent className="pt-0">
+            {humans.length === 0 ? <div className="text-center py-6 sm:py-8">
+                <Users className="h-10 w-10 sm:h-12 sm:w-12 text-muted-foreground mx-auto mb-3 sm:mb-4" />
+                <p className="text-muted-foreground mb-3 sm:mb-4 text-sm sm:text-base">Start building your family structure</p>
+                <Button onClick={handleAddMember} variant="outline" className="sm:hidden text-sm">
                   <Plus className="h-4 w-4 mr-2" />
                   Add Your First Family Member
                 </Button>
-              </div> : <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {humans.map(member => <div key={member.id} className="relative p-4 border border-border rounded-xl hover:border-primary/30 hover:shadow-lg transition-all duration-200 bg-card shadow-sm">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3 flex-1">
-                        <span className="text-2xl">{getMemberIcon(member)}</span>
+              </div> : <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {humans.map(member => <div key={member.id} className="relative p-3 sm:p-4 border border-border rounded-xl hover:border-primary/30 hover:shadow-lg transition-all duration-200 bg-card shadow-sm">
+                    <div className="flex items-start justify-between mb-2 sm:mb-3">
+                      <div className="flex items-center gap-2 sm:gap-3 flex-1">
+                        <span className="text-xl sm:text-2xl">{getMemberIcon(member)}</span>
                         <div className="min-w-0 flex-1">
-                          <h3 className="font-semibold text-card-foreground truncate">{member.name}</h3>
-                          <p className="text-sm text-muted-foreground">{getDisplayLabel(member)}</p>
+                          <h3 className="font-semibold text-card-foreground truncate text-sm sm:text-base">{member.name}</h3>
+                          <p className="text-xs sm:text-sm text-muted-foreground">{getDisplayLabel(member)}</p>
                         </div>
                       </div>
                       <div className="flex gap-1 flex-shrink-0">
-                        <Button size="sm" variant="ghost" onClick={() => handleEditMember(member)} className="h-8 w-8 p-0">
+                        <Button size="sm" variant="ghost" onClick={() => handleEditMember(member)} className="h-7 w-7 sm:h-8 sm:w-8 p-0">
                           <Edit className="h-3 w-3" />
                         </Button>
-                        <Button size="sm" variant="ghost" onClick={() => handleDeleteMember(member.id)} className="h-8 w-8 p-0 text-destructive hover:text-destructive/90">
+                        <Button size="sm" variant="ghost" onClick={() => handleDeleteMember(member.id)} className="h-7 w-7 sm:h-8 sm:w-8 p-0 text-destructive hover:text-destructive/90">
                           <Trash2 className="h-3 w-3" />
                         </Button>
                       </div>
                     </div>
                     
-                    {member.date_of_birth && <p className="text-sm text-muted-foreground mb-2">
+                    {member.date_of_birth && <p className="text-xs sm:text-sm text-muted-foreground mb-2">
                         {formatAge(member.date_of_birth)}
                       </p>}
                     
@@ -308,7 +308,7 @@ const FamilyStructure = () => {
                         Primary Caregiver
                       </span>}
                     
-                    {member.notes && <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                    {member.notes && <p className="text-xs sm:text-sm text-muted-foreground mt-2 line-clamp-2">
                         {member.notes}
                       </p>}
                   </div>)}
@@ -317,47 +317,47 @@ const FamilyStructure = () => {
         </Card>
 
         {/* Pets */}
-        {pets.length > 0 && <Card className="shadow-lg border-border bg-card mb-6">
-            <CardHeader>
+        {pets.length > 0 && <Card className="shadow-lg border-border bg-card mb-4 sm:mb-6">
+            <CardHeader className="pb-3 sm:pb-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-xl flex items-center gap-2">
+                  <CardTitle className="text-lg sm:text-xl flex items-center gap-2">
                     <span>🐾</span>
                     Pets
                   </CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-sm">
                     {pets.length} pet{pets.length === 1 ? '' : 's'} in your family
                   </CardDescription>
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {pets.map(pet => <div key={pet.id} className="relative p-4 border border-border rounded-xl hover:border-primary/30 hover:shadow-lg transition-all duration-200 bg-card shadow-sm">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3 flex-1">
-                        <span className="text-2xl">{getMemberIcon(pet)}</span>
+            <CardContent className="pt-0">
+              <div className="grid gap-3 sm:gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {pets.map(pet => <div key={pet.id} className="relative p-3 sm:p-4 border border-border rounded-xl hover:border-primary/30 hover:shadow-lg transition-all duration-200 bg-card shadow-sm">
+                    <div className="flex items-start justify-between mb-2 sm:mb-3">
+                      <div className="flex items-center gap-2 sm:gap-3 flex-1">
+                        <span className="text-xl sm:text-2xl">{getMemberIcon(pet)}</span>
                         <div className="min-w-0 flex-1">
-                          <h3 className="font-semibold text-card-foreground truncate">{pet.name}</h3>
-                          <p className="text-sm text-muted-foreground">{getDisplayLabel(pet)}</p>
+                          <h3 className="font-semibold text-card-foreground truncate text-sm sm:text-base">{pet.name}</h3>
+                          <p className="text-xs sm:text-sm text-muted-foreground">{getDisplayLabel(pet)}</p>
                           {pet.breed && <p className="text-xs text-muted-foreground/80 truncate">{pet.breed}</p>}
                         </div>
                       </div>
                       <div className="flex gap-1 flex-shrink-0">
-                        <Button size="sm" variant="ghost" onClick={() => handleEditMember(pet)} className="h-8 w-8 p-0">
+                        <Button size="sm" variant="ghost" onClick={() => handleEditMember(pet)} className="h-7 w-7 sm:h-8 sm:w-8 p-0">
                           <Edit className="h-3 w-3" />
                         </Button>
-                        <Button size="sm" variant="ghost" onClick={() => handleDeleteMember(pet.id)} className="h-8 w-8 p-0 text-destructive hover:text-destructive/90">
+                        <Button size="sm" variant="ghost" onClick={() => handleDeleteMember(pet.id)} className="h-7 w-7 sm:h-8 sm:w-8 p-0 text-destructive hover:text-destructive/90">
                           <Trash2 className="h-3 w-3" />
                         </Button>
                       </div>
                     </div>
                     
-                    {pet.date_of_birth && <p className="text-sm text-muted-foreground mb-2">
+                    {pet.date_of_birth && <p className="text-xs sm:text-sm text-muted-foreground mb-2">
                         {formatAge(pet.date_of_birth)}
                       </p>}
                     
-                    {pet.notes && <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
+                    {pet.notes && <p className="text-xs sm:text-sm text-muted-foreground mt-2 line-clamp-2">
                         {pet.notes}
                       </p>}
                   </div>)}
@@ -366,15 +366,15 @@ const FamilyStructure = () => {
           </Card>}
 
         {/* Navigation - Add padding bottom for mobile FAB */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pb-20 sm:pb-0">
-          <Button variant="outline" onClick={() => navigate('/personal-info')} className="flex-1 sm:flex-none h-12">
+        <div className="flex flex-col sm:flex-row gap-3 pb-16 sm:pb-0">
+          <Button variant="outline" onClick={() => navigate('/personal-info')} className="flex-1 sm:flex-none h-10 sm:h-12 text-sm sm:text-base">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Personal Info
           </Button>
           
           <div className="flex-1" />
           
-          <Button onClick={handleContinue} disabled={saving || familyMembers.length === 0} className="flex-1 sm:flex-none h-12 bg-primary hover:bg-primary/90 text-primary-foreground px-8 disabled:opacity-50 disabled:cursor-not-allowed">
+          <Button onClick={handleContinue} disabled={saving || familyMembers.length === 0} className="flex-1 sm:flex-none h-10 sm:h-12 bg-primary hover:bg-primary/90 text-primary-foreground px-6 sm:px-8 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base">
             {saving ? <div className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                 <span>Saving...</span>
@@ -386,8 +386,8 @@ const FamilyStructure = () => {
         </div>
 
         {/* Requirement Notice */}
-        {familyMembers.length === 0 && <div className="text-center mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg shadow-sm">
-            <p className="text-amber-800 text-sm">
+        {familyMembers.length === 0 && <div className="text-center mt-3 sm:mt-4 p-3 sm:p-4 bg-amber-50 border border-amber-200 rounded-lg shadow-sm">
+            <p className="text-amber-800 text-xs sm:text-sm">
               <strong>Note:</strong> You must add at least one family member to continue to the next step.
             </p>
           </div>}
