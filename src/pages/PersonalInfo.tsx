@@ -191,8 +191,8 @@ const PersonalInfo = () => {
         <div className="w-6 h-6 border-2 border-[#223b0a]/30 border-t-[#223b0a] rounded-full animate-spin" />
       </div>;
   }
-  return <div className="min-h-screen py-8 px-4 sm:px-6 flex items-center justify-center">
-      <div className="w-full max-w-2xl mx-auto">
+  return <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-3 sm:p-4">
+      <div className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl my-2">
 
         {/* Header */}
         <div className="text-center mb-8">
@@ -207,7 +207,7 @@ const PersonalInfo = () => {
 
         {/* Form Card */}
         <Card className="border border-border/50 shadow-lg bg-card/80 backdrop-blur-sm">
-          <CardContent className="p-8">
+          <CardContent className="p-4 sm:p-6 lg:p-8">
             <form onSubmit={e => {
             e.preventDefault();
             handleContinue();

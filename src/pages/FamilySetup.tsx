@@ -136,7 +136,7 @@ const FamilySetup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-2">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-3 sm:p-4">
       <div className="w-full max-w-lg sm:max-w-xl lg:max-w-2xl my-2">
         {/* Logo and Header */}
         <div className="text-center mb-3">
@@ -151,7 +151,7 @@ const FamilySetup = () => {
 
         {/* Family Types Card */}
         <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
-          <CardContent className="p-3 sm:p-4 lg:p-5">
+          <CardContent className="p-4 sm:p-6 lg:p-8">
             <div className="space-y-2 sm:space-y-3">
               {familyTypes.map((type) => {
                 const IconComponent = type.icon;
