@@ -3,24 +3,15 @@ import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
 import welcomeIllustration from '@/assets/welcome-family-illustration.png';
-
 const Welcome = () => {
   const navigate = useNavigate();
-
   const handleContinue = () => {
     navigate('/intro');
   };
-
-  return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-4">
+  return <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl p-8 max-w-md w-full relative shadow-xl">
         {/* Close button */}
-        <button 
-          onClick={() => navigate('/dashboard')}
-          className="absolute top-6 right-6 text-slate-400 hover:text-slate-600 transition-colors"
-        >
-          <X className="h-6 w-6" />
-        </button>
+        
 
         {/* Content */}
         <div className="text-center space-y-6">
@@ -36,11 +27,7 @@ const Welcome = () => {
 
           {/* Illustration */}
           <div className="py-4">
-            <img 
-              src={welcomeIllustration} 
-              alt="Family reading together" 
-              className="w-full max-w-sm mx-auto rounded-2xl"
-            />
+            <img src={welcomeIllustration} alt="Family reading together" className="w-full max-w-sm mx-auto rounded-2xl" />
           </div>
 
           {/* Body text */}
@@ -55,10 +42,7 @@ const Welcome = () => {
 
           {/* CTA Button */}
           <div className="pt-4">
-            <Button 
-              onClick={handleContinue}
-              className="w-full h-12 bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-medium text-base rounded-xl shadow-lg"
-            >
+            <Button onClick={handleContinue} className="w-full h-12 bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-medium text-base rounded-xl shadow-lg">
               Let's set things up
             </Button>
             <p className="text-sm text-slate-500 mt-3">
@@ -67,8 +51,6 @@ const Welcome = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Welcome;
