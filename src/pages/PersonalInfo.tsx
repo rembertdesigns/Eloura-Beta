@@ -174,98 +174,145 @@ const PersonalInfo = () => {
         <div className="w-6 h-6 border-2 border-[#223b0a]/30 border-t-[#223b0a] rounded-full animate-spin" />
       </div>;
   }
-  return <div className="flex-1 p-4 sm:p-6">
-      <div className="max-w-4xl mx-auto">
+  return <div className="min-h-screen py-8 px-4 sm:px-6 flex items-center justify-center">
+      <div className="w-full max-w-2xl mx-auto">
 
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] rounded-2xl mb-4 sm:mb-6 shadow-lg">
-            <Heart className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary/10 to-primary/20 rounded-2xl mb-6 shadow-sm border border-primary/10">
+            <Heart className="h-8 w-8 text-primary" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2">Add Your Info</h1>
-          <p className="text-slate-600 text-base sm:text-lg max-w-sm sm:max-w-md mx-auto px-2 sm:px-0">
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">Add Your Info</h1>
+          <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
             Tell us about yourself to get started
           </p>
         </div>
 
         {/* Form Card */}
-        <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm mb-6">
-          <CardContent className="p-6 sm:p-8">
+        <Card className="border border-border/50 shadow-lg bg-card/80 backdrop-blur-sm">
+          <CardContent className="p-8">
             <form onSubmit={e => {
             e.preventDefault();
             handleContinue();
-          }} className="space-y-6">
-              <div className="space-y-4 sm:space-y-6">
-                {/* Avatar Upload */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-slate-900">Profile Photo (Optional)</h3>
-                  <div className="flex items-center space-x-4">
-                    <div className="w-16 h-16 bg-slate-200 rounded-full flex items-center justify-center overflow-hidden">
-                      {formData.avatar ? <img src={URL.createObjectURL(formData.avatar)} alt="Profile preview" className="w-full h-full object-cover" /> : <Heart className="h-8 w-8 text-slate-400" />}
-                    </div>
-                    <div>
-                      <Label htmlFor="avatar" className="text-sm font-medium text-slate-700 cursor-pointer">
-                        <div className="inline-flex items-center px-4 py-2 border border-slate-300 rounded-md shadow-sm text-sm font-medium text-slate-700 bg-white hover:bg-slate-50">
-                          Upload Photo
-                        </div>
-                      </Label>
-                      <Input id="avatar" type="file" accept="image/*" onChange={e => handleInputChange('avatar', e.target.files?.[0] || null)} className="hidden" />
-                      <p className="text-xs text-slate-500 mt-1">JPG, PNG up to 5MB</p>
-                    </div>
+          }} className="space-y-8">
+              
+              {/* Profile Photo Section */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-card-foreground">Profile Photo (Optional)</h3>
+                <div className="flex items-center space-x-6">
+                  <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center overflow-hidden border-2 border-border">
+                    {formData.avatar ? 
+                      <img src={URL.createObjectURL(formData.avatar)} alt="Profile preview" className="w-full h-full object-cover" /> : 
+                      <Heart className="h-10 w-10 text-muted-foreground" />
+                    }
                   </div>
-                </div>
-
-                {/* Basic Information */}
-                <div className="space-y-4">
-                  <h3 className="text-lg font-semibold text-slate-900">Basic Information</h3>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="firstName" className="text-sm font-medium text-slate-700">
-                        First Name *
-                      </Label>
-                      <Input id="firstName" value={formData.firstName} onChange={e => handleInputChange('firstName', e.target.value)} className={`mt-1 ${errors.firstName ? 'border-red-500' : ''}`} placeholder="Enter your first name" />
-                      {errors.firstName && <p className="text-sm text-red-500 mt-1">{errors.firstName}</p>}
-                    </div>
-                    
-                    <div>
-                      <Label htmlFor="lastName" className="text-sm font-medium text-slate-700">
-                        Last Name *
-                      </Label>
-                      <Input id="lastName" value={formData.lastName} onChange={e => handleInputChange('lastName', e.target.value)} className={`mt-1 ${errors.lastName ? 'border-red-500' : ''}`} placeholder="Enter your last name" />
-                      {errors.lastName && <p className="text-sm text-red-500 mt-1">{errors.lastName}</p>}
-                    </div>
-                  </div>
-
                   <div>
-                    <Label htmlFor="dateOfBirth" className="text-sm font-medium text-slate-700">
-                      Date of Birth *
+                    <Label htmlFor="avatar" className="cursor-pointer">
+                      <div className="inline-flex items-center px-4 py-2.5 border border-primary/20 rounded-lg shadow-sm text-sm font-medium text-primary bg-primary/5 hover:bg-primary/10 transition-colors">
+                        Upload Photo
+                      </div>
                     </Label>
-                    <Input id="dateOfBirth" type="date" value={formData.dateOfBirth} onChange={e => handleInputChange('dateOfBirth', e.target.value)} className={`mt-1 ${errors.dateOfBirth ? 'border-red-500' : ''}`} />
-                    {errors.dateOfBirth && <p className="text-sm text-red-500 mt-1">{errors.dateOfBirth}</p>}
-                  </div>
-
-                  <div>
-                    <Label htmlFor="pronouns" className="text-sm font-medium text-slate-700">
-                      Pronouns (Optional)
-                    </Label>
-                    <Input id="pronouns" value={formData.pronouns} onChange={e => handleInputChange('pronouns', e.target.value)} className="mt-1" placeholder="e.g., she/her, he/him, they/them" />
+                    <Input id="avatar" type="file" accept="image/*" onChange={e => handleInputChange('avatar', e.target.files?.[0] || null)} className="hidden" />
+                    <p className="text-xs text-muted-foreground mt-2">JPG, PNG up to 5MB</p>
                   </div>
                 </div>
               </div>
 
+              {/* Divider */}
+              <div className="border-t border-border/30"></div>
+
+              {/* Basic Information Section */}
+              <div className="space-y-6">
+                <h3 className="text-lg font-semibold text-card-foreground">Basic Information</h3>
+                
+                {/* Name Fields Group */}
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="firstName" className="text-sm font-medium text-card-foreground">
+                        First Name *
+                      </Label>
+                      <Input 
+                        id="firstName" 
+                        value={formData.firstName} 
+                        onChange={e => handleInputChange('firstName', e.target.value)} 
+                        className={`mt-2 ${errors.firstName ? 'border-destructive focus-visible:ring-destructive' : 'focus-visible:ring-primary'}`} 
+                        placeholder="Enter your first name" 
+                      />
+                      {errors.firstName && <p className="text-sm text-destructive mt-1">{errors.firstName}</p>}
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="lastName" className="text-sm font-medium text-card-foreground">
+                        Last Name *
+                      </Label>
+                      <Input 
+                        id="lastName" 
+                        value={formData.lastName} 
+                        onChange={e => handleInputChange('lastName', e.target.value)} 
+                        className={`mt-2 ${errors.lastName ? 'border-destructive focus-visible:ring-destructive' : 'focus-visible:ring-primary'}`} 
+                        placeholder="Enter your last name" 
+                      />
+                      {errors.lastName && <p className="text-sm text-destructive mt-1">{errors.lastName}</p>}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Additional Info Group */}
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="dateOfBirth" className="text-sm font-medium text-card-foreground">
+                      Date of Birth *
+                    </Label>
+                    <Input 
+                      id="dateOfBirth" 
+                      type="date" 
+                      value={formData.dateOfBirth} 
+                      onChange={e => handleInputChange('dateOfBirth', e.target.value)} 
+                      className={`mt-2 ${errors.dateOfBirth ? 'border-destructive focus-visible:ring-destructive' : 'focus-visible:ring-primary'}`} 
+                    />
+                    {errors.dateOfBirth && <p className="text-sm text-destructive mt-1">{errors.dateOfBirth}</p>}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="pronouns" className="text-sm font-medium text-card-foreground">
+                      Pronouns (Optional)
+                    </Label>
+                    <Input 
+                      id="pronouns" 
+                      value={formData.pronouns} 
+                      onChange={e => handleInputChange('pronouns', e.target.value)} 
+                      className="mt-2 focus-visible:ring-primary" 
+                      placeholder="e.g., she/her, he/him, they/them" 
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="border-t border-border/30"></div>
+
               {/* Navigation */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-6">
-                <Button type="button" variant="outline" onClick={() => navigate('/intro')} className="flex-1 sm:flex-none h-12 border-slate-300 text-slate-700 hover:bg-slate-50">
+              <div className="flex flex-col sm:flex-row gap-4 pt-2">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => navigate('/intro')} 
+                  className="flex-1 sm:flex-none h-12"
+                >
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Back
                 </Button>
                 
                 <div className="flex-1" />
                 
-                <Button type="submit" disabled={loading} className="flex-1 sm:flex-none h-12 bg-[#223b0a] hover:bg-[#1a2e08] text-white px-8">
+                <Button 
+                  type="submit" 
+                  disabled={loading} 
+                  className="flex-1 sm:flex-none h-12 bg-primary hover:bg-primary/90 text-primary-foreground px-8"
+                >
                   {loading ? <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                       <span>Saving...</span>
                     </div> : <>
                       Next
@@ -276,9 +323,6 @@ const PersonalInfo = () => {
             </form>
           </CardContent>
         </Card>
-
-        {/* Progress Indicator */}
-        
       </div>
     </div>;
 };
