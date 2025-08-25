@@ -13,7 +13,7 @@ const Welcome = () => {
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
-      <div className="max-w-md w-full relative">
+      <div className="bg-white rounded-3xl p-8 max-w-md w-full relative shadow-xl">
         {/* Close button */}
         <button 
           onClick={() => navigate('/dashboard')}
