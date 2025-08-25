@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Target } from 'lucide-react';
 
 const TopChallenges = () => {
   const navigate = useNavigate();
@@ -40,7 +41,12 @@ const TopChallenges = () => {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <Card className="shadow-lg">
-          <CardHeader>
+          <CardHeader className="text-center">
+            <div className="flex justify-center mb-4">
+              <div className="bg-primary text-primary-foreground rounded-full p-3">
+                <Target className="h-6 w-6 sm:h-7 sm:w-7" />
+              </div>
+            </div>
             <CardTitle className="text-2xl font-semibold">What Are You Dealing With Right Now?</CardTitle>
             <p className="text-muted-foreground">Select anything that resonates. This helps Eloura show up where you need support most.</p>
           </CardHeader>
