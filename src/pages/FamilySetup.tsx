@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { Users, Baby, UserCheck } from 'lucide-react';
+import { Users, Baby, UserCheck, Heart, Home, HelpCircle } from 'lucide-react';
 import familyCareIcon from '@/assets/family-care-icon.png';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -23,30 +21,50 @@ const FamilySetup = () => {
       title: 'Solo parent',
       description: 'Raising children on your own and managing all family responsibilities independently',
       icon: Baby,
+      bgColor: 'from-pink-50 to-rose-50',
+      iconColor: 'text-pink-600',
+      selectedBg: 'bg-pink-50',
+      selectedBorder: 'border-pink-500',
     },
     {
       id: 'partnered',
       title: 'Partnered',
       description: 'Sharing parenting and family responsibilities with a partner or spouse',
-      icon: Users,
+      icon: Heart,
+      bgColor: 'from-blue-50 to-indigo-50',
+      iconColor: 'text-blue-600',
+      selectedBg: 'bg-blue-50',
+      selectedBorder: 'border-blue-500',
     },
     {
       id: 'co-parenting',
       title: 'Co-parenting',
       description: 'Sharing parenting responsibilities with an ex-partner or separate households',
-      icon: UserCheck,
+      icon: Home,
+      bgColor: 'from-green-50 to-emerald-50',
+      iconColor: 'text-green-600',
+      selectedBg: 'bg-green-50',
+      selectedBorder: 'border-green-500',
     },
     {
       id: 'multigenerational',
       title: 'Multigenerational',
       description: 'Caring for multiple generations in your family, including children and aging parents',
       icon: Users,
+      bgColor: 'from-purple-50 to-violet-50',
+      iconColor: 'text-purple-600',
+      selectedBg: 'bg-purple-50',
+      selectedBorder: 'border-purple-500',
     },
     {
       id: 'other',
       title: 'Other',
       description: 'Your family structure is unique and doesn\'t fit the categories above',
-      icon: Users,
+      icon: HelpCircle,
+      bgColor: 'from-amber-50 to-orange-50',
+      iconColor: 'text-amber-600',
+      selectedBg: 'bg-amber-50',
+      selectedBorder: 'border-amber-500',
     },
   ];
 
@@ -132,9 +150,9 @@ const FamilySetup = () => {
         </div>
 
         {/* Family Types Card */}
-        <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
-          <CardContent className="p-3 sm:p-5 lg:p-6">
-            <RadioGroup value={selectedType} onValueChange={setSelectedType} className="space-y-2 sm:space-y-3">
+        <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
+          <CardContent className="p-4 sm:p-6 lg:p-8">
+            <div className="space-y-4 sm:space-y-5">
               {familyTypes.map((type) => {
                 const IconComponent = type.icon;
                 const isSelected = selectedType === type.id;
@@ -142,42 +160,68 @@ const FamilySetup = () => {
                 return (
                   <div 
                     key={type.id} 
-                    className={`relative flex items-center space-x-3 p-3 sm:p-4 border-2 rounded-xl cursor-pointer transition-all duration-200 ${
-                      isSelected 
-                        ? 'border-[#223b0a] bg-[#223b0a]/5 shadow-md' 
-                        : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                    className={`group relative cursor-pointer transition-all duration-300 ease-out transform hover:scale-[1.02] ${
+                      isSelected ? 'scale-[1.01]' : ''
                     }`}
                     onClick={() => setSelectedType(type.id)}
                   >
-                    <RadioGroupItem 
-                      value={type.id} 
-                      id={type.id}
-                      className={`mt-0.5 flex-shrink-0 ${isSelected ? 'border-[#223b0a] text-[#223b0a]' : ''}`}
-                    />
-                    <div className="flex items-start space-x-3 flex-1 min-w-0">
-                      <div className={`p-2 rounded-xl transition-colors duration-200 flex-shrink-0 ${
-                        isSelected 
-                          ? 'bg-[#223b0a] text-white' 
-                          : 'bg-[#a8e6ff]/20 text-[#223b0a]'
-                      }`}>
-                        <IconComponent className="h-4 w-4 sm:h-5 sm:w-5" />
+                    <div className={`
+                      relative p-5 sm:p-6 rounded-2xl border-2 transition-all duration-300
+                      bg-gradient-to-r ${type.bgColor}
+                      shadow-lg hover:shadow-xl
+                      ${isSelected 
+                        ? `${type.selectedBorder} ${type.selectedBg} shadow-xl ring-4 ring-opacity-20` 
+                        : 'border-white/60 hover:border-white/80 hover:shadow-lg'
+                      }
+                    `}>
+                      {/* Selection indicator */}
+                      {isSelected && (
+                        <div className="absolute top-4 right-4 w-6 h-6 bg-[#223b0a] rounded-full flex items-center justify-center">
+                          <div className="w-2 h-2 bg-white rounded-full"></div>
+                        </div>
+                      )}
+                      
+                      <div className="flex items-start space-x-4 sm:space-x-5">
+                        {/* Icon */}
+                        <div className={`
+                          flex-shrink-0 p-3 sm:p-4 rounded-2xl transition-all duration-300
+                          ${isSelected 
+                            ? 'bg-[#223b0a] text-white shadow-lg' 
+                            : `${type.iconColor} bg-white/70 group-hover:bg-white/90 shadow-md`
+                          }
+                        `}>
+                          <IconComponent className="h-6 w-6 sm:h-7 sm:w-7" />
+                        </div>
+                        
+                        {/* Content */}
+                        <div className="flex-1 min-w-0 pt-1">
+                          <h3 className={`
+                            text-lg sm:text-xl font-bold mb-2 transition-colors duration-300
+                            ${isSelected ? 'text-[#223b0a]' : 'text-slate-900 group-hover:text-slate-800'}
+                          `}>
+                            {type.title}
+                          </h3>
+                          <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-medium">
+                            {type.description}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <Label 
-                          htmlFor={type.id} 
-                          className={`text-sm sm:text-base lg:text-lg font-semibold cursor-pointer transition-colors duration-200 block ${
-                            isSelected ? 'text-[#223b0a]' : 'text-slate-900'
-                          }`}
-                        >
-                          {type.title}
-                        </Label>
-                        <p className="text-xs sm:text-sm lg:text-base text-slate-600 mt-0.5 leading-relaxed">{type.description}</p>
-                      </div>
+                      
+                      {/* Hidden radio input for accessibility */}
+                      <input
+                        type="radio"
+                        name="familyType"
+                        value={type.id}
+                        checked={isSelected}
+                        onChange={() => setSelectedType(type.id)}
+                        className="sr-only"
+                        aria-label={type.title}
+                      />
                     </div>
                   </div>
                 );
               })}
-            </RadioGroup>
+            </div>
             
             <Button
               onClick={handleContinue}
