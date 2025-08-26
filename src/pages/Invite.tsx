@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { UserPlus, Users, Mail, Copy, Share2, X } from 'lucide-react';
+import { UserPlus, Users, Mail, Copy, Share2, X, MailOpen } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Invite = () => {
@@ -83,7 +83,7 @@ const Invite = () => {
         <div className="text-center space-y-4 mb-8">
           <div className="flex justify-center mb-4">
             <div className="bg-primary text-primary-foreground rounded-full p-3">
-              <Users className="h-6 w-6 sm:h-7 sm:w-7" />
+              <MailOpen className="h-6 w-6 sm:h-7 sm:w-7" />
             </div>
           </div>
           <h1 className="text-2xl font-semibold">
