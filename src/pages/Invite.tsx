@@ -82,7 +82,7 @@ const Invite = () => {
         {/* Header */}
         <div className="text-center space-y-4 mb-8">
           <div className="flex justify-center mb-4">
-            <div className="bg-primary text-primary-foreground rounded-full p-3">
+            <div className="bg-primary text-primary-foreground rounded-2xl p-3">
               <MailOpen className="h-6 w-6 sm:h-7 sm:w-7" />
             </div>
           </div>
