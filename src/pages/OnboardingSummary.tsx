@@ -129,7 +129,7 @@ const OnboardingSummary = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate('/family-setup')}
+                  onClick={() => navigate('/family-structure')}
                   className="h-8 w-8 p-0"
                 >
                   <Edit2 className="h-4 w-4" />
