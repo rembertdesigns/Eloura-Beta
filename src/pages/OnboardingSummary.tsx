@@ -12,6 +12,7 @@ const OnboardingSummary = () => {
   const [showLoading, setShowLoading] = useState(false);
   const [summary, setSummary] = useState({
     familyType: '',
+    householdName: '',
     personalInfo: {
       firstName: '',
       lastName: '',
@@ -28,6 +29,7 @@ const OnboardingSummary = () => {
   useEffect(() => {
     // Load data from localStorage
     const familyType = localStorage.getItem('familyType') || 'Not specified';
+    const householdName = localStorage.getItem('householdName') || '';
     
     // Parse personal info properly
     let personalInfo = {
@@ -53,6 +55,7 @@ const OnboardingSummary = () => {
 
     setSummary({
       familyType,
+      householdName,
       personalInfo,
       children: familyMembers,
       challenges,
@@ -111,10 +114,12 @@ const OnboardingSummary = () => {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Family Type */}
+              {/* Household */}
               <div>
                 <h3 className="font-medium text-slate-700 mb-2">● Household</h3>
-                <p className="text-slate-600">{summary.familyType}</p>
+                <p className="text-slate-600">
+                  {summary.householdName ? summary.householdName : summary.familyType}
+                </p>
               </div>
 
               {/* Personal Info */}

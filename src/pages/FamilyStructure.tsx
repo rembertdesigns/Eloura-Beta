@@ -23,6 +23,7 @@ interface FamilyMember {
 }
 const FamilyStructure = () => {
   const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
+  const [householdName, setHouseholdName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<FamilyMember | null>(null);
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,9 @@ const FamilyStructure = () => {
   useEffect(() => {
     // Try to load from localStorage first for demo purposes
     const savedFamilyMembers = localStorage.getItem('familyMembers');
+    const savedHouseholdName = localStorage.getItem('householdName') || '';
+    setHouseholdName(savedHouseholdName);
+    
     if (savedFamilyMembers) {
       try {
         setFamilyMembers(JSON.parse(savedFamilyMembers));
@@ -141,6 +145,7 @@ const FamilyStructure = () => {
 
       // Save to localStorage for demo purposes
       localStorage.setItem('familyMembers', JSON.stringify(familyMembers));
+      localStorage.setItem('householdName', householdName);
 
       // If user is authenticated, also update onboarding progress
       if (user) {
@@ -242,6 +247,25 @@ const FamilyStructure = () => {
             Add your family members and pets so we can help you coordinate care and support for everyone
           </p>
         </div>
+
+        {/* Household Name */}
+        <Card className="shadow-lg border-border bg-card mb-4 sm:mb-6">
+          <CardHeader className="pb-3 sm:pb-4">
+            <CardTitle className="text-lg sm:text-xl">Household Name</CardTitle>
+            <CardDescription className="text-sm">
+              Give your household a name (optional)
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <input
+              type="text"
+              value={householdName}
+              onChange={(e) => setHouseholdName(e.target.value)}
+              placeholder="e.g., The Smith Family, Our Happy Home"
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+            />
+          </CardContent>
+        </Card>
 
         {/* Add Member Button - Fixed position for mobile */}
         <div className="fixed bottom-4 right-4 z-40 sm:hidden">
