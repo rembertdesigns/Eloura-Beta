@@ -102,42 +102,57 @@ const OnboardingSummary = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50">
+    <div className="min-h-screen bg-background">
       <Navigation />
       <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <Card className="border-0 shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-2xl font-semibold">Final Step: Review and Finish</CardTitle>
-            <p className="text-slate-600">
-              Quick summary of what was set up
-            </p>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Household */}
-              <div>
-                <h3 className="font-medium text-slate-700 mb-2">● Household</h3>
-                <p className="text-slate-600">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
+            Final Step: Review and Finish
+          </h1>
+          <p className="text-muted-foreground text-sm sm:text-base">
+            Quick summary of what was set up
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          {/* Summary Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Household */}
+            <Card className="shadow-lg border-border bg-card">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Household</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <p className="text-muted-foreground">
                   {summary.householdName ? summary.householdName : summary.familyType}
                 </p>
-              </div>
+              </CardContent>
+            </Card>
 
-              {/* Personal Info */}
-              <div>
-                <h3 className="font-medium text-slate-700 mb-2">● Your info</h3>
-                <p className="text-slate-600">{formatPersonalInfo()}</p>
-              </div>
+            {/* Personal Info */}
+            <Card className="shadow-lg border-border bg-card">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Your Info</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <p className="text-muted-foreground">{formatPersonalInfo()}</p>
+              </CardContent>
+            </Card>
 
-              {/* Family Members */}
-              <div>
-                <h3 className="font-medium text-slate-700 mb-2">● Family members added</h3>
-                <div className="space-y-1">
+            {/* Family Members */}
+            <Card className="shadow-lg border-border bg-card">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Family Members</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <div className="space-y-2">
                   {summary.children.length > 0 ? (
                     summary.children.map((member: any, index: number) => (
-                      <p key={index} className="text-slate-600">
+                      <p key={index} className="text-muted-foreground">
                         {member.name} ({member.relationship})
                         {member.date_of_birth && (
-                          <span className="text-slate-500 text-sm">
+                          <span className="text-muted-foreground/70 text-sm">
                             {' • '}
                             {new Date().getFullYear() - new Date(member.date_of_birth).getFullYear()} years old
                           </span>
@@ -145,30 +160,38 @@ const OnboardingSummary = () => {
                       </p>
                     ))
                   ) : (
-                    <p className="text-slate-400">No family members added</p>
+                    <p className="text-muted-foreground/50">No family members added</p>
                   )}
                 </div>
-              </div>
+              </CardContent>
+            </Card>
 
-              {/* Challenges */}
-              <div>
-                <h3 className="font-medium text-slate-700 mb-2">● Challenges</h3>
+            {/* Challenges */}
+            <Card className="shadow-lg border-border bg-card">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Challenges</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
                 <div className="space-y-1">
                   {summary.challenges.length > 0 ? (
                     summary.challenges.map((challenge: string, index: number) => (
-                      <p key={index} className="text-slate-600 text-sm">
+                      <p key={index} className="text-muted-foreground text-sm">
                         • {challenge}
                       </p>
                     ))
                   ) : (
-                    <p className="text-slate-400">No challenges selected</p>
+                    <p className="text-muted-foreground/50">No challenges selected</p>
                   )}
                 </div>
-              </div>
+              </CardContent>
+            </Card>
 
-              {/* Priorities */}
-              <div>
-                <h3 className="font-medium text-slate-700 mb-2">● Priorities</h3>
+            {/* Priorities */}
+            <Card className="shadow-lg border-border bg-card">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Priorities</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
                 <div className="flex flex-wrap gap-2">
                   {summary.priorities.length > 0 ? (
                     summary.priorities.map((priority: string, index: number) => (
@@ -177,32 +200,35 @@ const OnboardingSummary = () => {
                       </Badge>
                     ))
                   ) : (
-                    <p className="text-slate-400">No priorities selected</p>
+                    <p className="text-muted-foreground/50">No priorities selected</p>
                   )}
                 </div>
-              </div>
+              </CardContent>
+            </Card>
 
-              {/* Invites Sent */}
-              <div>
-                <h3 className="font-medium text-slate-700 mb-2">● Invites sent</h3>
-                <p className="text-slate-400">No invites sent</p>
-              </div>
-            </div>
+            {/* Invites Sent */}
+            <Card className="shadow-lg border-border bg-card">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg">Invites Sent</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <p className="text-muted-foreground/50">No invites sent</p>
+              </CardContent>
+            </Card>
+          </div>
 
-            {/* Final Message */}
-            <div className="text-center py-6">
-              <p className="text-lg text-slate-700 font-medium">
+          {/* Final Message & Button */}
+          <Card className="shadow-lg border-border bg-card">
+            <CardContent className="text-center py-8">
+              <p className="text-lg font-medium text-foreground mb-6">
                 You're all set — let's take you to your Dashboard
               </p>
-            </div>
-
-            <div className="pt-6 border-t">
-              <Button className="w-full" onClick={handleFinish}>
+              <Button className="w-full max-w-md" onClick={handleFinish}>
                 Go to Dashboard
               </Button>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
