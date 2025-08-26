@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import Navigation from '@/components/Navigation';
+import { CheckCircle } from 'lucide-react';
 import LoadingScreen from '@/components/LoadingScreen';
 
 const OnboardingSummary = () => {
@@ -103,10 +103,14 @@ const OnboardingSummary = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl shadow-sm">
+              <CheckCircle className="h-8 w-8 text-primary-foreground" />
+            </div>
+          </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
             Final Step: Review and Finish
           </h1>
