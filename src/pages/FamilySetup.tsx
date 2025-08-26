@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, Baby, UserCheck, Heart, Home, HelpCircle } from 'lucide-react';
+import { Users, Baby, UserCheck, Heart, Home, HelpCircle, HandHeart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -140,7 +140,7 @@ const FamilySetup = () => {
         {/* Logo and Header */}
         <div className="text-center mb-2 sm:mb-3">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-[#223b0a] rounded-2xl mb-3 sm:mb-4 shadow-sm">
-            <Users className="h-8 w-8 text-white" />
+            <HandHeart className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-slate-900 mb-1">Your Family and Care Responsibilities</h1>
           <p className="text-slate-600 text-xs sm:text-sm lg:text-base max-w-sm sm:max-w-md mx-auto px-2 sm:px-0">
