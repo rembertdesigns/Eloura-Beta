@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Edit2 } from 'lucide-react';
 import LoadingScreen from '@/components/LoadingScreen';
 
 const OnboardingSummary = () => {
@@ -124,8 +124,16 @@ const OnboardingSummary = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Household */}
             <Card className="shadow-lg border-border bg-card">
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 flex flex-row items-center justify-between">
                 <CardTitle className="text-lg">Household</CardTitle>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate('/family-setup')}
+                  className="h-8 w-8 p-0"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </Button>
               </CardHeader>
               <CardContent className="pt-0">
                 <p className="text-muted-foreground">
@@ -136,8 +144,16 @@ const OnboardingSummary = () => {
 
             {/* Personal Info */}
             <Card className="shadow-lg border-border bg-card">
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 flex flex-row items-center justify-between">
                 <CardTitle className="text-lg">Your Info</CardTitle>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate('/personal-info')}
+                  className="h-8 w-8 p-0"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </Button>
               </CardHeader>
               <CardContent className="pt-0">
                 <p className="text-muted-foreground">{formatPersonalInfo()}</p>
@@ -146,8 +162,16 @@ const OnboardingSummary = () => {
 
             {/* Family Members */}
             <Card className="shadow-lg border-border bg-card">
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 flex flex-row items-center justify-between">
                 <CardTitle className="text-lg">Family Members</CardTitle>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate('/family-structure')}
+                  className="h-8 w-8 p-0"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </Button>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="space-y-2">
@@ -172,8 +196,16 @@ const OnboardingSummary = () => {
 
             {/* Challenges */}
             <Card className="shadow-lg border-border bg-card">
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 flex flex-row items-center justify-between">
                 <CardTitle className="text-lg">Challenges</CardTitle>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate('/top-challenges')}
+                  className="h-8 w-8 p-0"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </Button>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="space-y-1">
@@ -192,8 +224,16 @@ const OnboardingSummary = () => {
 
             {/* Priorities */}
             <Card className="shadow-lg border-border bg-card">
-              <CardHeader className="pb-3">
+              <CardHeader className="pb-3 flex flex-row items-center justify-between">
                 <CardTitle className="text-lg">Priorities</CardTitle>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => navigate('/priorities')}
+                  className="h-8 w-8 p-0"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </Button>
               </CardHeader>
               <CardContent className="pt-0">
                 <div className="flex flex-wrap gap-2">
