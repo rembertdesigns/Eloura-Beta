@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Heart, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Heart, ArrowLeft, ArrowRight, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -197,7 +197,7 @@ const PersonalInfo = () => {
         {/* Header */}
         <div className="text-center mb-4 sm:mb-6">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-[#223b0a] rounded-2xl mb-3 sm:mb-4 shadow-sm">
-            <Heart className="h-8 w-8 text-white" />
+            <User className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2">Add Your Info</h1>
           <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
@@ -218,9 +218,9 @@ const PersonalInfo = () => {
                 <h3 className="text-lg font-semibold text-card-foreground">Profile Photo (Optional)</h3>
                 <div className="flex items-center space-x-6">
                   <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center overflow-hidden border-2 border-border">
-                    {formData.avatar ? 
+                     {formData.avatar ? 
                       <img src={URL.createObjectURL(formData.avatar)} alt="Profile preview" className="w-full h-full object-cover" /> : 
-                      <Heart className="h-10 w-10 text-muted-foreground" />
+                      <User className="h-10 w-10 text-muted-foreground" />
                     }
                   </div>
                   <div>
