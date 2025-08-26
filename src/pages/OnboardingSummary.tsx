@@ -103,10 +103,10 @@ const OnboardingSummary = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto px-4 py-12 max-w-4xl">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
+        <div className="text-center mb-12">
+          <div className="flex justify-center mb-6">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-primary rounded-2xl shadow-sm">
               <CheckCircle className="h-8 w-8 text-primary-foreground" />
             </div>
@@ -119,7 +119,7 @@ const OnboardingSummary = () => {
           </p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-6 mb-12">
           {/* Summary Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Household */}
