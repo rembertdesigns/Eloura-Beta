@@ -3,8 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Calendar, 
-  Users, 
   Home, 
   CheckCircle2,
   Plus,
@@ -12,6 +10,8 @@ import {
   MapPin,
   Edit3
 } from 'lucide-react';
+import { Users, TrendingUp, Calendar, Clock, CheckSquare, Target } from 'lucide-react';
+import VillagePreview from '@/components/VillagePreview';
 import InteractiveTour from './InteractiveTour';
 import MiniChecklist from './MiniChecklist';
 
@@ -134,17 +134,7 @@ const FirstTimeDashboard = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
-                <div className="text-center py-4 space-y-2">
-                  <div className="w-10 h-10 mx-auto bg-muted rounded-full flex items-center justify-center opacity-40">
-                    <Users className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <p className="text-xs text-muted-foreground font-medium">Your support network will appear here</p>
-                  <div className="bg-primary/5 border border-primary/20 rounded-md p-2 max-w-md mx-auto">
-                    <p className="text-xs text-primary font-medium">
-                      👥 Invite someone to build your village and share the household management!
-                    </p>
-                  </div>
-                </div>
+                <VillagePreview />
               </CardContent>
             </Card>
           </div>

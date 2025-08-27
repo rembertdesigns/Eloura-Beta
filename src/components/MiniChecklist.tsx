@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   Home, 
   Plus, 
@@ -14,7 +15,8 @@ import {
   Edit3,
   CheckCircle2,
   Circle,
-  Sparkles
+  Sparkles,
+  Mail
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -22,8 +24,33 @@ const MiniChecklist = () => {
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [householdName, setHouseholdName] = useState('');
   const [newTask, setNewTask] = useState('');
+  const [inviteName, setInviteName] = useState('');
   const [inviteEmail, setInviteEmail] = useState('');
+  const [selectedRole, setSelectedRole] = useState('helper');
   const { toast } = useToast();
+
+  // Load saved data on component mount
+  useEffect(() => {
+    const savedHouseholdName = localStorage.getItem('householdName');
+    const savedTasks = localStorage.getItem('userTasks');
+    const savedInvites = localStorage.getItem('pendingInvites');
+    
+    if (savedHouseholdName) {
+      setCheckedItems(prev => ({ ...prev, 'household-name': true }));
+    }
+    if (savedTasks) {
+      const tasks = JSON.parse(savedTasks);
+      if (tasks.length > 0) {
+        setCheckedItems(prev => ({ ...prev, 'first-task': true }));
+      }
+    }
+    if (savedInvites) {
+      const invites = JSON.parse(savedInvites);
+      if (invites.length > 0) {
+        setCheckedItems(prev => ({ ...prev, 'invite-someone': true }));
+      }
+    }
+  }, []);
 
   const checklistItems = [
     {
@@ -56,8 +83,16 @@ const MiniChecklist = () => {
     }));
   };
 
+  const roles = [
+    { value: 'caregiver', label: 'Primary Caregiver', description: 'Full access to manage family care' },
+    { value: 'helper', label: 'Helper', description: 'Can view schedules and help with tasks' },
+    { value: 'family', label: 'Family Member', description: 'Access to family information and updates' },
+    { value: 'emergency', label: 'Emergency Contact', description: 'Limited access for emergencies only' }
+  ];
+
   const handleSaveHouseholdName = () => {
     if (householdName.trim()) {
+      localStorage.setItem('householdName', householdName.trim());
       setCheckedItems(prev => ({ ...prev, 'household-name': true }));
       const remaining = checklistItems.length - Object.values({...checkedItems, 'household-name': true}).filter(Boolean).length;
       toast({
@@ -70,6 +105,17 @@ const MiniChecklist = () => {
 
   const handleAddTask = () => {
     if (newTask.trim()) {
+      // Save task to localStorage
+      const existingTasks = JSON.parse(localStorage.getItem('userTasks') || '[]');
+      const newTaskObj = {
+        id: Date.now(),
+        title: newTask.trim(),
+        completed: false,
+        createdAt: new Date().toISOString()
+      };
+      existingTasks.push(newTaskObj);
+      localStorage.setItem('userTasks', JSON.stringify(existingTasks));
+      
       setCheckedItems(prev => ({ ...prev, 'first-task': true }));
       const remaining = checklistItems.length - Object.values({...checkedItems, 'first-task': true}).filter(Boolean).length;
       toast({
@@ -81,13 +127,27 @@ const MiniChecklist = () => {
   };
 
   const handleSendInvite = () => {
-    if (inviteEmail.trim()) {
+    if (inviteName.trim() && inviteEmail.trim()) {
+      // Save invite to localStorage
+      const existingInvites = JSON.parse(localStorage.getItem('pendingInvites') || '[]');
+      const newInvite = {
+        id: Date.now(),
+        name: inviteName.trim(),
+        email: inviteEmail.trim(),
+        role: selectedRole,
+        status: 'pending',
+        sentAt: new Date().toISOString()
+      };
+      existingInvites.push(newInvite);
+      localStorage.setItem('pendingInvites', JSON.stringify(existingInvites));
+      
       setCheckedItems(prev => ({ ...prev, 'invite-someone': true }));
       const remaining = checklistItems.length - Object.values({...checkedItems, 'invite-someone': true}).filter(Boolean).length;
       toast({
         title: "Perfect! 🌟",
         description: remaining > 0 ? `Invitation sent to ${inviteEmail}! ${remaining} more step${remaining > 1 ? 's' : ''} to complete.` : `Invitation sent to ${inviteEmail}! You're all set!`,
       });
+      setInviteName('');
       setInviteEmail('');
     }
   };
@@ -186,13 +246,48 @@ const MiniChecklist = () => {
                 <DialogTitle>Invite someone to your village</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
-                <Input
-                  type="email"
-                  placeholder="Enter email address"
-                  value={inviteEmail}
-                  onChange={(e) => setInviteEmail(e.target.value)}
-                />
-                <Button onClick={handleSendInvite} className="w-full">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Name</label>
+                  <Input
+                    type="text"
+                    placeholder="Enter full name"
+                    value={inviteName}
+                    onChange={(e) => setInviteName(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Email Address</label>
+                  <Input
+                    type="email"
+                    placeholder="Enter email address"
+                    value={inviteEmail}
+                    onChange={(e) => setInviteEmail(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Select Role</label>
+                  <Select value={selectedRole} onValueChange={setSelectedRole}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Choose a role" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border border-border shadow-lg z-50">
+                      {roles.map((role) => (
+                        <SelectItem key={role.value} value={role.value} className="cursor-pointer hover:bg-accent">
+                          <div>
+                            <div className="font-medium">{role.label}</div>
+                            <div className="text-xs text-muted-foreground">{role.description}</div>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <Button 
+                  onClick={handleSendInvite} 
+                  className="w-full" 
+                  disabled={!inviteName.trim() || !inviteEmail.trim()}
+                >
+                  <Mail className="h-4 w-4 mr-2" />
                   Send Invite
                 </Button>
               </div>
