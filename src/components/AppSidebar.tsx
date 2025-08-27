@@ -73,31 +73,22 @@ export function AppSidebar() {
             <NavLink
               to={item.url}
               aria-label={`Navigate to ${item.title}`}
-              className={`group flex items-center gap-5 px-4 py-4 rounded-xl transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-sidebar active:scale-[0.98] ${
+              className={`group flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-sidebar active:scale-[0.98] ${
                 isActive
                   ? 'bg-gradient-to-r from-primary to-primary/90 text-primary-foreground shadow-lg shadow-primary/25 border-l-4 border-primary-foreground/30'
                   : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-md hover:translate-x-1 hover:shadow-primary/10'
               }`}
             >
-              <div
-                className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 flex-shrink-0 ${
-                  isActive
-                    ? 'bg-primary-foreground/25 ring-2 ring-primary-foreground/40 shadow-lg shadow-primary-foreground/20'
-                    : 'bg-sidebar-accent/80 group-hover:bg-primary/15 group-hover:scale-110 group-hover:shadow-md'
+              <item.icon 
+                className={`h-5 w-5 transition-all duration-300 flex-shrink-0 ${
+                  isActive 
+                    ? 'text-primary-foreground drop-shadow-sm' 
+                    : 'text-sidebar-foreground group-hover:text-primary'
                 }`}
-              >
-                <item.icon 
-                  className={`h-7 w-7 transition-all duration-300 ${
-                    isActive 
-                      ? 'text-primary-foreground drop-shadow-sm' 
-                      : 'text-sidebar-foreground group-hover:text-primary group-hover:scale-110'
-                  }`}
-                  strokeWidth={2.5}
-                  fill={isActive ? 'currentColor' : 'none'}
-                />
-              </div>
+                strokeWidth={2}
+              />
               {!collapsed && (
-                <span className={`text-lg font-bold transition-all duration-300 leading-tight truncate ${
+                <span className={`text-sm font-medium transition-all duration-300 leading-tight ${
                   isActive ? 'text-primary-foreground drop-shadow-sm' : 'text-sidebar-foreground group-hover:text-sidebar-accent-foreground'
                 }`}>
                   {item.title}
