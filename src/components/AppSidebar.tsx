@@ -72,26 +72,33 @@ export function AppSidebar() {
           <SidebarMenuButton asChild>
             <NavLink
               to={item.url}
-              className={`group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] ${
+              aria-label={`Navigate to ${item.title}`}
+              className={`group flex items-center gap-5 px-4 py-4 rounded-xl transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-sidebar active:scale-[0.98] ${
                 isActive
-                  ? 'bg-primary text-primary-foreground shadow-lg border-l-4 border-primary-foreground/30'
-                  : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-sm hover:translate-x-1'
+                  ? 'bg-gradient-to-r from-primary to-primary/90 text-primary-foreground shadow-lg shadow-primary/25 border-l-4 border-primary-foreground/30'
+                  : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-md hover:translate-x-1 hover:shadow-primary/10'
               }`}
             >
               <div
-                className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 ${
+                className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-300 flex-shrink-0 ${
                   isActive
-                    ? 'bg-primary-foreground/20 ring-2 ring-primary-foreground/30'
-                    : 'bg-sidebar-accent group-hover:bg-primary/10 group-hover:scale-110'
+                    ? 'bg-primary-foreground/25 ring-2 ring-primary-foreground/40 shadow-lg shadow-primary-foreground/20'
+                    : 'bg-sidebar-accent/80 group-hover:bg-primary/15 group-hover:scale-110 group-hover:shadow-md'
                 }`}
               >
-                <item.icon className={`h-6 w-6 flex-shrink-0 transition-all duration-200 ${
-                  isActive ? 'text-primary-foreground' : 'text-sidebar-foreground group-hover:text-primary'
-                }`} />
+                <item.icon 
+                  className={`h-7 w-7 transition-all duration-300 ${
+                    isActive 
+                      ? 'text-primary-foreground drop-shadow-sm' 
+                      : 'text-sidebar-foreground group-hover:text-primary group-hover:scale-110'
+                  }`}
+                  strokeWidth={2.5}
+                  fill={isActive ? 'currentColor' : 'none'}
+                />
               </div>
               {!collapsed && (
-                <span className={`text-base font-semibold transition-all duration-200 ${
-                  isActive ? 'text-primary-foreground' : 'text-sidebar-foreground'
+                <span className={`text-lg font-bold transition-all duration-300 leading-tight truncate ${
+                  isActive ? 'text-primary-foreground drop-shadow-sm' : 'text-sidebar-foreground group-hover:text-sidebar-accent-foreground'
                 }`}>
                   {item.title}
                 </span>
@@ -105,23 +112,23 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="bg-sidebar border-r border-sidebar-border shadow-xl rounded-r-2xl overflow-hidden">
-      <SidebarContent className="px-2 py-6">
+      <SidebarContent className="px-3 py-8">
         {/* Main Navigation */}
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-2">
+            <SidebarMenu className="space-y-3">
               {renderNavItems(mainNavigationItems)}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Separator */}
-        <div className="mx-4 my-6 h-px bg-sidebar-border" />
+        {/* Enhanced Separator with more spacing */}
+        <div className="mx-4 my-8 h-px bg-gradient-to-r from-transparent via-sidebar-border to-transparent opacity-60" />
 
         {/* Settings Section */}
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-2">
+            <SidebarMenu className="space-y-3">
               {renderNavItems(settingsItems)}
             </SidebarMenu>
           </SidebarGroupContent>
