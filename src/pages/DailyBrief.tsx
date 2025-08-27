@@ -76,7 +76,7 @@ const DailyBrief = () => {
         return tasks.filter(task => task.category === 'household');
       case 'work':
         return tasks.filter(task => task.category === 'work');
-      case 'connections':
+      case 'village':
         return tasks.filter(task => task.category === 'childcare' || task.category === 'eldercare');
       case 'goals':
         return tasks.filter(task => task.category === 'work' || task.category === 'general');
@@ -87,12 +87,11 @@ const DailyBrief = () => {
 
   const shouldShowSection = (section: string) => {
     switch (activeFilter) {
-      case 'connections':
+      case 'village':
         return section === 'tasks' || section === 'social';
       case 'goals':
         return section === 'tasks' || section === 'goals';
       case 'completed':
-      case 'pending':
         return section === 'tasks';
       default:
         return true;
@@ -125,7 +124,12 @@ const DailyBrief = () => {
 
   const handleStatusCardClick = (filter: string) => {
     setActiveFilter(filter);
-    toast({ title: `Filtered to show ${filter === 'completed' ? 'completed tasks' : filter === 'pending' ? 'pending tasks' : filter}` });
+    const filterMessages = {
+      completed: 'completed tasks',
+      village: 'village connections',
+      goals: 'goal-related tasks'
+    };
+    toast({ title: `Filtered to show ${filterMessages[filter] || filter}` });
   };
 
   // Drag and drop handlers
@@ -204,7 +208,7 @@ const DailyBrief = () => {
         </Card>
 
         {/* 3. Summary Status Bar (Clickable Filters) */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <Card 
             className={`cursor-pointer transition-all hover:shadow-md ${activeFilter === 'completed' ? 'ring-2 ring-blue-500 bg-blue-100' : 'bg-blue-50'} border-blue-200`}
             onClick={() => handleStatusCardClick('completed')}
@@ -214,33 +218,20 @@ const DailyBrief = () => {
                 <CheckCircle className="h-5 w-5 text-blue-600 mr-2" />
                 <span className="text-2xl font-bold text-blue-600">{completedTasks}</span>
               </div>
-              <p className="text-sm text-slate-600">Tasks Done</p>
+              <p className="text-sm text-slate-600">Tasks</p>
             </CardContent>
           </Card>
 
           <Card 
-            className={`cursor-pointer transition-all hover:shadow-md ${activeFilter === 'pending' ? 'ring-2 ring-orange-500 bg-orange-100' : 'bg-orange-50'} border-orange-200`}
-            onClick={() => handleStatusCardClick('pending')}
-          >
-            <CardContent className="p-4 text-center">
-              <div className="flex items-center justify-center mb-2">
-                <Clock className="h-5 w-5 text-orange-600 mr-2" />
-                <span className="text-2xl font-bold text-orange-600">{pendingTasks}</span>
-              </div>
-              <p className="text-sm text-slate-600">Pending</p>
-            </CardContent>
-          </Card>
-
-          <Card 
-            className={`cursor-pointer transition-all hover:shadow-md ${activeFilter === 'connections' ? 'ring-2 ring-green-500 bg-green-100' : 'bg-green-50'} border-green-200`}
-            onClick={() => handleStatusCardClick('connections')}
+            className={`cursor-pointer transition-all hover:shadow-md ${activeFilter === 'village' ? 'ring-2 ring-green-500 bg-green-100' : 'bg-green-50'} border-green-200`}
+            onClick={() => handleStatusCardClick('village')}
           >
             <CardContent className="p-4 text-center">
               <div className="flex items-center justify-center mb-2">
                 <Users className="h-5 w-5 text-green-600 mr-2" />
                 <span className="text-2xl font-bold text-green-600">{connectionsCount}</span>
               </div>
-              <p className="text-sm text-slate-600">Connections</p>
+              <p className="text-sm text-slate-600">Village</p>
             </CardContent>
           </Card>
 
@@ -253,7 +244,7 @@ const DailyBrief = () => {
                 <Target className="h-5 w-5 text-purple-600 mr-2" />
                 <span className="text-2xl font-bold text-purple-600">{activeGoalsCount}</span>
               </div>
-              <p className="text-sm text-slate-600">Active Goals</p>
+              <p className="text-sm text-slate-600">Goals</p>
             </CardContent>
           </Card>
         </div>
@@ -327,13 +318,12 @@ const DailyBrief = () => {
               <Card>
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
-                      <Target className="h-5 w-5 text-green-600" />
-                      {activeFilter === 'completed' ? 'Completed Tasks' : 
-                       activeFilter === 'pending' ? 'Pending Tasks' :
-                       activeFilter === 'connections' ? 'Connection-Related Tasks' :
-                       activeFilter === 'goals' ? 'Goal-Related Tasks' : 'Task Overview'}
-                    </CardTitle>
+                     <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
+                       <Target className="h-5 w-5 text-green-600" />
+                       {activeFilter === 'completed' ? 'Completed Tasks' : 
+                        activeFilter === 'village' ? 'Village-Related Tasks' :
+                        activeFilter === 'goals' ? 'Goal-Related Tasks' : 'Task Overview'}
+                     </CardTitle>
                     <Button 
                       size="sm" 
                       onClick={() => setShowQuickAddTask(true)}
