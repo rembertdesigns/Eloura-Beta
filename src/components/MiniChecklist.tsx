@@ -39,13 +39,6 @@ const MiniChecklist = () => {
       action: 'modal'
     },
     {
-      id: 'care-circle',
-      title: 'Create your care circle',
-      description: 'Set up care responsibilities',
-      icon: Users,
-      action: 'highlight'
-    },
-    {
       id: 'invite-someone',
       title: 'Invite someone new',
       description: 'Expand your support network',
@@ -94,13 +87,6 @@ const MiniChecklist = () => {
     }
   };
 
-  const handleCareCircleClick = () => {
-    setCheckedItems(prev => ({ ...prev, 'care-circle': true }));
-    toast({
-      title: "Care circle created!",
-      description: "Your care responsibilities are now organized",
-    });
-  };
 
   const completedCount = Object.values(checkedItems).filter(Boolean).length;
   const totalCount = checklistItems.length;
@@ -195,19 +181,6 @@ const MiniChecklist = () => {
       }
     }
     
-    if (item.action === 'highlight') {
-      return (
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="h-8"
-          onClick={handleCareCircleClick}
-        >
-          <IconComponent className="h-4 w-4 mr-1" />
-          Create
-        </Button>
-      );
-    }
     
     return null;
   };

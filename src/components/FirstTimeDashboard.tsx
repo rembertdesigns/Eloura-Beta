@@ -6,7 +6,6 @@ import {
   Calendar, 
   Users, 
   Home, 
-  Heart,
   CheckCircle2,
   Plus,
   UserPlus,
@@ -122,21 +121,6 @@ const FirstTimeDashboard = () => {
               </CardContent>
             </Card>
 
-            {/* Care Circle Preview */}
-            <Card id="care-circle" className="border-2 border-dashed border-slate-200">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-[#223b0a]" />
-                  Care Circle
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-8 text-slate-500">
-                  <p className="text-sm">Your care responsibilities will appear here</p>
-                  <p className="text-xs mt-2">Create your care circle to get started</p>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
       )}
