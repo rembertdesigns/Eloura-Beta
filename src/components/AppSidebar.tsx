@@ -72,20 +72,20 @@ export function AppSidebar() {
           <SidebarMenuButton asChild>
             <NavLink
               to={item.url}
-              className={`group flex items-center gap-5 px-5 py-4 rounded-xl transition-all duration-200 hover:scale-[1.02] ${
+              className={`group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] ${
                 isActive
                   ? 'bg-primary text-primary-foreground shadow-lg border-l-4 border-primary-foreground/30'
                   : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-sm hover:translate-x-1'
               }`}
             >
               <div
-                className={`flex items-center justify-center w-12 h-12 rounded-full transition-all duration-200 ${
+                className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 ${
                   isActive
                     ? 'bg-primary-foreground/20 ring-2 ring-primary-foreground/30'
                     : 'bg-sidebar-accent group-hover:bg-primary/10 group-hover:scale-110'
                 }`}
               >
-                <item.icon className={`h-7 w-7 flex-shrink-0 transition-all duration-200 ${
+                <item.icon className={`h-6 w-6 flex-shrink-0 transition-all duration-200 ${
                   isActive ? 'text-primary-foreground' : 'text-sidebar-foreground group-hover:text-primary'
                 }`} />
               </div>
