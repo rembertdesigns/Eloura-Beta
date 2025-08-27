@@ -59,8 +59,32 @@ const DailyBrief = () => {
     "Every small step counts toward your bigger goals.",
     "You're handling more than you know. Give yourself credit.",
     "Progress, not perfection.",
-    "Your care makes a difference in so many lives."
+    "Your care makes a difference in so many lives.",
+    "Today is a new opportunity to show up for yourself and your family.",
+    "Small acts of care create big waves of love.",
+    "You're exactly where you need to be right now.",
+    "Taking care of others starts with taking care of yourself."
   ];
+
+  // Mock customer name - in real app this would come from auth/user context
+  const customerName = "Sarah";
+  
+  // Get current date
+  const getCurrentDate = () => {
+    const today = new Date();
+    const options = { 
+      weekday: 'long' as const, 
+      year: 'numeric' as const, 
+      month: 'long' as const, 
+      day: 'numeric' as const 
+    };
+    return today.toLocaleDateString('en-US', options);
+  };
+  
+  // State for current quote to allow refreshing
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(
+    Math.floor(Math.random() * motivationalQuotes.length)
+  );
 
   const getFilteredTasks = () => {
     switch (activeFilter) {
@@ -166,10 +190,10 @@ const DailyBrief = () => {
         <div className="mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-4 gap-4">
             <div>
-              <h1 className="text-3xl font-semibold text-slate-800 mb-2">Daily Brief</h1>
-              <p className="text-slate-600 mb-2">Tuesday, July 1, 2025</p>
+              <h1 className="text-3xl font-semibold text-slate-800 mb-2">Hi, {customerName}</h1>
+              <p className="text-slate-600 mb-2">{getCurrentDate()}</p>
               <p className="text-sm text-slate-500 italic">
-                {motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)]}
+                {motivationalQuotes[currentQuoteIndex]}
               </p>
             </div>
             
