@@ -22,9 +22,9 @@ const FeatureFooter = () => {
       route: "/daily-brief"
     },
     {
-      title: "Village",
-      icon: Users,
-      route: "/village"
+      title: "Planner",
+      icon: BarChart3,
+      route: "/planner-insights"
     },
     {
       title: "Assistant",
@@ -40,9 +40,9 @@ const FeatureFooter = () => {
       route: "/home-base-toolkit"
     },
     {
-      title: "Planner Insights",
-      icon: BarChart3,
-      route: "/planner-insights"
+      title: "Village",
+      icon: Users,
+      route: "/village"
     },
     {
       title: "Messages",
