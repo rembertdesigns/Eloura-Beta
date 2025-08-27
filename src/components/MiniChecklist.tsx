@@ -170,6 +170,7 @@ const MiniChecklist = () => {
                 size="sm" 
                 className="h-8 hover:bg-primary/10 border-primary/30"
                 aria-label="Set household name"
+                onClick={(e) => e.stopPropagation()}
               >
                 <IconComponent className="h-4 w-4 mr-1" />
                 Set Name
@@ -203,6 +204,7 @@ const MiniChecklist = () => {
                 size="sm" 
                 className="h-8 hover:bg-primary/10 border-primary/30"
                 aria-label="Add first task"
+                onClick={(e) => e.stopPropagation()}
               >
                 <IconComponent className="h-4 w-4 mr-1" />
                 Add Task
@@ -236,6 +238,7 @@ const MiniChecklist = () => {
                 size="sm" 
                 className="h-8 hover:bg-primary/10 border-primary/30"
                 aria-label="Invite someone to your village"
+                onClick={(e) => e.stopPropagation()}
               >
                 <IconComponent className="h-4 w-4 mr-1" />
                 Invite
