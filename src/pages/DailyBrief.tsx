@@ -243,7 +243,7 @@ const DailyBrief = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       
       <div className="container mx-auto px-4 py-12 md:py-16 lg:py-12 max-w-7xl flex-1 flex flex-col justify-center">
         {/* 1. Top Section (Header) */}
@@ -277,7 +277,7 @@ const DailyBrief = () => {
         {/* 2. Celebrate Yourself (Clickable Card) */}
         <div className={`mb-8 transition-all duration-700 ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
           <Card 
-            className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 border-green-200 shadow-lg relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+            className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 border-green-200 shadow-xl relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]"
             onClick={() => setShowCelebrateModal(true)}
           >
             {/* Subtle sparkle background effect */}
@@ -309,7 +309,7 @@ const DailyBrief = () => {
         <div className="flex justify-center mb-8">
           <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl transition-all duration-700 ${isLoaded ? 'animate-scale-in' : 'opacity-0 scale-95'}`}>
             <Card 
-              className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl ${activeFilter === 'completed' ? 'ring-2 ring-blue-500 bg-blue-100 shadow-lg' : 'bg-blue-50 hover:bg-blue-100'} border-blue-200 h-32`}
+              className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl ${activeFilter === 'completed' ? 'ring-2 ring-blue-500 bg-blue-100 shadow-xl' : 'bg-blue-50 hover:bg-blue-100 shadow-lg'} border-blue-200 h-32`}
               onClick={() => handleStatusCardClick('completed')}
             >
               <CardContent className="p-6 text-center h-full flex flex-col justify-center">
@@ -322,7 +322,7 @@ const DailyBrief = () => {
             </Card>
 
             <Card 
-              className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl ${activeFilter === 'village' ? 'ring-2 ring-green-500 bg-green-100 shadow-lg' : 'bg-green-50 hover:bg-green-100'} border-green-200 h-32`}
+              className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl ${activeFilter === 'village' ? 'ring-2 ring-green-500 bg-green-100 shadow-xl' : 'bg-green-50 hover:bg-green-100 shadow-lg'} border-green-200 h-32`}
               onClick={() => handleStatusCardClick('village')}
             >
               <CardContent className="p-6 text-center h-full flex flex-col justify-center">
@@ -335,7 +335,7 @@ const DailyBrief = () => {
             </Card>
 
             <Card 
-              className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl ${activeFilter === 'goals' ? 'ring-2 ring-purple-500 bg-purple-100 shadow-lg' : 'bg-purple-50 hover:bg-purple-100'} border-purple-200 h-32`}
+              className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl ${activeFilter === 'goals' ? 'ring-2 ring-purple-500 bg-purple-100 shadow-xl' : 'bg-purple-50 hover:bg-purple-100 shadow-lg'} border-purple-200 h-32`}
               onClick={() => handleStatusCardClick('goals')}
             >
               <CardContent className="p-6 text-center h-full flex flex-col justify-center">
@@ -356,7 +356,7 @@ const DailyBrief = () => {
             {shouldShowSection('priorities') && (
             <div className="lg:col-span-3 space-y-6">
               {/* Today's Priorities */}
-              <Card>
+              <Card className="shadow-lg">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
                     <AlertTriangle className="h-5 w-5 text-red-500" />
@@ -389,7 +389,7 @@ const DailyBrief = () => {
               </Card>
 
               {/* Upcoming This Week */}
-              <Card>
+              <Card className="shadow-lg">
                 <CardHeader className="pb-4">
                   <CardTitle className="text-lg font-semibold text-slate-800">Upcoming This Week</CardTitle>
                 </CardHeader>
@@ -416,7 +416,7 @@ const DailyBrief = () => {
           {/* Center Column - Task Overview (6 columns) */}
           {shouldShowSection('tasks') && (
             <div className={`${shouldShowSection('priorities') ? 'lg:col-span-6' : shouldShowSection('social') || shouldShowSection('goals') ? 'lg:col-span-9' : 'lg:col-span-12'}`}>
-              <Card>
+              <Card className="shadow-lg">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                      <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
@@ -440,7 +440,7 @@ const DailyBrief = () => {
                     {filteredTasks.map((task, index) => (
                       <div 
                         key={task.id} 
-                        className="flex items-center justify-between p-4 bg-white rounded-lg border hover:shadow-sm transition-shadow group cursor-move"
+                        className="flex items-center justify-between p-4 bg-white rounded-lg border hover:shadow-md transition-shadow group cursor-move shadow-sm"
                         draggable
                         onDragStart={(e) => handleDragStart(e, task.id)}
                         onDragOver={handleDragOver}
@@ -497,7 +497,7 @@ const DailyBrief = () => {
             <div className="lg:col-span-3 space-y-6">
               {/* Social Connection - Moved up for importance */}
               {shouldShowSection('social') && (
-                <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+                <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200 shadow-lg">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
                       <Users className="h-5 w-5 text-blue-600" />
@@ -523,7 +523,7 @@ const DailyBrief = () => {
 
               {/* Your Goals */}
               {shouldShowSection('goals') && (
-                <Card>
+                <Card className="shadow-lg">
                   <CardHeader className="pb-4">
                     <div className="flex items-center justify-between">
                       <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
@@ -587,7 +587,7 @@ const DailyBrief = () => {
           
           <Button 
             variant="outline" 
-            className="min-h-[52px] px-8 border-2 border-green-300 text-green-700 hover:bg-green-50 hover:border-green-400 transition-all duration-300 hover:scale-105 font-medium text-lg shadow-md"
+            className="min-h-[52px] px-8 border-2 border-green-300 text-green-700 hover:bg-green-50 hover:border-green-400 transition-all duration-300 hover:scale-105 font-medium text-lg shadow-lg hover:shadow-xl"
             onClick={handleMarkDayComplete}
           >
             <CheckCircle className="h-5 w-5 mr-3" />
