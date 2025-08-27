@@ -3,7 +3,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Calendar, Heart, MessageSquare, UserPlus } from 'lucide-react';
-import Navigation from '@/components/Navigation';
 import FeatureFooter from '@/components/FeatureFooter';
 import CareCircleEnhanced from '@/components/village/CareCircleEnhanced';
 import ActiveTasksEnhanced from '@/components/village/ActiveTasksEnhanced';
@@ -33,7 +32,6 @@ const Village = () => {
 
   return (
     <div className="min-h-screen warm-gradient pb-20">
-      <Navigation />
       
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}

@@ -8,7 +8,6 @@ import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from '@/components/ui/use-toast';
 import { Calendar, Clock, Heart, Brain, Edit3, Pause, CheckCircle, User, MapPin, AlertTriangle, Target, TrendingUp, CalendarDays, Users, Star, Plus } from 'lucide-react';
-import Navigation from '@/components/Navigation';
 import FeatureFooter from '@/components/FeatureFooter';
 import MoodCheckPopup from '@/components/MoodCheckPopup';
 import AddGoalModal from '@/components/AddGoalModal';
@@ -154,7 +153,6 @@ const DailyBrief = () => {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <Navigation />
       
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* 1. Top Section (Header) */}

@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart3, Clock, Target, TrendingUp, AlertTriangle } from 'lucide-react';
-import Navigation from '@/components/Navigation';
 import FeatureFooter from '@/components/FeatureFooter';
 import PlannerHeader from '@/components/planner/PlannerHeader';
 import WeekView from '@/components/planner/WeekView';
@@ -46,7 +45,6 @@ const PlannerInsights = () => {
 
   return (
     <div className="min-h-screen warm-gradient pb-20">
-      <Navigation />
       
       <div className="container mx-auto px-4 py-8 max-w-7xl space-y-6">
         <PlannerHeader />
