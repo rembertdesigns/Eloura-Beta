@@ -13,7 +13,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 
-const navigationItems = [
+const mainNavigationItems = [
   {
     title: 'Dashboard',
     url: '/dashboard',
@@ -49,6 +49,9 @@ const navigationItems = [
     url: '/home-base-toolkit',
     icon: FolderOpen,
   },
+];
+
+const settingsItems = [
   {
     title: 'Settings',
     url: '/settings',
@@ -61,34 +64,65 @@ export function AppSidebar() {
   const location = useLocation();
   const collapsed = state === 'collapsed';
 
+  const renderNavItems = (items: typeof mainNavigationItems) => {
+    return items.map((item) => {
+      const isActive = location.pathname === item.url;
+      return (
+        <SidebarMenuItem key={item.title}>
+          <SidebarMenuButton asChild>
+            <NavLink
+              to={item.url}
+              className={`group flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 hover:scale-[1.02] ${
+                isActive
+                  ? 'bg-primary text-primary-foreground shadow-lg border-l-4 border-primary-foreground/30'
+                  : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-sm hover:translate-x-1'
+              }`}
+            >
+              <div
+                className={`flex items-center justify-center w-10 h-10 rounded-full transition-all duration-200 ${
+                  isActive
+                    ? 'bg-primary-foreground/20 ring-2 ring-primary-foreground/30'
+                    : 'bg-sidebar-accent group-hover:bg-primary/10 group-hover:scale-110'
+                }`}
+              >
+                <item.icon className={`h-6 w-6 flex-shrink-0 transition-all duration-200 ${
+                  isActive ? 'text-primary-foreground' : 'text-sidebar-foreground group-hover:text-primary'
+                }`} />
+              </div>
+              {!collapsed && (
+                <span className={`text-base font-semibold transition-all duration-200 ${
+                  isActive ? 'text-primary-foreground' : 'text-sidebar-foreground'
+                }`}>
+                  {item.title}
+                </span>
+              )}
+            </NavLink>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      );
+    });
+  };
+
   return (
-    <Sidebar className="border-r border-slate-200">
-      <SidebarContent>
+    <Sidebar className="bg-sidebar border-r border-sidebar-border shadow-xl rounded-r-2xl overflow-hidden">
+      <SidebarContent className="px-2 py-6">
+        {/* Main Navigation */}
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu>
-              {navigationItems.map((item) => {
-                const isActive = location.pathname === item.url;
-                return (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <NavLink
-                        to={item.url}
-                        className={({ isActive }) =>
-                          `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                            isActive
-                              ? 'bg-blue-100 text-blue-700 font-medium'
-                              : 'text-slate-600 hover:bg-slate-100 hover:text-slate-700'
-                          }`
-                        }
-                      >
-                        <item.icon className="h-5 w-5 flex-shrink-0" />
-                        {!collapsed && <span className="text-sm">{item.title}</span>}
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
+            <SidebarMenu className="space-y-2">
+              {renderNavItems(mainNavigationItems)}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Separator */}
+        <div className="mx-4 my-6 h-px bg-sidebar-border" />
+
+        {/* Settings Section */}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu className="space-y-2">
+              {renderNavItems(settingsItems)}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
