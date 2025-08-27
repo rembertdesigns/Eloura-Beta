@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -18,12 +19,33 @@ import MiniChecklist from './MiniChecklist';
 const FirstTimeDashboard = () => {
   const [showTour, setShowTour] = useState(false);
   const [tourCompleted, setTourCompleted] = useState(false);
+  const [householdName, setHouseholdName] = useState('');
+  const [tasks, setTasks] = useState([]);
 
+  useEffect(() => {
+    const loadData = () => {
+      const savedHouseholdName = localStorage.getItem('householdName');
+      const savedTasks = JSON.parse(localStorage.getItem('userTasks') || '[]');
+      
+      if (savedHouseholdName) {
+        setHouseholdName(savedHouseholdName);
+      }
+      if (savedTasks) {
+        setTasks(savedTasks);
+      }
+    };
+
+    loadData();
+    
+    // Listen for storage changes to update when new items are added via checklist
+    const interval = setInterval(loadData, 1000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   const handleStartTour = () => {
     setShowTour(true);
   };
-
 
   const handleTourComplete = () => {
     setShowTour(false);
@@ -61,7 +83,7 @@ const FirstTimeDashboard = () => {
           {/* Welcome Header */}
           <div className="text-center space-y-2">
             <h1 className="text-2xl font-light text-slate-800">
-              You're in. Let's make this easier together.
+              {householdName ? `Welcome to ${householdName}!` : "You're in. Let's make this easier together."}
             </h1>
             <p className="text-base text-slate-600">
               Here are a few things you can try right now.
@@ -84,17 +106,42 @@ const FirstTimeDashboard = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
-                <div className="text-center py-4 space-y-2">
-                  <div className="w-10 h-10 mx-auto bg-muted rounded-full flex items-center justify-center opacity-40">
-                    <Home className="h-5 w-5 text-muted-foreground" />
+                {householdName ? (
+                  <div className="space-y-2">
+                    <div className="bg-green-50 border border-green-200 rounded-md p-3">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-green-600" />
+                        <span className="font-medium text-green-800">{householdName}</span>
+                      </div>
+                      <p className="text-xs text-green-600 mt-1">Your household is set up!</p>
+                    </div>
+                    {tasks.length > 0 && (
+                      <div className="space-y-1">
+                        <p className="text-xs font-medium text-slate-700">Today's Tasks:</p>
+                        {tasks.slice(0, 2).map((task, index) => (
+                          <div key={task.id || index} className="bg-blue-50 border border-blue-200 rounded-md p-2">
+                            <span className="text-xs text-blue-800">{task.title}</span>
+                          </div>
+                        ))}
+                        {tasks.length > 2 && (
+                          <p className="text-xs text-slate-500">+{tasks.length - 2} more tasks</p>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  <p className="text-xs text-muted-foreground font-medium">Your personalized dashboard will appear here</p>
-                  <div className="bg-primary/5 border border-primary/20 rounded-md p-2 mx-2">
-                    <p className="text-xs text-primary font-medium">
-                      💡 Finish your checklist to see today's upcoming tasks and insights!
-                    </p>
+                ) : (
+                  <div className="text-center py-4 space-y-2">
+                    <div className="w-10 h-10 mx-auto bg-muted rounded-full flex items-center justify-center opacity-40">
+                      <Home className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                    <p className="text-xs text-muted-foreground font-medium">Your personalized dashboard will appear here</p>
+                    <div className="bg-primary/5 border border-primary/20 rounded-md p-2 mx-2">
+                      <p className="text-xs text-primary font-medium">
+                        💡 Finish your checklist to see today's upcoming tasks and insights!
+                      </p>
+                    </div>
                   </div>
-                </div>
+                )}
               </CardContent>
             </Card>
 
@@ -109,17 +156,39 @@ const FirstTimeDashboard = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0">
-                <div className="text-center py-4 space-y-2">
-                  <div className="w-10 h-10 mx-auto bg-muted rounded-full flex items-center justify-center opacity-40">
-                    <Calendar className="h-5 w-5 text-muted-foreground" />
+                {tasks.length > 0 ? (
+                  <div className="space-y-2">
+                    <div className="bg-purple-50 border border-purple-200 rounded-md p-3">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="h-4 w-4 text-purple-600" />
+                        <span className="font-medium text-purple-800">Tasks Added</span>
+                      </div>
+                      <p className="text-xs text-purple-600 mt-1">{tasks.length} task{tasks.length > 1 ? 's' : ''} in your planner</p>
+                    </div>
+                    <div className="space-y-1">
+                      {tasks.slice(0, 3).map((task, index) => (
+                        <div key={task.id || index} className="bg-white border border-slate-200 rounded p-2">
+                          <span className="text-xs text-slate-700">{task.title}</span>
+                          <div className="text-xs text-slate-500 mt-1">
+                            Added {new Date(task.createdAt).toLocaleDateString()}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground font-medium">Your tasks, events, and reminders will appear here</p>
-                  <div className="bg-primary/5 border border-primary/20 rounded-md p-2 mx-2">
-                    <p className="text-xs text-primary font-medium">
-                      📅 Add a task and your planner will be ready!
-                    </p>
+                ) : (
+                  <div className="text-center py-4 space-y-2">
+                    <div className="w-10 h-10 mx-auto bg-muted rounded-full flex items-center justify-center opacity-40">
+                      <Calendar className="h-5 w-5 text-muted-foreground" />
+                    </div>
+                    <p className="text-xs text-muted-foreground font-medium">Your tasks, events, and reminders will appear here</p>
+                    <div className="bg-primary/5 border border-primary/20 rounded-md p-2 mx-2">
+                      <p className="text-xs text-primary font-medium">
+                        📅 Add a task and your planner will be ready!
+                      </p>
+                    </div>
                   </div>
-                </div>
+                )}
               </CardContent>
             </Card>
 
