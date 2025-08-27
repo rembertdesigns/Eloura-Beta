@@ -172,7 +172,9 @@ const PlannerInsights = () => {
         )}
       </div>
       
-      <FeatureFooter />
+      <div className="md:hidden">
+        <FeatureFooter />
+      </div>
     </div>
   );
 };

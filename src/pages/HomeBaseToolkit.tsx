@@ -220,7 +220,9 @@ const HomeBaseToolkit = () => {
         </Card>
       </div>
       
-      <FeatureFooter />
+      <div className="md:hidden">
+        <FeatureFooter />
+      </div>
     </div>
   );
 };

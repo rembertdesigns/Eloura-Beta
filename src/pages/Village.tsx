@@ -96,7 +96,9 @@ const Village = () => {
         </Tabs>
       </div>
       
-      <FeatureFooter />
+      <div className="md:hidden">
+        <FeatureFooter />
+      </div>
     </div>
   );
 };

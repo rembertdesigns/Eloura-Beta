@@ -509,7 +509,9 @@ const DailyBrief = () => {
         onAddTask={handleAddTask}
       />
       
-      <FeatureFooter />
+      <div className="md:hidden">
+        <FeatureFooter />
+      </div>
     </div>
   );
 };
