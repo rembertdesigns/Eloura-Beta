@@ -9,14 +9,14 @@ const DailyBriefLayout = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <AppSidebar />
         </div>
         <SidebarInset>
           <DailyBrief />
         </SidebarInset>
       </div>
-      <div className="md:hidden">
+      <div className="lg:hidden">
         <FeatureFooter />
       </div>
     </SidebarProvider>

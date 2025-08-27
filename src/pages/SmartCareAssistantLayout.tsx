@@ -9,14 +9,14 @@ const SmartCareAssistantLayout = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <AppSidebar />
         </div>
         <SidebarInset>
           <SmartCareAssistant />
         </SidebarInset>
       </div>
-      <div className="md:hidden">
+      <div className="lg:hidden">
         <FeatureFooter />
       </div>
     </SidebarProvider>
