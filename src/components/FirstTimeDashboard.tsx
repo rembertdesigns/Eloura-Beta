@@ -72,55 +72,81 @@ const FirstTimeDashboard = () => {
           <MiniChecklist />
 
           {/* Dashboard Preview Areas */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
             {/* Daily Dashboard Preview */}
-            <Card id="dashboard" className="border-2 border-dashed border-slate-200">
+            <Card id="dashboard" className="border-2 border-dashed border-muted-foreground/20 bg-gradient-to-br from-background to-muted/30 hover:border-primary/30 transition-all duration-300">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Home className="h-5 w-5 text-[#223b0a]" />
+                <CardTitle className="flex items-center gap-3 text-foreground">
+                  <div className="p-2 rounded-full bg-primary/10">
+                    <Home className="h-5 w-5 text-primary" />
+                  </div>
                   Daily Dashboard
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-8 text-slate-500">
-                  <p className="text-sm">Your personalized dashboard will appear here</p>
-                  <p className="text-xs mt-2">Complete the checklist above to get started</p>
+                <div className="text-center py-8 space-y-3">
+                  <div className="w-12 h-12 mx-auto bg-muted rounded-full flex items-center justify-center opacity-40">
+                    <Home className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                  <p className="text-sm text-muted-foreground font-medium">Your personalized dashboard will appear here</p>
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 mx-4">
+                    <p className="text-xs text-primary font-medium">
+                      💡 Finish your checklist to see today's upcoming tasks and insights!
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Shared Planner Preview */}
-            <Card id="planner" className="border-2 border-dashed border-slate-200">
+            <Card id="planner" className="border-2 border-dashed border-muted-foreground/20 bg-gradient-to-br from-background to-muted/30 hover:border-primary/30 transition-all duration-300">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Calendar className="h-5 w-5 text-[#223b0a]" />
+                <CardTitle className="flex items-center gap-3 text-foreground">
+                  <div className="p-2 rounded-full bg-primary/10">
+                    <Calendar className="h-5 w-5 text-primary" />
+                  </div>
                   Shared Planner
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-8 text-slate-500">
-                  <p className="text-sm">Your tasks, events, and reminders will appear here</p>
-                  <p className="text-xs mt-2">Add your first task to get started</p>
+                <div className="text-center py-8 space-y-3">
+                  <div className="w-12 h-12 mx-auto bg-muted rounded-full flex items-center justify-center opacity-40">
+                    <Calendar className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                  <p className="text-sm text-muted-foreground font-medium">Your tasks, events, and reminders will appear here</p>
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 mx-4">
+                    <p className="text-xs text-primary font-medium">
+                      📅 Add a task and your planner will be ready!
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Village Preview */}
-            <Card id="village" className="border-2 border-dashed border-slate-200">
+            <Card id="village" className="border-2 border-dashed border-muted-foreground/20 bg-gradient-to-br from-background to-muted/30 hover:border-primary/30 transition-all duration-300 md:col-span-2">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5 text-[#223b0a]" />
+                <CardTitle className="flex items-center gap-3 text-foreground">
+                  <div className="p-2 rounded-full bg-primary/10">
+                    <Users className="h-5 w-5 text-primary" />
+                  </div>
                   The Village
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-center py-8 text-slate-500">
-                  <p className="text-sm">Your support network will appear here</p>
-                  <p className="text-xs mt-2">Invite someone to get started</p>
+                <div className="text-center py-8 space-y-3">
+                  <div className="w-12 h-12 mx-auto bg-muted rounded-full flex items-center justify-center opacity-40">
+                    <Users className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                  <p className="text-sm text-muted-foreground font-medium">Your support network will appear here</p>
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 max-w-md mx-auto">
+                    <p className="text-xs text-primary font-medium">
+                      👥 Invite someone to build your village and share the household management!
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
-
           </div>
         </div>
       )}
