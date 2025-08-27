@@ -27,6 +27,9 @@ const MiniChecklist = () => {
   const [inviteName, setInviteName] = useState('');
   const [inviteEmail, setInviteEmail] = useState('');
   const [selectedRole, setSelectedRole] = useState('helper');
+  const [householdDialogOpen, setHouseholdDialogOpen] = useState(false);
+  const [taskDialogOpen, setTaskDialogOpen] = useState(false);
+  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
   const { toast } = useToast();
 
   // Load saved data on component mount
@@ -90,7 +93,8 @@ const MiniChecklist = () => {
     { value: 'emergency', label: 'Emergency Contact', description: 'Limited access for emergencies only' }
   ];
 
-  const handleSaveHouseholdName = () => {
+  const handleSaveHouseholdName = (e?: React.FormEvent) => {
+    e?.preventDefault();
     if (householdName.trim()) {
       localStorage.setItem('householdName', householdName.trim());
       setCheckedItems(prev => ({ ...prev, 'household-name': true }));
@@ -100,10 +104,12 @@ const MiniChecklist = () => {
         description: remaining > 0 ? `Welcome to ${householdName}! Just ${remaining} more step${remaining > 1 ? 's' : ''} to unlock your dashboard.` : `Welcome to ${householdName}! Your dashboard is ready!`,
       });
       setHouseholdName('');
+      setHouseholdDialogOpen(false);
     }
   };
 
-  const handleAddTask = () => {
+  const handleAddTask = (e?: React.FormEvent) => {
+    e?.preventDefault();
     if (newTask.trim()) {
       // Save task to localStorage
       const existingTasks = JSON.parse(localStorage.getItem('userTasks') || '[]');
@@ -123,10 +129,12 @@ const MiniChecklist = () => {
         description: remaining > 0 ? `"${newTask}" added! ${remaining} more step${remaining > 1 ? 's' : ''} to go.` : `"${newTask}" added! Your dashboard is ready!`,
       });
       setNewTask('');
+      setTaskDialogOpen(false);
     }
   };
 
-  const handleSendInvite = () => {
+  const handleSendInvite = (e?: React.FormEvent) => {
+    e?.preventDefault();
     if (inviteName.trim() && inviteEmail.trim()) {
       // Save invite to localStorage
       const existingInvites = JSON.parse(localStorage.getItem('pendingInvites') || '[]');
@@ -149,6 +157,7 @@ const MiniChecklist = () => {
       });
       setInviteName('');
       setInviteEmail('');
+      setInviteDialogOpen(false);
     }
   };
 
@@ -163,7 +172,7 @@ const MiniChecklist = () => {
     if (item.action === 'modal') {
       if (item.id === 'household-name') {
         return (
-          <Dialog>
+          <Dialog open={householdDialogOpen} onOpenChange={setHouseholdDialogOpen}>
             <DialogTrigger asChild>
               <Button 
                 variant="outline" 
@@ -180,16 +189,21 @@ const MiniChecklist = () => {
               <DialogHeader>
                 <DialogTitle>Give your Household a name</DialogTitle>
               </DialogHeader>
-              <div className="space-y-4">
+              <form onSubmit={handleSaveHouseholdName} className="space-y-4">
                 <Input
                   placeholder="e.g., The Smith Family, Johnson Household"
                   value={householdName}
                   onChange={(e) => setHouseholdName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSaveHouseholdName(e);
+                    }
+                  }}
                 />
-                <Button onClick={handleSaveHouseholdName} className="w-full">
+                <Button type="submit" className="w-full" disabled={!householdName.trim()}>
                   Save Household Name
                 </Button>
-              </div>
+              </form>
             </DialogContent>
           </Dialog>
         );
@@ -197,7 +211,7 @@ const MiniChecklist = () => {
       
       if (item.id === 'first-task') {
         return (
-          <Dialog>
+          <Dialog open={taskDialogOpen} onOpenChange={setTaskDialogOpen}>
             <DialogTrigger asChild>
               <Button 
                 variant="outline" 
@@ -214,16 +228,21 @@ const MiniChecklist = () => {
               <DialogHeader>
                 <DialogTitle>Add your first task</DialogTitle>
               </DialogHeader>
-              <div className="space-y-4">
+              <form onSubmit={handleAddTask} className="space-y-4">
                 <Input
                   placeholder="e.g., Pick up groceries, Call dentist"
                   value={newTask}
                   onChange={(e) => setNewTask(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleAddTask(e);
+                    }
+                  }}
                 />
-                <Button onClick={handleAddTask} className="w-full">
+                <Button type="submit" className="w-full" disabled={!newTask.trim()}>
                   Add Task
                 </Button>
-              </div>
+              </form>
             </DialogContent>
           </Dialog>
         );
@@ -231,7 +250,7 @@ const MiniChecklist = () => {
       
       if (item.id === 'invite-someone') {
         return (
-          <Dialog>
+          <Dialog open={inviteDialogOpen} onOpenChange={setInviteDialogOpen}>
             <DialogTrigger asChild>
               <Button 
                 variant="outline" 
@@ -248,7 +267,7 @@ const MiniChecklist = () => {
               <DialogHeader>
                 <DialogTitle>Invite someone to your village</DialogTitle>
               </DialogHeader>
-              <div className="space-y-4">
+              <form onSubmit={handleSendInvite} className="space-y-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Name</label>
                   <Input
@@ -286,14 +305,14 @@ const MiniChecklist = () => {
                   </Select>
                 </div>
                 <Button 
-                  onClick={handleSendInvite} 
+                  type="submit"
                   className="w-full" 
                   disabled={!inviteName.trim() || !inviteEmail.trim()}
                 >
                   <Mail className="h-4 w-4 mr-2" />
                   Send Invite
                 </Button>
-              </div>
+              </form>
             </DialogContent>
           </Dialog>
         );

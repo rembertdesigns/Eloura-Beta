@@ -21,17 +21,22 @@ const FirstTimeDashboard = () => {
   const [tourCompleted, setTourCompleted] = useState(false);
   const [householdName, setHouseholdName] = useState('');
   const [tasks, setTasks] = useState([]);
+  const [invites, setInvites] = useState([]);
 
   useEffect(() => {
     const loadData = () => {
       const savedHouseholdName = localStorage.getItem('householdName');
       const savedTasks = JSON.parse(localStorage.getItem('userTasks') || '[]');
+      const savedInvites = JSON.parse(localStorage.getItem('pendingInvites') || '[]');
       
       if (savedHouseholdName) {
         setHouseholdName(savedHouseholdName);
       }
       if (savedTasks) {
         setTasks(savedTasks);
+      }
+      if (savedInvites) {
+        setInvites(savedInvites);
       }
     };
 
