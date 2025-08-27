@@ -1,13 +1,31 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { toast } from '@/components/ui/use-toast';
-import { Calendar, Clock, Heart, Brain, Edit3, Pause, CheckCircle, User, MapPin, AlertTriangle, Target, TrendingUp, CalendarDays, Users, Star, Plus } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
+import { 
+  Calendar, 
+  Clock, 
+  Heart, 
+  Brain, 
+  Edit3, 
+  Pause, 
+  CheckCircle, 
+  User, 
+  MapPin, 
+  AlertTriangle, 
+  Target, 
+  TrendingUp, 
+  CalendarDays, 
+  Users, 
+  Star, 
+  Plus,
+  Sparkles
+} from 'lucide-react';
 import FeatureFooter from '@/components/FeatureFooter';
 import MoodCheckPopup from '@/components/MoodCheckPopup';
 import AddGoalModal from '@/components/AddGoalModal';
@@ -85,6 +103,11 @@ const DailyBrief = () => {
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(
     Math.floor(Math.random() * motivationalQuotes.length)
   );
+  
+  // State for animations
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [animatedNumbers, setAnimatedNumbers] = useState({ tasks: 0, village: 0, goals: 0 });
+  const [showCelebration, setShowCelebration] = useState(false);
 
   const getFilteredTasks = () => {
     switch (activeFilter) {
@@ -133,6 +156,31 @@ const DailyBrief = () => {
   const connectionsCount = 4; // Mock data
   const activeGoalsCount = goals.length;
 
+  // Animation effect on component mount
+  useEffect(() => {
+    setIsLoaded(true);
+    
+    // Animate numbers counting up
+    const animateNumber = (target: number, key: 'tasks' | 'village' | 'goals') => {
+      let current = 0;
+      const increment = Math.ceil(target / 20);
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        setAnimatedNumbers(prev => ({ ...prev, [key]: current }));
+      }, 50);
+    };
+
+    setTimeout(() => {
+      animateNumber(completedTasks, 'tasks');
+      animateNumber(connectionsCount, 'village');  
+      animateNumber(activeGoalsCount, 'goals');
+    }, 300);
+  }, [completedTasks, connectionsCount, activeGoalsCount]);
+
   const handleAddGoal = (goal: any) => {
     setGoals(prev => [...prev, goal]);
     toast({ title: "Goal added successfully!" });
@@ -153,10 +201,21 @@ const DailyBrief = () => {
     setActiveFilter(filter);
     const filterMessages = {
       completed: 'completed tasks',
-      village: 'village connections',
+      village: 'village connections', 
       goals: 'goal-related tasks'
     };
     toast({ title: `Filtered to show ${filterMessages[filter] || filter}` });
+  };
+
+  const handleMarkDayComplete = () => {
+    setShowCelebration(true);
+    toast({ 
+      title: "🎉 Day Marked Complete!", 
+      description: "Amazing work today! You should be proud of all you accomplished."
+    });
+    
+    // Hide celebration effect after animation
+    setTimeout(() => setShowCelebration(false), 3000);
   };
 
   // Drag and drop handlers
@@ -205,75 +264,96 @@ const DailyBrief = () => {
               <Button 
                 onClick={() => setShowMoodPopup(true)}
                 variant="outline" 
-                className="flex items-center gap-2 border-orange-200 hover:bg-orange-50"
+                className="flex items-center gap-2 border-orange-200 hover:bg-orange-50 hover:border-orange-300 transition-all duration-300 hover:scale-105 group min-h-[48px] px-6"
               >
-                <Heart className="h-4 w-4 text-orange-500" />
-                Check In
+                <Heart className="h-5 w-5 text-orange-500 group-hover:animate-pulse" />
+                <span className="font-medium">Check In</span>
               </Button>
             </div>
           </div>
         </div>
 
-        {/* 2. Celebrate Yourself (High Visibility) */}
-        <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200 mb-6">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3 mb-3">
-              <Star className="h-5 w-5 text-green-600" />
-              <h3 className="font-semibold text-green-800">Celebrate Yourself</h3>
+        {/* 2. Celebrate Yourself (Enhanced with animations and effects) */}
+        <div className={`mb-12 transition-all duration-700 ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
+          <Card className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 border-green-200 shadow-lg relative overflow-hidden">
+            {/* Subtle sparkle background effect */}
+            <div className="absolute inset-0 opacity-10">
+              <Sparkles className="absolute top-4 right-6 h-6 w-6 text-green-500 animate-pulse" />
+              <Sparkles className="absolute top-12 right-16 h-4 w-4 text-emerald-400 animate-pulse" style={{ animationDelay: '1s' }} />
+              <Sparkles className="absolute top-8 right-24 h-3 w-3 text-teal-500 animate-pulse" style={{ animationDelay: '2s' }} />
             </div>
-            <div className="grid gap-2">
-              {celebrations.map((celebration, index) => (
-                <div key={index} className="flex items-center gap-3 text-sm text-green-700">
-                  <div className="flex-shrink-0">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
+            
+            <CardContent className="p-8 relative z-10">
+              <div className="text-center mb-6">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <div className="bg-green-100 p-3 rounded-full">
+                    <Star className="h-6 w-6 text-green-600" />
                   </div>
-                  <span>{celebration}</span>
+                  <h3 className="text-2xl font-semibold text-green-800">Celebrate Yourself</h3>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* 3. Summary Status Bar (Clickable Filters) */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <Card 
-            className={`cursor-pointer transition-all hover:shadow-md ${activeFilter === 'completed' ? 'ring-2 ring-blue-500 bg-blue-100' : 'bg-blue-50'} border-blue-200`}
-            onClick={() => handleStatusCardClick('completed')}
-          >
-            <CardContent className="p-4 text-center">
-              <div className="flex items-center justify-center mb-2">
-                <CheckCircle className="h-5 w-5 text-blue-600 mr-2" />
-                <span className="text-2xl font-bold text-blue-600">{completedTasks}</span>
+                <p className="text-green-700 font-medium mb-6">You're making amazing progress! Here's what you've accomplished:</p>
               </div>
-              <p className="text-sm text-slate-600">Tasks</p>
+              
+              <div className="grid gap-4 max-w-2xl mx-auto">
+                {celebrations.map((celebration, index) => (
+                  <div 
+                    key={index} 
+                    className={`flex items-center gap-4 text-green-700 bg-white/40 rounded-lg p-4 transition-all duration-300 hover:bg-white/60 animate-fade-in`}
+                    style={{ animationDelay: `${index * 200}ms` }}
+                  >
+                    <div className="flex-shrink-0 bg-green-500 p-2 rounded-full">
+                      <CheckCircle className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-lg">{celebration}</span>
+                  </div>
+                ))}
+              </div>
             </CardContent>
           </Card>
+        </div>
 
-          <Card 
-            className={`cursor-pointer transition-all hover:shadow-md ${activeFilter === 'village' ? 'ring-2 ring-green-500 bg-green-100' : 'bg-green-50'} border-green-200`}
-            onClick={() => handleStatusCardClick('village')}
-          >
-            <CardContent className="p-4 text-center">
-              <div className="flex items-center justify-center mb-2">
-                <Users className="h-5 w-5 text-green-600 mr-2" />
-                <span className="text-2xl font-bold text-green-600">{connectionsCount}</span>
-              </div>
-              <p className="text-sm text-slate-600">Village</p>
-            </CardContent>
-          </Card>
+        {/* 3. Summary Status Bar (Enhanced with center alignment and animations) */}
+        <div className="flex justify-center mb-12">
+          <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl transition-all duration-700 ${isLoaded ? 'animate-scale-in' : 'opacity-0 scale-95'}`}>
+            <Card 
+              className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl ${activeFilter === 'completed' ? 'ring-2 ring-blue-500 bg-blue-100 shadow-lg' : 'bg-blue-50 hover:bg-blue-100'} border-blue-200 h-32`}
+              onClick={() => handleStatusCardClick('completed')}
+            >
+              <CardContent className="p-6 text-center h-full flex flex-col justify-center">
+                <div className="flex items-center justify-center mb-3">
+                  <CheckCircle className="h-6 w-6 text-blue-600 mr-3" />
+                  <span className="text-3xl font-bold text-blue-600">{animatedNumbers.tasks}</span>
+                </div>
+                <p className="text-sm text-slate-600 font-medium">Tasks</p>
+              </CardContent>
+            </Card>
 
-          <Card 
-            className={`cursor-pointer transition-all hover:shadow-md ${activeFilter === 'goals' ? 'ring-2 ring-purple-500 bg-purple-100' : 'bg-purple-50'} border-purple-200`}
-            onClick={() => handleStatusCardClick('goals')}
-          >
-            <CardContent className="p-4 text-center">
-              <div className="flex items-center justify-center mb-2">
-                <Target className="h-5 w-5 text-purple-600 mr-2" />
-                <span className="text-2xl font-bold text-purple-600">{activeGoalsCount}</span>
-              </div>
-              <p className="text-sm text-slate-600">Goals</p>
-            </CardContent>
-          </Card>
+            <Card 
+              className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl ${activeFilter === 'village' ? 'ring-2 ring-green-500 bg-green-100 shadow-lg' : 'bg-green-50 hover:bg-green-100'} border-green-200 h-32`}
+              onClick={() => handleStatusCardClick('village')}
+            >
+              <CardContent className="p-6 text-center h-full flex flex-col justify-center">
+                <div className="flex items-center justify-center mb-3">
+                  <Users className="h-6 w-6 text-green-600 mr-3" />
+                  <span className="text-3xl font-bold text-green-600">{animatedNumbers.village}</span>
+                </div>
+                <p className="text-sm text-slate-600 font-medium">Village</p>
+              </CardContent>
+            </Card>
+
+            <Card 
+              className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl ${activeFilter === 'goals' ? 'ring-2 ring-purple-500 bg-purple-100 shadow-lg' : 'bg-purple-50 hover:bg-purple-100'} border-purple-200 h-32`}
+              onClick={() => handleStatusCardClick('goals')}
+            >
+              <CardContent className="p-6 text-center h-full flex flex-col justify-center">
+                <div className="flex items-center justify-center mb-3">
+                  <Target className="h-6 w-6 text-purple-600 mr-3" />
+                  <span className="text-3xl font-bold text-purple-600">{animatedNumbers.goals}</span>
+                </div>
+                <p className="text-sm text-slate-600 font-medium">Goals</p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* 4. Main Content (3-Column Layout) - Only show when filter is active */}
@@ -495,10 +575,29 @@ const DailyBrief = () => {
         </div>
         )}
 
-        {/* 5. Footer Section */}
-        <div className="mt-12 mb-8 flex justify-center">
-          <Button variant="outline" className="min-h-[44px] px-6">
-            <CheckCircle className="h-4 w-4 mr-2" />
+        {/* 5. Footer Section - Enhanced */}
+        <div className="mt-16 mb-8 flex justify-center relative">
+          {/* Celebration overlay effect */}
+          {showCelebration && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50">
+              <div className="animate-scale-in">
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-8 py-4 rounded-full shadow-2xl">
+                  <div className="flex items-center gap-3">
+                    <Sparkles className="h-6 w-6 animate-pulse" />
+                    <span className="text-xl font-bold">🎉 Fantastic job today!</span>
+                    <Sparkles className="h-6 w-6 animate-pulse" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          <Button 
+            variant="outline" 
+            className="min-h-[52px] px-8 border-2 border-green-300 text-green-700 hover:bg-green-50 hover:border-green-400 transition-all duration-300 hover:scale-105 font-medium text-lg shadow-md"
+            onClick={handleMarkDayComplete}
+          >
+            <CheckCircle className="h-5 w-5 mr-3" />
             Mark Day Complete
           </Button>
         </div>
