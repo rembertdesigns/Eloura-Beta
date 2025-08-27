@@ -20,40 +20,11 @@ const FirstTimeDashboard = () => {
   const [showTour, setShowTour] = useState(false);
   const [tourCompleted, setTourCompleted] = useState(false);
 
-  const highlights = [
-    {
-      title: "Daily Dashboard",
-      description: "Your personalized overview",
-      icon: Home,
-      id: "dashboard"
-    },
-    {
-      title: "Shared Planner", 
-      description: "Tasks, events, and reminders",
-      icon: Calendar,
-      id: "planner"
-    },
-    {
-      title: "Care Circle",
-      description: "Manage care responsibilities", 
-      icon: Heart,
-      id: "care-circle"
-    },
-    {
-      title: "The Village",
-      description: "Your support network",
-      icon: Users,
-      id: "village"
-    }
-  ];
 
   const handleStartTour = () => {
     setShowTour(true);
   };
 
-  const handleSkipTour = () => {
-    setTourCompleted(true);
-  };
 
   const handleTourComplete = () => {
     setShowTour(false);
@@ -67,51 +38,23 @@ const FirstTimeDashboard = () => {
   return (
     <div className="p-4 md:p-6 space-y-6">
       {!tourCompleted ? (
-        // Initial Tour Introduction
-        <div className="text-center space-y-6">
-          <div className="space-y-4">
-            <h1 className="text-4xl font-light text-slate-800">
-              Let's take a quick look around
+        // Hero-style Tour Introduction
+        <div className="min-h-[60vh] flex flex-col items-center justify-center text-center space-y-8 px-4">
+          <div className="space-y-6 max-w-2xl">
+            <h1 className="text-5xl md:text-6xl font-light text-slate-800 leading-tight">
+              Welcome to Eloura!
             </h1>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Welcome to Eloura! Here are the key areas that will help you manage your family and care responsibilities.
+            <p className="text-xl text-slate-600 leading-relaxed">
+              Take a quick tour to easily navigate Eloura's features and learn how we make care easier from day one.
             </p>
           </div>
 
-          {/* Highlights Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            {highlights.map((highlight) => {
-              const IconComponent = highlight.icon;
-              return (
-                <Card key={highlight.id} className="border-2 hover:shadow-md transition-shadow">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] rounded-full flex items-center justify-center mx-auto mb-4">
-                      <IconComponent className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="font-semibold text-slate-800 mb-2">{highlight.title}</h3>
-                    <p className="text-sm text-slate-600">{highlight.description}</p>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              onClick={handleStartTour}
-              className="bg-[#223b0a] hover:bg-[#1a2e08] text-white px-8 py-3 w-full sm:w-auto"
-            >
-              Start Tour
-            </Button>
-            <Button 
-              variant="outline" 
-              onClick={handleSkipTour}
-              className="border-[#223b0a] text-[#223b0a] hover:bg-[#223b0a] hover:text-white px-8 py-3 w-full sm:w-auto"
-            >
-              Skip Tour
-            </Button>
-          </div>
+          <Button 
+            onClick={handleStartTour}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-4 text-lg font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none transform hover:scale-105"
+          >
+            Start Your Tour
+          </Button>
         </div>
       ) : (
         // Post-Tour Dashboard
