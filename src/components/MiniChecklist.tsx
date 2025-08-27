@@ -207,9 +207,9 @@ const MiniChecklist = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Motivational Header */}
-      <div className="text-center space-y-2">
+      <div className="text-center space-y-1">
         <p className="text-sm text-muted-foreground">
           You're just a few steps from a simpler routine! ✨
         </p>
@@ -219,20 +219,20 @@ const MiniChecklist = () => {
       </div>
 
       <Card className="max-w-2xl mx-auto bg-gradient-to-br from-background to-muted/20 border-2 shadow-lg">
-        <CardHeader className="pb-4">
-          <div className="flex items-center justify-between mb-3">
-            <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between mb-2">
+            <CardTitle className="text-base font-semibold text-foreground flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-primary" />
               Get Started Checklist
             </CardTitle>
-            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 font-medium">
+            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/30 font-medium text-xs">
               {completedCount}/{totalCount} completed
             </Badge>
           </div>
           
           {/* Progress Bar */}
-          <div className="space-y-2">
-            <Progress value={progressPercentage} className="h-3 bg-muted" />
+          <div className="space-y-1">
+            <Progress value={progressPercentage} className="h-2 bg-muted" />
             <p className="text-xs text-muted-foreground text-center">
               {completedCount === totalCount 
                 ? "🎉 All done! Your dashboard is ready!" 
@@ -241,7 +241,7 @@ const MiniChecklist = () => {
             </p>
           </div>
         </CardHeader>
-        <CardContent className="space-y-3 pt-0">
+        <CardContent className="space-y-2 pt-0">
           {checklistItems.map((item) => {
             const isCompleted = checkedItems[item.id];
             const IconComponent = item.icon;
@@ -252,7 +252,7 @@ const MiniChecklist = () => {
                 className={`group relative cursor-pointer transition-all duration-300 ${
                   isCompleted 
                     ? 'animate-scale-in' 
-                    : 'hover:scale-[1.02] hover:shadow-md active:scale-[0.98]'
+                    : 'hover:scale-[1.01] hover:shadow-md active:scale-[0.99]'
                 }`}
                 onClick={() => !isCompleted && handleCheck(item.id)}
                 role="button"
@@ -265,7 +265,7 @@ const MiniChecklist = () => {
                 }}
                 aria-label={`${isCompleted ? 'Completed:' : 'Click to complete:'} ${item.title}`}
               >
-                <div className={`flex items-center gap-4 p-5 rounded-xl border-2 transition-all duration-300 ${
+                <div className={`flex items-center gap-3 p-3 rounded-lg border-2 transition-all duration-300 ${
                   isCompleted 
                     ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-300 shadow-sm' 
                     : 'bg-background border-border hover:border-primary/50 hover:bg-primary/5 hover:shadow-lg group-hover:shadow-primary/10'
@@ -280,15 +280,15 @@ const MiniChecklist = () => {
                   </div>
                   
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className={`p-2 rounded-full transition-all duration-300 ${
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className={`p-1.5 rounded-full transition-all duration-300 ${
                         isCompleted 
                           ? 'bg-green-200 text-green-700' 
                           : 'bg-primary/10 text-primary group-hover:bg-primary/20 group-hover:scale-110'
                       }`}>
-                        <IconComponent className="h-4 w-4" />
+                        <IconComponent className="h-3 w-3" />
                       </div>
-                      <h4 className={`font-semibold transition-all duration-300 ${
+                      <h4 className={`font-semibold text-sm transition-all duration-300 ${
                         isCompleted 
                           ? 'text-green-800 line-through opacity-80' 
                           : 'text-foreground group-hover:text-primary'
@@ -296,7 +296,7 @@ const MiniChecklist = () => {
                         {item.title}
                       </h4>
                     </div>
-                    <p className={`text-sm leading-relaxed transition-all duration-300 ${
+                    <p className={`text-xs leading-relaxed transition-all duration-300 ${
                       isCompleted 
                         ? 'text-green-600/80' 
                         : 'text-muted-foreground group-hover:text-foreground/80'
@@ -313,7 +313,7 @@ const MiniChecklist = () => {
                   
                   {isCompleted && (
                     <div className="flex-shrink-0 animate-scale-in">
-                      <CheckCircle2 className="h-6 w-6 text-green-600 animate-pulse" />
+                      <CheckCircle2 className="h-5 w-5 text-green-600 animate-pulse" />
                     </div>
                   )}
                 </div>
@@ -322,15 +322,13 @@ const MiniChecklist = () => {
           })}
           
           {completedCount === totalCount && (
-            <div className="text-center py-6 px-4 animate-fade-in animate-scale-in">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse shadow-lg">
-                <Sparkles className="h-8 w-8 text-green-600" />
+            <div className="text-center py-4 px-4 animate-fade-in animate-scale-in">
+              <div className="w-12 h-12 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-3 animate-pulse shadow-lg">
+                <Sparkles className="h-6 w-6 text-green-600" />
               </div>
-              <h4 className="font-bold text-green-800 mb-2 text-lg">🎉 All set up!</h4>
-              <p className="text-sm text-green-600 leading-relaxed max-w-md mx-auto">
-                Fantastic! You're ready to start using Eloura to manage your family and care responsibilities. 
-                <br />
-                <span className="font-medium">Your dashboard is now fully unlocked!</span>
+              <h4 className="font-bold text-green-800 mb-1 text-base">🎉 All set up!</h4>
+              <p className="text-xs text-green-600 leading-relaxed max-w-md mx-auto">
+                You're ready to start using Eloura! Your dashboard is now fully unlocked.
               </p>
             </div>
           )}
