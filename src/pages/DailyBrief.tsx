@@ -22,7 +22,7 @@ const DailyBrief = () => {
     { id: 1, title: "Exercise 3x weekly", category: "health", progress: 70, targetDate: "2024-01-31" },
     { id: 2, title: "Weekly family time", category: "family", progress: 85, targetDate: "ongoing" }
   ]);
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState('default');
   const [tasks, setTasks] = useState([
     { id: 1, text: "Pick up Sarah from soccer practice", time: "3:30 PM", category: "childcare", completed: false, urgent: false },
     { id: 2, text: "Dad's blood pressure medication", time: "6:00 PM", category: "eldercare", completed: true, urgent: false },
@@ -86,6 +86,9 @@ const DailyBrief = () => {
   };
 
   const shouldShowSection = (section: string) => {
+    // Only show sections when a filter is active
+    if (activeFilter === 'default') return false;
+    
     switch (activeFilter) {
       case 'village':
         return section === 'tasks' || section === 'social';
@@ -94,7 +97,7 @@ const DailyBrief = () => {
       case 'completed':
         return section === 'tasks';
       default:
-        return true;
+        return false;
     }
   };
 
@@ -249,10 +252,11 @@ const DailyBrief = () => {
           </Card>
         </div>
 
-        {/* 4. Main Content (3-Column Layout) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left Column - Priorities & Upcoming (3 columns) */}
-          {shouldShowSection('priorities') && (
+        {/* 4. Main Content (3-Column Layout) - Only show when filter is active */}
+        {activeFilter !== 'default' && (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Left Column - Priorities & Upcoming (3 columns) */}
+            {shouldShowSection('priorities') && (
             <div className="lg:col-span-3 space-y-6">
               {/* Today's Priorities */}
               <Card>
@@ -465,6 +469,7 @@ const DailyBrief = () => {
             </div>
           )}
         </div>
+        )}
 
         {/* 5. Footer Section */}
         <div className="mt-12 mb-8 flex flex-col sm:flex-row gap-4 justify-center">
