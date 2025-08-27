@@ -258,10 +258,6 @@ const DailyBrief = () => {
             </div>
             
             <div className="flex items-center gap-6">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-green-600 mb-1">{completionPercentage}%</div>
-                <div className="text-sm text-slate-600">Complete</div>
-              </div>
               <Button 
                 onClick={() => setShowMoodPopup(true)}
                 variant="outline" 
@@ -313,11 +309,12 @@ const DailyBrief = () => {
               onClick={() => handleStatusCardClick('completed')}
             >
               <CardContent className="p-6 text-center h-full flex flex-col justify-center">
-                <div className="flex items-center justify-center mb-3">
+                <div className="flex items-center justify-center mb-2">
                   <CheckCircle className="h-6 w-6 text-blue-600 mr-3" />
                   <span className="text-3xl font-bold text-blue-600">{animatedNumbers.tasks}</span>
                 </div>
-                <p className="text-sm text-slate-600 font-medium">Tasks</p>
+                <div className="text-lg font-semibold text-blue-600 mb-1">{completionPercentage}%</div>
+                <p className="text-sm text-slate-600 font-medium">Tasks Complete</p>
               </CardContent>
             </Card>
 
