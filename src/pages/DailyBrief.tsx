@@ -108,6 +108,7 @@ const DailyBrief = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [animatedNumbers, setAnimatedNumbers] = useState({ tasks: 0, village: 0, goals: 0 });
   const [showCelebration, setShowCelebration] = useState(false);
+  const [showCelebrateModal, setShowCelebrateModal] = useState(false);
 
   const getFilteredTasks = () => {
     switch (activeFilter) {
@@ -273,9 +274,12 @@ const DailyBrief = () => {
           </div>
         </div>
 
-        {/* 2. Celebrate Yourself (Enhanced with animations and effects) */}
+        {/* 2. Celebrate Yourself (Clickable Card) */}
         <div className={`mb-12 transition-all duration-700 ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
-          <Card className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 border-green-200 shadow-lg relative overflow-hidden">
+          <Card 
+            className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 border-green-200 shadow-lg relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+            onClick={() => setShowCelebrateModal(true)}
+          >
             {/* Subtle sparkle background effect */}
             <div className="absolute inset-0 opacity-10">
               <Sparkles className="absolute top-4 right-6 h-6 w-6 text-green-500 animate-pulse" />
@@ -284,29 +288,18 @@ const DailyBrief = () => {
             </div>
             
             <CardContent className="p-8 relative z-10">
-              <div className="text-center mb-6">
+              <div className="text-center">
                 <div className="flex items-center justify-center gap-3 mb-4">
                   <div className="bg-green-100 p-3 rounded-full">
                     <Star className="h-6 w-6 text-green-600" />
                   </div>
                   <h3 className="text-2xl font-semibold text-green-800">Celebrate Yourself</h3>
                 </div>
-                <p className="text-green-700 font-medium mb-6">You're making amazing progress! Here's what you've accomplished:</p>
-              </div>
-              
-              <div className="grid gap-4 max-w-2xl mx-auto">
-                {celebrations.map((celebration, index) => (
-                  <div 
-                    key={index} 
-                    className={`flex items-center gap-4 text-green-700 bg-white/40 rounded-lg p-4 transition-all duration-300 hover:bg-white/60 animate-fade-in`}
-                    style={{ animationDelay: `${index * 200}ms` }}
-                  >
-                    <div className="flex-shrink-0 bg-green-500 p-2 rounded-full">
-                      <CheckCircle className="h-5 w-5 text-white" />
-                    </div>
-                    <span className="text-lg">{celebration}</span>
-                  </div>
-                ))}
+                <p className="text-green-700 font-medium mb-4">You've accomplished amazing things today!</p>
+                <div className="bg-white/40 rounded-lg p-4 inline-flex items-center gap-2 text-green-600 font-medium">
+                  <span>Click to see your wins</span>
+                  <Target className="h-4 w-4" />
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -602,6 +595,42 @@ const DailyBrief = () => {
           </Button>
         </div>
       </div>
+      
+      {/* Celebrate Yourself Modal */}
+      <Dialog open={showCelebrateModal} onOpenChange={setShowCelebrateModal}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <div className="flex items-center gap-3 justify-center">
+              <div className="bg-green-100 p-3 rounded-full">
+                <Star className="h-6 w-6 text-green-600" />
+              </div>
+              <DialogTitle className="text-2xl text-green-800">Celebrate Your Wins!</DialogTitle>
+            </div>
+          </DialogHeader>
+          <div className="py-6">
+            <p className="text-center text-green-700 font-medium mb-6">
+              You're making amazing progress! Here's what you've accomplished today:
+            </p>
+            <div className="grid gap-4">
+              {celebrations.map((celebration, index) => (
+                <div 
+                  key={index} 
+                  className={`flex items-center gap-4 text-green-700 bg-green-50 rounded-lg p-4 transition-all duration-300 animate-fade-in border border-green-200`}
+                  style={{ animationDelay: `${index * 200}ms` }}
+                >
+                  <div className="flex-shrink-0 bg-green-500 p-2 rounded-full">
+                    <CheckCircle className="h-5 w-5 text-white" />
+                  </div>
+                  <span className="text-lg">{celebration}</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 text-center">
+              <p className="text-green-600 font-medium">Keep up the fantastic work! 🎉</p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
       
       {/* Modals */}
       <MoodCheckPopup 
