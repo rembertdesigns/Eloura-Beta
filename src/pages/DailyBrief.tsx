@@ -243,9 +243,9 @@ const DailyBrief = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
       
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 py-12 md:py-16 lg:py-12 max-w-7xl flex-1 flex flex-col justify-center">
         {/* 1. Top Section (Header) */}
         <div className="mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-4 gap-4">
@@ -275,7 +275,7 @@ const DailyBrief = () => {
         </div>
 
         {/* 2. Celebrate Yourself (Clickable Card) */}
-        <div className={`mb-12 transition-all duration-700 ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
+        <div className={`mb-8 transition-all duration-700 ${isLoaded ? 'animate-fade-in' : 'opacity-0'}`}>
           <Card 
             className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 border-green-200 shadow-lg relative overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
             onClick={() => setShowCelebrateModal(true)}
@@ -306,7 +306,7 @@ const DailyBrief = () => {
         </div>
 
         {/* 3. Summary Status Bar (Enhanced with center alignment and animations) */}
-        <div className="flex justify-center mb-12">
+        <div className="flex justify-center mb-8">
           <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl transition-all duration-700 ${isLoaded ? 'animate-scale-in' : 'opacity-0 scale-95'}`}>
             <Card 
               className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl ${activeFilter === 'completed' ? 'ring-2 ring-blue-500 bg-blue-100 shadow-lg' : 'bg-blue-50 hover:bg-blue-100'} border-blue-200 h-32`}
@@ -569,7 +569,7 @@ const DailyBrief = () => {
         )}
 
         {/* 5. Footer Section - Enhanced */}
-        <div className="mt-16 mb-8 flex justify-center relative">
+        <div className="mt-12 mb-4 flex justify-center relative">
           {/* Celebration overlay effect */}
           {showCelebration && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50">
