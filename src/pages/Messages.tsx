@@ -129,11 +129,12 @@ const mockMessages: Message[] = [
 ];
 
 const Messages = () => {
-  const [selectedConversation, setSelectedConversation] = useState<Conversation>(conversations[0]);
+  const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
   const [messageInput, setMessageInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   const handleSendMessage = () => {
     if (messageInput.trim()) {
@@ -162,7 +163,7 @@ const Messages = () => {
   return (
     <div className="flex h-screen bg-white">
       {/* Conversations Sidebar */}
-      <div className="w-1/3 bg-white border-r border-gray-200 flex flex-col shadow-2xl">
+      <div className={`${showChat && selectedConversation ? 'w-1/3' : 'w-full'} bg-white border-r border-gray-200 flex flex-col shadow-2xl transition-all duration-300`}>
         {/* Header */}
         <div className="p-4 border-b border-gray-200 flex-shrink-0">
           <div className="flex items-center justify-between mb-3">
@@ -227,11 +228,14 @@ const Messages = () => {
                 <div
                   key={conversation.id}
                   className={`relative p-3 rounded-xl cursor-pointer transition-all duration-200 shadow-sm ${
-                    selectedConversation.id === conversation.id
+                    selectedConversation?.id === conversation.id
                       ? 'bg-blue-50 border border-blue-200 shadow-md'
                       : 'hover:bg-gray-50 hover:shadow-sm'
                   } ${conversation.isPinned ? 'ring-1 ring-yellow-200 bg-yellow-50' : ''}`}
-                  onClick={() => setSelectedConversation(conversation)}
+                   onClick={() => {
+                     setSelectedConversation(conversation);
+                     setShowChat(true);
+                   }}
                 >
                   {conversation.isPinned && (
                     <Pin className="absolute top-2 right-2 h-3 w-3 text-yellow-500" />
@@ -314,147 +318,157 @@ const Messages = () => {
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 flex flex-col shadow-2xl bg-white border-l border-gray-200">
-        {/* Chat Header */}
-        <div className="bg-white border-b border-gray-200 px-4 py-4 flex-shrink-0">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="relative">
-                <Avatar className="h-12 w-12">
-                  <AvatarFallback className={`${selectedConversation.isGroup ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'} font-medium`}>
-                    {selectedConversation.avatar}
-                  </AvatarFallback>
-                </Avatar>
-                {selectedConversation.isOnline && !selectedConversation.isGroup && (
-                  <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 bg-green-500 border-2 border-white rounded-full"></div>
-                )}
-                {selectedConversation.isGroup && (
-                  <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 bg-gray-600 text-white rounded-full text-xs flex items-center justify-center">
-                    <Users className="h-2 w-2" />
-                  </div>
-                )}
-              </div>
-              <div>
-                <div className="flex items-center space-x-2">
-                  <h3 className="font-medium text-gray-900">{selectedConversation.name}</h3>
-                  {selectedConversation.isGroup && (
-                    <Badge variant="outline" className="text-xs">
-                      {selectedConversation.memberCount} members
-                    </Badge>
+      {showChat && selectedConversation && (
+        <div className="flex-1 flex flex-col shadow-2xl bg-white border-l border-gray-200">
+          {/* Chat Header */}
+          <div className="bg-white border-b border-gray-200 px-4 py-4 flex-shrink-0">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="relative">
+                  <Avatar className="h-12 w-12">
+                    <AvatarFallback className={`${selectedConversation.isGroup ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'} font-medium`}>
+                      {selectedConversation.avatar}
+                    </AvatarFallback>
+                  </Avatar>
+                  {selectedConversation.isOnline && !selectedConversation.isGroup && (
+                    <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 bg-green-500 border-2 border-white rounded-full"></div>
                   )}
-                </div>
-                {selectedConversation.isTyping ? (
-                  <p className="text-sm text-green-600 italic">typing...</p>
-                ) : selectedConversation.isOnline ? (
-                  <p className="text-sm text-green-600">Online</p>
-                ) : selectedConversation.lastSeen ? (
-                  <p className="text-sm text-gray-500">Last seen {selectedConversation.lastSeen}</p>
-                ) : null}
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Button variant="outline" size="sm" title="Voice call">
-                <Phone className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" size="sm" title="Video call">
-                <Video className="h-4 w-4" />
-              </Button>
-              {selectedConversation.isGroup && (
-                <Button variant="outline" size="sm" title="Mention someone">
-                  <AtSign className="h-4 w-4" />
-                </Button>
-              )}
-              <Button variant="outline" size="sm" title="More options">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {mockMessages.map((message, index) => (
-            <div
-              key={message.id}
-              className={`flex ${message.isSent ? 'justify-end' : 'justify-start'}`}
-            >
-              <div className="max-w-xs lg:max-w-md">
-                <div
-                  className={`px-4 py-3 rounded-2xl shadow-sm ${
-                    message.isSent
-                      ? 'bg-blue-500 text-white rounded-br-md'
-                      : 'bg-gray-100 text-gray-900 rounded-bl-md'
-                  }`}
-                >
-                  <p className="text-sm leading-relaxed">{message.content}</p>
-                </div>
-                
-                <div className={`flex items-center mt-1 space-x-1 ${message.isSent ? 'justify-end' : 'justify-start'}`}>
-                  <span className="text-xs text-gray-500">
-                    {message.timestamp}
-                  </span>
-                  {message.isSent && (
-                    <div className="flex items-center space-x-1">
-                      {message.isDelivered && (
-                        <div className="w-3 h-3 text-gray-400">
-                          <svg viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                          </svg>
-                        </div>
-                      )}
-                      {message.isRead && (
-                        <div className="w-3 h-3 text-blue-500">
-                          <svg viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
-                          </svg>
-                        </div>
-                      )}
+                  {selectedConversation.isGroup && (
+                    <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 bg-gray-600 text-white rounded-full text-xs flex items-center justify-center">
+                      <Users className="h-2 w-2" />
                     </div>
                   )}
                 </div>
+                <div>
+                  <div className="flex items-center space-x-2">
+                    <h3 className="font-medium text-gray-900">{selectedConversation.name}</h3>
+                    {selectedConversation.isGroup && (
+                      <Badge variant="outline" className="text-xs">
+                        {selectedConversation.memberCount} members
+                      </Badge>
+                    )}
+                  </div>
+                  {selectedConversation.isTyping ? (
+                    <p className="text-sm text-green-600 italic">typing...</p>
+                  ) : selectedConversation.isOnline ? (
+                    <p className="text-sm text-green-600">Online</p>
+                  ) : selectedConversation.lastSeen ? (
+                    <p className="text-sm text-gray-500">Last seen {selectedConversation.lastSeen}</p>
+                  ) : null}
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <Button variant="outline" size="sm" title="Voice call">
+                  <Phone className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" size="sm" title="Video call">
+                  <Video className="h-4 w-4" />
+                </Button>
+                {selectedConversation.isGroup && (
+                  <Button variant="outline" size="sm" title="Mention someone">
+                    <AtSign className="h-4 w-4" />
+                  </Button>
+                )}
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  title="Close conversation"
+                  onClick={() => {
+                    setShowChat(false);
+                    setSelectedConversation(null);
+                  }}
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* Message Input */}
-        <div className="bg-white border-t border-gray-200 px-4 py-4 flex-shrink-0">
-          <div className="flex items-center space-x-3">
-            <Button variant="ghost" size="sm" title="Attach file">
-              <Paperclip className="h-4 w-4 text-gray-500" />
-            </Button>
-            <Input
-              placeholder="Type a message..."
-              value={messageInput}
-              onChange={(e) => setMessageInput(e.target.value)}
-              className="flex-1 rounded-full border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSendMessage();
-                }
-              }}
-            />
-            <Button variant="ghost" size="sm" title="Add emoji">
-              <Smile className="h-4 w-4 text-gray-500" />
-            </Button>
-            <Button 
-              onClick={handleSendMessage} 
-              disabled={!messageInput.trim()}
-              className="rounded-full w-10 h-10 p-0 bg-blue-500 hover:bg-blue-600"
-              title="Send message"
-            >
-              <Send className="h-4 w-4" />
-            </Button>
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {mockMessages.map((message, index) => (
+              <div
+                key={message.id}
+                className={`flex ${message.isSent ? 'justify-end' : 'justify-start'}`}
+              >
+                <div className="max-w-xs lg:max-w-md">
+                  <div
+                    className={`px-4 py-3 rounded-2xl shadow-sm ${
+                      message.isSent
+                        ? 'bg-blue-500 text-white rounded-br-md'
+                        : 'bg-gray-100 text-gray-900 rounded-bl-md'
+                    }`}
+                  >
+                    <p className="text-sm leading-relaxed">{message.content}</p>
+                  </div>
+                  
+                  <div className={`flex items-center mt-1 space-x-1 ${message.isSent ? 'justify-end' : 'justify-start'}`}>
+                    <span className="text-xs text-gray-500">
+                      {message.timestamp}
+                    </span>
+                    {message.isSent && (
+                      <div className="flex items-center space-x-1">
+                        {message.isDelivered && (
+                          <div className="w-3 h-3 text-gray-400">
+                            <svg viewBox="0 0 16 16" fill="currentColor">
+                              <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                            </svg>
+                          </div>
+                        )}
+                        {message.isRead && (
+                          <div className="w-3 h-3 text-blue-500">
+                            <svg viewBox="0 0 16 16" fill="currentColor">
+                              <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+                            </svg>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          
-          {/* Keyboard shortcut hint */}
-          <div className="text-xs text-gray-400 mt-2 text-center">
-            Press Enter to send • Shift + Enter for new line
+
+          {/* Message Input */}
+          <div className="bg-white border-t border-gray-200 px-4 py-4 flex-shrink-0">
+            <div className="flex items-center space-x-3">
+              <Button variant="ghost" size="sm" title="Attach file">
+                <Paperclip className="h-4 w-4 text-gray-500" />
+              </Button>
+              <Input
+                placeholder="Type a message..."
+                value={messageInput}
+                onChange={(e) => setMessageInput(e.target.value)}
+                className="flex-1 rounded-full border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }
+                }}
+              />
+              <Button variant="ghost" size="sm" title="Add emoji">
+                <Smile className="h-4 w-4 text-gray-500" />
+              </Button>
+              <Button 
+                onClick={handleSendMessage} 
+                disabled={!messageInput.trim()}
+                className="rounded-full w-10 h-10 p-0 bg-blue-500 hover:bg-blue-600"
+                title="Send message"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+            
+            {/* Keyboard shortcut hint */}
+            <div className="text-xs text-gray-400 mt-2 text-center">
+              Press Enter to send • Shift + Enter for new line
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
