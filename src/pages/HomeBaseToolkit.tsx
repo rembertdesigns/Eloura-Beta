@@ -78,9 +78,9 @@ const HomeBaseToolkit = () => {
 
   return (
     <div className="h-screen bg-white flex flex-col overflow-hidden">
-      <div className="container mx-auto px-4 py-4 max-w-7xl flex flex-col h-full">
+      <div className="container mx-auto px-4 max-w-7xl flex flex-col h-full justify-between">
         {/* Header */}
-        <div className="flex-shrink-0 mb-4">
+        <div className="flex-shrink-0 pt-6 pb-4">
           <div className="text-center space-y-1 animate-fade-in">
             <h1 className="text-2xl font-light text-gray-900">
               Home Base <span className="font-medium text-emerald-600">Toolkit</span>
@@ -209,7 +209,7 @@ const HomeBaseToolkit = () => {
         </div>
 
         {/* Sharing Permissions Info */}
-        <div className="flex-shrink-0 mt-4">
+        <div className="flex-shrink-0 pt-4 pb-6">
           <Card className="border-0 shadow-2xl bg-gradient-to-br from-blue-50 to-purple-50">
             <CardContent className="pt-3 pb-3">
               <div className="flex items-start gap-2">
