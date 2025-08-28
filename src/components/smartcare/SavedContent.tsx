@@ -18,9 +18,9 @@ interface SavedContentProps {
 
 const SavedContent = ({ savedContent }: SavedContentProps) => {
   return (
-    <div className="w-80 bg-white">
+    <div className="w-full bg-white h-full flex flex-col">
       {/* Saved Content Header */}
-      <div className="p-4 border-b border-gray-200">
+      <div className="p-4 border-b border-gray-200 flex-shrink-0">
         <div className="flex items-center gap-3">
           <BookOpen className="h-5 w-5 text-green-600" />
           <h2 className="text-lg font-medium text-gray-900">Saved Content</h2>
@@ -28,19 +28,19 @@ const SavedContent = ({ savedContent }: SavedContentProps) => {
       </div>
 
       {/* Tabs */}
-      <Tabs defaultValue="notes" className="h-full">
-        <TabsList className="w-full grid grid-cols-2 m-4 mb-0">
+      <Tabs defaultValue="notes" className="flex-1 flex flex-col">
+        <TabsList className="w-full grid grid-cols-2 m-4 mb-0 flex-shrink-0">
           <TabsTrigger value="notes">Notes</TabsTrigger>
           <TabsTrigger value="guides">Guides</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="notes" className="p-4 space-y-3 m-0">
+        <TabsContent value="notes" className="p-4 space-y-3 m-0 flex-1 overflow-auto">
           {savedContent.filter(item => item.type === 'notes').map((item) => (
             <SavedContentItem key={item.id} {...item} />
           ))}
         </TabsContent>
 
-        <TabsContent value="guides" className="p-4 space-y-3 m-0">
+        <TabsContent value="guides" className="p-4 space-y-3 m-0 flex-1 overflow-auto">
           {savedContent.filter(item => item.type === 'guides').map((item) => (
             <SavedContentItem key={item.id} {...item} />
           ))}
