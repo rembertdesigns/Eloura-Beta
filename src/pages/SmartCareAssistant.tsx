@@ -74,25 +74,30 @@ const SmartCareAssistant = () => {
   };
 
   return (
-    <div className="flex-1 overflow-hidden">
-      <SmartCareHeader />
+    <div className="h-screen bg-white flex flex-col overflow-hidden">
+      <div className="container mx-auto px-4 max-w-7xl h-full flex flex-col">
+        <SmartCareHeader />
 
-      {/* Main Content */}
-      <div className="flex h-[calc(100vh-120px)]">
-        {/* Chat Section */}
-        <div className="flex-1 flex flex-col border-r">
-          <ChatHeader />
-          <ChatMessages chatHistory={chatHistory} loading={loading} />
-          <ChatInput
-            question={question}
-            setQuestion={setQuestion}
-            onSend={handleSendQuestion}
-            loading={loading}
-            onKeyPress={handleKeyPress}
-          />
+        {/* Main Content */}
+        <div className="flex-1 flex min-h-0">
+          {/* Chat Section */}
+          <div className="flex-1 flex flex-col shadow-2xl bg-white border-r border-gray-200 mr-4">
+            <ChatHeader />
+            <ChatMessages chatHistory={chatHistory} loading={loading} />
+            <ChatInput
+              question={question}
+              setQuestion={setQuestion}
+              onSend={handleSendQuestion}
+              loading={loading}
+              onKeyPress={handleKeyPress}
+            />
+          </div>
+
+          {/* Saved Content */}
+          <div className="shadow-2xl bg-white">
+            <SavedContent savedContent={savedContent} />
+          </div>
         </div>
-
-        <SavedContent savedContent={savedContent} />
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ const SavedContentItem = ({ title, content, date, type }: SavedContentItemProps)
   const IconComponent = config.icon;
 
   return (
-    <Card className="border border-slate-200 hover:border-slate-300 transition-colors cursor-pointer">
+    <Card className="border border-gray-200 hover:border-gray-300 transition-colors cursor-pointer shadow-sm">
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
           <div className={`w-8 h-8 ${config.bgColor} rounded-lg flex items-center justify-center flex-shrink-0`}>
@@ -29,12 +29,12 @@ const SavedContentItem = ({ title, content, date, type }: SavedContentItemProps)
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-medium text-slate-800 text-sm truncate">{title}</h3>
+              <h3 className="font-medium text-gray-900 text-sm truncate">{title}</h3>
               {type === 'notes' && <Star className="h-3 w-3 text-orange-500 flex-shrink-0" />}
             </div>
-            <p className="text-xs text-slate-600 line-clamp-2 mb-2">{content}</p>
+            <p className="text-xs text-gray-600 line-clamp-2 mb-2">{content}</p>
             <div className="flex items-center justify-between">
-              <span className="text-xs text-slate-400">{date}</span>
+              <span className="text-xs text-gray-400">{date}</span>
             </div>
           </div>
         </div>

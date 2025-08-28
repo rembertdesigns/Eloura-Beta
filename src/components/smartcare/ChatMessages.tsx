@@ -15,7 +15,7 @@ interface ChatMessagesProps {
 
 const ChatMessages = ({ chatHistory, loading }: ChatMessagesProps) => {
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
+    <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
       {chatHistory.map((chat, index) => (
         <ChatMessage
           key={index}
@@ -30,7 +30,7 @@ const ChatMessages = ({ chatHistory, loading }: ChatMessagesProps) => {
             <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-xs">
               🤖
             </div>
-            <span className="text-xs text-slate-500">Typing...</span>
+            <span className="text-xs text-gray-500">Typing...</span>
           </div>
         </div>
       )}

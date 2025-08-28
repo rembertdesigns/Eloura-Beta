@@ -20,10 +20,10 @@ const SavedContent = ({ savedContent }: SavedContentProps) => {
   return (
     <div className="w-80 bg-white">
       {/* Saved Content Header */}
-      <div className="p-4 border-b">
+      <div className="p-4 border-b border-gray-200">
         <div className="flex items-center gap-3">
           <BookOpen className="h-5 w-5 text-green-600" />
-          <h2 className="text-lg font-medium text-slate-800">Saved Content</h2>
+          <h2 className="text-lg font-medium text-gray-900">Saved Content</h2>
         </div>
       </div>
 

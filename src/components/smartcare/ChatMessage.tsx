@@ -16,13 +16,13 @@ const ChatMessage = ({ type, message, time }: ChatMessageProps) => {
             <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-xs">
               🤖
             </div>
-            <span className="text-xs text-slate-500">{time}</span>
+            <span className="text-xs text-gray-500">{time}</span>
           </div>
         )}
-        <div className={`p-3 rounded-lg ${
+        <div className={`p-3 rounded-xl shadow-sm ${
           type === 'user' 
             ? 'bg-blue-600 text-white' 
-            : 'bg-white border border-slate-200'
+            : 'bg-gray-100 border border-gray-200'
         }`}>
           <p className="text-sm leading-relaxed">{message}</p>
           {type === 'user' && (
