@@ -75,13 +75,16 @@ const SmartCareAssistant = () => {
 
   return (
     <div className="h-screen bg-white flex flex-col overflow-hidden">
-      <div className="container mx-auto px-4 max-w-7xl h-full flex flex-col">
-        <SmartCareHeader />
+      <div className="container mx-auto px-4 py-6 max-w-7xl h-full flex flex-col">
+        {/* Header */}
+        <div className="flex-shrink-0 mb-6">
+          <SmartCareHeader />
+        </div>
 
         {/* Main Content */}
-        <div className="flex-1 flex min-h-0">
+        <div className="flex-1 flex min-h-0 mb-6">
           {/* Chat Section - 60% of space */}
-          <div className="flex-[3] flex flex-col shadow-2xl bg-white border-r border-gray-200 mr-4">
+          <div className="flex-[3] flex flex-col shadow-2xl bg-white border-r border-gray-200 mr-4 rounded-lg overflow-hidden">
             <ChatHeader />
             <ChatMessages chatHistory={chatHistory} loading={loading} />
             <ChatInput
@@ -94,7 +97,7 @@ const SmartCareAssistant = () => {
           </div>
 
           {/* Saved Content - 40% of space */}
-          <div className="flex-[2] shadow-2xl bg-white">
+          <div className="flex-[2] shadow-2xl bg-white rounded-lg overflow-hidden">
             <SavedContent savedContent={savedContent} />
           </div>
         </div>
