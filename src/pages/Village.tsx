@@ -31,7 +31,7 @@ const Village = () => {
   ];
 
   return (
-    <div className="min-h-screen warm-gradient pb-20">
+    <div className="min-h-screen bg-white pb-20">
       
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         {/* Header */}
@@ -57,7 +57,7 @@ const Village = () => {
           {stats.map((stat, index) => {
             const IconComponent = stat.icon;
             return (
-              <Card key={index} className="bg-white border-0 shadow-sm">
+              <Card key={index} className="bg-white border-0 shadow-2xl">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-gray-50 rounded-lg">
