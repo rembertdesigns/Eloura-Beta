@@ -31,41 +31,40 @@ const Village = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white pb-20">
-      
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+    <div className="h-screen bg-white flex flex-col overflow-hidden">
+      <div className="container mx-auto px-4 max-w-7xl flex flex-col h-full">
+        {/* Header - Fixed height */}
+        <div className="flex items-center justify-between py-4 flex-shrink-0">
           <div>
-            <h1 className="text-3xl font-semibold text-gray-900 mb-2">My Village</h1>
-            <p className="text-gray-600">All the people in your support network - your village of care</p>
+            <h1 className="text-2xl font-semibold text-gray-900 mb-1">My Village</h1>
+            <p className="text-sm text-gray-600">All the people in your support network - your village of care</p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="flex items-center gap-2">
+            <Button variant="outline" className="flex items-center gap-2 text-sm">
               <MessageSquare className="h-4 w-4" />
               Send Message
             </Button>
-            <Button className="bg-green-600 hover:bg-green-700 flex items-center gap-2">
+            <Button className="bg-green-600 hover:bg-green-700 flex items-center gap-2 text-sm">
               <UserPlus className="h-4 w-4" />
               Add Village Member
             </Button>
           </div>
         </div>
 
-        {/* Stats Cards - Now 3 equal width cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {/* Stats Cards - Fixed height */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 flex-shrink-0">
           {stats.map((stat, index) => {
             const IconComponent = stat.icon;
             return (
               <Card key={index} className="bg-white border-0 shadow-2xl">
-                <CardContent className="p-6">
+                <CardContent className="p-4">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-gray-50 rounded-lg">
-                      <IconComponent className={`h-5 w-5 ${stat.color}`} />
+                      <IconComponent className={`h-4 w-4 ${stat.color}`} />
                     </div>
                     <div>
-                      <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
-                      <div className="text-sm text-gray-500">{stat.label}</div>
+                      <div className="text-xl font-bold text-gray-900">{stat.value}</div>
+                      <div className="text-xs text-gray-500">{stat.label}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -74,26 +73,30 @@ const Village = () => {
           })}
         </div>
 
-        {/* Tabs Section */}
-        <Tabs defaultValue="care-circle" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-8">
-            <TabsTrigger value="care-circle" className="text-base">Care Circle</TabsTrigger>
-            <TabsTrigger value="delegations" className="text-base">Active Tasks</TabsTrigger>
-            <TabsTrigger value="help-requests" className="text-base">Help Requests & Logs</TabsTrigger>
-          </TabsList>
+        {/* Tabs Section - Flexible height */}
+        <div className="flex-1 flex flex-col min-h-0">
+          <Tabs defaultValue="care-circle" className="w-full flex flex-col h-full">
+            <TabsList className="grid w-full grid-cols-3 mb-4 flex-shrink-0">
+              <TabsTrigger value="care-circle" className="text-sm">Care Circle</TabsTrigger>
+              <TabsTrigger value="delegations" className="text-sm">Active Tasks</TabsTrigger>
+              <TabsTrigger value="help-requests" className="text-sm">Help Requests & Logs</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="care-circle" className="space-y-6">
-            <CareCircleEnhanced />
-          </TabsContent>
+            <div className="flex-1 overflow-hidden">
+              <TabsContent value="care-circle" className="h-full overflow-auto">
+                <CareCircleEnhanced />
+              </TabsContent>
 
-          <TabsContent value="delegations" className="space-y-6">
-            <ActiveTasksEnhanced />
-          </TabsContent>
+              <TabsContent value="delegations" className="h-full overflow-auto">
+                <ActiveTasksEnhanced />
+              </TabsContent>
 
-          <TabsContent value="help-requests" className="space-y-6">
-            <HelpRequestsLogsEnhanced />
-          </TabsContent>
-        </Tabs>
+              <TabsContent value="help-requests" className="h-full overflow-auto">
+                <HelpRequestsLogsEnhanced />
+              </TabsContent>
+            </div>
+          </Tabs>
+        </div>
       </div>
       
       <div className="md:hidden">
