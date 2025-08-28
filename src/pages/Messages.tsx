@@ -109,24 +109,23 @@ const Messages = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-white">
       {/* Conversations Sidebar */}
-      <div className="w-1/3 bg-white border-r border-gray-200 flex flex-col">
+      <div className="w-1/3 bg-white border-r border-gray-200 flex flex-col shadow-2xl">
         {/* Header */}
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center justify-between mb-4">
+        <div className="p-4 border-b border-gray-200 flex-shrink-0">
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-semibold text-gray-900">Messages</h1>
+              <h1 className="text-2xl font-semibold text-gray-900 mb-1">Messages</h1>
               <p className="text-sm text-gray-600">Stay connected with your village</p>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="text-sm">
                 <Search className="h-4 w-4" />
-                Search
               </Button>
-              <Button size="sm">
-                <Plus className="h-4 w-4 mr-2" />
-                New Chat
+              <Button size="sm" className="text-sm">
+                <Plus className="h-4 w-4 mr-1" />
+                New
               </Button>
             </div>
           </div>
@@ -192,9 +191,9 @@ const Messages = () => {
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col shadow-2xl bg-white border-l border-gray-200">
         {/* Chat Header */}
-        <div className="bg-white border-b border-gray-200 px-6 py-4">
+        <div className="bg-white border-b border-gray-200 px-4 py-4 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="relative">
@@ -230,7 +229,7 @@ const Messages = () => {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {mockMessages.map((message) => (
             <div
               key={message.id}
@@ -255,7 +254,7 @@ const Messages = () => {
         </div>
 
         {/* Message Input */}
-        <div className="bg-white border-t border-gray-200 px-6 py-4">
+        <div className="bg-white border-t border-gray-200 px-4 py-4 flex-shrink-0">
           <div className="flex items-center space-x-3">
             <Input
               placeholder="Type a message..."
