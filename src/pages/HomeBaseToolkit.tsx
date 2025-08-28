@@ -77,147 +77,154 @@ const HomeBaseToolkit = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-green-50 pb-20">
-      
-      <div className="container mx-auto px-4 py-8 max-w-6xl space-y-6">
+    <div className="h-screen bg-white flex flex-col overflow-hidden">
+      <div className="container mx-auto px-4 py-6 max-w-7xl flex flex-col h-full">
         {/* Header */}
-        <div className="text-center space-y-2 animate-fade-in">
-          <h1 className="text-3xl font-light text-slate-800">
-            Home Base <span className="font-medium text-emerald-600">Toolkit</span>
-          </h1>
-          <p className="text-slate-600">One calm place for all your family's essential information</p>
+        <div className="flex-shrink-0 mb-6">
+          <div className="text-center space-y-2 animate-fade-in">
+            <h1 className="text-3xl font-light text-gray-900">
+              Home Base <span className="font-medium text-emerald-600">Toolkit</span>
+            </h1>
+            <p className="text-gray-600">One calm place for all your family's essential information</p>
+          </div>
         </div>
 
         {/* Toolkit Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            {Object.entries(toolkitSections).map(([key, section]) => (
-              <TabsTrigger key={key} value={key} className="flex items-center gap-2">
-                {section.icon}
-                <span className="hidden sm:inline">{section.title}</span>
-              </TabsTrigger>
-            ))}
-          </TabsList>
+        <div className="flex-1 flex flex-col min-h-0">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full h-full flex flex-col">
+            <TabsList className="grid w-full grid-cols-4 flex-shrink-0 mb-6">
+              {Object.entries(toolkitSections).map(([key, section]) => (
+                <TabsTrigger key={key} value={key} className="flex items-center gap-2">
+                  {section.icon}
+                  <span className="hidden sm:inline">{section.title}</span>
+                </TabsTrigger>
+              ))}
+            </TabsList>
 
-          {Object.entries(toolkitSections).map(([key, section]) => (
-            <TabsContent key={key} value={key} className="mt-6">
-              <Card className="border-0 shadow-lg">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="flex items-center gap-3 text-slate-700">
-                      <FolderOpen className="h-5 w-5 text-emerald-500" />
-                      {section.title}
-                    </CardTitle>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => setIsAdding(!isAdding)}
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Item
-                    </Button>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* Add New Item Form */}
-                  {isAdding && (
-                    <Card className="bg-slate-50">
-                      <CardContent className="pt-4 space-y-3">
-                        <Input placeholder="Title" />
-                        <Textarea placeholder="Content, instructions, or notes..." rows={3} />
-                        <div className="flex items-center gap-2">
-                          <select className="p-2 border rounded text-sm">
-                            <option>Select type</option>
-                            <option>Routine</option>
-                            <option>Document</option>
-                            <option>Checklist</option>
-                            <option>Notes</option>
-                            <option>Contacts</option>
-                            <option>Recipe</option>
-                          </select>
-                          <Button variant="outline" size="sm">
-                            <Upload className="h-4 w-4 mr-2" />
-                            Upload File
-                          </Button>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Button size="sm">Save</Button>
-                          <Button variant="ghost" size="sm" onClick={() => setIsAdding(false)}>
-                            Cancel
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-
-                  {/* Existing Items */}
-                  <div className="grid gap-4">
-                    {section.items.map((item, index) => (
-                      <Card key={index} className="border">
-                        <CardContent className="pt-4">
-                          <div className="flex items-start justify-between mb-3">
-                            <div className="flex items-center gap-3">
-                              <Badge variant="outline" className={getTypeColor(item.type)}>
-                                {getTypeIcon(item.type)}
-                                <span className="ml-1 capitalize">{item.type.replace('-', ' ')}</span>
-                              </Badge>
-                              <h3 className="font-medium text-slate-700">{item.title}</h3>
+            <div className="flex-1 overflow-hidden">
+              {Object.entries(toolkitSections).map(([key, section]) => (
+                <TabsContent key={key} value={key} className="h-full overflow-auto">
+                  <Card className="border-0 shadow-2xl">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-center justify-between">
+                        <CardTitle className="flex items-center gap-3 text-gray-900">
+                          <FolderOpen className="h-5 w-5 text-emerald-500" />
+                          {section.title}
+                        </CardTitle>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => setIsAdding(!isAdding)}
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add Item
+                        </Button>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {/* Add New Item Form */}
+                      {isAdding && (
+                        <Card className="bg-gray-50 shadow-sm">
+                          <CardContent className="pt-4 space-y-3">
+                            <Input placeholder="Title" />
+                            <Textarea placeholder="Content, instructions, or notes..." rows={3} />
+                            <div className="flex items-center gap-2">
+                              <select className="p-2 border rounded text-sm">
+                                <option>Select type</option>
+                                <option>Routine</option>
+                                <option>Document</option>
+                                <option>Checklist</option>
+                                <option>Notes</option>
+                                <option>Contacts</option>
+                                <option>Recipe</option>
+                              </select>
+                              <Button variant="outline" size="sm">
+                                <Upload className="h-4 w-4 mr-2" />
+                                Upload File
+                              </Button>
                             </div>
                             <div className="flex items-center gap-2">
-                              <Button variant="ghost" size="sm">
-                                <Share2 className="h-4 w-4" />
+                              <Button size="sm">Save</Button>
+                              <Button variant="ghost" size="sm" onClick={() => setIsAdding(false)}>
+                                Cancel
                               </Button>
-                              {item.shared.length > 0 && (
-                                <Badge variant="secondary" className="text-xs">
-                                  Shared with {item.shared.length}
-                                </Badge>
-                              )}
                             </div>
-                          </div>
-                          
-                          <div className="bg-slate-50 p-3 rounded-lg mb-3">
-                            <pre className="text-sm text-slate-600 whitespace-pre-wrap font-sans">
-                              {item.content}
-                            </pre>
-                          </div>
+                          </CardContent>
+                        </Card>
+                      )}
 
-                          {item.shared.length > 0 && (
-                            <div className="space-y-2">
-                              <p className="text-sm font-medium text-slate-700">Shared with:</p>
-                              <div className="flex flex-wrap gap-1">
-                                {item.shared.map((person, personIndex) => (
-                                  <Badge key={personIndex} variant="outline" className="text-xs">
-                                    {person}
+                      {/* Existing Items */}
+                      <div className="grid gap-4">
+                        {section.items.map((item, index) => (
+                          <Card key={index} className="border shadow-sm">
+                            <CardContent className="pt-4">
+                              <div className="flex items-start justify-between mb-3">
+                                <div className="flex items-center gap-3">
+                                  <Badge variant="outline" className={getTypeColor(item.type)}>
+                                    {getTypeIcon(item.type)}
+                                    <span className="ml-1 capitalize">{item.type.replace('-', ' ')}</span>
                                   </Badge>
-                                ))}
+                                  <h3 className="font-medium text-gray-900">{item.title}</h3>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <Button variant="ghost" size="sm">
+                                    <Share2 className="h-4 w-4" />
+                                  </Button>
+                                  {item.shared.length > 0 && (
+                                    <Badge variant="secondary" className="text-xs">
+                                      Shared with {item.shared.length}
+                                    </Badge>
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          )}
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          ))}
-        </Tabs>
+                              
+                              <div className="bg-gray-50 p-3 rounded-lg mb-3">
+                                <pre className="text-sm text-gray-600 whitespace-pre-wrap font-sans">
+                                  {item.content}
+                                </pre>
+                              </div>
+
+                              {item.shared.length > 0 && (
+                                <div className="space-y-2">
+                                  <p className="text-sm font-medium text-gray-900">Shared with:</p>
+                                  <div className="flex flex-wrap gap-1">
+                                    {item.shared.map((person, personIndex) => (
+                                      <Badge key={personIndex} variant="outline" className="text-xs">
+                                        {person}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              ))}
+            </div>
+          </Tabs>
+        </div>
 
         {/* Sharing Permissions Info */}
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-purple-50">
-          <CardContent className="pt-6">
-            <div className="flex items-start gap-3">
-              <Lock className="h-5 w-5 text-blue-500 mt-1" />
-              <div>
-                <h3 className="font-medium text-slate-700 mb-2">Smart Sharing Permissions</h3>
-                <p className="text-sm text-slate-600">
-                  Your toolkit automatically manages what each person can see. Partners see everything, 
-                  babysitters only see child-related sections, and health aides access relevant medical information.
-                </p>
+        <div className="flex-shrink-0 mt-6">
+          <Card className="border-0 shadow-2xl bg-gradient-to-br from-blue-50 to-purple-50">
+            <CardContent className="pt-6">
+              <div className="flex items-start gap-3">
+                <Lock className="h-5 w-5 text-blue-500 mt-1" />
+                <div>
+                  <h3 className="font-medium text-gray-900 mb-2">Smart Sharing Permissions</h3>
+                  <p className="text-sm text-gray-600">
+                    Your toolkit automatically manages what each person can see. Partners see everything, 
+                    babysitters only see child-related sections, and health aides access relevant medical information.
+                  </p>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
       
       <div className="md:hidden">
