@@ -196,9 +196,9 @@ const HelpRequestsLogsEnhanced = () => {
     <Tabs defaultValue="help-requests" className="w-full">
       <TabsList className="grid w-full grid-cols-4 mb-8">
         <TabsTrigger value="help-requests">Help Requests</TabsTrigger>
-        <TabsTrigger value="templates">Templates</TabsTrigger>
         <TabsTrigger value="logs">Communication Logs</TabsTrigger>
         <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        <TabsTrigger value="templates">Templates</TabsTrigger>
       </TabsList>
 
       <TabsContent value="help-requests" className="space-y-6">
@@ -219,30 +219,6 @@ const HelpRequestsLogsEnhanced = () => {
               </Button>
             </CardContent>
           </Card>
-        </div>
-      </TabsContent>
-
-      <TabsContent value="templates" className="space-y-6">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Request Templates</h3>
-          <p className="text-sm text-gray-600 mb-6">Use these templates to quickly create common help requests</p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {requestTemplates.map((template, index) => (
-              <Card key={index} className="bg-white border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onClick={() => useTemplate(template)}>
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-medium text-gray-900">{template.title}</h4>
-                    <Badge variant="outline" className="text-xs">{template.category}</Badge>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-3">{template.description}</p>
-                  <Button size="sm" variant="outline" className="w-full">
-                    Use Template
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
         </div>
       </TabsContent>
 
@@ -455,6 +431,30 @@ const HelpRequestsLogsEnhanced = () => {
             </div>
           </CardContent>
         </Card>
+      </TabsContent>
+
+      <TabsContent value="templates" className="space-y-6">
+        <div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Request Templates</h3>
+          <p className="text-sm text-gray-600 mb-6">Use these templates to quickly create common help requests</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {requestTemplates.map((template, index) => (
+              <Card key={index} className="bg-white border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onClick={() => useTemplate(template)}>
+                <CardContent className="p-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <h4 className="font-medium text-gray-900">{template.title}</h4>
+                    <Badge variant="outline" className="text-xs">{template.category}</Badge>
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3">{template.description}</p>
+                  <Button size="sm" variant="outline" className="w-full">
+                    Use Template
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
       </TabsContent>
     </Tabs>
   );
