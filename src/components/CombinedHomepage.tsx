@@ -498,72 +498,84 @@ const CombinedHomepage = () => {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Dark Mode */}
-            <div className="text-left">
-              <div className="w-16 h-16 bg-[#223B0A] rounded-2xl flex items-center justify-center mb-6">
-                <div className="w-8 h-8 bg-white rounded-full"></div>
-              </div>
-              <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Dark Mode</h3>
-              <p className="text-[#302D2C] leading-relaxed">
-                Looks good no matter when you work.
-              </p>
-            </div>
+            <Card className="border-none shadow-lg rounded-2xl bg-white p-6">
+              <CardContent className="p-0">
+                <div className="w-12 h-12 bg-[#223B0A] rounded-xl flex items-center justify-center mb-4">
+                  <div className="w-6 h-6 bg-white rounded-full"></div>
+                </div>
+                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Dark Mode</h3>
+                <p className="text-[#302D2C] leading-relaxed">
+                  Looks good no matter when you work.
+                </p>
+              </CardContent>
+            </Card>
 
             {/* Focus Mode */}
-            <div className="text-left">
-              <div className="w-16 h-16 bg-[#D7642A] rounded-2xl flex items-center justify-center mb-6">
-                <div className="w-8 h-8 bg-white rounded-full border-4 border-[#D7642A]"></div>
-              </div>
-              <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Focus Mode</h3>
-              <p className="text-[#302D2C] leading-relaxed">
-                Hyperfocus on your most important task.
-              </p>
-            </div>
+            <Card className="border-none shadow-lg rounded-2xl bg-white p-6">
+              <CardContent className="p-0">
+                <div className="w-12 h-12 bg-[#D7642A] rounded-xl flex items-center justify-center mb-4">
+                  <div className="w-6 h-6 bg-white rounded-full border-2 border-[#D7642A]"></div>
+                </div>
+                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Focus Mode</h3>
+                <p className="text-[#302D2C] leading-relaxed">
+                  Hyperfocus on your most important task.
+                </p>
+              </CardContent>
+            </Card>
 
             {/* Auto-scheduling */}
-            <div className="text-left">
-              <div className="w-16 h-16 bg-[#FCC931] rounded-2xl flex items-center justify-center mb-6">
-                <div className="text-white text-lg">❄️</div>
-              </div>
-              <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Auto-scheduling</h3>
-              <p className="text-[#302D2C] leading-relaxed">
-                Automate scheduling your tasks to your calendar.
-              </p>
-            </div>
+            <Card className="border-none shadow-lg rounded-2xl bg-white p-6">
+              <CardContent className="p-0">
+                <div className="w-12 h-12 bg-[#FCC931] rounded-xl flex items-center justify-center mb-4">
+                  <div className="text-white text-sm">❄️</div>
+                </div>
+                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Auto-scheduling</h3>
+                <p className="text-[#302D2C] leading-relaxed">
+                  Automate scheduling your tasks to your calendar.
+                </p>
+              </CardContent>
+            </Card>
 
             {/* Weekly Review and Planning */}
-            <div className="text-left">
-              <div className="w-16 h-16 bg-[#E1CFE3] rounded-2xl flex items-center justify-center mb-6">
-                <div className="text-[#223B0A] text-lg">✓</div>
-              </div>
-              <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Weekly Review and Planning</h3>
-              <p className="text-[#302D2C] leading-relaxed">
-                Be intentional about your weekly goals and progress.
-              </p>
-            </div>
+            <Card className="border-none shadow-lg rounded-2xl bg-white p-6">
+              <CardContent className="p-0">
+                <div className="w-12 h-12 bg-[#E1CFE3] rounded-xl flex items-center justify-center mb-4">
+                  <div className="text-[#223B0A] text-sm">✓</div>
+                </div>
+                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Weekly Review and Planning</h3>
+                <p className="text-[#302D2C] leading-relaxed">
+                  Be intentional about your weekly goals and progress.
+                </p>
+              </CardContent>
+            </Card>
 
             {/* Keyboard shortcuts */}
-            <div className="text-left">
-              <div className="w-16 h-16 bg-[#D7642A] rounded-2xl flex items-center justify-center mb-6">
-                <div className="text-white text-lg">⌘</div>
-              </div>
-              <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Keyboard shortcuts</h3>
-              <p className="text-[#302D2C] leading-relaxed">
-                Move faster and do everything with your keyboard.
-              </p>
-            </div>
+            <Card className="border-none shadow-lg rounded-2xl bg-white p-6">
+              <CardContent className="p-0">
+                <div className="w-12 h-12 bg-[#D7642A] rounded-xl flex items-center justify-center mb-4">
+                  <div className="text-white text-sm">⌘</div>
+                </div>
+                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Keyboard shortcuts</h3>
+                <p className="text-[#302D2C] leading-relaxed">
+                  Move faster and do everything with your keyboard.
+                </p>
+              </CardContent>
+            </Card>
 
             {/* Analytics */}
-            <div className="text-left">
-              <div className="w-16 h-16 bg-[#223B0A] rounded-2xl flex items-center justify-center mb-6">
-                <div className="text-white text-lg">📊</div>
-              </div>
-              <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Analytics</h3>
-              <p className="text-[#302D2C] leading-relaxed">
-                Understand how you spend your time at work.
-              </p>
-            </div>
+            <Card className="border-none shadow-lg rounded-2xl bg-white p-6">
+              <CardContent className="p-0">
+                <div className="w-12 h-12 bg-[#223B0A] rounded-xl flex items-center justify-center mb-4">
+                  <div className="text-white text-sm">📊</div>
+                </div>
+                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Analytics</h3>
+                <p className="text-[#302D2C] leading-relaxed">
+                  Understand how you spend your time at work.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
