@@ -172,6 +172,8 @@ const DailyBrief = () => {
   const [newlyCompletedTasks, setNewlyCompletedTasks] = useState<any[]>([]);
   const getFilteredTasks = () => {
     switch (activeFilter) {
+      case 'today':
+        return tasks.filter(task => !task.completed);
       case 'completed':
         return tasks.filter(task => task.completed);
       case 'pending':
@@ -196,6 +198,8 @@ const DailyBrief = () => {
     // Only show sections when a filter is active
     if (activeFilter === 'default') return false;
     switch (activeFilter) {
+      case 'today':
+        return section === 'tasks';
       case 'village':
         return section === 'tasks' || section === 'social';
       case 'goals':
@@ -271,6 +275,7 @@ const DailyBrief = () => {
   const handleStatusCardClick = (filter: string) => {
     setActiveFilter(filter);
     const filterMessages = {
+      today: "today's tasks",
       completed: 'completed tasks',
       village: 'village connections',
       goals: 'goal-related tasks'
@@ -357,14 +362,24 @@ const DailyBrief = () => {
 
         {/* 3. Summary Status Bar (Enhanced with center alignment and animations) */}
         <div className="flex justify-center mb-8">
-          <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl transition-all duration-700 ${isLoaded ? 'animate-scale-in' : 'opacity-0 scale-95'}`}>
+          <div className={`grid grid-cols-1 md:grid-cols-4 gap-4 w-full max-w-5xl transition-all duration-700 ${isLoaded ? 'animate-scale-in' : 'opacity-0 scale-95'}`}>
+            <Card className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl ${activeFilter === 'today' ? 'ring-2 ring-orange-500 bg-orange-100 shadow-xl' : 'bg-orange-50 hover:bg-orange-100 shadow-lg'} border-orange-200 h-32`} onClick={() => handleStatusCardClick('today')}>
+              <CardContent className="p-6 text-center h-full flex flex-col justify-center">
+                <div className="flex items-center justify-center mb-3">
+                  <Calendar className="h-6 w-6 text-orange-600 mr-3" />
+                  <span className="text-3xl font-bold text-orange-600">{pendingTasks}</span>
+                </div>
+                <p className="text-sm text-slate-600 font-medium">Today's Tasks</p>
+              </CardContent>
+            </Card>
+
             <Card className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl ${activeFilter === 'completed' ? 'ring-2 ring-blue-500 bg-blue-100 shadow-xl' : 'bg-blue-50 hover:bg-blue-100 shadow-lg'} border-blue-200 h-32`} onClick={() => handleStatusCardClick('completed')}>
               <CardContent className="p-6 text-center h-full flex flex-col justify-center">
                 <div className="flex items-center justify-center mb-3">
                   <CheckCircle className="h-6 w-6 text-blue-600 mr-3" />
-                  <span className="text-3xl font-bold text-blue-600">{animatedNumbers.tasks}</span>
+                  <span className="text-3xl font-bold text-blue-600">{completedTasks}</span>
                 </div>
-                <p className="text-sm text-slate-600 font-medium">Tasks</p>
+                <p className="text-sm text-slate-600 font-medium">Completed</p>
               </CardContent>
             </Card>
 
@@ -440,7 +455,7 @@ const DailyBrief = () => {
                   <div className="flex items-center justify-between">
                      <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
                         <Target className="h-5 w-5 text-green-600" />
-                        {activeFilter === 'completed' ? 'Completed Tasks' : activeFilter === 'village' ? 'Village-Related Tasks' : activeFilter === 'goals' ? 'Goal-Related Tasks' : "Today's Tasks"}
+                        {activeFilter === 'today' ? "Today's Tasks" : activeFilter === 'completed' ? 'Completed Tasks' : activeFilter === 'village' ? 'Village-Related Tasks' : activeFilter === 'goals' ? 'Goal-Related Tasks' : "All Tasks"}
                      </CardTitle>
                     <Button size="sm" onClick={() => setShowQuickAddTask(true)} className="flex items-center gap-1">
                       <Plus className="h-4 w-4" />
