@@ -271,6 +271,60 @@ const CombinedHomepage = () => {
         </div>
       </section>
 
+      {/* AI Scheduler Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* iPhone Mockup */}
+            <div className="order-2 lg:order-1">
+              <div className="relative max-w-sm mx-auto">
+                <div className="bg-black rounded-[3rem] p-2 shadow-2xl">
+                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{ aspectRatio: '9/19.5' }}>
+                    {/* Status Bar */}
+                    <div className="bg-black text-white text-xs px-6 py-2 flex justify-between items-center">
+                      <span className="font-medium">1:33</span>
+                      <div className="flex items-center gap-1">
+                        <div className="flex gap-1">
+                          <div className="w-1 h-1 bg-white rounded-full"></div>
+                          <div className="w-1 h-1 bg-white rounded-full"></div>
+                          <div className="w-1 h-1 bg-white rounded-full"></div>
+                          <div className="w-1 h-1 bg-white rounded-full"></div>
+                        </div>
+                        <div className="text-white">📶 📶 🔋</div>
+                      </div>
+                    </div>
+                    {/* Screen Content - Blank for now */}
+                    <div className="h-full bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
+                      <div className="text-center text-gray-400">
+                        <div className="w-16 h-16 bg-gray-200 rounded-2xl mx-auto mb-4"></div>
+                        <p className="text-sm">App Interface</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="order-1 lg:order-2">
+              <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
+                The AI scheduler that
+                <br />
+                <span className="font-semibold">gets it done</span>
+              </h2>
+              <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
+                Eloura's AI helps you plan faster by turning your tasks into a clear, realistic schedule. Just type or speak what's on your mind and it will break things down, estimate how long each step might take, and organize everything into a plan that works for your day.
+              </p>
+              <Button 
+                variant="outline" 
+                className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium"
+              >
+                How AI helps you plan smarter
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
 
 
       {/* Testimonials Section */}
