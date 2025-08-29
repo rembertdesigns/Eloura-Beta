@@ -463,7 +463,7 @@ const DailyBrief = () => {
                     </Button>
                   </div>
                 </CardHeader>
-                 <CardContent>
+                 <CardContent className="py-6">
                    <div className="space-y-1">
                      {(activeFilter === 'default' ? tasks : filteredTasks).map((task, index) => <div key={task.id} className="flex items-center justify-between p-2 bg-white rounded-lg border hover:shadow-md transition-shadow group cursor-move shadow-sm" draggable onDragStart={e => handleDragStart(e, task.id)} onDragOver={handleDragOver} onDrop={e => handleDrop(e, index)}>
                         <div className="flex items-center gap-2 flex-1">
