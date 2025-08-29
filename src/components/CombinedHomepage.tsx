@@ -1,26 +1,20 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, ArrowRight, Star, Brain, Clock, CheckCircle, Quote, ExternalLink, Users, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
 const CombinedHomepage = () => {
   const navigate = useNavigate();
-
   const handleGetStarted = () => {
     navigate('/auth');
   };
-
   const handleLogin = () => {
     navigate('/auth');
   };
-
   const handleMentalLoadTest = () => {
     // For now, navigate to auth - could be a separate mental load test page
     navigate('/auth');
   };
-
   return <div className="min-h-screen bg-white">
       {/* Navigation - Clean and professional */}
       <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-50 py-4 border-b border-[#E1CFE3]/20">
@@ -42,10 +36,7 @@ const CombinedHomepage = () => {
               </a>
               <a href="#resources" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Resources</a>
             </div>
-            <Button 
-              className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6"
-              onClick={handleLogin}
-            >
+            <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6" onClick={handleLogin}>
               Log In
             </Button>
           </div>
@@ -97,19 +88,11 @@ const CombinedHomepage = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-12">
-              <Button 
-                size="lg" 
-                className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 text-lg font-semibold"
-                onClick={handleGetStarted}
-              >
+              <Button size="lg" className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 text-lg font-semibold" onClick={handleGetStarted}>
                 Join 15,000+ families reducing stress
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button 
-                size="lg" 
-                className="bg-[#FCC931] hover:bg-[#D7642A] text-[#223B0A] rounded-full px-8 text-lg font-semibold"
-                onClick={handleMentalLoadTest}
-              >
+              <Button size="lg" className="bg-[#FCC931] hover:bg-[#D7642A] text-[#223B0A] rounded-full px-8 text-lg font-semibold" onClick={handleMentalLoadTest}>
                 <Brain className="mr-2 h-5 w-5" />
                 Get Mental Load Score (2 min)
               </Button>
@@ -135,453 +118,13 @@ const CombinedHomepage = () => {
       </section>
 
       {/* Mental Load Assessment Section - Made more prominent */}
-      <section className="py-20 bg-gradient-to-br from-[#FCC931] via-[#D7642A] to-[#223B0A]">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left side - Enhanced visual */}
-            <div className="relative">
-              <div className="bg-white/20 backdrop-blur-sm rounded-3xl p-8 border border-white/30">
-                <img src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=600&h=400&fit=crop&crop=center" alt="Woman taking assessment on laptop" className="rounded-2xl w-full h-64 object-cover mb-6" />
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="bg-white/90 rounded-xl p-4 text-center">
-                    <Clock className="h-6 w-6 text-[#223B0A] mx-auto mb-2" />
-                    <div className="text-sm font-semibold text-[#223B0A]">2 mins</div>
-                    <div className="text-xs text-[#302D2C]">Quick test</div>
-                  </div>
-                  <div className="bg-white/90 rounded-xl p-4 text-center">
-                    <CheckCircle className="h-6 w-6 text-[#223B0A] mx-auto mb-2" />
-                    <div className="text-sm font-semibold text-[#223B0A]">Free</div>
-                    <div className="text-xs text-[#302D2C]">No email required</div>
-                  </div>
-                  <div className="bg-white/90 rounded-xl p-4 text-center">
-                    <Star className="h-6 w-6 text-[#223B0A] mx-auto mb-2" />
-                    <div className="text-sm font-semibold text-[#223B0A]">Personal</div>
-                    <div className="text-xs text-[#302D2C]">Custom tips</div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Floating testimonial */}
-              <div className="absolute -bottom-6 -right-6 bg-white rounded-2xl p-4 shadow-xl max-w-xs border border-[#E1CFE3]/20">
-                <div className="flex gap-1 mb-2">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-[#FCC931] text-[#FCC931]" />)}
-                </div>
-                <p className="text-sm text-[#302D2C] italic mb-2">
-                  "This test opened my eyes to how much I was carrying mentally. Game changer!"
-                </p>
-                <div className="text-xs text-[#302D2C]/70">- Sarah M., Mom of 2</div>
-              </div>
-            </div>
-
-            {/* Right side - Enhanced content */}
-            <div className="text-white">
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-2 w-fit mb-6">
-                <span className="text-sm font-medium text-white/90">🧠 Our Killer Feature</span>
-              </div>
-              
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-                What's Your Mental Load Score?
-              </h2>
-              
-              <p className="text-xl text-white/90 mb-6 leading-relaxed">
-                Take our scientifically-backed 2-minute assessment to discover how much mental energy you're spending on caregiving and get personalized recommendations to lighten your load.
-              </p>
-
-              <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-6 border border-white/20">
-                <div className="text-lg font-semibold text-white mb-2">Why this matters:</div>
-                <ul className="space-y-2 text-white/90">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931] mt-0.5 flex-shrink-0" />
-                    <span>Identify hidden stress triggers</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931] mt-0.5 flex-shrink-0" />
-                    <span>Get personalized load-reduction strategies</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931] mt-0.5 flex-shrink-0" />
-                    <span>See how you compare to other caregivers</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-white/30">
-                  <div className="text-2xl font-bold text-white mb-1">15,847</div>
-                  <div className="text-sm text-white/80">Caregivers tested</div>
-                </div>
-                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 border border-white/30">
-                  <div className="text-2xl font-bold text-white mb-1">73%</div>
-                  <div className="text-sm text-white/80">Reduced their load</div>
-                </div>
-              </div>
-
-              <Button 
-                size="lg" 
-                className="bg-white hover:bg-white/90 text-[#223B0A] rounded-full px-8 text-lg font-semibold shadow-lg w-full sm:w-auto"
-                onClick={handleMentalLoadTest}
-              >
-                <Brain className="mr-3 h-6 w-6" />
-                Get Your Mental Load Score Now
-                <ArrowRight className="ml-3 h-5 w-5" />
-              </Button>
-              
-              <p className="text-sm text-white/70 mt-4">
-                ✓ No email required • ✓ Instant results • ✓ Evidence-based assessment
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Village Coordination Showcase - New dedicated section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
-              From chaos to coordination
-            </h2>
-            <p className="text-xl text-[#302D2C] max-w-3xl mx-auto">
-              Stop the family group chat madness. See how Eloura transforms scattered communication into organized care coordination.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Before - Chaotic group chat */}
-            <div className="order-2 lg:order-1">
-              <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-3xl p-8 border-2 border-red-200">
-                <h3 className="text-2xl font-semibold text-red-800 mb-6 text-center">Before Eloura</h3>
-                <div className="space-y-3">
-                  <div className="bg-white rounded-lg p-3 shadow-sm">
-                    <div className="text-sm font-medium text-gray-600">Mom - 2:34 PM</div>
-                    <div className="text-gray-800">Can someone pick up dad's meds?</div>
-                  </div>
-                  <div className="bg-white rounded-lg p-3 shadow-sm">
-                    <div className="text-sm font-medium text-gray-600">Sarah - 3:15 PM</div>
-                    <div className="text-gray-800">I thought John was doing that?</div>
-                  </div>
-                  <div className="bg-white rounded-lg p-3 shadow-sm">
-                    <div className="text-sm font-medium text-gray-600">John - 4:22 PM</div>
-                    <div className="text-gray-800">Wait, what meds? I'm confused.</div>
-                  </div>
-                  <div className="bg-white rounded-lg p-3 shadow-sm">
-                    <div className="text-sm font-medium text-gray-600">Mom - 5:45 PM</div>
-                    <div className="text-gray-800">Never mind, I'll do it myself... again 😤</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* After - Organized Eloura interface */}
-            <div className="order-1 lg:order-2">
-              <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-3xl p-8 border-2 border-emerald-200">
-                <h3 className="text-2xl font-semibold text-emerald-800 mb-6 text-center">With Eloura</h3>
-                <div className="space-y-4">
-                  <div className="bg-white rounded-lg p-4 shadow-sm border-l-4 border-emerald-500">
-                    <div className="flex justify-between items-start mb-2">
-                      <div className="font-medium text-gray-800">Pick up Dad's medications</div>
-                      <div className="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded">Assigned</div>
-                    </div>
-                    <div className="text-sm text-gray-600 mb-2">📍 CVS Pharmacy, Main St • Due: Today 6PM</div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">J</div>
-                      <span className="text-sm text-gray-700">John volunteered</span>
-                      <CheckCircle className="h-4 w-4 text-emerald-500 ml-auto" />
-                    </div>
-                  </div>
-                  <div className="text-center text-sm text-emerald-700 font-medium">
-                    ✨ Task completed • Family notified • Pharmacy receipt shared
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Enhanced PR Coverage Banner */}
-      <section className="py-12 bg-gradient-to-r from-[#223B0A] to-[#302D2C] relative overflow-hidden">
-        {/* Background pattern for sophistication */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-        }}></div>
-        </div>
-        
-        <div className="container mx-auto px-4 relative">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-4">
-              <Quote className="h-4 w-4 text-[#FCC931] mr-2" />
-              <span className="text-white/90 text-sm font-medium">As seen in top publications</span>
-            </div>
-            <h2 className="text-white text-lg mb-2 font-light">Trusted by leading media outlets</h2>
-            <p className="text-white/80 text-sm max-w-2xl mx-auto">
-              Our innovative approach to family caregiving has been recognized by major publications across tech, health, and family wellness
-            </p>
-          </div>
-
-          {/* Publication logos with enhanced design */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-center justify-items-center">
-            {/* TechCrunch */}
-            <div className="group cursor-pointer transition-all duration-300 hover:scale-105">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/20 transition-colors">
-                <div className="text-center">
-                  <div className="text-[#00D084] text-xl font-bold mb-1">TC</div>
-                  <div className="text-white/90 font-semibold text-sm">TechCrunch</div>
-                  <div className="text-white/60 text-xs mt-1">"Revolutionary caregiving platform"</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Forbes */}
-            <div className="group cursor-pointer transition-all duration-300 hover:scale-105">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/20 transition-colors">
-                <div className="text-center">
-                  <div className="text-[#0973BA] text-xl font-bold mb-1">F</div>
-                  <div className="text-white/90 font-semibold text-sm">Forbes</div>
-                  <div className="text-white/60 text-xs mt-1">"The future of family care"</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Fast Company */}
-            <div className="group cursor-pointer transition-all duration-300 hover:scale-105">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/20 transition-colors">
-                <div className="text-center">
-                  <div className="text-[#FC3F1D] text-xl font-bold mb-1">FC</div>
-                  <div className="text-white/90 font-semibold text-sm">Fast Company</div>
-                  <div className="text-white/60 text-xs mt-1">"Most innovative startup"</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Parents Magazine */}
-            <div className="group cursor-pointer transition-all duration-300 hover:scale-105">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/20 transition-colors">
-                <div className="text-center">
-                  <div className="text-[#E91E63] text-xl font-bold mb-1">P</div>
-                  <div className="text-white/90 font-semibold text-sm">Parents</div>
-                  <div className="text-white/60 text-xs mt-1">"Game-changing for families"</div>
-                </div>
-              </div>
-            </div>
-
-            {/* AARP */}
-            <div className="group cursor-pointer transition-all duration-300 hover:scale-105">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20 hover:bg-white/20 transition-colors">
-                <div className="text-center">
-                  <div className="text-[#A91E2C] text-xl font-bold mb-1">A</div>
-                  <div className="text-white/90 font-semibold text-sm">AARP</div>
-                  <div className="text-white/60 text-xs mt-1">"Essential caregiving tool"</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Featured quote section */}
-          <div className="mt-12 max-w-4xl mx-auto">
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-              <div className="text-center">
-                <Quote className="h-8 w-8 text-[#FCC931] mx-auto mb-4" />
-                <blockquote className="text-white text-lg md:text-xl font-light italic mb-6 leading-relaxed">
-                  "Eloura represents a fundamental shift in how we think about family caregiving. It's not just an app—it's a movement towards more sustainable, technology-enabled care that respects both caregivers and care recipients."
-                </blockquote>
-                <div className="flex items-center justify-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#FCC931] to-[#D7642A] rounded-full flex items-center justify-center">
-                    <span className="text-white font-semibold text-sm">SJ</span>
-                  </div>
-                  <div className="text-left">
-                    <div className="text-white font-semibold">Sarah Johnson</div>
-                    <div className="text-white/70 text-sm">Senior Editor, Fast Company</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Press kit CTA */}
-          <div className="text-center mt-8">
-            <Button variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-full px-6 py-2 text-sm">
-              <ArrowRight className="mr-2 h-4 w-4" />
-              View Press Kit
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Everything Your Family Needs Section */}
-      <section className="py-20 bg-gradient-to-br from-[#f8f9ff] to-[#fff8f5]">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-light text-[#223B0A] mb-6 leading-tight">
-              Everything your family needs,<br />
-              <span className="font-semibold bg-gradient-to-r from-[#D7642A] to-[#FCC931] bg-clip-text text-transparent">
-                beautifully organized
-              </span>
-            </h2>
-            <p className="text-xl text-[#302D2C] max-w-4xl mx-auto leading-relaxed">
-              From lunchboxes to pillboxes, Eloura brings calm to the chaos of modern caregiving 
-              with tools designed for your generation.
-            </p>
-          </div>
-
-          <div className="max-w-7xl mx-auto">
-            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-[#E1CFE3]/20">
-              {/* Header */}
-              <div className="bg-gradient-to-r from-[#223B0A] to-[#302D2C] p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="text-white text-lg font-medium">Sunsama ✨</div>
-                    <div className="flex items-center gap-2 text-white/80 text-sm">
-                      <span>📅 Today</span>
-                      <span>🔍 Filter</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 text-white/80 text-sm">
-                    <span>📋 Board</span>
-                    <span>📅 Calendars</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex">
-                {/* Sidebar */}
-                <div className="w-64 bg-[#f8f9ff] border-r border-[#E1CFE3]/20 p-6">
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex items-center gap-3 text-[#223B0A] font-medium mb-4">
-                        <div className="w-2 h-2 bg-[#223B0A] rounded-full"></div>
-                        Home
-                      </div>
-                      <div className="flex items-center gap-3 text-[#302D2C] mb-3 pl-5">
-                        <div className="w-1.5 h-1.5 bg-[#302D2C]/40 rounded-full"></div>
-                        Focus
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="text-[#302D2C]/60 text-sm font-medium mb-3">Day</div>
-                      <div className="space-y-2 pl-2">
-                        <div className="flex items-center gap-3 text-[#223B0A] text-sm">
-                          <CheckCircle className="h-4 w-4 text-[#223B0A]" />
-                          Daily planning
-                        </div>
-                        <div className="flex items-center gap-3 text-[#302D2C] text-sm">
-                          <CheckCircle className="h-4 w-4 text-[#302D2C]/40" />
-                          Daily task list
-                        </div>
-                        <div className="flex items-center gap-3 text-[#302D2C] text-sm">
-                          <CheckCircle className="h-4 w-4 text-[#302D2C]/40" />
-                          Daily shutdown
-                        </div>
-                        <div className="flex items-center gap-3 text-[#302D2C] text-sm">
-                          <CheckCircle className="h-4 w-4 text-[#302D2C]/40" />
-                          Daily highlights
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="text-[#302D2C]/60 text-sm font-medium mb-3">Week</div>
-                      <div className="space-y-2 pl-2">
-                        <div className="flex items-center gap-3 text-[#302D2C] text-sm">
-                          <CheckCircle className="h-4 w-4 text-[#302D2C]/40" />
-                          Weekly planning
-                        </div>
-                        <div className="flex items-center gap-3 text-[#302D2C] text-sm">
-                          <CheckCircle className="h-4 w-4 text-[#302D2C]/40" />
-                          Weekly review
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Main Content - Calendar View */}
-                <div className="flex-1 p-6">
-                  <div className="grid grid-cols-3 gap-6">
-                    {/* Monday */}
-                    <div>
-                      <div className="text-center mb-4">
-                        <div className="text-lg font-semibold text-[#223B0A]">Monday</div>
-                        <div className="text-sm text-[#302D2C]">January 10</div>
-                      </div>
-                      <div className="space-y-3">
-                        <div className="bg-[#E8F5E8] border-l-4 border-[#22C55E] rounded-lg p-3">
-                          <div className="text-sm font-medium text-[#223B0A] mb-1">Build daily notes feature</div>
-                          <div className="text-xs text-[#302D2C]">🔴 Mockups</div>
-                          <div className="text-xs text-[#302D2C]">📊 Data model</div>
-                          <div className="text-xs text-[#302D2C]">⚙️ Basic functionality</div>
-                        </div>
-                        <div className="bg-[#FEF3C7] border-l-4 border-[#F59E0B] rounded-lg p-3">
-                          <div className="text-sm font-medium text-[#223B0A] mb-1">Product demo with Jenn</div>
-                          <div className="text-xs text-[#302D2C]">📅 growth</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Tuesday */}
-                    <div>
-                      <div className="text-center mb-4">
-                        <div className="text-lg font-semibold text-[#223B0A]">Tuesday</div>
-                        <div className="text-sm text-[#302D2C]">January 11</div>
-                      </div>
-                      <div className="space-y-3">
-                        <div className="bg-[#F0F9FF] border-l-4 border-[#3B82F6] rounded-lg p-3">
-                          <div className="text-sm font-medium text-[#223B0A] mb-1">Answer customer support tickets</div>
-                          <div className="text-xs text-[#302D2C]">📈 growth</div>
-                        </div>
-                        <div className="bg-[#F3E8FF] border-l-4 border-[#8B5CF6] rounded-lg p-3">
-                          <div className="text-sm font-medium text-[#223B0A] mb-1">Review prototype of new feature</div>
-                          <div className="text-xs text-[#302D2C]">🔍 product</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Wednesday */}
-                    <div>
-                      <div className="text-center mb-4">
-                        <div className="text-lg font-semibold text-[#223B0A]">Wednesday</div>
-                        <div className="text-sm text-[#302D2C]">January 12</div>
-                      </div>
-                      <div className="space-y-3">
-                        <div className="bg-[#DBEAFE] border-l-4 border-[#3B82F6] rounded-lg p-3">
-                          <div className="text-sm font-medium text-[#223B0A] mb-1">Upgrade to MongoDB</div>
-                          <div className="text-xs text-[#302D2C]">⚡ tech</div>
-                        </div>
-                        <div className="bg-[#F0FDF4] border-l-4 border-[#22C55E] rounded-lg p-3">
-                          <div className="text-sm font-medium text-[#223B0A] mb-1">Search for local art show</div>
-                          <div className="text-xs text-[#302D2C]">First Friday</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Bottom section with colorful task blocks */}
-                  <div className="mt-8 grid grid-cols-4 gap-4">
-                    <div className="bg-gradient-to-r from-[#FCC931] to-[#D7642A] rounded-xl p-4 text-white">
-                      <div className="text-sm font-medium">Family dinner prep</div>
-                      <div className="text-xs opacity-80">5:30 - 7:00 PM</div>
-                    </div>
-                    <div className="bg-gradient-to-r from-[#22C55E] to-[#16A34A] rounded-xl p-4 text-white">
-                      <div className="text-sm font-medium">Kids homework time</div>
-                      <div className="text-xs opacity-80">3:00 - 4:30 PM</div>
-                    </div>
-                    <div className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] rounded-xl p-4 text-white">
-                      <div className="text-sm font-medium">Grocery pickup</div>
-                      <div className="text-xs opacity-80">12:00 - 1:00 PM</div>
-                    </div>
-                    <div className="bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] rounded-xl p-4 text-white">
-                      <div className="text-sm font-medium">Design prototype</div>
-                      <div className="text-xs opacity-80">9:00 - 11:00 AM</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* For Every Family Type Section */}
       <section className="py-20 bg-gradient-to-br from-[#FFE5C4]/40 to-[#E1CFE3]/30">
@@ -668,311 +211,16 @@ const CombinedHomepage = () => {
       </section>
 
       {/* Features Section - Professional and detailed */}
-      <section id="features" className="py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
-              Everything your family needs,
-              <br />
-              <span className="font-semibold">beautifully organized</span>
-            </h2>
-            <p className="text-xl text-[#302D2C] max-w-3xl mx-auto">
-              From lunchboxes to pillboxes, Eloura brings calm to the chaos of modern caregiving with tools designed for your generation.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-20">
-            {/* Feature 1 */}
-            <div className="order-2 lg:order-1">
-              <div className="bg-gradient-to-br from-[#FFE5C4]/60 to-[#FCC931]/30 rounded-3xl p-8 h-80 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="bg-white/60 rounded-full p-6 w-fit mx-auto mb-4">
-                    <Brain className="h-16 w-16 text-[#D7642A]" />
-                  </div>
-                  <h3 className="text-2xl font-semibold text-[#223B0A]">Your Daily Brief Dashboard</h3>
-                </div>
-              </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <h3 className="text-3xl font-light text-[#223B0A] mb-6">
-                Start each day with clarity
-              </h3>
-              <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
-                Get a personalized morning brief that prioritizes your day—from doctor appointments to school events, meal prep to medication reminders. AI-powered insights help you focus on what truly matters while reducing overwhelm.
-              </p>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#FCC931] rounded-full"></div>
-                  <span className="text-[#302D2C]">Smart task prioritization</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#D7642A] rounded-full"></div>
-                  <span>Calendar integration</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#223B0A] rounded-full"></div>
-                  <span>Gentle reminders</span>
-                </li>
-              </ul>
-              <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full">
-                Learn More <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Feature 2 */}
-            <div>
-              <h3 className="text-3xl font-light text-[#223B0A] mb-6">
-                Your support village, organized
-              </h3>
-              <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
-                Stop the family group chat chaos. Coordinate with family, friends, and caregivers seamlessly. Delegate tasks, share updates, and ensure everyone knows their role in caring for your loved ones.
-              </p>
-              <ul className="space-y-3 mb-8">
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#E1CFE3] rounded-full"></div>
-                  <span className="text-[#302D2C]">Task delegation</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#FCC931] rounded-full"></div>
-                  <span>Real-time updates</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#D7642A] rounded-full"></div>
-                  <span>Shared calendars</span>
-                </li>
-              </ul>
-              <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full">
-                See How It Works <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-            <div>
-              <div className="bg-gradient-to-br from-[#E1CFE3]/40 to-[#FFE5C4]/60 rounded-3xl p-8 h-80 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="bg-white/60 rounded-full p-6 w-fit mx-auto mb-4">
-                    <Brain className="h-16 w-16 text-[#223B0A]" />
-                  </div>
-                  <h3 className="text-2xl font-semibold text-[#223B0A]">Village Coordination Hub</h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* What Makes Us Different Section */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
-              What is it that makes us different?
-            </h2>
-            <p className="text-xl text-[#302D2C] max-w-4xl mx-auto leading-relaxed">
-              We understand that caregiving is both practical and emotional. Our tools address both.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="border-none shadow-lg rounded-3xl overflow-hidden bg-[#E1CFE3]/30">
-              <CardContent className="p-8 text-center">
-                <div className="bg-white/60 rounded-full p-6 w-fit mx-auto mb-6">
-                  <div className="text-4xl">🧘‍♀️</div>
-                </div>
-                <h3 className="text-xl font-semibold text-[#223B0A] mb-4">Daily Zen</h3>
-                <p className="text-[#302D2C] text-sm leading-relaxed">
-                  Morning mindfulness meets practical planning
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg rounded-3xl overflow-hidden bg-[#FCC931]/30">
-              <CardContent className="p-8 text-center">
-                <div className="bg-white/60 rounded-full p-6 w-fit mx-auto mb-6">
-                  <Users className="h-12 w-12 text-[#223B0A]" />
-                </div>
-                <h3 className="text-xl font-semibold text-[#223B0A] mb-4">Family Flow</h3>
-                <p className="text-[#302D2C] text-sm leading-relaxed">
-                  Coordinate care without the chaos
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg rounded-3xl overflow-hidden bg-[#D7642A]/30">
-              <CardContent className="p-8 text-center">
-                <div className="bg-white/60 rounded-full p-6 w-fit mx-auto mb-6">
-                  <Brain className="h-12 w-12 text-[#223B0A]" />
-                </div>
-                <h3 className="text-xl font-semibold text-[#223B0A] mb-4">Smart Guidance</h3>
-                <p className="text-[#302D2C] text-sm leading-relaxed">
-                  AI that understands your caregiving style
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-none shadow-lg rounded-3xl overflow-hidden bg-[#FFE5C4]/50">
-              <CardContent className="p-8 text-center">
-                <div className="bg-white/60 rounded-full p-6 w-fit mx-auto mb-6">
-                  <Shield className="h-12 w-12 text-[#223B0A]" />
-                </div>
-                <h3 className="text-xl font-semibold text-[#223B0A] mb-4">Stress Relief</h3>
-                <p className="text-[#302D2C] text-sm leading-relaxed">
-                  Tools designed to reduce overwhelm
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Pricing Section - New transparent pricing */}
-      <section id="pricing" className="py-24 bg-gradient-to-br from-[#FFE5C4]/40 to-[#E1CFE3]/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
-              Simple, transparent pricing
-            </h2>
-            <p className="text-xl text-[#302D2C] max-w-3xl mx-auto">
-              Start free, then choose the plan that fits your family's needs. No surprises, no hidden fees.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {/* Free Plan */}
-            <Card className="border-2 border-[#E1CFE3]/50 rounded-3xl overflow-hidden bg-white shadow-lg">
-              <CardContent className="p-8">
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-semibold text-[#223B0A] mb-2">Free</h3>
-                  <div className="text-4xl font-bold text-[#223B0A] mb-2">$0</div>
-                  <div className="text-[#302D2C]/70">forever</div>
-                </div>
-                <ul className="space-y-3 mb-8">
-                  <li className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                    <span className="text-[#302D2C]">Mental Load Assessment</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                    <span className="text-[#302D2C]">Basic daily brief</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                    <span className="text-[#302D2C]">Up to 3 family members</span>
-                  </li>
-                </ul>
-                <Button className="w-full bg-[#E1CFE3] hover:bg-[#D7642A] text-[#223B0A] hover:text-white rounded-full" onClick={handleGetStarted}>
-                  Start Free
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Family Plan - Most Popular */}
-            <Card className="border-2 border-[#FCC931] rounded-3xl overflow-hidden bg-white shadow-xl relative">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#FCC931] text-[#223B0A] px-6 py-2 rounded-full text-sm font-semibold">
-                Most Popular
-              </div>
-              <CardContent className="p-8 pt-12">
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-semibold text-[#223B0A] mb-2">Family</h3>
-                  <div className="text-4xl font-bold text-[#223B0A] mb-2">$19</div>
-                  <div className="text-[#302D2C]/70">per month</div>
-                </div>
-                <ul className="space-y-3 mb-8">
-                  <li className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                    <span className="text-[#302D2C]">Everything in Free</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                    <span className="text-[#302D2C]">Advanced AI insights</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                    <span className="text-[#302D2C]">Village coordination</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                    <span className="text-[#302D2C]">Unlimited family members</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                    <span className="text-[#302D2C]">Priority support</span>
-                  </li>
-                </ul>
-                <Button className="w-full bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full" onClick={handleGetStarted}>
-                  14-Day Free Trial
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Premium Plan */}
-            <Card className="border-2 border-[#D7642A]/50 rounded-3xl overflow-hidden bg-white shadow-lg">
-              <CardContent className="p-8">
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-semibold text-[#223B0A] mb-2">Premium</h3>
-                  <div className="text-4xl font-bold text-[#223B0A] mb-2">$39</div>
-                  <div className="text-[#302D2C]/70">per month</div>
-                </div>
-                <ul className="space-y-3 mb-8">
-                  <li className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                    <span className="text-[#302D2C]">Everything in Family</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                    <span className="text-[#302D2C]">Professional care coordination</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                    <span className="text-[#302D2C]">Custom integrations</span>
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                    <span className="text-[#302D2C]">Dedicated account manager</span>
-                  </li>
-                </ul>
-                <Button className="w-full bg-[#D7642A] hover:bg-[#223B0A] text-white rounded-full" onClick={handleGetStarted}>
-                  Contact Sales
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="text-center mt-12">
-            <p className="text-[#302D2C]/70 mb-4">All plans include: 256-bit encryption • HIPAA compliance • 24/7 support</p>
-            <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full">
-              Compare All Features
-            </Button>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Stats Section */}
-      <section className="py-20 bg-gradient-to-br from-[#E1CFE3]/30 to-[#FFE5C4]/40">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-light text-[#223B0A] mb-12">
-            Trusted by thousands of modern caregiving families
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="text-4xl font-light text-[#223B0A] mb-2">15,000+</div>
-              <div className="text-[#302D2C]">Active families</div>
-            </div>
-            <div>
-              <div className="text-4xl font-light text-[#223B0A] mb-2">94%</div>
-              <div className="text-[#302D2C]">Report reduced stress</div>
-            </div>
-            <div>
-              <div className="text-4xl font-light text-[#223B0A] mb-2">4.9★</div>
-              <div className="text-[#302D2C]">App store rating</div>
-            </div>
-            <div>
-              <div className="text-4xl font-light text-[#223B0A] mb-2">50M+</div>
-              <div className="text-[#302D2C]">Tasks organized</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Testimonials Section */}
       <section id="testimonials" className="py-24 bg-white">
@@ -1017,34 +265,7 @@ const CombinedHomepage = () => {
       </section>
 
       {/* Enhanced FAQ Section */}
-      <section className="py-24 bg-gradient-to-br from-[#FFE5C4]/40 to-[#E1CFE3]/20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-light text-center text-[#223B0A] mb-16">
-            Frequently asked questions
-          </h2>
-          
-          <div className="max-w-3xl mx-auto space-y-4">
-            {[
-              "How quickly will I see results with Eloura?",
-              "Is my family's data secure and private?", 
-              "How much does Eloura cost?",
-              "Is Eloura suitable for all types of caregiving?", 
-              "How does the village coordination work?", 
-              "Can I use Eloura offline?", 
-              "What makes Eloura different from other apps?"
-            ].map((question, index) => <div key={index} className="bg-[#FFE5C4]/60 rounded-2xl p-6 flex items-center justify-between hover:bg-[#FFE5C4]/80 transition-colors cursor-pointer">
-                <span className="text-[#302D2C] font-medium">{question}</span>
-                <ArrowRight className="h-5 w-5 text-[#223B0A]" />
-              </div>)}
-          </div>
-          
-          <div className="text-center mt-12">
-            <Button className="bg-[#D7642A] hover:bg-[#223B0A] text-white rounded-full px-8">
-              View All FAQs
-            </Button>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Enhanced CTA Section with urgency */}
       <section className="py-24 bg-gradient-to-r from-[#223B0A] to-[#302D2C] text-white text-center">
@@ -1062,19 +283,11 @@ const CombinedHomepage = () => {
             Join 15,000+ families who've reduced their caregiving stress by 50%. Start your free trial today—no credit card required.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
-            <Button 
-              size="lg" 
-              className="bg-[#FCC931] hover:bg-[#D7642A] text-[#302D2C] rounded-full px-8 text-lg font-semibold"
-              onClick={handleGetStarted}
-            >
+            <Button size="lg" className="bg-[#FCC931] hover:bg-[#D7642A] text-[#302D2C] rounded-full px-8 text-lg font-semibold" onClick={handleGetStarted}>
               Join 15,000+ families reducing stress
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button 
-              size="lg" 
-              className="bg-transparent border-2 border-[#FCC931] text-white hover:bg-[#FCC931] hover:text-[#223B0A] rounded-full px-8 text-lg font-semibold"
-              onClick={handleMentalLoadTest}
-            >
+            <Button size="lg" className="bg-transparent border-2 border-[#FCC931] text-white hover:bg-[#FCC931] hover:text-[#223B0A] rounded-full px-8 text-lg font-semibold" onClick={handleMentalLoadTest}>
               <Brain className="mr-2 h-5 w-5" />
               Get Mental Load Score
             </Button>
