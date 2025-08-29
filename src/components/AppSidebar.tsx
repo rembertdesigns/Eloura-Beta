@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { Home, Calendar, BarChart3, Users, MessageSquare, Settings, Brain, FolderOpen, TrendingUp } from 'lucide-react';
@@ -77,23 +78,23 @@ export function AppSidebar() {
             <NavLink
               to={item.url}
               aria-label={`Navigate to ${item.title}`}
-              className={`group flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+              className={`group flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-sidebar active:scale-[0.98] ${
                 isActive
-                  ? 'bg-[#223B0A] text-white shadow-sm'
-                  : 'text-gray-700 hover:bg-gray-100'
+                  ? 'bg-gradient-to-r from-primary to-primary/90 text-primary-foreground shadow-lg shadow-primary/25 border-l-4 border-primary-foreground/30'
+                  : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-md hover:translate-x-1 hover:shadow-primary/10'
               }`}
             >
               <item.icon 
-                className={`h-5 w-5 flex-shrink-0 ${
+                className={`h-5 w-5 transition-all duration-300 flex-shrink-0 ${
                   isActive 
-                    ? 'text-white' 
-                    : 'text-gray-500'
+                    ? 'text-primary-foreground drop-shadow-sm' 
+                    : 'text-sidebar-foreground group-hover:text-primary'
                 }`}
-                strokeWidth={1.5}
+                strokeWidth={2}
               />
               {!collapsed && (
-                <span className={`text-sm font-medium ${
-                  isActive ? 'text-white' : 'text-gray-700'
+                <span className={`text-sm font-medium transition-all duration-300 leading-tight ${
+                  isActive ? 'text-primary-foreground drop-shadow-sm' : 'text-sidebar-foreground group-hover:text-sidebar-accent-foreground'
                 }`}>
                   {item.title}
                 </span>
@@ -106,24 +107,24 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar className="bg-white border-r border-gray-200 shadow-sm">
-      <SidebarContent className="px-4 py-6">
+    <Sidebar className="bg-sidebar border-r border-sidebar-border shadow-xl rounded-r-2xl overflow-hidden">
+      <SidebarContent className="px-3 py-8">
         {/* Main Navigation */}
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-2">
+            <SidebarMenu className="space-y-3">
               {renderNavItems(mainNavigationItems)}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Spacer to push settings to bottom */}
-        <div className="flex-1" />
+        {/* Enhanced Separator with more spacing */}
+        <div className="mx-4 my-8 h-px bg-gradient-to-r from-transparent via-sidebar-border to-transparent opacity-60" />
 
         {/* Settings Section */}
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu className="space-y-2 mt-8">
+            <SidebarMenu className="space-y-3">
               {renderNavItems(settingsItems)}
             </SidebarMenu>
           </SidebarGroupContent>
