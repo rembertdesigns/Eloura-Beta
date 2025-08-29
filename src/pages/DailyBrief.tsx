@@ -11,6 +11,7 @@ import FeatureFooter from '@/components/FeatureFooter';
 import MoodCheckPopup from '@/components/MoodCheckPopup';
 import AddGoalModal from '@/components/AddGoalModal';
 import QuickAddTask from '@/components/QuickAddTask';
+import TaskRatingModal from '@/components/TaskRatingModal';
 const DailyBrief = () => {
   const [selectedMood, setSelectedMood] = useState('');
   const [showMoodPopup, setShowMoodPopup] = useState(false);
@@ -167,6 +168,8 @@ const DailyBrief = () => {
   });
   const [showCelebration, setShowCelebration] = useState(false);
   const [showCelebrateModal, setShowCelebrateModal] = useState(false);
+  const [showTaskRatingModal, setShowTaskRatingModal] = useState(false);
+  const [newlyCompletedTasks, setNewlyCompletedTasks] = useState<any[]>([]);
   const getFilteredTasks = () => {
     switch (activeFilter) {
       case 'completed':
@@ -250,10 +253,20 @@ const DailyBrief = () => {
     });
   };
   const handleTaskToggle = (taskId: number) => {
-    setTasks(prev => prev.map(task => task.id === taskId ? {
-      ...task,
-      completed: !task.completed
-    } : task));
+    setTasks(prev => prev.map(task => {
+      if (task.id === taskId) {
+        const updatedTask = { ...task, completed: !task.completed };
+        
+        // If task is being completed, show rating modal
+        if (!task.completed && updatedTask.completed) {
+          setNewlyCompletedTasks([updatedTask]);
+          setShowTaskRatingModal(true);
+        }
+        
+        return updatedTask;
+      }
+      return task;
+    }));
   };
   const handleStatusCardClick = (filter: string) => {
     setActiveFilter(filter);
@@ -275,6 +288,20 @@ const DailyBrief = () => {
 
     // Hide celebration effect after animation
     setTimeout(() => setShowCelebration(false), 3000);
+  };
+
+  const handleSaveTaskRatings = (taskId: number, ratings: { mentalLoad: number; timeEstimate: number; satisfaction: number }) => {
+    // Update the task with ratings
+    setTasks(prev => prev.map(task => 
+      task.id === taskId 
+        ? { ...task, ...ratings } 
+        : task
+    ));
+    
+    toast({
+      title: "Task rating saved!",
+      description: "Thank you for your feedback."
+    });
   };
 
   // Drag and drop handlers
@@ -576,6 +603,13 @@ const DailyBrief = () => {
       <AddGoalModal isOpen={showAddGoalModal} onOpenChange={setShowAddGoalModal} onAddGoal={handleAddGoal} />
 
       <QuickAddTask isOpen={showQuickAddTask} onOpenChange={setShowQuickAddTask} onAddTask={handleAddTask} />
+      
+      <TaskRatingModal 
+        isOpen={showTaskRatingModal} 
+        onClose={() => setShowTaskRatingModal(false)} 
+        completedTasks={newlyCompletedTasks}
+        onSaveRatings={handleSaveTaskRatings}
+      />
       
       <div className="md:hidden">
         <FeatureFooter />
