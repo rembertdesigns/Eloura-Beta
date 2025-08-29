@@ -381,6 +381,58 @@ const CombinedHomepage = () => {
         </div>
       </section>
 
+      {/* Cross-Device Sync Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Angled MacBook Mockup */}
+            <div className="order-2 lg:order-1">
+              <div className="relative max-w-2xl mx-auto">
+                <div className="transform rotate-12 perspective-1000">
+                  <div className="bg-gray-300 rounded-xl p-1 shadow-2xl">
+                    <div className="bg-black rounded-lg h-3 flex items-center justify-start px-2 mb-1">
+                      <div className="flex gap-1">
+                        <div className="w-2 h-2 bg-red-400 rounded-full"></div>
+                        <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                      </div>
+                    </div>
+                    <div className="bg-gray-100 rounded-b-lg" style={{ aspectRatio: '16/10' }}>
+                      {/* Screen Content - Blank */}
+                      <div className="h-full bg-gradient-to-br from-gray-50 to-gray-200 rounded-b-lg flex items-center justify-center">
+                        <div className="text-center text-gray-400">
+                          <div className="w-20 h-20 bg-gray-300 rounded-2xl mx-auto mb-4"></div>
+                          <p className="text-sm">Desktop Interface</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* MacBook Base */}
+                  <div className="bg-gray-300 h-4 rounded-b-2xl transform -skew-x-12 mx-auto" style={{ width: '90%' }}></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="order-1 lg:order-2">
+              <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
+                One planner, synced
+                <br />
+                <span className="font-semibold">across every device</span>
+              </h2>
+              <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
+                Plan on your computer with Eloura's web app and pick up right where you left off on mobile. Everything stays connected across desktop, phone, tablet, and watch so your schedule is always up to date, no matter where you're working.
+              </p>
+              <Button 
+                variant="outline" 
+                className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium"
+              >
+                How planning stays in sync
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Testimonials Section */}
       <section id="testimonials" className="py-24 bg-white">
