@@ -464,26 +464,26 @@ const DailyBrief = () => {
                   </div>
                 </CardHeader>
                  <CardContent>
-                   <div className="space-y-3">
-                     {(activeFilter === 'default' ? tasks : filteredTasks).map((task, index) => <div key={task.id} className="flex items-center justify-between p-4 bg-white rounded-lg border hover:shadow-md transition-shadow group cursor-move shadow-sm" draggable onDragStart={e => handleDragStart(e, task.id)} onDragOver={handleDragOver} onDrop={e => handleDrop(e, index)}>
-                        <div className="flex items-center gap-3 flex-1">
-                          <input type="checkbox" checked={task.completed} onChange={() => handleTaskToggle(task.id)} className="w-4 h-4 text-green-600 rounded cursor-pointer" />
-                          <div className="flex-1">
-                            <p className={`font-medium ${task.completed ? 'line-through text-slate-400' : 'text-slate-800'}`}>
+                   <div className="space-y-1">
+                     {(activeFilter === 'default' ? tasks : filteredTasks).map((task, index) => <div key={task.id} className="flex items-center justify-between p-2 bg-white rounded-lg border hover:shadow-md transition-shadow group cursor-move shadow-sm" draggable onDragStart={e => handleDragStart(e, task.id)} onDragOver={handleDragOver} onDrop={e => handleDrop(e, index)}>
+                        <div className="flex items-center gap-2 flex-1">
+                          <input type="checkbox" checked={task.completed} onChange={() => handleTaskToggle(task.id)} className="w-4 h-4 text-green-600 rounded cursor-pointer flex-shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-sm font-medium ${task.completed ? 'line-through text-slate-400' : 'text-slate-800'} truncate`}>
                               {task.text}
                             </p>
-                            <div className="flex items-center gap-4 mt-1">
-                              <p className="text-sm text-slate-500 flex items-center gap-1">
+                            <div className="flex items-center gap-3 mt-0.5">
+                              <p className="text-xs text-slate-500 flex items-center gap-1">
                                 <Clock className="h-3 w-3" />
                                 {task.time}
                               </p>
-                              <Badge variant="outline" className={`text-xs ${task.category === 'childcare' ? 'bg-green-50 text-green-700 border-green-200' : task.category === 'eldercare' ? 'bg-orange-50 text-orange-700 border-orange-200' : task.category === 'work' ? 'bg-purple-50 text-purple-700 border-purple-200' : task.category === 'household' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-gray-50 text-gray-700 border-gray-200'}`}>
+                              <Badge variant="outline" className={`text-xs px-1.5 py-0.5 ${task.category === 'childcare' ? 'bg-green-50 text-green-700 border-green-200' : task.category === 'eldercare' ? 'bg-orange-50 text-orange-700 border-orange-200' : task.category === 'work' ? 'bg-purple-50 text-purple-700 border-purple-200' : task.category === 'household' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-gray-50 text-gray-700 border-gray-200'}`}>
                                 {task.category}
                               </Badge>
                             </div>
                           </div>
                         </div>
-                        {task.urgent && !task.completed && <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-xs ml-2">
+                        {task.urgent && !task.completed && <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-xs px-1.5 py-0.5 ml-2 flex-shrink-0">
                             urgent
                           </Badge>}
                       </div>)}
