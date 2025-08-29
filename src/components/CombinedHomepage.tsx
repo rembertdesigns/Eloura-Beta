@@ -52,168 +52,42 @@ const CombinedHomepage = () => {
         </div>
       </nav>
 
-      {/* Hero Section - Product Showcase Style */}
-      <section className="bg-gradient-to-br from-[#FFE5C4] via-white to-[#E1CFE3]/20 py-20 overflow-hidden">
+      {/* Hero Section - Clean Simple Style */}
+      <section className="bg-gradient-to-br from-[#E1CFE3]/40 via-[#FFE5C4]/30 to-[#E1CFE3]/20 py-32 text-center">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Left Content */}
-            <div className="text-center lg:text-left">
-              {/* Award badge */}
-              <div className="inline-flex items-center bg-[#223B0A]/10 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-[#223B0A]/20">
-                <Star className="h-4 w-4 text-[#FCC931] mr-2" />
-                <span className="text-[#223B0A] font-medium text-sm">Best Family Care App by TechCrunch</span>
-              </div>
-
-              <h1 className="text-4xl lg:text-6xl font-light text-[#223B0A] mb-6 leading-tight">
-                Make family caregiving
-                <br />
-                <span className="font-semibold bg-gradient-to-r from-[#D7642A] to-[#FCC931] bg-clip-text text-transparent">
-                  feel manageable
-                </span>
-              </h1>
-
-              <p className="text-lg lg:text-xl text-[#302D2C] mb-8 leading-relaxed max-w-xl lg:max-w-none">
-                The digital daily planner that helps you coordinate care, reduce mental load, and stay connected with your family through visual timelines, task management, and smart coordination tools.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 mb-8 justify-center lg:justify-start">
-                <Button 
-                  size="lg" 
-                  className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8"
-                  onClick={handleGetStarted}
-                >
-                  Start planning for free
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A]/5 rounded-full px-8"
-                  onClick={handleMentalLoadTest}
-                >
-                  Take mental load test
-                </Button>
-              </div>
-
-              <p className="text-sm text-[#302D2C]/70">
-                Available on iOS, Android, & Desktop
-              </p>
+          <div className="max-w-4xl mx-auto">
+            {/* Award badge */}
+            <div className="inline-flex items-center bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 mb-12 border border-[#E1CFE3]/30">
+              <span className="text-[#223B0A] font-medium">
+                Named <strong>Best Family Care App</strong> by <strong>TechCrunch</strong>
+              </span>
             </div>
 
-            {/* Right Product Showcase */}
-            <div className="relative">
-              {/* Main Dashboard Mockup */}
-              <div className="bg-white rounded-3xl shadow-2xl p-6 border border-[#E1CFE3]/20 relative z-10">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                  </div>
-                  <div className="text-sm text-[#302D2C]/60">eloura.app</div>
-                </div>
-                
-                <div className="space-y-4">
-                  {/* Header */}
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-lg font-semibold text-[#223B0A]">Today's Priority</h3>
-                    <div className="text-sm text-[#302D2C]/60">Monday, Dec 25</div>
-                  </div>
+            {/* Main headline */}
+            <h1 className="text-5xl md:text-7xl font-light text-[#223B0A] mb-8 leading-tight">
+              Make family caregiving
+              <br />
+              <span className="font-medium">feel manageable</span>
+            </h1>
 
-                  {/* Task Cards */}
-                  <div className="space-y-3">
-                    <div className="bg-gradient-to-r from-[#FCC931]/10 to-[#D7642A]/10 border border-[#FCC931]/20 rounded-xl p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-[#FCC931] to-[#D7642A] rounded-lg flex items-center justify-center">
-                          <Heart className="h-5 w-5 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-medium text-[#223B0A]">Dad's doctor appointment</div>
-                          <div className="text-sm text-[#302D2C]/70">2:30 PM • Dr. Johnson's office</div>
-                        </div>
-                        <CheckCircle className="h-5 w-5 text-[#FCC931]" />
-                      </div>
-                    </div>
+            {/* Subtitle */}
+            <p className="text-xl md:text-2xl text-[#302D2C]/80 mb-12 leading-relaxed max-w-3xl mx-auto">
+              The digital daily planner that helps you coordinate care, reduce mental load, and stay connected with your family.
+            </p>
 
-                    <div className="bg-[#E1CFE3]/20 border border-[#E1CFE3]/30 rounded-xl p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-[#E1CFE3] rounded-lg flex items-center justify-center">
-                          <Users className="h-5 w-5 text-[#223B0A]" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-medium text-[#223B0A]">Sarah picks up Emma from school</div>
-                          <div className="text-sm text-[#302D2C]/70">3:15 PM • Assigned to Sarah</div>
-                        </div>
-                        <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">S</div>
-                      </div>
-                    </div>
+            {/* CTA Button */}
+            <Button 
+              size="lg" 
+              className="bg-[#D7642A] hover:bg-[#223B0A] text-white rounded-full px-12 py-4 text-lg font-medium shadow-lg"
+              onClick={handleGetStarted}
+            >
+              Try for free
+            </Button>
 
-                    <div className="bg-[#FFE5C4]/30 border border-[#FFE5C4]/50 rounded-xl p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-[#FFE5C4] to-[#FCC931] rounded-lg flex items-center justify-center">
-                          <Clock className="h-5 w-5 text-[#223B0A]" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-medium text-[#223B0A]">Weekly family dinner prep</div>
-                          <div className="text-sm text-[#302D2C]/70">5:00 PM • Shared task</div>
-                        </div>
-                        <div className="flex -space-x-2">
-                          <div className="w-6 h-6 bg-green-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold">M</div>
-                          <div className="w-6 h-6 bg-purple-500 rounded-full border-2 border-white flex items-center justify-center text-white text-xs font-bold">J</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Stats */}
-                  <div className="grid grid-cols-3 gap-4 pt-4 border-t border-[#E1CFE3]/20">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-[#223B0A]">8</div>
-                      <div className="text-xs text-[#302D2C]/60">Tasks done</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-[#D7642A]">3</div>
-                      <div className="text-xs text-[#302D2C]/60">In progress</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-[#FCC931]">94%</div>
-                      <div className="text-xs text-[#302D2C]/60">Family sync</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating Mobile App Preview */}
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-3 border border-[#E1CFE3]/20 z-20">
-                <div className="w-48 bg-[#223B0A] rounded-xl overflow-hidden">
-                  <div className="bg-[#223B0A] px-4 py-3 text-white text-center relative">
-                    <div className="absolute top-2 left-4 w-12 h-1 bg-white/30 rounded-full"></div>
-                    <div className="text-sm font-medium mt-2">Smart Care Assistant</div>
-                  </div>
-                  <div className="bg-white px-4 py-4 space-y-3">
-                    <div className="flex items-start gap-3">
-                      <div className="w-8 h-8 bg-gradient-to-br from-[#FCC931] to-[#D7642A] rounded-full flex items-center justify-center">
-                        <Brain className="h-4 w-4 text-white" />
-                      </div>
-                      <div className="flex-1 text-xs">
-                        <div className="bg-[#E1CFE3]/20 rounded-lg p-2">
-                          Based on your schedule, I suggest moving Dad's appointment to 3 PM to avoid traffic.
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex justify-end">
-                      <div className="bg-[#223B0A] text-white text-xs px-3 py-2 rounded-lg max-w-32">
-                        That's perfect, thank you!
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Background Elements */}
-              <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-[#FCC931]/20 to-[#D7642A]/20 rounded-full blur-2xl"></div>
-              <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-gradient-to-br from-[#E1CFE3]/30 to-[#223B0A]/10 rounded-full blur-xl"></div>
-            </div>
+            {/* Small print */}
+            <p className="text-sm text-[#302D2C]/60 mt-4">
+              14-day free trial, no credit card required
+            </p>
           </div>
         </div>
       </section>
