@@ -315,35 +315,6 @@ const CombinedHomepage = () => {
         </div>
       </section>
 
-      {/* Enhanced FAQ Section */}
-      <section className="py-24 bg-gradient-to-br from-[#FFE5C4]/40 to-[#E1CFE3]/20">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-light text-center text-[#223B0A] mb-16">
-            Frequently asked questions
-          </h2>
-          
-          <div className="max-w-3xl mx-auto space-y-4">
-            {[
-              "How quickly will I see results with Eloura?",
-              "Is my family's data secure and private?", 
-              "How much does Eloura cost?",
-              "Is Eloura suitable for all types of caregiving?", 
-              "How does the village coordination work?", 
-              "Can I use Eloura offline?", 
-              "What makes Eloura different from other apps?"
-            ].map((question, index) => <div key={index} className="bg-[#FFE5C4]/60 rounded-2xl p-6 flex items-center justify-between hover:bg-[#FFE5C4]/80 transition-colors cursor-pointer">
-                <span className="text-[#302D2C] font-medium">{question}</span>
-                <ArrowRight className="h-5 w-5 text-[#223B0A]" />
-              </div>)}
-          </div>
-          
-          <div className="text-center mt-12">
-            <Button className="bg-[#D7642A] hover:bg-[#223B0A] text-white rounded-full px-8">
-              View All FAQs
-            </Button>
-          </div>
-        </div>
-      </section>
 
       {/* Enhanced CTA Section with urgency */}
       <section className="py-24 bg-gradient-to-r from-[#223B0A] to-[#302D2C] text-white text-center">
