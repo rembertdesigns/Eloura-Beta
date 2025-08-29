@@ -129,6 +129,89 @@ const CombinedHomepage = () => {
         </div>
       </section>
 
+      {/* For Every Family Type Section */}
+      <section className="py-20 bg-gradient-to-br from-[#E1CFE3]/20 via-white to-[#FFE5C4]/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
+              For Every Family Type
+            </h2>
+            <p className="text-lg md:text-xl text-[#302D2C]/80 max-w-3xl mx-auto">
+              Whether you're flying solo, juggling dual careers, co-parenting, or managing multiple generations—Eloura adapts to your unique caregiving situation.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            {/* Solo */}
+            <Card className="p-8 text-center bg-white/80 backdrop-blur-sm border-[#E1CFE3]/30 hover:shadow-lg transition-shadow">
+              <CardContent className="p-0">
+                <div className="mb-6">
+                  <div className="w-20 h-20 mx-auto bg-[#223B0A] rounded-full flex items-center justify-center">
+                    <div className="w-8 h-8 bg-white rounded-full"></div>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-semibold text-[#223B0A] mb-4">Solo</h3>
+                <p className="text-[#302D2C]/70">
+                  Single parents and independent caregivers managing it all
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Dual */}
+            <Card className="p-8 text-center bg-white/80 backdrop-blur-sm border-[#E1CFE3]/30 hover:shadow-lg transition-shadow">
+              <CardContent className="p-0">
+                <div className="mb-6">
+                  <div className="flex justify-center gap-2">
+                    <div className="w-10 h-10 bg-[#D7642A] rounded-full"></div>
+                    <div className="w-10 h-10 bg-[#223B0A] rounded-full flex items-center justify-center">
+                      <div className="w-4 h-4 bg-white rounded-full"></div>
+                    </div>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-semibold text-[#223B0A] mb-4">Dual</h3>
+                <p className="text-[#302D2C]/70">
+                  Partners coordinating care together as a team
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Split/Co-Parent */}
+            <Card className="p-8 text-center bg-white/80 backdrop-blur-sm border-[#E1CFE3]/30 hover:shadow-lg transition-shadow">
+              <CardContent className="p-0">
+                <div className="mb-6">
+                  <div className="flex justify-center gap-2">
+                    <div className="w-10 h-10 bg-[#FCC931] rounded-full"></div>
+                    <div className="w-10 h-10 bg-[#E1CFE3] rounded-full"></div>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-semibold text-[#223B0A] mb-4">Split/Co-Parent</h3>
+                <p className="text-[#302D2C]/70">
+                  Shared custody and co-parenting coordination
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* Multi-Gen */}
+            <Card className="p-8 text-center bg-white/80 backdrop-blur-sm border-[#E1CFE3]/30 hover:shadow-lg transition-shadow">
+              <CardContent className="p-0">
+                <div className="mb-6">
+                  <div className="flex justify-center gap-1">
+                    <div className="w-8 h-8 bg-[#223B0A] rounded-full"></div>
+                    <div className="w-8 h-8 bg-[#D7642A] rounded-full"></div>
+                    <div className="w-8 h-8 bg-[#FCC931] rounded-full"></div>
+                    <div className="w-8 h-8 bg-[#E1CFE3] rounded-full"></div>
+                  </div>
+                </div>
+                <h3 className="text-2xl font-semibold text-[#223B0A] mb-4">Multi-Gen</h3>
+                <p className="text-[#302D2C]/70">
+                  Sandwich generation caring for kids and parents
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* Device Showcase Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
@@ -183,6 +266,79 @@ const CombinedHomepage = () => {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Real Stories from Caregivers Section */}
+      <section className="py-20 bg-gradient-to-br from-[#E1CFE3]/40 via-[#FFE5C4]/20 to-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
+              Real stories from caregivers like you
+            </h2>
+            <p className="text-lg md:text-xl text-[#302D2C]/80 max-w-3xl mx-auto">
+              See how Eloura is transforming the lives of millennial and Gen Z caregivers everywhere
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Testimonial 1 */}
+            <Card className="p-8 bg-white/80 backdrop-blur-sm border-[#E1CFE3]/30 hover:shadow-lg transition-shadow">
+              <CardContent className="p-0">
+                <div className="flex mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-[#FCC931] text-[#FCC931]" />
+                  ))}
+                </div>
+                <Quote className="h-8 w-8 text-[#223B0A]/20 mb-4" />
+                <p className="text-[#302D2C] mb-6 leading-relaxed">
+                  "Eloura completely transformed how I manage care for my kids and aging parents. I finally feel like I have my life back."
+                </p>
+                <div>
+                  <p className="font-semibold text-[#223B0A]">Sarah M.</p>
+                  <p className="text-sm text-[#302D2C]/70">Working Mom of 2, Caring for Dad</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Testimonial 2 */}
+            <Card className="p-8 bg-white/80 backdrop-blur-sm border-[#E1CFE3]/30 hover:shadow-lg transition-shadow">
+              <CardContent className="p-0">
+                <div className="flex mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-[#FCC931] text-[#FCC931]" />
+                  ))}
+                </div>
+                <Quote className="h-8 w-8 text-[#223B0A]/20 mb-4" />
+                <p className="text-[#302D2C] mb-6 leading-relaxed">
+                  "The village feature saved my relationship with my siblings. We're finally coordinated on mom's care instead of stressed and scattered."
+                </p>
+                <div>
+                  <p className="font-semibold text-[#223B0A]">Marcus K.</p>
+                  <p className="text-sm text-[#302D2C]/70">Tech Professional, Sandwich Generation</p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Testimonial 3 */}
+            <Card className="p-8 bg-white/80 backdrop-blur-sm border-[#E1CFE3]/30 hover:shadow-lg transition-shadow">
+              <CardContent className="p-0">
+                <div className="flex mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-[#FCC931] text-[#FCC931]" />
+                  ))}
+                </div>
+                <Quote className="h-8 w-8 text-[#223B0A]/20 mb-4" />
+                <p className="text-[#302D2C] mb-6 leading-relaxed">
+                  "As someone juggling toddler tantrums and parent doctor visits, Eloura gives me the structure and peace of mind I desperately needed."
+                </p>
+                <div>
+                  <p className="font-semibold text-[#223B0A]">Priya L.</p>
+                  <p className="text-sm text-[#302D2C]/70">Entrepreneur & Caregiver</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
