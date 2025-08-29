@@ -409,6 +409,180 @@ const CombinedHomepage = () => {
         </div>
       </section>
 
+      {/* Everything Your Family Needs Section */}
+      <section className="py-20 bg-gradient-to-br from-[#f8f9ff] to-[#fff8f5]">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-light text-[#223B0A] mb-6 leading-tight">
+              Everything your family needs,<br />
+              <span className="font-semibold bg-gradient-to-r from-[#D7642A] to-[#FCC931] bg-clip-text text-transparent">
+                beautifully organized
+              </span>
+            </h2>
+            <p className="text-xl text-[#302D2C] max-w-4xl mx-auto leading-relaxed">
+              From lunchboxes to pillboxes, Eloura brings calm to the chaos of modern caregiving 
+              with tools designed for your generation.
+            </p>
+          </div>
+
+          <div className="max-w-7xl mx-auto">
+            <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-[#E1CFE3]/20">
+              {/* Header */}
+              <div className="bg-gradient-to-r from-[#223B0A] to-[#302D2C] p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="text-white text-lg font-medium">Sunsama ✨</div>
+                    <div className="flex items-center gap-2 text-white/80 text-sm">
+                      <span>📅 Today</span>
+                      <span>🔍 Filter</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 text-white/80 text-sm">
+                    <span>📋 Board</span>
+                    <span>📅 Calendars</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex">
+                {/* Sidebar */}
+                <div className="w-64 bg-[#f8f9ff] border-r border-[#E1CFE3]/20 p-6">
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex items-center gap-3 text-[#223B0A] font-medium mb-4">
+                        <div className="w-2 h-2 bg-[#223B0A] rounded-full"></div>
+                        Home
+                      </div>
+                      <div className="flex items-center gap-3 text-[#302D2C] mb-3 pl-5">
+                        <div className="w-1.5 h-1.5 bg-[#302D2C]/40 rounded-full"></div>
+                        Focus
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="text-[#302D2C]/60 text-sm font-medium mb-3">Day</div>
+                      <div className="space-y-2 pl-2">
+                        <div className="flex items-center gap-3 text-[#223B0A] text-sm">
+                          <CheckCircle className="h-4 w-4 text-[#223B0A]" />
+                          Daily planning
+                        </div>
+                        <div className="flex items-center gap-3 text-[#302D2C] text-sm">
+                          <CheckCircle className="h-4 w-4 text-[#302D2C]/40" />
+                          Daily task list
+                        </div>
+                        <div className="flex items-center gap-3 text-[#302D2C] text-sm">
+                          <CheckCircle className="h-4 w-4 text-[#302D2C]/40" />
+                          Daily shutdown
+                        </div>
+                        <div className="flex items-center gap-3 text-[#302D2C] text-sm">
+                          <CheckCircle className="h-4 w-4 text-[#302D2C]/40" />
+                          Daily highlights
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="text-[#302D2C]/60 text-sm font-medium mb-3">Week</div>
+                      <div className="space-y-2 pl-2">
+                        <div className="flex items-center gap-3 text-[#302D2C] text-sm">
+                          <CheckCircle className="h-4 w-4 text-[#302D2C]/40" />
+                          Weekly planning
+                        </div>
+                        <div className="flex items-center gap-3 text-[#302D2C] text-sm">
+                          <CheckCircle className="h-4 w-4 text-[#302D2C]/40" />
+                          Weekly review
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Main Content - Calendar View */}
+                <div className="flex-1 p-6">
+                  <div className="grid grid-cols-3 gap-6">
+                    {/* Monday */}
+                    <div>
+                      <div className="text-center mb-4">
+                        <div className="text-lg font-semibold text-[#223B0A]">Monday</div>
+                        <div className="text-sm text-[#302D2C]">January 10</div>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="bg-[#E8F5E8] border-l-4 border-[#22C55E] rounded-lg p-3">
+                          <div className="text-sm font-medium text-[#223B0A] mb-1">Build daily notes feature</div>
+                          <div className="text-xs text-[#302D2C]">🔴 Mockups</div>
+                          <div className="text-xs text-[#302D2C]">📊 Data model</div>
+                          <div className="text-xs text-[#302D2C]">⚙️ Basic functionality</div>
+                        </div>
+                        <div className="bg-[#FEF3C7] border-l-4 border-[#F59E0B] rounded-lg p-3">
+                          <div className="text-sm font-medium text-[#223B0A] mb-1">Product demo with Jenn</div>
+                          <div className="text-xs text-[#302D2C]">📅 growth</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Tuesday */}
+                    <div>
+                      <div className="text-center mb-4">
+                        <div className="text-lg font-semibold text-[#223B0A]">Tuesday</div>
+                        <div className="text-sm text-[#302D2C]">January 11</div>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="bg-[#F0F9FF] border-l-4 border-[#3B82F6] rounded-lg p-3">
+                          <div className="text-sm font-medium text-[#223B0A] mb-1">Answer customer support tickets</div>
+                          <div className="text-xs text-[#302D2C]">📈 growth</div>
+                        </div>
+                        <div className="bg-[#F3E8FF] border-l-4 border-[#8B5CF6] rounded-lg p-3">
+                          <div className="text-sm font-medium text-[#223B0A] mb-1">Review prototype of new feature</div>
+                          <div className="text-xs text-[#302D2C]">🔍 product</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Wednesday */}
+                    <div>
+                      <div className="text-center mb-4">
+                        <div className="text-lg font-semibold text-[#223B0A]">Wednesday</div>
+                        <div className="text-sm text-[#302D2C]">January 12</div>
+                      </div>
+                      <div className="space-y-3">
+                        <div className="bg-[#DBEAFE] border-l-4 border-[#3B82F6] rounded-lg p-3">
+                          <div className="text-sm font-medium text-[#223B0A] mb-1">Upgrade to MongoDB</div>
+                          <div className="text-xs text-[#302D2C]">⚡ tech</div>
+                        </div>
+                        <div className="bg-[#F0FDF4] border-l-4 border-[#22C55E] rounded-lg p-3">
+                          <div className="text-sm font-medium text-[#223B0A] mb-1">Search for local art show</div>
+                          <div className="text-xs text-[#302D2C]">First Friday</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom section with colorful task blocks */}
+                  <div className="mt-8 grid grid-cols-4 gap-4">
+                    <div className="bg-gradient-to-r from-[#FCC931] to-[#D7642A] rounded-xl p-4 text-white">
+                      <div className="text-sm font-medium">Family dinner prep</div>
+                      <div className="text-xs opacity-80">5:30 - 7:00 PM</div>
+                    </div>
+                    <div className="bg-gradient-to-r from-[#22C55E] to-[#16A34A] rounded-xl p-4 text-white">
+                      <div className="text-sm font-medium">Kids homework time</div>
+                      <div className="text-xs opacity-80">3:00 - 4:30 PM</div>
+                    </div>
+                    <div className="bg-gradient-to-r from-[#3B82F6] to-[#2563EB] rounded-xl p-4 text-white">
+                      <div className="text-sm font-medium">Grocery pickup</div>
+                      <div className="text-xs opacity-80">12:00 - 1:00 PM</div>
+                    </div>
+                    <div className="bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] rounded-xl p-4 text-white">
+                      <div className="text-sm font-medium">Design prototype</div>
+                      <div className="text-xs opacity-80">9:00 - 11:00 AM</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* For Every Family Type Section */}
       <section className="py-20 bg-gradient-to-br from-[#FFE5C4]/40 to-[#E1CFE3]/30">
         <div className="container mx-auto px-4">
