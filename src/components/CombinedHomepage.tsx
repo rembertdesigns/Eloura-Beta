@@ -92,6 +92,101 @@ const CombinedHomepage = () => {
         </div>
       </section>
 
+      {/* Built for Caregivers Section */}
+      <section className="py-20 bg-gradient-to-br from-[#E1CFE3]/30 via-white to-[#FFE5C4]/20 text-center">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-4xl md:text-6xl font-light text-[#223B0A] mb-8 leading-tight">
+              Built for caregivers. Better for everyone.
+            </h2>
+            
+            <p className="text-lg md:text-xl text-[#302D2C]/80 mb-12 leading-relaxed max-w-3xl mx-auto">
+              Eloura turns your overwhelming to-dos into manageable plans with smart coordination, AI task breakdown, and tools that cut through the chaos. Designed for family harmony and smarter planning, your way.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+              <Button 
+                size="lg" 
+                className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 py-4 text-lg font-medium"
+                onClick={handleGetStarted}
+              >
+                Start planning on desktop
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A]/5 rounded-full px-8 py-4 text-lg font-medium"
+                onClick={handleGetStarted}
+              >
+                Start planning on mobile
+              </Button>
+            </div>
+
+            <p className="text-sm text-[#302D2C]/60">
+              Available on iOS, Android & Desktop
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Device Showcase Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-center items-center relative max-w-6xl mx-auto">
+            {/* Tablet */}
+            <div className="relative z-10">
+              <div className="bg-gray-100 rounded-2xl p-4 shadow-2xl" style={{ width: '400px', height: '300px' }}>
+                <div className="bg-white rounded-lg w-full h-full flex items-center justify-center text-gray-400">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-3"></div>
+                    <p className="text-sm">Tablet View</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Phone */}
+            <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2 z-20">
+              <div className="bg-gray-900 rounded-3xl p-2 shadow-xl" style={{ width: '180px', height: '360px' }}>
+                <div className="bg-white rounded-2xl w-full h-full flex items-center justify-center text-gray-400">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-gray-200 rounded-lg mx-auto mb-3"></div>
+                    <p className="text-xs">Phone View</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Apple Watch */}
+            <div className="absolute left-1/3 bottom-0 z-15">
+              <div className="bg-gray-800 rounded-2xl p-2 shadow-lg" style={{ width: '120px', height: '140px' }}>
+                <div className="bg-black rounded-xl w-full h-full flex items-center justify-center text-gray-600">
+                  <div className="text-center">
+                    <div className="w-8 h-8 bg-gray-700 rounded-lg mx-auto mb-2"></div>
+                    <p className="text-xs">Watch</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Laptop */}
+            <div className="absolute right-0 top-1/4 z-5">
+              <div className="bg-gray-100 rounded-t-xl shadow-2xl" style={{ width: '500px', height: '320px' }}>
+                <div className="bg-white rounded-t-lg w-full h-5/6 flex items-center justify-center text-gray-400">
+                  <div className="text-center">
+                    <div className="w-20 h-20 bg-gray-200 rounded-lg mx-auto mb-4"></div>
+                    <p className="text-sm">Desktop View</p>
+                  </div>
+                </div>
+                <div className="bg-gray-200 h-1/6 rounded-b-xl flex items-center justify-center">
+                  <div className="w-32 h-2 bg-gray-300 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Mental Load Assessment Section - Made more prominent */}
       <section className="py-20 bg-gradient-to-br from-[#FCC931] via-[#D7642A] to-[#223B0A]">
         <div className="container mx-auto px-4">
