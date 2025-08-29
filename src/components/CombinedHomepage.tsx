@@ -145,9 +145,9 @@ const CombinedHomepage = () => {
             {/* Solo */}
             <Card className="p-8 text-center bg-white/80 backdrop-blur-sm border-[#E1CFE3]/30 hover:shadow-lg transition-shadow">
               <CardContent className="p-0">
-                <div className="mb-6">
-                  <div className="w-20 h-20 mx-auto bg-[#223B0A] rounded-full flex items-center justify-center">
-                    <div className="w-8 h-8 bg-white rounded-full"></div>
+                <div className="mb-6 flex justify-center">
+                  <div className="w-16 h-16 bg-[#223B0A] rounded-full flex items-center justify-center">
+                    <div className="w-6 h-6 bg-white rounded-full"></div>
                   </div>
                 </div>
                 <h3 className="text-2xl font-semibold text-[#223B0A] mb-4">Solo</h3>
@@ -160,12 +160,10 @@ const CombinedHomepage = () => {
             {/* Dual */}
             <Card className="p-8 text-center bg-white/80 backdrop-blur-sm border-[#E1CFE3]/30 hover:shadow-lg transition-shadow">
               <CardContent className="p-0">
-                <div className="mb-6">
-                  <div className="flex justify-center gap-2">
-                    <div className="w-10 h-10 bg-[#D7642A] rounded-full"></div>
-                    <div className="w-10 h-10 bg-[#223B0A] rounded-full flex items-center justify-center">
-                      <div className="w-4 h-4 bg-white rounded-full"></div>
-                    </div>
+                <div className="mb-6 flex justify-center gap-2">
+                  <div className="w-12 h-12 bg-[#D7642A] rounded-full"></div>
+                  <div className="w-12 h-12 bg-[#223B0A] rounded-full flex items-center justify-center">
+                    <div className="w-4 h-4 bg-white rounded-full"></div>
                   </div>
                 </div>
                 <h3 className="text-2xl font-semibold text-[#223B0A] mb-4">Dual</h3>
@@ -178,11 +176,9 @@ const CombinedHomepage = () => {
             {/* Split/Co-Parent */}
             <Card className="p-8 text-center bg-white/80 backdrop-blur-sm border-[#E1CFE3]/30 hover:shadow-lg transition-shadow">
               <CardContent className="p-0">
-                <div className="mb-6">
-                  <div className="flex justify-center gap-2">
-                    <div className="w-10 h-10 bg-[#FCC931] rounded-full"></div>
-                    <div className="w-10 h-10 bg-[#E1CFE3] rounded-full"></div>
-                  </div>
+                <div className="mb-6 flex justify-center gap-2">
+                  <div className="w-12 h-12 bg-[#FCC931] rounded-full"></div>
+                  <div className="w-12 h-12 bg-[#E1CFE3] rounded-full"></div>
                 </div>
                 <h3 className="text-2xl font-semibold text-[#223B0A] mb-4">Split/Co-Parent</h3>
                 <p className="text-[#302D2C]/70">
@@ -194,13 +190,11 @@ const CombinedHomepage = () => {
             {/* Multi-Gen */}
             <Card className="p-8 text-center bg-white/80 backdrop-blur-sm border-[#E1CFE3]/30 hover:shadow-lg transition-shadow">
               <CardContent className="p-0">
-                <div className="mb-6">
-                  <div className="flex justify-center gap-1">
-                    <div className="w-8 h-8 bg-[#223B0A] rounded-full"></div>
-                    <div className="w-8 h-8 bg-[#D7642A] rounded-full"></div>
-                    <div className="w-8 h-8 bg-[#FCC931] rounded-full"></div>
-                    <div className="w-8 h-8 bg-[#E1CFE3] rounded-full"></div>
-                  </div>
+                <div className="mb-6 flex justify-center gap-1">
+                  <div className="w-8 h-8 bg-[#223B0A] rounded-full"></div>
+                  <div className="w-8 h-8 bg-[#D7642A] rounded-full"></div>
+                  <div className="w-8 h-8 bg-[#FCC931] rounded-full"></div>
+                  <div className="w-8 h-8 bg-[#E1CFE3] rounded-full"></div>
                 </div>
                 <h3 className="text-2xl font-semibold text-[#223B0A] mb-4">Multi-Gen</h3>
                 <p className="text-[#302D2C]/70">
