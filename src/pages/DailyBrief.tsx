@@ -390,8 +390,8 @@ const DailyBrief = () => {
           </div>
         </div>
 
-        {/* 4. Main Content (3-Column Layout) - Only show when filter is active */}
-        {activeFilter !== 'default' && <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* 4. Main Content (3-Column Layout) - Always show task list */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left Column - Priorities & Upcoming (3 columns) */}
             {shouldShowSection('priorities') && <div className="lg:col-span-3 space-y-6">
               {/* Today's Priorities */}
@@ -433,14 +433,14 @@ const DailyBrief = () => {
               </Card>
             </div>}
 
-          {/* Center Column - Task Overview (6 columns) */}
-          {shouldShowSection('tasks') && <div className={`${shouldShowSection('priorities') ? 'lg:col-span-6' : shouldShowSection('social') || shouldShowSection('goals') ? 'lg:col-span-9' : 'lg:col-span-12'}`}>
+          {/* Center Column - Task Overview (always visible) */}
+          <div className={`${activeFilter !== 'default' && shouldShowSection('priorities') ? 'lg:col-span-6' : activeFilter !== 'default' && (shouldShowSection('social') || shouldShowSection('goals')) ? 'lg:col-span-9' : 'lg:col-span-12'}`}>
               <Card className="shadow-lg">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                      <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
-                       <Target className="h-5 w-5 text-green-600" />
-                       {activeFilter === 'completed' ? 'Completed Tasks' : activeFilter === 'village' ? 'Village-Related Tasks' : activeFilter === 'goals' ? 'Goal-Related Tasks' : 'Task Overview'}
+                        <Target className="h-5 w-5 text-green-600" />
+                        {activeFilter === 'completed' ? 'Completed Tasks' : activeFilter === 'village' ? 'Village-Related Tasks' : activeFilter === 'goals' ? 'Goal-Related Tasks' : "Today's Tasks"}
                      </CardTitle>
                     <Button size="sm" onClick={() => setShowQuickAddTask(true)} className="flex items-center gap-1">
                       <Plus className="h-4 w-4" />
@@ -448,9 +448,9 @@ const DailyBrief = () => {
                     </Button>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {filteredTasks.map((task, index) => <div key={task.id} className="flex items-center justify-between p-4 bg-white rounded-lg border hover:shadow-md transition-shadow group cursor-move shadow-sm" draggable onDragStart={e => handleDragStart(e, task.id)} onDragOver={handleDragOver} onDrop={e => handleDrop(e, index)}>
+                 <CardContent>
+                   <div className="space-y-3">
+                     {(activeFilter === 'default' ? tasks : filteredTasks).map((task, index) => <div key={task.id} className="flex items-center justify-between p-4 bg-white rounded-lg border hover:shadow-md transition-shadow group cursor-move shadow-sm" draggable onDragStart={e => handleDragStart(e, task.id)} onDragOver={handleDragOver} onDrop={e => handleDrop(e, index)}>
                         <div className="flex items-center gap-3 flex-1">
                           <input type="checkbox" checked={task.completed} onChange={() => handleTaskToggle(task.id)} className="w-4 h-4 text-green-600 rounded cursor-pointer" />
                           <div className="flex-1">
@@ -472,13 +472,13 @@ const DailyBrief = () => {
                             urgent
                           </Badge>}
                       </div>)}
-                    {filteredTasks.length === 0 && <div className="text-center py-8 text-slate-500">
-                        <p>No tasks found for the selected filter.</p>
-                      </div>}
+                     {(activeFilter === 'default' ? tasks : filteredTasks).length === 0 && <div className="text-center py-8 text-slate-500">
+                         <p>No tasks found{activeFilter !== 'default' ? ' for the selected filter' : ''}.</p>
+                       </div>}
                   </div>
                 </CardContent>
-              </Card>
-            </div>}
+               </Card>
+             </div>
 
           {/* Right Column - Social Connection & Goals (3 columns) */}
           {(shouldShowSection('social') || shouldShowSection('goals')) && <div className="lg:col-span-3 space-y-6">
@@ -540,8 +540,8 @@ const DailyBrief = () => {
                       </div>)}
                   </CardContent>
                 </Card>}
-            </div>}
-        </div>}
+             </div>}
+        </div>
 
         {/* 5. Footer Section - Enhanced */}
         <div className="mt-12 mb-4 flex justify-center relative">
