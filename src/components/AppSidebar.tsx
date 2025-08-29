@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Home, Calendar, BarChart3, Users, MessageSquare, Settings, Brain, FolderOpen } from 'lucide-react';
+import { Home, Calendar, BarChart3, Users, MessageSquare, Settings, Brain, FolderOpen, TrendingUp } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -28,6 +28,11 @@ const mainNavigationItems = [
     title: 'Planner',
     url: '/planner-insights',
     icon: BarChart3,
+  },
+  {
+    title: 'Insights',
+    url: '/insights',
+    icon: TrendingUp,
   },
   {
     title: 'Village',

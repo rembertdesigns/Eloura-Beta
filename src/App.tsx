@@ -16,6 +16,7 @@ import DailyBriefLayout from "./pages/DailyBriefLayout";
 import VillageLayout from "./pages/VillageLayout";
 import SmartCareAssistantLayout from "./pages/SmartCareAssistantLayout";
 import PlannerInsightsLayout from "./pages/PlannerInsightsLayout";
+import InsightsLayout from "./pages/InsightsLayout";
 import HomeBaseToolkitLayout from "./pages/HomeBaseToolkitLayout";
 import MessagesLayout from "./pages/MessagesLayout";
 import Settings from "./pages/Settings";
@@ -59,6 +60,7 @@ const App = () => (
             <Route path="/village" element={<VillageLayout />} />
             <Route path="/smart-care-assistant" element={<SmartCareAssistantLayout />} />
             <Route path="/planner-insights" element={<PlannerInsightsLayout />} />
+            <Route path="/insights" element={<InsightsLayout />} />
             <Route path="/home-base-toolkit" element={<HomeBaseToolkitLayout />} />
             <Route path="/messages" element={<MessagesLayout />} />
             <Route path="/settings" element={<Settings />} />
