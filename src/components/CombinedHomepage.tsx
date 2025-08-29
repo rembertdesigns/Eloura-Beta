@@ -326,6 +326,61 @@ const CombinedHomepage = () => {
         </div>
       </section>
 
+      {/* To-Do List Section */}
+      <section className="py-24 bg-gradient-to-br from-[#E1CFE3]/30 to-[#FFE5C4]/40">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Content */}
+            <div>
+              <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
+                Your to-do list, finally
+                <br />
+                <span className="font-semibold">doable</span>
+              </h2>
+              <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
+                Add what's on your mind, break it into steps, and see exactly what needs your attention. When you're ready, turn any task into a scheduled plan with one tap so you can move from braindump to follow-through without overthinking it.
+              </p>
+              <Button 
+                variant="outline" 
+                className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium"
+              >
+                How to-dos get done with Eloura
+              </Button>
+            </div>
+
+            {/* iPhone Mockup */}
+            <div>
+              <div className="relative max-w-sm mx-auto">
+                <div className="bg-black rounded-[3rem] p-2 shadow-2xl">
+                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{ aspectRatio: '9/19.5' }}>
+                    {/* Status Bar */}
+                    <div className="bg-black text-white text-xs px-6 py-2 flex justify-between items-center">
+                      <span className="font-medium">1:28</span>
+                      <div className="flex items-center gap-1">
+                        <div className="flex gap-1">
+                          <div className="w-1 h-1 bg-white rounded-full"></div>
+                          <div className="w-1 h-1 bg-white rounded-full"></div>
+                          <div className="w-1 h-1 bg-white rounded-full"></div>
+                          <div className="w-1 h-1 bg-white rounded-full"></div>
+                        </div>
+                        <div className="text-white">📶 📶 🔋</div>
+                      </div>
+                    </div>
+                    {/* Screen Content - Blank for now */}
+                    <div className="h-full bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
+                      <div className="text-center text-gray-400">
+                        <div className="w-16 h-16 bg-gray-200 rounded-2xl mx-auto mb-4"></div>
+                        <p className="text-sm">To-Do List Interface</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
       {/* Testimonials Section */}
       <section id="testimonials" className="py-24 bg-white">
