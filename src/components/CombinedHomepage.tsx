@@ -488,6 +488,87 @@ const CombinedHomepage = () => {
           </div>
         </div>
       </section>
+
+      {/* Designed for the way you work Section */}
+      <section className="py-24 bg-gradient-to-br from-[#E1CFE3]/20 to-[#FFE5C4]/20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
+              Designed for the way you work
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-6xl mx-auto">
+            {/* Dark Mode */}
+            <div className="text-left">
+              <div className="w-16 h-16 bg-[#223B0A] rounded-2xl flex items-center justify-center mb-6">
+                <div className="w-8 h-8 bg-white rounded-full"></div>
+              </div>
+              <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Dark Mode</h3>
+              <p className="text-[#302D2C] leading-relaxed">
+                Looks good no matter when you work.
+              </p>
+            </div>
+
+            {/* Focus Mode */}
+            <div className="text-left">
+              <div className="w-16 h-16 bg-[#D7642A] rounded-2xl flex items-center justify-center mb-6">
+                <div className="w-8 h-8 bg-white rounded-full border-4 border-[#D7642A]"></div>
+              </div>
+              <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Focus Mode</h3>
+              <p className="text-[#302D2C] leading-relaxed">
+                Hyperfocus on your most important task.
+              </p>
+            </div>
+
+            {/* Auto-scheduling */}
+            <div className="text-left">
+              <div className="w-16 h-16 bg-[#FCC931] rounded-2xl flex items-center justify-center mb-6">
+                <div className="text-white text-lg">❄️</div>
+              </div>
+              <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Auto-scheduling</h3>
+              <p className="text-[#302D2C] leading-relaxed">
+                Automate scheduling your tasks to your calendar.
+              </p>
+            </div>
+
+            {/* Weekly Review and Planning */}
+            <div className="text-left">
+              <div className="w-16 h-16 bg-[#E1CFE3] rounded-2xl flex items-center justify-center mb-6">
+                <div className="text-[#223B0A] text-lg">✓</div>
+              </div>
+              <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Weekly Review and Planning</h3>
+              <p className="text-[#302D2C] leading-relaxed">
+                Be intentional about your weekly goals and progress.
+              </p>
+            </div>
+
+            {/* Keyboard shortcuts */}
+            <div className="text-left">
+              <div className="w-16 h-16 bg-[#D7642A] rounded-2xl flex items-center justify-center mb-6">
+                <div className="text-white text-lg">⌘</div>
+              </div>
+              <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Keyboard shortcuts</h3>
+              <p className="text-[#302D2C] leading-relaxed">
+                Move faster and do everything with your keyboard.
+              </p>
+            </div>
+
+            {/* Analytics */}
+            <div className="text-left">
+              <div className="w-16 h-16 bg-[#223B0A] rounded-2xl flex items-center justify-center mb-6">
+                <div className="text-white text-lg">📊</div>
+              </div>
+              <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Analytics</h3>
+              <p className="text-[#302D2C] leading-relaxed">
+                Understand how you spend your time at work.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
       <section id="testimonials" className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-light text-center text-[#223B0A] mb-4">
