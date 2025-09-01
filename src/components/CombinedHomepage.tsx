@@ -1,26 +1,20 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, ArrowRight, Star, Brain, Clock, CheckCircle, Quote, ExternalLink, Users, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
 const CombinedHomepage = () => {
   const navigate = useNavigate();
-
   const handleGetStarted = () => {
     navigate('/auth');
   };
-
   const handleLogin = () => {
     navigate('/auth');
   };
-
   const handleMentalLoadTest = () => {
     // For now, navigate to auth - could be a separate mental load test page
     navigate('/auth');
   };
-
   return <div className="min-h-screen bg-white">
       {/* Navigation - Clean and professional */}
       <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-50 py-4 border-b border-[#E1CFE3]/20">
@@ -35,17 +29,14 @@ const CombinedHomepage = () => {
             <div className="hidden md:flex items-center gap-8">
               <a href="#about" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">About Us</a>
               <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Features</a>
-              <a href="#pricing" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Pricing</a>
+              
               <a href="#community" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors flex items-center gap-1">
                 Community
                 <ExternalLink className="h-3 w-3" />
               </a>
               <a href="#resources" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Resources</a>
             </div>
-            <Button 
-              className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6"
-              onClick={handleLogin}
-            >
+            <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6" onClick={handleLogin}>
               Log In
             </Button>
           </div>
@@ -76,11 +67,7 @@ const CombinedHomepage = () => {
             </p>
 
             {/* CTA Button */}
-            <Button 
-              size="lg" 
-              className="bg-[#D7642A] hover:bg-[#223B0A] text-white rounded-full px-12 py-4 text-lg font-medium shadow-lg"
-              onClick={handleGetStarted}
-            >
+            <Button size="lg" className="bg-[#D7642A] hover:bg-[#223B0A] text-white rounded-full px-12 py-4 text-lg font-medium shadow-lg" onClick={handleGetStarted}>
               Try for free
             </Button>
 
@@ -105,19 +92,10 @@ const CombinedHomepage = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Button 
-                size="lg" 
-                className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 py-4 text-lg font-medium"
-                onClick={handleGetStarted}
-              >
+              <Button size="lg" className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 py-4 text-lg font-medium" onClick={handleGetStarted}>
                 Start planning on desktop
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline"
-                className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A]/5 rounded-full px-8 py-4 text-lg font-medium"
-                onClick={handleGetStarted}
-              >
+              <Button size="lg" variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A]/5 rounded-full px-8 py-4 text-lg font-medium" onClick={handleGetStarted}>
                 Start planning on mobile
               </Button>
             </div>
@@ -135,7 +113,10 @@ const CombinedHomepage = () => {
           <div className="flex justify-center items-center relative max-w-6xl mx-auto">
             {/* Tablet */}
             <div className="relative z-10">
-              <div className="bg-gray-100 rounded-2xl p-4 shadow-2xl" style={{ width: '400px', height: '300px' }}>
+              <div className="bg-gray-100 rounded-2xl p-4 shadow-2xl" style={{
+              width: '400px',
+              height: '300px'
+            }}>
                 <div className="bg-white rounded-lg w-full h-full flex items-center justify-center text-gray-400">
                   <div className="text-center">
                     <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-3"></div>
@@ -147,7 +128,10 @@ const CombinedHomepage = () => {
 
             {/* Phone */}
             <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2 z-20">
-              <div className="bg-gray-900 rounded-3xl p-2 shadow-xl" style={{ width: '180px', height: '360px' }}>
+              <div className="bg-gray-900 rounded-3xl p-2 shadow-xl" style={{
+              width: '180px',
+              height: '360px'
+            }}>
                 <div className="bg-white rounded-2xl w-full h-full flex items-center justify-center text-gray-400">
                   <div className="text-center">
                     <div className="w-12 h-12 bg-gray-200 rounded-lg mx-auto mb-3"></div>
@@ -159,7 +143,10 @@ const CombinedHomepage = () => {
 
             {/* Apple Watch */}
             <div className="absolute left-1/3 bottom-0 z-15">
-              <div className="bg-gray-800 rounded-2xl p-2 shadow-lg" style={{ width: '120px', height: '140px' }}>
+              <div className="bg-gray-800 rounded-2xl p-2 shadow-lg" style={{
+              width: '120px',
+              height: '140px'
+            }}>
                 <div className="bg-black rounded-xl w-full h-full flex items-center justify-center text-gray-600">
                   <div className="text-center">
                     <div className="w-8 h-8 bg-gray-700 rounded-lg mx-auto mb-2"></div>
@@ -171,7 +158,10 @@ const CombinedHomepage = () => {
 
             {/* Laptop */}
             <div className="absolute right-0 top-1/4 z-5">
-              <div className="bg-gray-100 rounded-t-xl shadow-2xl" style={{ width: '500px', height: '320px' }}>
+              <div className="bg-gray-100 rounded-t-xl shadow-2xl" style={{
+              width: '500px',
+              height: '320px'
+            }}>
                 <div className="bg-white rounded-t-lg w-full h-5/6 flex items-center justify-center text-gray-400">
                   <div className="text-center">
                     <div className="w-20 h-20 bg-gray-200 rounded-lg mx-auto mb-4"></div>
@@ -279,7 +269,9 @@ const CombinedHomepage = () => {
             <div className="order-2 lg:order-1">
               <div className="relative max-w-sm mx-auto">
                 <div className="bg-black rounded-[3rem] p-2 shadow-2xl">
-                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{ aspectRatio: '9/19.5' }}>
+                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{
+                  aspectRatio: '9/19.5'
+                }}>
                     {/* Status Bar */}
                     <div className="bg-black text-white text-xs px-6 py-2 flex justify-between items-center">
                       <span className="font-medium">1:33</span>
@@ -315,10 +307,7 @@ const CombinedHomepage = () => {
               <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
                 Eloura's AI helps you plan faster by turning your tasks into a clear, realistic schedule. Just type or speak what's on your mind and it will break things down, estimate how long each step might take, and organize everything into a plan that works for your day.
               </p>
-              <Button 
-                variant="outline" 
-                className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium"
-              >
+              <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium">
                 How AI helps you plan smarter
               </Button>
             </div>
@@ -340,10 +329,7 @@ const CombinedHomepage = () => {
               <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
                 Add what's on your mind, break it into steps, and see exactly what needs your attention. When you're ready, turn any task into a scheduled plan with one tap so you can move from braindump to follow-through without overthinking it.
               </p>
-              <Button 
-                variant="outline" 
-                className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium"
-              >
+              <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium">
                 How to-dos get done with Eloura
               </Button>
             </div>
@@ -352,7 +338,9 @@ const CombinedHomepage = () => {
             <div>
               <div className="relative max-w-sm mx-auto">
                 <div className="bg-black rounded-[3rem] p-2 shadow-2xl">
-                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{ aspectRatio: '9/19.5' }}>
+                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{
+                  aspectRatio: '9/19.5'
+                }}>
                     {/* Status Bar */}
                     <div className="bg-black text-white text-xs px-6 py-2 flex justify-between items-center">
                       <span className="font-medium">1:28</span>
@@ -397,7 +385,9 @@ const CombinedHomepage = () => {
                         <div className="w-2 h-2 bg-green-400 rounded-full"></div>
                       </div>
                     </div>
-                    <div className="bg-gray-100 rounded-b-lg" style={{ aspectRatio: '16/10' }}>
+                    <div className="bg-gray-100 rounded-b-lg" style={{
+                    aspectRatio: '16/10'
+                  }}>
                       {/* Screen Content - Blank */}
                       <div className="h-full bg-gradient-to-br from-gray-50 to-gray-200 rounded-b-lg flex items-center justify-center">
                         <div className="text-center text-gray-400">
@@ -408,7 +398,9 @@ const CombinedHomepage = () => {
                     </div>
                   </div>
                   {/* MacBook Base */}
-                  <div className="bg-gray-300 h-4 rounded-b-2xl transform -skew-x-12 mx-auto" style={{ width: '90%' }}></div>
+                  <div className="bg-gray-300 h-4 rounded-b-2xl transform -skew-x-12 mx-auto" style={{
+                  width: '90%'
+                }}></div>
                 </div>
               </div>
             </div>
@@ -423,10 +415,7 @@ const CombinedHomepage = () => {
               <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
                 Plan on your computer with Eloura's web app and pick up right where you left off on mobile. Everything stays connected across desktop, phone, tablet, and watch so your schedule is always up to date, no matter where you're working.
               </p>
-              <Button 
-                variant="outline" 
-                className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium"
-              >
+              <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium">
                 How planning stays in sync
               </Button>
             </div>
@@ -448,10 +437,7 @@ const CombinedHomepage = () => {
               <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
                 Log how you feel, reflect on your day, and start noticing what supports your focus and energy. Mood check-ins help you build better routines, spot patterns over time, and make small adjustments that actually stick.
               </p>
-              <Button 
-                variant="outline" 
-                className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium"
-              >
+              <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium">
                 How mood tracking builds better habits
               </Button>
             </div>
@@ -460,7 +446,9 @@ const CombinedHomepage = () => {
             <div>
               <div className="relative max-w-sm mx-auto">
                 <div className="bg-black rounded-[3rem] p-2 shadow-2xl">
-                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{ aspectRatio: '9/19.5' }}>
+                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{
+                  aspectRatio: '9/19.5'
+                }}>
                     {/* Status Bar */}
                     <div className="bg-black text-white text-xs px-6 py-2 flex justify-between items-center">
                       <span className="font-medium">1:28</span>
@@ -639,19 +627,11 @@ const CombinedHomepage = () => {
             Join 15,000+ families who've reduced their caregiving stress by 50%. Start your free trial today—no credit card required.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
-            <Button 
-              size="lg" 
-              className="bg-[#FCC931] hover:bg-[#D7642A] text-[#302D2C] rounded-full px-8 text-lg font-semibold"
-              onClick={handleGetStarted}
-            >
+            <Button size="lg" className="bg-[#FCC931] hover:bg-[#D7642A] text-[#302D2C] rounded-full px-8 text-lg font-semibold" onClick={handleGetStarted}>
               Join 15,000+ families reducing stress
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button 
-              size="lg" 
-              className="bg-transparent border-2 border-[#FCC931] text-white hover:bg-[#FCC931] hover:text-[#223B0A] rounded-full px-8 text-lg font-semibold"
-              onClick={handleMentalLoadTest}
-            >
+            <Button size="lg" className="bg-transparent border-2 border-[#FCC931] text-white hover:bg-[#FCC931] hover:text-[#223B0A] rounded-full px-8 text-lg font-semibold" onClick={handleMentalLoadTest}>
               <Brain className="mr-2 h-5 w-5" />
               Get Mental Load Score
             </Button>
