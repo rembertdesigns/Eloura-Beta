@@ -83,6 +83,36 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_messages: {
+        Row: {
+          created_at: string
+          id: string
+          message_content: string
+          sender: string
+          session_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          message_content: string
+          sender: string
+          session_id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          message_content?: string
+          sender?: string
+          session_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       communication_logs: {
         Row: {
           category: string | null
@@ -588,6 +618,39 @@ export type Database = {
         }
         Relationships: []
       }
+      saved_content: {
+        Row: {
+          category: string
+          content: string
+          created_at: string
+          date_saved: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          content: string
+          created_at?: string
+          date_saved?: string
+          id?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string
+          date_saved?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       tasks: {
         Row: {
           assigned_to: string | null
@@ -888,6 +951,36 @@ export type Database = {
           pattern_name?: string
           pattern_type?: string
           pattern_value?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_preferences: {
+        Row: {
+          assistant_personality: string | null
+          conversation_topics: Json | null
+          created_at: string
+          id: string
+          notification_preferences: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          assistant_personality?: string | null
+          conversation_topics?: Json | null
+          created_at?: string
+          id?: string
+          notification_preferences?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          assistant_personality?: string | null
+          conversation_topics?: Json | null
+          created_at?: string
+          id?: string
+          notification_preferences?: Json | null
           updated_at?: string
           user_id?: string
         }
