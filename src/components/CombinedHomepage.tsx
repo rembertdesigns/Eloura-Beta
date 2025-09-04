@@ -483,28 +483,28 @@ const CombinedHomepage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Dark Mode */}
+            {/* Care Coordination */}
             <Card className="border-none shadow-lg rounded-2xl bg-white p-6">
               <CardContent className="p-0">
                 <div className="w-12 h-12 bg-[#223B0A] rounded-xl flex items-center justify-center mb-4">
-                  <div className="w-6 h-6 bg-white rounded-full"></div>
+                  <Users className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Dark Mode</h3>
+                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Care Coordination</h3>
                 <p className="text-[#302D2C] leading-relaxed">
-                  Looks good no matter when you work.
+                  Keep everyone in your care network informed and aligned.
                 </p>
               </CardContent>
             </Card>
 
-            {/* Focus Mode */}
+            {/* Smart Reminders */}
             <Card className="border-none shadow-lg rounded-2xl bg-white p-6">
               <CardContent className="p-0">
                 <div className="w-12 h-12 bg-[#D7642A] rounded-xl flex items-center justify-center mb-4">
-                  <div className="w-6 h-6 bg-white rounded-full border-2 border-[#D7642A]"></div>
+                  <Clock className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Focus Mode</h3>
+                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Smart Reminders</h3>
                 <p className="text-[#302D2C] leading-relaxed">
-                  Hyperfocus on your most important task.
+                  Never miss important appointments or medication times.
                 </p>
               </CardContent>
             </Card>
