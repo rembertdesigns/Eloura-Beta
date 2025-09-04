@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Edit2 } from 'lucide-react';
 import LoadingScreen from '@/components/LoadingScreen';
+import { supabase } from '@/integrations/supabase/client';
 
 const OnboardingSummary = () => {
   const navigate = useNavigate();
@@ -73,6 +74,25 @@ const OnboardingSummary = () => {
   };
 
   const handleLoadingComplete = () => {
+    // Mark onboarding as completed in Supabase
+    const completeOnboarding = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        try {
+          await supabase
+            .from('user_onboarding')
+            .update({
+              onboarding_completed: true,
+              current_step: 'completed'
+            })
+            .eq('user_id', user.id);
+        } catch (error) {
+          console.error('Error completing onboarding:', error);
+        }
+      }
+    };
+    
+    completeOnboarding();
     navigate('/dashboard');
   };
 

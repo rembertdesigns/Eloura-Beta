@@ -89,6 +89,9 @@ const FamilySetup = () => {
     try {
       setLoading(true);
       
+      // Save to localStorage for demo
+      localStorage.setItem('familyType', selectedType);
+      
       // Save family type to profiles table
       const { error: profileError } = await supabase
         .from('profiles')
@@ -104,25 +107,25 @@ const FamilySetup = () => {
         return;
       }
 
-      // Also save to onboarding table if it exists, or create new record
+      // Update onboarding progress
       const { error: onboardingError } = await supabase
         .from('user_onboarding')
         .upsert({
           user_id: user.id,
           family_type: selectedType,
+          current_step: 'personal-info'
         });
 
       if (onboardingError) {
         console.error('Onboarding error:', onboardingError);
-        // Don't show error to user as this is secondary
       }
 
       toast({
         title: "Family type selected",
-        description: "Let's continue with your personal information",
+        description: "Let's add your personal information",
       });
 
-      navigate('/family-structure');
+      navigate('/personal-info');
     } catch (error) {
       toast({
         title: "Error",

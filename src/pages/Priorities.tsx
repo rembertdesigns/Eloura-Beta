@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Star } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const Priorities = () => {
   const navigate = useNavigate();
@@ -34,10 +35,26 @@ const Priorities = () => {
     });
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     // Save to localStorage for demo
     localStorage.setItem('topPriorities', JSON.stringify(selectedPriorities));
-    console.log('Saved priorities:', selectedPriorities);
+    
+    // Save to Supabase if user is authenticated
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      try {
+        await supabase
+          .from('user_onboarding')
+          .upsert({
+            user_id: user.id,
+            priorities: selectedPriorities,
+            current_step: 'invite'
+          });
+      } catch (error) {
+        console.error('Error saving priorities:', error);
+      }
+    }
+    
     navigate('/invite');
   };
 

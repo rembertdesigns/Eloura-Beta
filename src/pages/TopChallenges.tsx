@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Target } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 const TopChallenges = () => {
   const navigate = useNavigate();
@@ -30,10 +31,26 @@ const TopChallenges = () => {
     );
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     // Save to localStorage for demo
     localStorage.setItem('topChallenges', JSON.stringify(selectedChallenges));
-    console.log('Saved challenges:', selectedChallenges);
+    
+    // Save to Supabase if user is authenticated
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      try {
+        await supabase
+          .from('user_onboarding')
+          .upsert({
+            user_id: user.id,
+            challenges: selectedChallenges,
+            current_step: 'priorities'
+          });
+      } catch (error) {
+        console.error('Error saving challenges:', error);
+      }
+    }
+    
     navigate('/priorities');
   };
 

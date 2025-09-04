@@ -132,13 +132,35 @@ const PersonalInfo = () => {
       });
       return;
     }
+    
     try {
       setLoading(true);
+      let avatarUrl = null;
+
+      // Upload profile photo if provided
+      if (formData.avatar && user) {
+        const fileName = `${user.id}/profile-${Date.now()}.${formData.avatar.name.split('.').pop()}`;
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from('profile-photos')
+          .upload(fileName, formData.avatar, {
+            upsert: true,
+            contentType: formData.avatar.type
+          });
+
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+        } else {
+          const { data: { publicUrl } } = supabase.storage
+            .from('profile-photos')
+            .getPublicUrl(fileName);
+          avatarUrl = publicUrl;
+        }
+      }
 
       // Save to localStorage for demo purposes
       localStorage.setItem('personalInfo', JSON.stringify(formData));
 
-      // If user is authenticated, also save to Supabase
+      // Save to Supabase if user is authenticated
       if (user) {
         const onboardingData = {
           user_id: user.id,
@@ -147,41 +169,53 @@ const PersonalInfo = () => {
           email: formData.email.trim(),
           phone: formData.phone.trim(),
           date_of_birth: formData.dateOfBirth || null,
-          completed_steps: ['family-type', 'personal-info']
+          pronouns: formData.pronouns.trim() || null,
+          current_step: 'family-setup'
         };
-        const {
-          error: onboardingError
-        } = await supabase.from('user_onboarding').upsert(onboardingData);
+
+        const { error: onboardingError } = await supabase
+          .from('user_onboarding')
+          .upsert(onboardingData);
+
         if (onboardingError) {
           console.error('Supabase error:', onboardingError);
-          // Don't block the user from continuing for demo purposes
         }
 
-        // Also update the profiles table
-        const {
-          error: profileError
-        } = await supabase.from('profiles').update({
+        // Update the profiles table
+        const profileUpdates: any = {
           full_name: `${formData.firstName.trim()} ${formData.lastName.trim()}`,
-          email: formData.email.trim()
-        }).eq('id', user.id);
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          date_of_birth: formData.dateOfBirth || null,
+          pronouns: formData.pronouns.trim() || null
+        };
+
+        if (avatarUrl) {
+          profileUpdates.avatar_url = avatarUrl;
+        }
+
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update(profileUpdates)
+          .eq('id', user.id);
+
         if (profileError) {
           console.error('Profile update error:', profileError);
-          // Don't show error to user as this is secondary
         }
       }
+
       toast({
         title: "Information saved",
-        description: "Moving to family structure setup..."
+        description: "Moving to family setup..."
       });
       navigate('/family-setup');
     } catch (error) {
       console.error('Error saving data:', error);
-      // Don't block the user from continuing for demo purposes
       toast({
-        title: "Information saved locally",
-        description: "Moving to family setup..."
+        title: "Error",
+        description: "There was a problem saving your information. Please try again.",
+        variant: "destructive"
       });
-      navigate('/family-setup');
     } finally {
       setLoading(false);
     }
