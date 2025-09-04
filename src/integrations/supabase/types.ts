@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          achievement_name: string
+          achievement_type: string
+          category: string | null
+          created_at: string
+          description: string | null
+          earned_date: string
+          icon: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          achievement_name: string
+          achievement_type: string
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          earned_date?: string
+          icon?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          achievement_name?: string
+          achievement_type?: string
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          earned_date?: string
+          icon?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       celebrations: {
         Row: {
           created_at: string
@@ -161,6 +200,45 @@ export type Database = {
         }
         Relationships: []
       }
+      milestones: {
+        Row: {
+          created_at: string
+          date: string
+          description: string | null
+          id: string
+          is_highlight: boolean | null
+          milestone_type: string
+          related_goal_id: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date?: string
+          description?: string | null
+          id?: string
+          is_highlight?: boolean | null
+          milestone_type: string
+          related_goal_id?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          description?: string | null
+          id?: string
+          is_highlight?: boolean | null
+          milestone_type?: string
+          related_goal_id?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       priorities: {
         Row: {
           created_at: string
@@ -242,6 +320,48 @@ export type Database = {
         }
         Relationships: []
       }
+      reflections: {
+        Row: {
+          challenges: string | null
+          created_at: string
+          id: string
+          lessons_learned: string | null
+          next_plans: string | null
+          period_end: string
+          period_start: string
+          reflection_type: string
+          updated_at: string
+          user_id: string
+          went_well: string | null
+        }
+        Insert: {
+          challenges?: string | null
+          created_at?: string
+          id?: string
+          lessons_learned?: string | null
+          next_plans?: string | null
+          period_end: string
+          period_start: string
+          reflection_type: string
+          updated_at?: string
+          user_id: string
+          went_well?: string | null
+        }
+        Update: {
+          challenges?: string | null
+          created_at?: string
+          id?: string
+          lessons_learned?: string | null
+          next_plans?: string | null
+          period_end?: string
+          period_start?: string
+          reflection_type?: string
+          updated_at?: string
+          user_id?: string
+          went_well?: string | null
+        }
+        Relationships: []
+      }
       reminders: {
         Row: {
           completed: boolean | null
@@ -318,6 +438,45 @@ export type Database = {
           is_urgent?: boolean | null
           priority?: string | null
           title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      time_tracking: {
+        Row: {
+          activity_name: string
+          activity_type: string
+          created_at: string
+          date: string
+          duration_minutes: number
+          event_id: string | null
+          id: string
+          task_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          activity_name: string
+          activity_type: string
+          created_at?: string
+          date?: string
+          duration_minutes?: number
+          event_id?: string | null
+          id?: string
+          task_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          activity_name?: string
+          activity_type?: string
+          created_at?: string
+          date?: string
+          duration_minutes?: number
+          event_id?: string | null
+          id?: string
+          task_id?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -428,6 +587,45 @@ export type Database = {
           updated_at?: string
           user_id?: string
           zip_code?: string | null
+        }
+        Relationships: []
+      }
+      user_patterns: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          date_computed: string
+          id: string
+          pattern_description: string | null
+          pattern_name: string
+          pattern_type: string
+          pattern_value: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          date_computed?: string
+          id?: string
+          pattern_description?: string | null
+          pattern_name: string
+          pattern_type: string
+          pattern_value: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          date_computed?: string
+          id?: string
+          pattern_description?: string | null
+          pattern_name?: string
+          pattern_type?: string
+          pattern_value?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

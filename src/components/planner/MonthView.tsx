@@ -22,7 +22,67 @@ import {
   Edit3
 } from 'lucide-react';
 
-const MonthView = () => {
+interface Achievement {
+  id: string;
+  achievement_name: string;
+  description: string;
+  icon: string;
+  category: string;
+  earned_date: string;
+}
+
+interface Milestone {
+  id: string;
+  title: string;
+  description?: string;
+  milestone_type: string;
+  date: string;
+  is_highlight: boolean;
+}
+
+interface TimeAllocation {
+  [key: string]: {
+    hours: number;
+    percentage: number;
+    color: string;
+  };
+}
+
+interface Goal {
+  id: string;
+  title: string;
+  category: string;
+  progress: number;
+  target_date: string;
+  is_completed: boolean;
+}
+
+interface UserPattern {
+  id: string;
+  pattern_type: string;
+  pattern_name: string;
+  pattern_value: string;
+  pattern_description: string;
+  confidence_score: number;
+}
+
+interface MonthViewProps {
+  achievements: Achievement[];
+  milestones: Milestone[];
+  timeAllocation: TimeAllocation;
+  goals: Goal[];
+  patterns: UserPattern[];
+  onSaveReflection: (type: 'weekly' | 'monthly', data: any) => Promise<void>;
+}
+
+const MonthView: React.FC<MonthViewProps> = ({ 
+  achievements, 
+  milestones, 
+  timeAllocation, 
+  goals, 
+  patterns,
+  onSaveReflection 
+}) => {
   const [activeSubTab, setActiveSubTab] = useState('overview');
   const [monthlyReflection, setMonthlyReflection] = useState('');
 
@@ -31,32 +91,40 @@ const MonthView = () => {
   const productiveDays = [3, 7, 9, 14, 16, 21, 23, 28]; // High productivity days
   const goalCompletionDays = [1, 8, 15, 22, 29]; // Days with goal completions
 
-  const monthlyGoals = [
-    { name: "Exercise 4x/week", progress: 70, category: "Health", status: "on-track" },
-    { name: "Read 2 books", progress: 85, category: "Personal", status: "ahead" },
-    { name: "Family dinner 5x/week", progress: 40, category: "Family", status: "behind" },
-    { name: "Complete project milestone", progress: 100, category: "Work", status: "completed" }
-  ];
+  const monthlyGoals = goals.map(goal => ({
+    name: goal.title,
+    progress: goal.progress,
+    category: goal.category,
+    status: goal.is_completed ? 'completed' : goal.progress > 70 ? 'ahead' : goal.progress < 30 ? 'behind' : 'on-track'
+  }));
 
-  const monthlyMilestones = [
-    { date: "July 5", title: "Completed Q2 project review", type: "work" },
-    { date: "July 12", title: "10-week exercise streak milestone", type: "health" },
-    { date: "July 18", title: "Emma's birthday celebration", type: "family" },
-    { date: "July 25", title: "Finished reading 'Atomic Habits'", type: "personal" }
-  ];
+  const monthlyMilestones = milestones.map(milestone => ({
+    date: new Date(milestone.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }),
+    title: milestone.title,
+    type: milestone.milestone_type
+  }));
 
-  const monthlyBadges = [
-    { name: "Consistency Champion", description: "Logged in every day this month", icon: Star },
-    { name: "Goal Crusher", description: "Completed 3 major goals", icon: Trophy },
-    { name: "Family First", description: "Prioritized family time", icon: Award },
-    { name: "Streak Keeper", description: "Maintained 4 habit streaks", icon: Flame }
-  ];
+  const monthlyBadges = achievements.slice(0, 4).map(achievement => ({
+    name: achievement.achievement_name,
+    description: achievement.description,
+    icon: Star // Default icon, could be dynamic based on achievement.icon
+  }));
 
-  const timeAllocation = {
-    work: { hours: 120, percentage: 60, color: "bg-blue-500" },
-    family: { hours: 40, percentage: 20, color: "bg-green-500" },
-    personal: { hours: 30, percentage: 15, color: "bg-purple-500" },
-    health: { hours: 10, percentage: 5, color: "bg-orange-500" }
+  const productivityPattern = patterns.find(p => p.pattern_type === 'productivity_peak');
+  const bestCategory = patterns.find(p => p.pattern_type === 'best_category');
+  const streakRecord = patterns.find(p => p.pattern_type === 'streak_record');
+
+  const handleSaveReflection = () => {
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+    onSaveReflection('monthly', {
+      periodStart: startOfMonth.toISOString().split('T')[0],
+      periodEnd: endOfMonth.toISOString().split('T')[0],
+      wentWell: monthlyReflection,
+      nextPlans: monthlyReflection // Could separate this into different fields
+    });
   };
 
   const getProductivityLevel = (day: number) => {
@@ -260,27 +328,33 @@ const MonthView = () => {
 
             <TabsContent value="patterns" className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card className="bg-white/60">
-                  <CardContent className="p-4">
-                    <h4 className="font-medium text-slate-700 mb-2">Peak Productivity</h4>
-                    <p className="text-2xl font-bold text-green-600">Tuesday</p>
-                    <p className="text-sm text-slate-500">85% task completion</p>
-                  </CardContent>
-                </Card>
+                {productivityPattern && (
+                  <Card className="bg-white/60">
+                    <CardContent className="p-4">
+                      <h4 className="font-medium text-slate-700 mb-2">Peak Productivity</h4>
+                      <p className="text-2xl font-bold text-green-600">{productivityPattern.pattern_value}</p>
+                      <p className="text-sm text-slate-500">{productivityPattern.pattern_description}</p>
+                    </CardContent>
+                  </Card>
+                )}
                 <Card className="bg-white/60">
                   <CardContent className="p-4">
                     <h4 className="font-medium text-slate-700 mb-2">Goal Completion Rate</h4>
-                    <p className="text-2xl font-bold text-blue-600">74%</p>
-                    <p className="text-sm text-slate-500">3 of 4 monthly goals</p>
+                    <p className="text-2xl font-bold text-blue-600">
+                      {goals.length > 0 ? Math.round((goals.filter(g => g.is_completed).length / goals.length) * 100) : 0}%
+                    </p>
+                    <p className="text-sm text-slate-500">{goals.filter(g => g.is_completed).length} of {goals.length} goals</p>
                   </CardContent>
                 </Card>
-                <Card className="bg-white/60">
-                  <CardContent className="p-4">
-                    <h4 className="font-medium text-slate-700 mb-2">Streak Record</h4>
-                    <p className="text-2xl font-bold text-purple-600">15 days</p>
-                    <p className="text-sm text-slate-500">Exercise habit</p>
-                  </CardContent>
-                </Card>
+                {streakRecord && (
+                  <Card className="bg-white/60">
+                    <CardContent className="p-4">
+                      <h4 className="font-medium text-slate-700 mb-2">Streak Record</h4>
+                      <p className="text-2xl font-bold text-purple-600">{streakRecord.pattern_value}</p>
+                      <p className="text-sm text-slate-500">{streakRecord.pattern_description}</p>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
 
               <Card className="bg-white/60">
@@ -288,21 +362,32 @@ const MonthView = () => {
                   <CardTitle className="text-slate-700">Monthly Insights</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-                    <p className="text-sm text-green-700">
-                      <strong>Strong Performance:</strong> You completed 90% of work goals but only 40% of personal goals this month.
-                    </p>
-                  </div>
-                  <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                    <p className="text-sm text-blue-700">
-                      <strong>Pattern:</strong> Family activities have the highest satisfaction ratings (4.8/5 average).
-                    </p>
-                  </div>
-                  <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
-                    <p className="text-sm text-orange-700">
-                      <strong>Opportunity:</strong> Consider shifting more personal goals to weekends when completion rates are higher.
-                    </p>
-                  </div>
+                  {productivityPattern && (
+                    <div className="p-3 bg-green-50 rounded-lg border border-green-200">
+                      <p className="text-sm text-green-700">
+                        <strong>Peak Performance:</strong> {productivityPattern.pattern_description}
+                      </p>
+                    </div>
+                  )}
+                  {bestCategory && (
+                    <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                      <p className="text-sm text-blue-700">
+                        <strong>Best Category:</strong> {bestCategory.pattern_value} - {bestCategory.pattern_description}
+                      </p>
+                    </div>
+                  )}
+                  {streakRecord && (
+                    <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
+                      <p className="text-sm text-orange-700">
+                        <strong>Streak Achievement:</strong> {streakRecord.pattern_value} - {streakRecord.pattern_description}
+                      </p>
+                    </div>
+                  )}
+                  {patterns.length === 0 && (
+                    <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                      <p className="text-sm text-gray-600">Complete more tasks to see personalized monthly insights</p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -358,7 +443,7 @@ const MonthView = () => {
                     </div>
                   </div>
 
-                  <Button className="w-full">
+                  <Button className="w-full" onClick={handleSaveReflection}>
                     <Edit3 className="h-4 w-4 mr-2" />
                     Save Monthly Reflection
                   </Button>

@@ -3,45 +3,50 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { BarChart3, Clock, Target, TrendingUp, AlertTriangle } from 'lucide-react';
+import { BarChart3, Clock, Target, TrendingUp, AlertTriangle, Loader2 } from 'lucide-react';
 import FeatureFooter from '@/components/FeatureFooter';
 import PlannerHeader from '@/components/planner/PlannerHeader';
 import WeekView from '@/components/planner/WeekView';
 import MonthView from '@/components/planner/MonthView';
 import GoalsView from '@/components/planner/GoalsView';
-import TaskRating from '@/components/planner/TaskRating';
-import MentalLoadForecast from '@/components/planner/MentalLoadForecast';
+import { usePlannerInsightsData } from '@/hooks/usePlannerInsightsData';
 
 const PlannerInsights = () => {
   const [activeTab, setActiveTab] = useState('week');
+  const plannerData = usePlannerInsightsData();
 
-  const timeTracking = {
-    childcare: { hours: 35, percentage: 45, color: "bg-green-500" },
-    eldercare: { hours: 20, percentage: 25, color: "bg-orange-500" },
-    selfcare: { hours: 8, percentage: 10, color: "bg-purple-500" },
-    household: { hours: 15, percentage: 20, color: "bg-blue-500" }
-  };
+  if (plannerData.loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex items-center gap-2">
+          <Loader2 className="h-6 w-6 animate-spin" />
+          <span>Loading insights...</span>
+        </div>
+      </div>
+    );
+  }
 
-  const insights = [
-    { 
-      type: "warning", 
-      text: "Weekends average 8.5 tasks vs 5.2 on weekdays", 
-      action: "Shift 2 errands to weekdays",
-      source: "Based on your scheduled tasks over the past 4 weeks"
-    },
-    { 
-      type: "success", 
-      text: "Tuesday mornings have 85% completion rate", 
-      action: "Keep this pattern",
-      source: "Analysis of 12 Tuesday morning schedules"
-    },
-    { 
-      type: "info", 
-      text: "Outdoor activities rated 4.2/5 for mood improvement", 
-      action: "Schedule more walks",
-      source: "From your task ratings and completion feedback"
-    }
-  ];
+  if (plannerData.error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="p-6">
+          <CardContent>
+            <div className="text-center">
+              <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Error Loading Insights</h3>
+              <p className="text-muted-foreground mb-4">{plannerData.error}</p>
+              <button 
+                onClick={plannerData.refetch}
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+              >
+                Try Again
+              </button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -59,15 +64,33 @@ const PlannerInsights = () => {
               </TabsList>
               
               <TabsContent value="week" className="space-y-4">
-                <WeekView />
+                <WeekView 
+                  weekData={plannerData.weekData}
+                  achievements={plannerData.achievements}
+                  milestones={plannerData.milestones.filter(m => m.is_highlight)}
+                  timeAllocation={plannerData.timeAllocation}
+                  goals={plannerData.goals}
+                  patterns={plannerData.patterns}
+                  onSaveReflection={plannerData.saveReflection}
+                />
               </TabsContent>
               
               <TabsContent value="month" className="space-y-4">
-                <MonthView />
+                <MonthView 
+                  achievements={plannerData.achievements}
+                  milestones={plannerData.milestones}
+                  timeAllocation={plannerData.timeAllocation}
+                  goals={plannerData.goals}
+                  patterns={plannerData.patterns}
+                  onSaveReflection={plannerData.saveReflection}
+                />
               </TabsContent>
               
               <TabsContent value="goals" className="space-y-4">
-                <GoalsView />
+                <GoalsView 
+                  goals={plannerData.goals}
+                  onUpdateProgress={plannerData.updateGoalProgress}
+                />
               </TabsContent>
             </Tabs>
           </CardContent>

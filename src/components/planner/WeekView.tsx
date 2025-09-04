@@ -5,77 +5,121 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
 import { Trophy, Award, Target, TrendingUp, Calendar, Clock, CheckCircle2, AlertCircle, Star } from 'lucide-react';
 
-const WeekView = () => {
+interface WeekData {
+  day: string;
+  tasks: Array<{
+    time: string;
+    title: string;
+    category: string;
+    color: string;
+  }>;
+}
+
+interface Achievement {
+  id: string;
+  achievement_name: string;
+  description: string;
+  icon: string;
+  category: string;
+  earned_date: string;
+}
+
+interface Milestone {
+  id: string;
+  title: string;
+  description?: string;
+  milestone_type: string;
+  date: string;
+  is_highlight: boolean;
+}
+
+interface TimeAllocation {
+  [key: string]: {
+    hours: number;
+    percentage: number;
+    color: string;
+  };
+}
+
+interface Goal {
+  id: string;
+  title: string;
+  category: string;
+  progress: number;
+  target_date: string;
+  is_completed: boolean;
+}
+
+interface UserPattern {
+  id: string;
+  pattern_type: string;
+  pattern_name: string;
+  pattern_value: string;
+  pattern_description: string;
+  confidence_score: number;
+}
+
+interface WeekViewProps {
+  weekData: WeekData[];
+  achievements: Achievement[];
+  milestones: Milestone[];
+  timeAllocation: TimeAllocation;
+  goals: Goal[];
+  patterns: UserPattern[];
+  onSaveReflection: (type: 'weekly' | 'monthly', data: any) => Promise<void>;
+}
+
+const WeekView: React.FC<WeekViewProps> = ({ 
+  weekData, 
+  achievements, 
+  milestones, 
+  timeAllocation, 
+  goals, 
+  patterns,
+  onSaveReflection 
+}) => {
   const [activeTab, setActiveTab] = useState('overview');
-  
-  const weekData = [
-    {
-      day: 'Mon',
-      tasks: [
-        { time: '9:00 AM', title: 'Team standup', category: 'Work', color: 'bg-blue-100 text-blue-700' },
-        { time: '6:00 PM', title: 'Grocery shopping', category: 'Personal', color: 'bg-green-100 text-green-700' }
-      ]
-    },
-    {
-      day: 'Tue',
-      tasks: [
-        { time: '11:00 AM', title: "Mom's doctor visit", category: 'Family', color: 'bg-purple-100 text-purple-700' }
-      ]
-    },
-    {
-      day: 'Wed',
-      tasks: [
-        { time: '4:00 PM', title: 'Kids soccer practice', category: 'Parenting', color: 'bg-yellow-100 text-yellow-700' }
-      ]
-    },
-    {
-      day: 'Thu',
-      tasks: [
-        { time: '5:00 PM', title: 'Project deadline', category: 'Work', color: 'bg-blue-100 text-blue-700' }
-      ]
-    },
-    {
-      day: 'Fri',
-      tasks: [
-        { time: '5:30 PM', title: 'Family dinner prep', category: 'Personal', color: 'bg-green-100 text-green-700' }
-      ]
-    },
-    {
-      day: 'Sat',
-      tasks: [
-        { time: '10:00 AM', title: 'Weekend planning', category: 'Family', color: 'bg-purple-100 text-purple-700' }
-      ]
-    },
-    {
-      day: 'Sun',
-      tasks: []
-    }
-  ];
+  const [weeklyReflection, setWeeklyReflection] = useState('');
+  const [nextWeekPlanning, setNextWeekPlanning] = useState('');
 
-  const weeklyHighlights = [
-    { date: 'Mon 15', title: 'Completed project milestone', type: 'Work' },
-    { date: 'Wed 17', title: 'Family movie night', type: 'Family' },
-    { date: 'Fri 19', title: 'Morning run streak: 5 days', type: 'Personal' }
-  ];
+  const weeklyHighlights = milestones.map(milestone => ({
+    date: new Date(milestone.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+    title: milestone.title,
+    type: milestone.milestone_type
+  }));
 
-  const weeklyAchievements = [
-    { icon: Trophy, name: 'Task Champion', description: '18 tasks completed this week' },
-    { icon: Star, name: 'Early Bird', description: 'Started tasks on time 85% of week' },
-    { icon: CheckCircle2, name: 'Balance Master', description: 'Equal time for work and family' }
-  ];
+  const weeklyAchievements = achievements.slice(0, 3).map(achievement => ({
+    icon: Trophy, // Default icon, could be dynamic based on achievement.icon
+    name: achievement.achievement_name,
+    description: achievement.description
+  }));
 
-  const weeklyGoals = [
-    { title: 'Complete quarterly review', progress: 75, status: 'on-track', category: 'Work' },
-    { title: 'Plan summer vacation', progress: 40, status: 'needs-attention', category: 'Family' },
-    { title: 'Exercise 4 times', progress: 100, status: 'completed', category: 'Personal' }
-  ];
+  const weeklyGoals = goals.slice(0, 3).map(goal => ({
+    title: goal.title,
+    progress: goal.progress,
+    status: goal.is_completed ? 'completed' : goal.progress > 70 ? 'on-track' : 'needs-attention',
+    category: goal.category
+  }));
 
-  const timeAllocation = {
-    work: { hours: 32, percentage: 48, color: "bg-blue-500" },
-    family: { hours: 25, percentage: 37, color: "bg-purple-500" },
-    personal: { hours: 10, percentage: 15, color: "bg-green-500" }
+  const productivityPattern = patterns.find(p => p.pattern_type === 'productivity_peak');
+  const bestCategory = patterns.find(p => p.pattern_type === 'best_category');
+  const streakRecord = patterns.find(p => p.pattern_type === 'streak_record');
+
+  const handleSaveReflection = () => {
+    const startOfWeek = new Date();
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+    onSaveReflection('weekly', {
+      periodStart: startOfWeek.toISOString().split('T')[0],
+      periodEnd: endOfWeek.toISOString().split('T')[0],
+      wentWell: weeklyReflection,
+      nextPlans: nextWeekPlanning
+    });
   };
 
   return (
@@ -219,37 +263,42 @@ const WeekView = () => {
 
             <TabsContent value="patterns" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card className="bg-green-50">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-sm text-green-700">Peak Productivity</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-lg font-medium text-green-800">Tuesday mornings</p>
-                    <p className="text-xs text-green-600">90% task completion rate</p>
-                  </CardContent>
-                </Card>
+                {productivityPattern && (
+                  <Card className="bg-green-50">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm text-green-700">Peak Productivity</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-lg font-medium text-green-800">{productivityPattern.pattern_value}</p>
+                      <p className="text-xs text-green-600">{productivityPattern.pattern_description}</p>
+                    </CardContent>
+                  </Card>
+                )}
                 
-                <Card className="bg-blue-50">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-sm text-blue-700">Best Category</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-lg font-medium text-blue-800">Personal Tasks</p>
-                    <p className="text-xs text-blue-600">85% weekly completion</p>
-                  </CardContent>
-                </Card>
+                {bestCategory && (
+                  <Card className="bg-blue-50">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm text-blue-700">Best Category</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-lg font-medium text-blue-800">{bestCategory.pattern_value}</p>
+                      <p className="text-xs text-blue-600">{bestCategory.pattern_description}</p>
+                    </CardContent>
+                  </Card>
+                )}
                 
-                <Card className="bg-purple-50">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-sm text-purple-700">Streak Record</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-lg font-medium text-purple-800">5 days</p>
-                    <p className="text-xs text-purple-600">Morning routine completion</p>
-                  </CardContent>
-                </Card>
+                {streakRecord && (
+                  <Card className="bg-purple-50">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-sm text-purple-700">Streak Record</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-lg font-medium text-purple-800">{streakRecord.pattern_value}</p>
+                      <p className="text-xs text-purple-600">{streakRecord.pattern_description}</p>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
-              
               <Card className="bg-white/60">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-gray-700">
@@ -258,14 +307,23 @@ const WeekView = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <div className="p-3 bg-white/80 rounded-lg">
-                    <p className="text-sm text-gray-700">You're most productive on Tuesday and Wednesday mornings</p>
-                    <p className="text-xs text-gray-500 mt-1">Consider scheduling important tasks during these times</p>
-                  </div>
-                  <div className="p-3 bg-white/80 rounded-lg">
-                    <p className="text-sm text-gray-700">Friday evenings show lower completion rates</p>
-                    <p className="text-xs text-gray-500 mt-1">Try moving non-urgent tasks to earlier in the week</p>
-                  </div>
+                  {productivityPattern && (
+                    <div className="p-3 bg-white/80 rounded-lg">
+                      <p className="text-sm text-gray-700">{productivityPattern.pattern_description}</p>
+                      <p className="text-xs text-gray-500 mt-1">Peak time: {productivityPattern.pattern_value}</p>
+                    </div>
+                  )}
+                  {bestCategory && (
+                    <div className="p-3 bg-white/80 rounded-lg">
+                      <p className="text-sm text-gray-700">Your strongest category: {bestCategory.pattern_value}</p>
+                      <p className="text-xs text-gray-500 mt-1">{bestCategory.pattern_description}</p>
+                    </div>
+                  )}
+                  {patterns.length === 0 && (
+                    <div className="p-3 bg-white/80 rounded-lg">
+                      <p className="text-sm text-gray-500">Complete more tasks to see personalized insights</p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </TabsContent>
@@ -283,6 +341,8 @@ const WeekView = () => {
                     <Textarea 
                       placeholder="What went well this week? What could be improved? Any key learnings?"
                       className="min-h-[120px] resize-none"
+                      value={weeklyReflection}
+                      onChange={(e) => setWeeklyReflection(e.target.value)}
                     />
                   </CardContent>
                 </Card>
@@ -298,9 +358,17 @@ const WeekView = () => {
                     <Textarea 
                       placeholder="What are your priorities for next week? Any adjustments to make based on this week?"
                       className="min-h-[120px] resize-none"
+                      value={nextWeekPlanning}
+                      onChange={(e) => setNextWeekPlanning(e.target.value)}
                     />
                   </CardContent>
                 </Card>
+              </div>
+
+              <div className="flex justify-center">
+                <Button onClick={handleSaveReflection} className="px-8">
+                  Save Weekly Reflection
+                </Button>
               </div>
 
               <Card className="bg-white/60">
