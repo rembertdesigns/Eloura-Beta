@@ -7,9 +7,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Users, MessageSquare, Edit, Plus, Search, Trophy, Clock, FileText, Star, TrendingUp, Calendar, Filter, Heart } from 'lucide-react';
+import { useVillageData } from '@/hooks/useVillageData';
 
 const HelpRequestsLogsEnhanced = () => {
-  const [newCommLog, setNewCommLog] = useState({ contact: '', type: '', notes: '' });
+  const { helpRequests, communicationLogs, analytics, loading, error, addHelpRequest, addCommunicationLog } = useVillageData();
+  const [newCommLog, setNewCommLog] = useState({ contact_name: '', type: '', notes: '', category: '' });
   const [showCommLogForm, setShowCommLogForm] = useState(false);
   const [searchLogs, setSearchLogs] = useState('');
   const [filterDate, setFilterDate] = useState('');
@@ -18,36 +20,34 @@ const HelpRequestsLogsEnhanced = () => {
   const [selectedHelper, setSelectedHelper] = useState<any>(null);
   const [isThankYouModalOpen, setIsThankYouModalOpen] = useState(false);
 
-  const helpRequests = [
-    {
-      id: 1,
-      title: "Need babysitter for date night",
-      category: "Childcare",
-      categoryColor: "bg-pink-100 text-pink-700",
-      date: "Saturday, Dec 16",
-      time: "6:00 PM - 11:00 PM",
-      responses: 2,
-      status: "Open",
-      statusColor: "bg-green-100 text-green-700",
-      urgent: false,
-      requestedBy: "You",
-      description: "Looking for someone to watch the kids while we go out for our anniversary"
-    },
-    {
-      id: 2,
-      title: "School pickup emergency",
-      category: "Transportation",
-      categoryColor: "bg-blue-100 text-blue-700",
-      date: "Today",
-      time: "3:15 PM",
-      responses: 1,
-      status: "Fulfilled",
-      statusColor: "bg-blue-100 text-blue-700",
-      urgent: true,
-      requestedBy: "You",
-      description: "Stuck in meeting, need someone to pick up kids from school"
+  // Helper functions for styling
+  const getCategoryColor = (category: string) => {
+    switch (category?.toLowerCase()) {
+      case 'childcare':
+        return 'bg-pink-100 text-pink-700';
+      case 'transportation':
+        return 'bg-blue-100 text-blue-700';
+      case 'meals':
+        return 'bg-green-100 text-green-700';
+      case 'errands':
+        return 'bg-purple-100 text-purple-700';
+      default:
+        return 'bg-gray-100 text-gray-700';
     }
-  ];
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case 'open':
+        return 'bg-green-100 text-green-700';
+      case 'fulfilled':
+        return 'bg-blue-100 text-blue-700';
+      case 'closed':
+        return 'bg-gray-100 text-gray-700';
+      default:
+        return 'bg-gray-100 text-gray-700';
+    }
+  };
 
   const requestTemplates = [
     { title: "Last-minute babysitter", category: "Childcare", description: "Need someone to watch the kids" },
@@ -57,54 +57,16 @@ const HelpRequestsLogsEnhanced = () => {
     { title: "Errand help", category: "Errands", description: "Need help with errands" }
   ];
 
-  const commLogs = [
-    {
-      id: 1,
-      contact: "Mom (Patricia)",
-      type: "Phone call",
-      notes: "Called to check on her appointment. She's doing well and confirmed grocery pickup tomorrow.",
-      timestamp: "Today, 2:30 PM",
-      loggedBy: "You",
-      category: "Health"
-    },
-    {
-      id: 2,
-      contact: "Mike (Partner)",
-      type: "Text message",
-      notes: "Confirmed soccer practice carpool. He'll pick up kids at 3 PM.",
-      timestamp: "Yesterday, 8:45 AM",
-      loggedBy: "You",
-      category: "Transportation"
-    },
-    {
-      id: 3,
-      contact: "Dr. Peterson",
-      type: "Visit",
-      notes: "Annual checkup completed. All vitals normal. Next appointment in 6 months.",
-      timestamp: "3 days ago",
-      loggedBy: "Mike (Partner)",
-      category: "Health"
-    },
-    {
-      id: 4,
-      contact: "Sarah Johnson",
-      type: "Email",
-      notes: "Coordinated playdate for next weekend. Kids are excited!",
-      timestamp: "1 week ago",
-      loggedBy: "You",
-      category: "Social"
-    }
-  ];
+  // Get top helpers from analytics
+  const topHelpers = analytics.topHelpers.map(helper => ({
+    name: helper.name,
+    helpCount: helper.helpCount,
+    badge: helper.helpCount > 10 ? "🏆 Super Helper" : helper.helpCount > 5 ? "⭐ Reliable" : "👍 Helper"
+  }));
 
-  const topHelpers = [
-    { name: "Mike (Partner)", helpCount: 15, badge: "🏆 Super Helper" },
-    { name: "Mom (Patricia)", helpCount: 12, badge: "⭐ Reliable" },
-    { name: "Sarah Johnson", helpCount: 8, badge: "🚗 Transport Hero" }
-  ];
-
-  const filteredLogs = commLogs.filter(log => {
+  const filteredLogs = communicationLogs.filter(log => {
     const matchesSearch = !searchLogs || 
-      log.contact.toLowerCase().includes(searchLogs.toLowerCase()) ||
+      log.contact_name.toLowerCase().includes(searchLogs.toLowerCase()) ||
       log.notes.toLowerCase().includes(searchLogs.toLowerCase()) ||
       log.type.toLowerCase().includes(searchLogs.toLowerCase());
     const matchesType = !filterType || log.type === filterType;
@@ -113,11 +75,13 @@ const HelpRequestsLogsEnhanced = () => {
 
   const logTypes = ["All", "Phone call", "Text message", "Email", "Visit", "Video call"];
 
-  const handleAddCommLog = () => {
-    if (newCommLog.contact && newCommLog.type && newCommLog.notes) {
-      console.log('Adding communication log:', newCommLog);
-      setNewCommLog({ contact: '', type: '', notes: '' });
-      setShowCommLogForm(false);
+  const handleAddCommLog = async () => {
+    if (newCommLog.contact_name && newCommLog.type && newCommLog.notes) {
+      const success = await addCommunicationLog(newCommLog);
+      if (success) {
+        setNewCommLog({ contact_name: '', type: '', notes: '', category: '' });
+        setShowCommLogForm(false);
+      }
     }
   };
 
@@ -145,10 +109,10 @@ const HelpRequestsLogsEnhanced = () => {
     <Card key={request.id} className="bg-white border border-gray-200 hover:shadow-md transition-shadow h-full">
       <CardContent className="p-6 h-full flex flex-col">
         <div className="flex items-start gap-3 mb-3">
-          <Badge className={`${request.categoryColor} border-0 flex-shrink-0`}>
+          <Badge className={`${getCategoryColor(request.category)} border-0 flex-shrink-0`}>
             {request.category}
           </Badge>
-          <Badge className={`${request.statusColor} border-0 flex-shrink-0`}>
+          <Badge className={`${getStatusColor(request.status)} border-0 flex-shrink-0`}>
             {request.status}
           </Badge>
           {request.urgent && (
@@ -165,10 +129,10 @@ const HelpRequestsLogsEnhanced = () => {
         <div className="space-y-1 mb-4 text-sm text-gray-600">
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
-            <span>{request.date} {request.time}</span>
+            <span>{new Date(request.date).toLocaleDateString()} {request.time}</span>
           </div>
-          <div>{request.responses} responses</div>
-          <div>Requested by: {request.requestedBy}</div>
+          <div>{request.responses_count || 0} responses</div>
+          <div>Requested by: You</div>
         </div>
         
         <div className="flex gap-2 mt-auto">
@@ -194,16 +158,16 @@ const HelpRequestsLogsEnhanced = () => {
               <MessageSquare className="h-4 w-4 text-blue-600" />
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900">{log.contact}</h4>
+              <h4 className="font-semibold text-gray-900">{log.contact_name}</h4>
               <div className="flex items-center gap-2">
                 <p className="text-sm text-gray-500">{log.type}</p>
-                <Badge variant="outline" className="text-xs">{log.category}</Badge>
+                <Badge variant="outline" className="text-xs">{log.category || 'General'}</Badge>
               </div>
             </div>
           </div>
           <div className="text-right text-xs text-gray-400">
-            <div>{log.timestamp}</div>
-            <div>by {log.loggedBy}</div>
+            <div>{new Date(log.created_at).toLocaleDateString()}</div>
+            <div>by {log.logged_by}</div>
           </div>
         </div>
         <p className="text-sm text-gray-600">{log.notes}</p>
@@ -294,8 +258,8 @@ const HelpRequestsLogsEnhanced = () => {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Contact</label>
                     <Input
                       placeholder="Who did you communicate with?"
-                      value={newCommLog.contact}
-                      onChange={(e) => setNewCommLog({...newCommLog, contact: e.target.value})}
+                      value={newCommLog.contact_name}
+                      onChange={(e) => setNewCommLog({...newCommLog, contact_name: e.target.value})}
                     />
                   </div>
                   <div>
@@ -311,6 +275,21 @@ const HelpRequestsLogsEnhanced = () => {
                       <option value="Email">Email</option>
                       <option value="Visit">Visit</option>
                       <option value="Video call">Video call</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select
+                      value={newCommLog.category}
+                      onChange={(e) => setNewCommLog({...newCommLog, category: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">Select category...</option>
+                      <option value="Health">Health</option>
+                      <option value="Transportation">Transportation</option>
+                      <option value="Social">Social</option>
+                      <option value="Childcare">Childcare</option>
+                      <option value="General">General</option>
                     </select>
                   </div>
                   <div>

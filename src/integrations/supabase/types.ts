@@ -83,6 +83,45 @@ export type Database = {
         }
         Relationships: []
       }
+      communication_logs: {
+        Row: {
+          category: string | null
+          contact_name: string
+          created_at: string
+          id: string
+          logged_by: string | null
+          notes: string
+          type: string
+          updated_at: string
+          user_id: string
+          village_member_id: string | null
+        }
+        Insert: {
+          category?: string | null
+          contact_name: string
+          created_at?: string
+          id?: string
+          logged_by?: string | null
+          notes: string
+          type: string
+          updated_at?: string
+          user_id: string
+          village_member_id?: string | null
+        }
+        Update: {
+          category?: string | null
+          contact_name?: string
+          created_at?: string
+          id?: string
+          logged_by?: string | null
+          notes?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+          village_member_id?: string | null
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           category: string | null
@@ -196,6 +235,51 @@ export type Database = {
           target_date?: string | null
           title?: string
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      help_requests: {
+        Row: {
+          category: string
+          created_at: string
+          date: string
+          description: string | null
+          id: string
+          responses_count: number | null
+          status: string
+          time: string | null
+          title: string
+          updated_at: string
+          urgent: boolean | null
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          date: string
+          description?: string | null
+          id?: string
+          responses_count?: number | null
+          status?: string
+          time?: string | null
+          title: string
+          updated_at?: string
+          urgent?: boolean | null
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          date?: string
+          description?: string | null
+          id?: string
+          responses_count?: number | null
+          status?: string
+          time?: string | null
+          title?: string
+          updated_at?: string
+          urgent?: boolean | null
           user_id?: string
         }
         Relationships: []
@@ -398,6 +482,7 @@ export type Database = {
       tasks: {
         Row: {
           assigned_to: string | null
+          attachments: string[] | null
           category: string | null
           completed: boolean | null
           created_at: string
@@ -406,13 +491,20 @@ export type Database = {
           due_date: string | null
           id: string
           is_urgent: boolean | null
+          last_update: string | null
+          notes: string | null
           priority: string | null
+          progress: number | null
+          recurring: boolean | null
+          status: string | null
           title: string
           updated_at: string
           user_id: string
+          village_member_id: string | null
         }
         Insert: {
           assigned_to?: string | null
+          attachments?: string[] | null
           category?: string | null
           completed?: boolean | null
           created_at?: string
@@ -421,13 +513,20 @@ export type Database = {
           due_date?: string | null
           id?: string
           is_urgent?: boolean | null
+          last_update?: string | null
+          notes?: string | null
           priority?: string | null
+          progress?: number | null
+          recurring?: boolean | null
+          status?: string | null
           title: string
           updated_at?: string
           user_id: string
+          village_member_id?: string | null
         }
         Update: {
           assigned_to?: string | null
+          attachments?: string[] | null
           category?: string | null
           completed?: boolean | null
           created_at?: string
@@ -436,10 +535,16 @@ export type Database = {
           due_date?: string | null
           id?: string
           is_urgent?: boolean | null
+          last_update?: string | null
+          notes?: string | null
           priority?: string | null
+          progress?: number | null
+          recurring?: boolean | null
+          status?: string | null
           title?: string
           updated_at?: string
           user_id?: string
+          village_member_id?: string | null
         }
         Relationships: []
       }
@@ -631,32 +736,68 @@ export type Database = {
       }
       village_members: {
         Row: {
+          avatar: string | null
           contact_info: string | null
           created_at: string
+          description: string | null
+          email: string | null
+          group_name: string | null
           id: string
           is_active: boolean | null
+          is_online: boolean | null
           name: string
+          phone: string | null
+          rating: number | null
+          rating_count: number | null
+          recent_activity: string | null
           relationship: string | null
+          roles: string[] | null
+          skills: string[] | null
+          status: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          avatar?: string | null
           contact_info?: string | null
           created_at?: string
+          description?: string | null
+          email?: string | null
+          group_name?: string | null
           id?: string
           is_active?: boolean | null
+          is_online?: boolean | null
           name: string
+          phone?: string | null
+          rating?: number | null
+          rating_count?: number | null
+          recent_activity?: string | null
           relationship?: string | null
+          roles?: string[] | null
+          skills?: string[] | null
+          status?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          avatar?: string | null
           contact_info?: string | null
           created_at?: string
+          description?: string | null
+          email?: string | null
+          group_name?: string | null
           id?: string
           is_active?: boolean | null
+          is_online?: boolean | null
           name?: string
+          phone?: string | null
+          rating?: number | null
+          rating_count?: number | null
+          recent_activity?: string | null
           relationship?: string | null
+          roles?: string[] | null
+          skills?: string[] | null
+          status?: string | null
           updated_at?: string
           user_id?: string
         }

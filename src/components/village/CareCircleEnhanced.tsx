@@ -4,80 +4,34 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Users, Phone, Mail, MessageSquare, Star, Clock, Wifi, WifiOff, UserPlus, Filter } from 'lucide-react';
+import { useVillageData } from '@/hooks/useVillageData';
 
 const CareCircleEnhanced = () => {
+  const { villageMembers, loading, error } = useVillageData();
   const [filterRole, setFilterRole] = useState('');
   const [filterGroup, setFilterGroup] = useState('');
-
-  const careCircleMembers = [
-    {
-      id: 1,
-      name: "Mom (Patricia)",
-      role: "Family Supporter",
-      avatar: "M",
-      rating: 5,
-      ratingCount: 5,
-      description: "Great with kids, loves to help with meals",
-      phone: "(555) 123-4567",
-      email: "patricia@email.com",
-      lastContact: "2 days ago",
-      status: "Available",
-      statusColor: "bg-green-100 text-green-700",
-      isOnline: true,
-      skills: ["Cooking", "Childcare", "Transportation"],
-      group: "Family",
-      recentActivity: "Picked up groceries yesterday",
-      profilePhoto: null,
-      roles: ["Childcare", "Meal Support", "Transportation"]
-    },
-    {
-      id: 2,
-      name: "Mike (Partner)",
-      role: "Care Partner",
-      avatar: "M",
-      rating: 5,
-      ratingCount: 5,
-      description: "Great with school stuff, weekend activities",
-      phone: "(555) 456-7890",
-      email: "mike@email.com",
-      lastContact: "Today",
-      status: "Available evenings",
-      statusColor: "bg-blue-100 text-blue-700",
-      isOnline: false,
-      skills: ["School Support", "Sports", "Tech Help"],
-      group: "Family",
-      recentActivity: "Helped with homework 2 hours ago",
-      profilePhoto: null,
-      roles: ["School Support", "Weekend Activities"]
-    },
-    {
-      id: 3,
-      name: "Sarah Johnson",
-      role: "Neighbor Helper",
-      avatar: "S",
-      rating: 4,
-      ratingCount: 3,
-      description: "Available for carpools and emergency pickup",
-      phone: "(555) 789-0123",
-      email: "sarah.j@email.com",
-      lastContact: "1 week ago",
-      status: "Available weekdays",
-      statusColor: "bg-yellow-100 text-yellow-700",
-      isOnline: true,
-      skills: ["Transportation", "Emergency Support"],
-      group: "Neighbors",
-      recentActivity: "Provided carpool last Tuesday",
-      profilePhoto: null,
-      roles: ["Transportation", "Emergency Contact"]
-    }
-  ];
 
   const groups = ["All", "Family", "Neighbors", "Extended Family", "Friends"];
   const allRoles = ["Childcare", "Transportation", "Meal Support", "School Support", "Emergency Contact"];
 
-  const filteredMembers = careCircleMembers.filter(member => {
-    const matchesRole = !filterRole || member.roles.some(role => role.toLowerCase().includes(filterRole.toLowerCase()));
-    const matchesGroup = !filterGroup || filterGroup === "All" || member.group === filterGroup;
+  // Helper function to get status color
+  const getStatusColor = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case 'available':
+        return 'bg-green-100 text-green-700';
+      case 'available evenings':
+      case 'available weekdays':
+        return 'bg-blue-100 text-blue-700';
+      case 'busy':
+        return 'bg-red-100 text-red-700';
+      default:
+        return 'bg-gray-100 text-gray-700';
+    }
+  };
+
+  const filteredMembers = villageMembers.filter(member => {
+    const matchesRole = !filterRole || (member.roles && member.roles.some(role => role.toLowerCase().includes(filterRole.toLowerCase())));
+    const matchesGroup = !filterGroup || filterGroup === "All" || member.group_name === filterGroup;
     return matchesRole && matchesGroup;
   });
 
@@ -106,10 +60,10 @@ const CareCircleEnhanced = () => {
             <div className="flex items-center justify-between mb-2">
               <div className="min-w-0 flex-1">
                 <h3 className="font-semibold text-gray-900 truncate">{person.name}</h3>
-                <p className="text-sm text-gray-500">{person.group}</p>
+                <p className="text-sm text-gray-500">{person.group_name || person.relationship}</p>
               </div>
-              <Badge className={`${person.statusColor} border-0 flex-shrink-0 ml-2`}>
-                {person.status}
+              <Badge className={`${getStatusColor(person.status)} border-0 flex-shrink-0 ml-2`}>
+                {person.status || 'Available'}
               </Badge>
             </div>
             
@@ -162,7 +116,7 @@ const CareCircleEnhanced = () => {
             
             <div className="mt-auto">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs text-gray-400">Last contact: {person.lastContact}</span>
+                <span className="text-xs text-gray-400">Added: {new Date(person.created_at).toLocaleDateString()}</span>
               </div>
               <div className="flex gap-2">
                 <Button variant="outline" size="sm" className="h-8 flex-1">

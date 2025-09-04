@@ -5,97 +5,61 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { MessageSquare, Edit, Filter, CheckCircle, Clock, Heart, FileText, Calendar, BarChart3 } from 'lucide-react';
+import { useVillageData } from '@/hooks/useVillageData';
 
 const ActiveTasksEnhanced = () => {
-  const [selectedTasks, setSelectedTasks] = useState<number[]>([]);
+  const { delegationTasks, analytics, loading, error, updateTask } = useVillageData();
+  const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
   const [filterPriority, setFilterPriority] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [filterAssignee, setFilterAssignee] = useState('');
   const [viewMode, setViewMode] = useState<'cards' | 'timeline'>('cards');
 
-  const delegationTasks = [
-    {
-      id: 1,
-      title: "Grocery shopping",
-      assignedTo: "Mike (Partner)",
-      due: "Today, 6 PM",
-      priority: "High",
-      priorityColor: "bg-red-100 text-red-700",
-      status: "In Progress",
-      statusColor: "bg-blue-100 text-blue-700",
-      description: "Don't forget organic milk and vegetables for dinner",
-      progress: 75,
-      recurring: false,
-      category: "Household",
-      attachments: ["grocery-list.jpg"],
-      notes: "Updated list includes almond milk instead of regular",
-      lastUpdate: "2 hours ago by Mike"
-    },
-    {
-      id: 2,
-      title: "Pick up dry cleaning",
-      assignedTo: "Mom (Patricia)",
-      due: "Yesterday",
-      priority: "Low",
-      priorityColor: "bg-gray-100 text-gray-700",
-      status: "Completed",
-      statusColor: "bg-green-100 text-green-700",
-      description: "Thank you! ❤️",
-      progress: 100,
-      recurring: false,
-      category: "Errands",
-      attachments: [],
-      notes: "",
-      lastUpdate: "Completed yesterday"
-    },
-    {
-      id: 3,
-      title: "Soccer carpool",
-      assignedTo: "Sarah Johnson",
-      due: "Wednesday, 3 PM",
-      priority: "Medium",
-      priorityColor: "bg-yellow-100 text-yellow-700",
-      status: "Scheduled",
-      statusColor: "bg-purple-100 text-purple-700",
-      description: "Taking kids to practice, I'll pick up after",
-      progress: 0,
-      recurring: true,
-      category: "Transportation",
-      attachments: [],
-      notes: "Regular weekly commitment",
-      lastUpdate: "Scheduled last week"
-    },
-    {
-      id: 4,
-      title: "Help with homework",
-      assignedTo: "Mike (Partner)",
-      due: "Daily, 4 PM",
-      priority: "Medium",
-      priorityColor: "bg-yellow-100 text-yellow-700",
-      status: "Recurring",
-      statusColor: "bg-blue-100 text-blue-700",
-      description: "Math and science support needed",
-      progress: 85,
-      recurring: true,
-      category: "Childcare",
-      attachments: [],
-      notes: "Going well, kids are improving",
-      lastUpdate: "Yesterday at 4 PM"
-    }
-  ];
+  const priorities = ["All", "high", "normal", "low"];
+  const statuses = ["All", "pending", "in_progress", "completed", "scheduled"];
+  
+  // Get unique assignees from delegation tasks
+  const assignees = ["All", ...Array.from(new Set(delegationTasks.map(task => 
+    task.village_members?.name || 'Unassigned'
+  )))];
 
-  const priorities = ["All", "High", "Medium", "Low"];
-  const statuses = ["All", "In Progress", "Completed", "Scheduled", "Recurring"];
-  const assignees = ["All", "Mike (Partner)", "Mom (Patricia)", "Sarah Johnson"];
+  // Helper functions for styling
+  const getPriorityColor = (priority: string) => {
+    switch (priority?.toLowerCase()) {
+      case 'high':
+        return 'bg-red-100 text-red-700';
+      case 'normal':
+        return 'bg-yellow-100 text-yellow-700';
+      case 'low':
+        return 'bg-gray-100 text-gray-700';
+      default:
+        return 'bg-gray-100 text-gray-700';
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case 'completed':
+        return 'bg-green-100 text-green-700';
+      case 'in_progress':
+        return 'bg-blue-100 text-blue-700';
+      case 'scheduled':
+        return 'bg-purple-100 text-purple-700';
+      default:
+        return 'bg-gray-100 text-gray-700';
+    }
+  };
 
   const filteredTasks = delegationTasks.filter(task => {
     const matchesPriority = !filterPriority || filterPriority === "All" || task.priority === filterPriority;
     const matchesStatus = !filterStatus || filterStatus === "All" || task.status === filterStatus;
-    const matchesAssignee = !filterAssignee || filterAssignee === "All" || task.assignedTo === filterAssignee;
+    const matchesAssignee = !filterAssignee || filterAssignee === "All" || 
+      task.village_members?.name === filterAssignee || 
+      (!task.village_members?.name && filterAssignee === 'Unassigned');
     return matchesPriority && matchesStatus && matchesAssignee;
   });
 
-  const handleTaskSelection = (taskId: number) => {
+  const handleTaskSelection = (taskId: string) => {
     setSelectedTasks(prev => 
       prev.includes(taskId) 
         ? prev.filter(id => id !== taskId)
@@ -127,11 +91,11 @@ const ActiveTasksEnhanced = () => {
             <div className="flex items-start justify-between mb-3">
               <h3 className="font-semibold text-gray-900 flex-1">{task.title}</h3>
               <div className="flex gap-2 flex-shrink-0 ml-2">
-                <Badge className={`${task.statusColor} border-0`}>
-                  {task.status}
+                <Badge className={`${getStatusColor(task.status)} border-0`}>
+                  {task.status || 'pending'}
                 </Badge>
-                <Badge className={`${task.priorityColor} border-0`}>
-                  {task.priority}
+                <Badge className={`${getPriorityColor(task.priority)} border-0`}>
+                  {task.priority || 'normal'}
                 </Badge>
               </div>
             </div>
@@ -153,13 +117,13 @@ const ActiveTasksEnhanced = () => {
             )}
 
             <div className="space-y-2 mb-4 text-sm text-gray-600">
-              <div>Assigned to: <span className="font-medium">{task.assignedTo}</span></div>
+              <div>Assigned to: <span className="font-medium">{task.village_members?.name || 'Unassigned'}</span></div>
               <div className="flex items-center gap-2">
                 <Clock className="h-4 w-4" />
-                <span>Due: <span className="font-medium">{task.due}</span></span>
+                <span>Due: <span className="font-medium">{task.due_date ? new Date(task.due_date).toLocaleDateString() : 'No due date'}</span></span>
                 {task.recurring && <Badge variant="outline" className="text-xs">Recurring</Badge>}
               </div>
-              <div>Category: <span className="font-medium">{task.category}</span></div>
+              <div>Category: <span className="font-medium">{task.category || 'General'}</span></div>
             </div>
 
             <p className="text-sm text-gray-600 mb-3 flex-1">{task.description}</p>
@@ -195,7 +159,7 @@ const ActiveTasksEnhanced = () => {
                 <Edit className="h-4 w-4 mr-1" />
                 Edit
               </Button>
-              {task.status === "Completed" && (
+              {task.status === "completed" && (
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -226,12 +190,12 @@ const ActiveTasksEnhanced = () => {
                 />
                 <div>
                   <h4 className="font-medium">{task.title}</h4>
-                  <p className="text-sm text-gray-600">{task.assignedTo} • {task.due}</p>
+                  <p className="text-sm text-gray-600">{task.village_members?.name || 'Unassigned'} • {task.due_date ? new Date(task.due_date).toLocaleDateString() : 'No due date'}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Badge className={`${task.statusColor} border-0`}>{task.status}</Badge>
-                <Badge className={`${task.priorityColor} border-0`}>{task.priority}</Badge>
+                <Badge className={`${getStatusColor(task.status)} border-0`}>{task.status || 'pending'}</Badge>
+                <Badge className={`${getPriorityColor(task.priority)} border-0`}>{task.priority || 'normal'}</Badge>
               </div>
             </div>
           </CardContent>
@@ -346,25 +310,25 @@ const ActiveTasksEnhanced = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div>
               <div className="text-2xl font-bold text-blue-600">
-                {delegationTasks.filter(t => t.status === "Completed").length}
+                {analytics.completedTasks}
               </div>
               <div className="text-sm text-gray-600">Completed</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-yellow-600">
-                {delegationTasks.filter(t => t.status === "In Progress").length}
+                {analytics.inProgressTasks}
               </div>
               <div className="text-sm text-gray-600">In Progress</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-purple-600">
-                {delegationTasks.filter(t => t.recurring).length}
+                {analytics.recurringTasks}
               </div>
               <div className="text-sm text-gray-600">Recurring</div>
             </div>
             <div>
               <div className="text-2xl font-bold text-green-600">
-                {Math.round(delegationTasks.reduce((acc, t) => acc + t.progress, 0) / delegationTasks.length)}%
+                {analytics.avgProgress}%
               </div>
               <div className="text-sm text-gray-600">Avg Progress</div>
             </div>

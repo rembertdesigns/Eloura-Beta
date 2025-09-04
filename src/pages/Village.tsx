@@ -7,25 +7,28 @@ import FeatureFooter from '@/components/FeatureFooter';
 import CareCircleEnhanced from '@/components/village/CareCircleEnhanced';
 import ActiveTasksEnhanced from '@/components/village/ActiveTasksEnhanced';
 import HelpRequestsLogsEnhanced from '@/components/village/HelpRequestsLogsEnhanced';
+import { useVillageData } from '@/hooks/useVillageData';
 
 const Village = () => {
+  const { analytics, loading } = useVillageData();
+  
   const stats = [
     {
       icon: Users,
       label: "Village Members",
-      value: "8",
+      value: analytics.totalMembers.toString(),
       color: "text-green-600"
     },
     {
       icon: Calendar,
       label: "Active Tasks",
-      value: "12",
+      value: analytics.activeTasks.toString(),
       color: "text-blue-600"
     },
     {
       icon: Heart,
       label: "Open Requests",
-      value: "3",
+      value: analytics.openRequests.toString(),
       color: "text-purple-600"
     }
   ];
