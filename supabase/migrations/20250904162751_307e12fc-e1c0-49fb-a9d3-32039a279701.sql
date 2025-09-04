@@ -1,0 +1,127 @@
+-- Create help_requests table
+CREATE TABLE public.help_requests (
+  id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  category TEXT NOT NULL,
+  date DATE NOT NULL,
+  time TEXT,
+  status TEXT NOT NULL DEFAULT 'open',
+  urgent BOOLEAN DEFAULT false,
+  responses_count INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+);
+
+-- Enable RLS for help_requests
+ALTER TABLE public.help_requests ENABLE ROW LEVEL SECURITY;
+
+-- Create policies for help_requests
+CREATE POLICY "Users can create their own help requests" 
+ON public.help_requests 
+FOR INSERT 
+WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can view their own help requests" 
+ON public.help_requests 
+FOR SELECT 
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own help requests" 
+ON public.help_requests 
+FOR UPDATE 
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own help requests" 
+ON public.help_requests 
+FOR DELETE 
+USING (auth.uid() = user_id);
+
+-- Create communication_logs table
+CREATE TABLE public.communication_logs (
+  id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID NOT NULL,
+  village_member_id UUID,
+  contact_name TEXT NOT NULL,
+  type TEXT NOT NULL,
+  notes TEXT NOT NULL,
+  category TEXT,
+  logged_by TEXT DEFAULT 'You',
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+);
+
+-- Enable RLS for communication_logs
+ALTER TABLE public.communication_logs ENABLE ROW LEVEL SECURITY;
+
+-- Create policies for communication_logs
+CREATE POLICY "Users can create their own communication logs" 
+ON public.communication_logs 
+FOR INSERT 
+WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can view their own communication logs" 
+ON public.communication_logs 
+FOR SELECT 
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can update their own communication logs" 
+ON public.communication_logs 
+FOR UPDATE 
+USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete their own communication logs" 
+ON public.communication_logs 
+FOR DELETE 
+USING (auth.uid() = user_id);
+
+-- Update village_members table with additional fields
+ALTER TABLE public.village_members ADD COLUMN IF NOT EXISTS rating INTEGER DEFAULT 0;
+ALTER TABLE public.village_members ADD COLUMN IF NOT EXISTS rating_count INTEGER DEFAULT 0;
+ALTER TABLE public.village_members ADD COLUMN IF NOT EXISTS description TEXT;
+ALTER TABLE public.village_members ADD COLUMN IF NOT EXISTS phone TEXT;
+ALTER TABLE public.village_members ADD COLUMN IF NOT EXISTS email TEXT;
+ALTER TABLE public.village_members ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'Available';
+ALTER TABLE public.village_members ADD COLUMN IF NOT EXISTS skills TEXT[];
+ALTER TABLE public.village_members ADD COLUMN IF NOT EXISTS group_name TEXT;
+ALTER TABLE public.village_members ADD COLUMN IF NOT EXISTS recent_activity TEXT;
+ALTER TABLE public.village_members ADD COLUMN IF NOT EXISTS roles TEXT[];
+ALTER TABLE public.village_members ADD COLUMN IF NOT EXISTS is_online BOOLEAN DEFAULT false;
+ALTER TABLE public.village_members ADD COLUMN IF NOT EXISTS avatar TEXT;
+
+-- Update tasks table for village delegation
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS village_member_id UUID;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS progress INTEGER DEFAULT 0;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS attachments TEXT[];
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS notes TEXT;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS last_update TEXT;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS recurring BOOLEAN DEFAULT false;
+ALTER TABLE public.tasks ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'pending';
+
+-- Create triggers for updated_at
+CREATE TRIGGER update_help_requests_updated_at
+  BEFORE UPDATE ON public.help_requests
+  FOR EACH ROW
+  EXECUTE FUNCTION public.update_updated_at_column();
+
+CREATE TRIGGER update_communication_logs_updated_at
+  BEFORE UPDATE ON public.communication_logs
+  FOR EACH ROW
+  EXECUTE FUNCTION public.update_updated_at_column();
+
+-- Insert sample data
+INSERT INTO public.village_members (user_id, name, relationship, rating, rating_count, description, phone, email, status, skills, group_name, recent_activity, roles, is_online, avatar) VALUES
+(auth.uid(), 'Mom (Patricia)', 'mother', 5, 5, 'Great with kids, loves to help with meals', '(555) 123-4567', 'patricia@email.com', 'Available', ARRAY['Cooking', 'Childcare', 'Transportation'], 'Family', 'Picked up groceries yesterday', ARRAY['Childcare', 'Meal Support', 'Transportation'], true, 'M'),
+(auth.uid(), 'Mike (Partner)', 'partner', 5, 5, 'Great with school stuff, weekend activities', '(555) 456-7890', 'mike@email.com', 'Available evenings', ARRAY['School Support', 'Sports', 'Tech Help'], 'Family', 'Helped with homework 2 hours ago', ARRAY['School Support', 'Weekend Activities'], false, 'M'),
+(auth.uid(), 'Sarah Johnson', 'neighbor', 4, 3, 'Available for carpools and emergency pickup', '(555) 789-0123', 'sarah.j@email.com', 'Available weekdays', ARRAY['Transportation', 'Emergency Support'], 'Neighbors', 'Provided carpool last Tuesday', ARRAY['Transportation', 'Emergency Contact'], true, 'S');
+
+INSERT INTO public.help_requests (user_id, title, description, category, date, time, status, urgent, responses_count) VALUES
+(auth.uid(), 'Need babysitter for date night', 'Looking for someone to watch the kids while we go out for our anniversary', 'Childcare', CURRENT_DATE + INTERVAL '3 days', '6:00 PM - 11:00 PM', 'open', false, 2),
+(auth.uid(), 'School pickup emergency', 'Stuck in meeting, need someone to pick up kids from school', 'Transportation', CURRENT_DATE, '3:15 PM', 'fulfilled', true, 1);
+
+INSERT INTO public.communication_logs (user_id, contact_name, type, notes, category, logged_by) VALUES
+(auth.uid(), 'Mom (Patricia)', 'Phone call', 'Called to check on her appointment. She''s doing well and confirmed grocery pickup tomorrow.', 'Health', 'You'),
+(auth.uid(), 'Mike (Partner)', 'Text message', 'Confirmed soccer practice carpool. He''ll pick up kids at 3 PM.', 'Transportation', 'You'),
+(auth.uid(), 'Dr. Peterson', 'Visit', 'Annual checkup completed. All vitals normal. Next appointment in 6 months.', 'Health', 'Mike (Partner)'),
+(auth.uid(), 'Sarah Johnson', 'Email', 'Coordinated playdate for next weekend. Kids are excited!', 'Social', 'You');
