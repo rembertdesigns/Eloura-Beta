@@ -219,11 +219,15 @@ export const useVillageData = () => {
         .eq('created_by', user.id)
         .order('last_message_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.log('No conversations found or table not accessible:', error);
+        setConversations([]);
+        return;
+      }
       setConversations(data || []);
     } catch (err) {
-      console.error('Error fetching conversations:', err);
-      setError('Failed to load conversations');
+      console.log('Conversations not available:', err);
+      setConversations([]);
     }
   };
 
@@ -238,11 +242,15 @@ export const useVillageData = () => {
         .eq('sender_id', user.id)
         .order('created_at', { ascending: true });
 
-      if (error) throw error;
+      if (error) {
+        console.log('No messages found or table not accessible:', error);
+        setMessages([]);
+        return;
+      }
       setMessages(data || []);
     } catch (err) {
-      console.error('Error fetching messages:', err);
-      setError('Failed to load messages');
+      console.log('Messages not available:', err);
+      setMessages([]);
     }
   };
 
@@ -297,14 +305,27 @@ export const useVillageData = () => {
     if (user) {
       const loadData = async () => {
         setLoading(true);
+        setError(null);
+        
+        // Load critical data first
+        try {
+          await Promise.all([
+            fetchVillageMembers(),
+            fetchHelpRequests(),
+            fetchCommunicationLogs(),
+            fetchDelegationTasks()
+          ]);
+        } catch (err) {
+          console.error('Error loading main data:', err);
+          setError('Failed to load village data');
+        }
+        
+        // Load optional messaging data (don't fail if these don't work)
         await Promise.all([
-          fetchVillageMembers(),
-          fetchHelpRequests(),
-          fetchCommunicationLogs(),
-          fetchDelegationTasks(),
           fetchConversations(),
           fetchMessages()
         ]);
+        
         setLoading(false);
       };
       loadData();

@@ -20,7 +20,8 @@ const CareCircleEnhanced = () => {
     return <div className="flex items-center justify-center py-8">Loading...</div>;
   }
 
-  if (error) {
+  // Only show error for critical failures, not conversation/message failures
+  if (error && error.includes('village data')) {
     return <div className="text-red-600 text-center py-8">Error: {error}</div>;
   }
 
