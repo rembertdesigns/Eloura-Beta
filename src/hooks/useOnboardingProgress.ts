@@ -17,6 +17,7 @@ interface OnboardingData {
   priorities?: string[];
   currentStep?: string;
   onboardingCompleted?: boolean;
+  tourCompleted?: boolean;
 }
 
 export const useOnboardingProgress = () => {
@@ -99,6 +100,41 @@ export const useOnboardingProgress = () => {
     }
   }, [user, toast]);
 
+  const markTourCompleted = useCallback(async (): Promise<void> => {
+    if (!user) {
+      console.warn('No user found, cannot mark tour as completed');
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const { error } = await supabase
+        .from('user_onboarding')
+        .update({ tour_completed: true })
+        .eq('user_id', user.id);
+
+      if (error) {
+        console.error('Error marking tour as completed:', error);
+        throw error;
+      }
+
+      toast({
+        title: "Welcome to Eloura!",
+        description: "You're all set to get started with your household management.",
+      });
+
+    } catch (error) {
+      console.error('Error marking tour as completed:', error);
+      toast({
+        title: "Tour completed!",
+        description: "Welcome to Eloura. You're all set to get started.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [user, toast]);
+
   const loadProgress = useCallback(async () => {
     if (!user) return null;
 
@@ -126,6 +162,7 @@ export const useOnboardingProgress = () => {
         priorities: data.priorities ? JSON.parse(data.priorities as string) : [],
         currentStep: data.current_step || 'intro',
         onboardingCompleted: data.onboarding_completed || false,
+        tourCompleted: data.tour_completed || false,
       };
     } catch (error) {
       console.error('Error loading onboarding progress:', error);
@@ -172,6 +209,7 @@ export const useOnboardingProgress = () => {
     saveProgress,
     loadProgress,
     uploadProfilePhoto,
+    markTourCompleted,
     loading,
   };
 };

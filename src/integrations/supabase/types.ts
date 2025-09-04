@@ -118,6 +118,7 @@ export type Database = {
           priorities: Json | null
           pronouns: string | null
           state: string | null
+          tour_completed: boolean | null
           updated_at: string
           user_id: string
           zip_code: string | null
@@ -144,6 +145,7 @@ export type Database = {
           priorities?: Json | null
           pronouns?: string | null
           state?: string | null
+          tour_completed?: boolean | null
           updated_at?: string
           user_id: string
           zip_code?: string | null
@@ -170,6 +172,7 @@ export type Database = {
           priorities?: Json | null
           pronouns?: string | null
           state?: string | null
+          tour_completed?: boolean | null
           updated_at?: string
           user_id?: string
           zip_code?: string | null

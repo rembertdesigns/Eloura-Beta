@@ -15,6 +15,8 @@ import { Users, TrendingUp, Calendar, Clock, CheckSquare, Target } from 'lucide-
 import VillagePreview from '@/components/VillagePreview';
 import InteractiveTour from './InteractiveTour';
 import MiniChecklist from './MiniChecklist';
+import { useOnboardingProgress } from '@/hooks/useOnboardingProgress';
+import { toast } from '@/hooks/use-toast';
 
 const FirstTimeDashboard = () => {
   const [showTour, setShowTour] = useState(false);
@@ -22,16 +24,31 @@ const FirstTimeDashboard = () => {
   const [householdName, setHouseholdName] = useState('');
   const [tasks, setTasks] = useState([]);
   const [invites, setInvites] = useState([]);
+  const { markTourCompleted, loadProgress } = useOnboardingProgress();
 
   useEffect(() => {
-    const loadData = () => {
+    const loadData = async () => {
+      // Load from localStorage for immediate updates
       const savedHouseholdName = localStorage.getItem('householdName');
       const savedTasks = JSON.parse(localStorage.getItem('userTasks') || '[]');
       const savedInvites = JSON.parse(localStorage.getItem('pendingInvites') || '[]');
       
-      if (savedHouseholdName) {
-        setHouseholdName(savedHouseholdName);
+      // Also load from Supabase for persistent data
+      try {
+        const progress = await loadProgress();
+        if (progress?.householdName) {
+          setHouseholdName(progress.householdName);
+        } else if (savedHouseholdName) {
+          setHouseholdName(savedHouseholdName);
+        }
+      } catch (error) {
+        console.error('Error loading progress:', error);
+        // Fallback to localStorage
+        if (savedHouseholdName) {
+          setHouseholdName(savedHouseholdName);
+        }
       }
+      
       if (savedTasks) {
         setTasks(savedTasks);
       }
@@ -43,18 +60,33 @@ const FirstTimeDashboard = () => {
     loadData();
     
     // Listen for storage changes to update when new items are added via checklist
-    const interval = setInterval(loadData, 1000);
+    const interval = setInterval(() => {
+      const savedTasks = JSON.parse(localStorage.getItem('userTasks') || '[]');
+      const savedInvites = JSON.parse(localStorage.getItem('pendingInvites') || '[]');
+      setTasks(savedTasks);
+      setInvites(savedInvites);
+    }, 1000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [loadProgress]);
 
   const handleStartTour = () => {
     setShowTour(true);
   };
 
-  const handleTourComplete = () => {
+  const handleTourComplete = async () => {
     setShowTour(false);
     setTourCompleted(true);
+    
+    try {
+      await markTourCompleted();
+    } catch (error) {
+      console.error('Error marking tour as completed:', error);
+      toast({
+        title: "Tour completed!",
+        description: "Welcome to Eloura. You're all set to get started.",
+      });
+    }
   };
 
   if (showTour) {

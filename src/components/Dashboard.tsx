@@ -22,19 +22,27 @@ import {
   Filter
 } from 'lucide-react';
 import FirstTimeDashboard from './FirstTimeDashboard';
+import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
 
 const Dashboard = () => {
   const [taskFilter, setTaskFilter] = useState('all');
-  const [isFirstTime, setIsFirstTime] = useState(true); // Check if user is first-time visitor
-  
-  useEffect(() => {
-    // Check if user has completed onboarding/setup
-    const hasCompletedSetup = localStorage.getItem('dashboardSetupCompleted');
-    setIsFirstTime(!hasCompletedSetup);
-  }, []);
+  const { isOnboardingComplete, isTourComplete, loading } = useOnboardingStatus();
 
-  // If first time, show the first-time dashboard experience
-  if (isFirstTime) {
+  // Show loading while checking status
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-sm text-muted-foreground mt-2">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // If onboarding not complete, redirect to onboarding (handled by app routing)
+  // If onboarding complete but tour not complete, show first-time experience
+  if (isOnboardingComplete && !isTourComplete) {
     return <FirstTimeDashboard />;
   }
   
