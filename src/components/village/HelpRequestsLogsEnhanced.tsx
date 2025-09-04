@@ -402,7 +402,7 @@ const HelpRequestsLogsEnhanced = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Total Logs</span>
-                    <span className="font-medium">{commLogs.length}</span>
+                    <span className="font-medium">{communicationLogs.length}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">This Week</span>
