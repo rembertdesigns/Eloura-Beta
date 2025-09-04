@@ -14,6 +14,7 @@ import QuickAddTask from '@/components/QuickAddTask';
 import TaskRatingModal from '@/components/TaskRatingModal';
 import { useDailyBriefData } from '@/hooks/useDailyBriefData';
 import { useAuth } from '@/contexts/AuthContext';
+
 const DailyBrief = () => {
   const { user } = useAuth();
   const {
@@ -42,6 +43,12 @@ const DailyBrief = () => {
   const [showTaskRatingModal, setShowTaskRatingModal] = useState(false);
   const [newlyCompletedTasks, setNewlyCompletedTasks] = useState<any[]>([]);
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [animatedNumbers, setAnimatedNumbers] = useState({
+    tasks: 0,
+    village: 0,
+    goals: 0
+  });
 
   // Get stats from hook
   const stats = getStats();
@@ -54,6 +61,36 @@ const DailyBrief = () => {
     villageCount
   } = stats;
 
+  // Animation effect on component mount - MOVED TO TOP BEFORE ANY RETURNS
+  useEffect(() => {
+    setIsLoaded(true);
+    // Get random quote on mount
+    setCurrentQuoteIndex(Math.floor(Math.random() * 8)); // Hook has 8 quotes
+
+    // Animate numbers counting up
+    const animateNumber = (target: number, key: 'tasks' | 'village' | 'goals') => {
+      let current = 0;
+      const increment = Math.ceil(target / 20);
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        setAnimatedNumbers(prev => ({
+          ...prev,
+          [key]: current
+        }));
+      }, 50);
+    };
+
+    setTimeout(() => {
+      animateNumber(completedTasks, 'tasks');
+      animateNumber(villageCount, 'village');
+      animateNumber(activeGoalsCount, 'goals');
+    }, 300);
+  }, [completedTasks, villageCount, activeGoalsCount]);
+
   // Get user name from auth context
   const getUserName = () => {
     if (!user) return 'there';
@@ -62,14 +99,6 @@ const DailyBrief = () => {
            user.user_metadata?.first_name || 
            'there';
   };
-
-  // State for current quote to allow refreshing
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [animatedNumbers, setAnimatedNumbers] = useState({
-    tasks: 0,
-    village: 0,
-    goals: 0
-  });
 
   // Show loading while data is being fetched
   if (loading) {
@@ -82,6 +111,7 @@ const DailyBrief = () => {
       </div>
     );
   }
+
   // Get current date
   const getCurrentDate = () => {
     const today = new Date();
@@ -114,35 +144,6 @@ const DailyBrief = () => {
     }
   };
 
-  // Animation effect on component mount
-  useEffect(() => {
-    setIsLoaded(true);
-    // Get random quote on mount
-    setCurrentQuoteIndex(Math.floor(Math.random() * 8)); // Hook has 8 quotes
-
-    // Animate numbers counting up
-    const animateNumber = (target: number, key: 'tasks' | 'village' | 'goals') => {
-      let current = 0;
-      const increment = Math.ceil(target / 20);
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          current = target;
-          clearInterval(timer);
-        }
-        setAnimatedNumbers(prev => ({
-          ...prev,
-          [key]: current
-        }));
-      }, 50);
-    };
-
-    setTimeout(() => {
-      animateNumber(completedTasks, 'tasks');
-      animateNumber(villageCount, 'village');
-      animateNumber(activeGoalsCount, 'goals');
-    }, 300);
-  }, [completedTasks, villageCount, activeGoalsCount]);
   const handleAddGoal = async (goal: any) => {
     await addGoal(goal);
   };
@@ -164,6 +165,7 @@ const DailyBrief = () => {
       setShowTaskRatingModal(true);
     }
   };
+
   const handleStatusCardClick = (filter: string) => {
     setActiveFilter(filter);
     const filterMessages = {
@@ -176,6 +178,7 @@ const DailyBrief = () => {
       title: `Filtered to show ${filterMessages[filter] || filter}`
     });
   };
+
   const handleMarkDayComplete = () => {
     setShowCelebration(true);
     toast({
@@ -213,8 +216,9 @@ const DailyBrief = () => {
       description: "Task order updated."
     });
   };
-  return <div className="min-h-screen bg-white flex flex-col">
-      
+
+  return (
+    <div className="min-h-screen bg-white flex flex-col">
       <div className="container mx-auto px-4 py-12 md:py-16 lg:py-12 max-w-7xl flex-1 flex flex-col justify-center">
         {/* 1. Top Section (Header) */}
         <div className="mb-6">
@@ -239,9 +243,6 @@ const DailyBrief = () => {
             </div>
           </div>
         </div>
-
-        {/* 2. Celebrate Yourself (Clickable Card) */}
-        
 
         {/* 3. Summary Status Bar (Enhanced with center alignment and animations) */}
         <div className="flex justify-center mb-8">
@@ -291,45 +292,49 @@ const DailyBrief = () => {
         {/* 4. Main Content (3-Column Layout) - Always show task list */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Left Column - Priorities & Upcoming (3 columns) */}
-            {shouldShowSection('priorities') && <div className="lg:col-span-3 space-y-6">
-              {/* Today's Priorities */}
-              <Card className="shadow-lg">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
-                    <AlertTriangle className="h-5 w-5 text-red-500" />
-                    Today's Priorities
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {priorities.map(priority => <div key={priority.id} className={`p-3 rounded-lg border-l-4 ${priority.priority_type === 'urgent' ? 'bg-red-50 border-red-400' : priority.priority_type === 'high' ? 'bg-yellow-50 border-yellow-400' : 'bg-blue-50 border-blue-400'}`}>
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <p className="font-medium text-slate-800 text-sm">{priority.title}</p>
-                          <p className="text-xs text-slate-600 mt-1">Due: {priority.due_time || 'TBD'}</p>
+            {shouldShowSection('priorities') && (
+              <div className="lg:col-span-3 space-y-6">
+                {/* Today's Priorities */}
+                <Card className="shadow-lg">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
+                      <AlertTriangle className="h-5 w-5 text-red-500" />
+                      Today's Priorities
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {priorities.map(priority => (
+                      <div key={priority.id} className={`p-3 rounded-lg border-l-4 ${priority.priority_type === 'urgent' ? 'bg-red-50 border-red-400' : priority.priority_type === 'high' ? 'bg-yellow-50 border-yellow-400' : 'bg-blue-50 border-blue-400'}`}>
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <p className="font-medium text-slate-800 text-sm">{priority.title}</p>
+                            <p className="text-xs text-slate-600 mt-1">Due: {priority.due_time || 'TBD'}</p>
+                          </div>
+                          <Badge variant="outline" className={`text-xs ${priority.priority_type === 'urgent' ? 'bg-red-100 text-red-700 border-red-200' : priority.priority_type === 'high' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' : 'bg-blue-100 text-blue-700 border-blue-200'}`}>
+                            {priority.priority_type === 'urgent' ? 'Urgent' : priority.priority_type === 'high' ? 'High' : 'Scheduled'}
+                          </Badge>
                         </div>
-                        <Badge variant="outline" className={`text-xs ${priority.priority_type === 'urgent' ? 'bg-red-100 text-red-700 border-red-200' : priority.priority_type === 'high' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' : 'bg-blue-100 text-blue-700 border-blue-200'}`}>
-                          {priority.priority_type === 'urgent' ? 'Urgent' : priority.priority_type === 'high' ? 'High' : 'Scheduled'}
-                        </Badge>
                       </div>
-                    </div>)}
-                </CardContent>
-              </Card>
+                    ))}
+                  </CardContent>
+                </Card>
 
-              {/* Upcoming This Week */}
-              <Card className="shadow-lg">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-lg font-semibold text-slate-800">Upcoming This Week</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {/* Show placeholder for upcoming events since we removed dummy data */}
-                  <div className="text-center py-8 text-slate-500">
-                    <Calendar className="h-8 w-8 mx-auto mb-2" />
-                    <p className="text-sm">No upcoming events this week</p>
-                    <p className="text-xs mt-1">Add events to your calendar to see them here!</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>}
+                {/* Upcoming This Week */}
+                <Card className="shadow-lg">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="text-lg font-semibold text-slate-800">Upcoming This Week</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    {/* Show placeholder for upcoming events since we removed dummy data */}
+                    <div className="text-center py-8 text-slate-500">
+                      <Calendar className="h-8 w-8 mx-auto mb-2" />
+                      <p className="text-sm">No upcoming events this week</p>
+                      <p className="text-xs mt-1">Add events to your calendar to see them here!</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
 
           {/* Center Column - Task Overview (always visible) */}
           <div className={`${activeFilter !== 'default' && shouldShowSection('priorities') ? 'lg:col-span-6' : activeFilter !== 'default' && (shouldShowSection('social') || shouldShowSection('goals')) ? 'lg:col-span-9' : 'lg:col-span-12'}`}>
@@ -348,7 +353,8 @@ const DailyBrief = () => {
                 </CardHeader>
                  <CardContent className="py-6">
                    <div className="space-y-1">
-                     {(activeFilter === 'default' ? tasks : filteredTasks).map((task, index) => <div key={task.id} className="flex items-center justify-between p-2 bg-white rounded-lg border hover:shadow-md transition-shadow group cursor-move shadow-sm" draggable onDragStart={e => handleDragStart(e, task.id)} onDragOver={handleDragOver} onDrop={e => handleDrop(e, index)}>
+                     {(activeFilter === 'default' ? tasks : filteredTasks).map((task, index) => (
+                       <div key={task.id} className="flex items-center justify-between p-2 bg-white rounded-lg border hover:shadow-md transition-shadow group cursor-move shadow-sm" draggable onDragStart={e => handleDragStart(e, task.id)} onDragOver={handleDragOver} onDrop={e => handleDrop(e, index)}>
                         <div className="flex items-center gap-2 flex-1">
                           <input type="checkbox" checked={task.completed} onChange={() => handleTaskToggle(task.id)} className="w-4 h-4 text-green-600 rounded cursor-pointer flex-shrink-0" />
                           <div className="flex-1 min-w-0">
@@ -366,22 +372,29 @@ const DailyBrief = () => {
                             </div>
                           </div>
                         </div>
-                        {task.is_urgent && !task.completed && <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-xs px-1.5 py-0.5 ml-2 flex-shrink-0">
+                        {task.is_urgent && !task.completed && (
+                          <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-xs px-1.5 py-0.5 ml-2 flex-shrink-0">
                             urgent
-                          </Badge>}
-                      </div>)}
-                     {(activeFilter === 'default' ? tasks : filteredTasks).length === 0 && <div className="text-center py-8 text-slate-500">
+                          </Badge>
+                        )}
+                      </div>
+                     ))}
+                     {(activeFilter === 'default' ? tasks : filteredTasks).length === 0 && (
+                       <div className="text-center py-8 text-slate-500">
                          <p>No tasks found{activeFilter !== 'default' ? ' for the selected filter' : ''}.</p>
-                       </div>}
+                       </div>
+                     )}
                   </div>
                 </CardContent>
                </Card>
              </div>
 
           {/* Right Column - Social Connection & Goals (3 columns) */}
-          {(shouldShowSection('social') || shouldShowSection('goals')) && <div className="lg:col-span-3 space-y-6">
+          {(shouldShowSection('social') || shouldShowSection('goals')) && (
+            <div className="lg:col-span-3 space-y-6">
               {/* Social Connection - Moved up for importance */}
-              {shouldShowSection('social') && <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200 shadow-lg">
+              {shouldShowSection('social') && (
+                <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200 shadow-lg">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
                       <Users className="h-5 w-5 text-blue-600" />
@@ -402,10 +415,12 @@ const DailyBrief = () => {
                       Plan Connection Time
                     </Button>
                   </CardContent>
-                </Card>}
+                </Card>
+              )}
 
               {/* Your Goals */}
-              {shouldShowSection('goals') && <Card className="shadow-lg">
+              {shouldShowSection('goals') && (
+                <Card className="shadow-lg">
                   <CardHeader className="pb-4">
                     <div className="flex items-center justify-between">
                       <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
@@ -419,7 +434,8 @@ const DailyBrief = () => {
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {goals.map(goal => <div key={goal.id} className="p-3 bg-purple-50 rounded-lg border border-purple-200 hover:bg-purple-100 transition-colors cursor-pointer">
+                    {goals.map(goal => (
+                      <div key={goal.id} className="p-3 bg-purple-50 rounded-lg border border-purple-200 hover:bg-purple-100 transition-colors cursor-pointer">
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex-1">
                             <p className="font-medium text-slate-800 text-sm">{goal.title}</p>
@@ -435,16 +451,20 @@ const DailyBrief = () => {
                           </div>
                           <Progress value={goal.progress} className="h-2" />
                         </div>
-                      </div>)}
+                      </div>
+                    ))}
                   </CardContent>
-                </Card>}
-             </div>}
+                </Card>
+              )}
+             </div>
+          )}
         </div>
 
         {/* 5. Footer Section - Enhanced */}
         <div className="mt-12 mb-4 flex justify-center relative">
           {/* Celebration overlay effect */}
-          {showCelebration && <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50">
+          {showCelebration && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50">
               <div className="animate-scale-in">
                 <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-8 py-4 rounded-full shadow-2xl">
                   <div className="flex items-center gap-3">
@@ -454,7 +474,8 @@ const DailyBrief = () => {
                   </div>
                 </div>
               </div>
-            </div>}
+            </div>
+          )}
           
           <Button variant="outline" className="min-h-[52px] px-8 border-2 border-green-300 text-green-700 hover:bg-green-50 hover:border-green-400 transition-all duration-300 hover:scale-105 font-medium text-lg shadow-lg hover:shadow-xl" onClick={handleMarkDayComplete}>
             <CheckCircle className="h-5 w-5 mr-3" />
@@ -479,7 +500,8 @@ const DailyBrief = () => {
               You're making amazing progress! Here's what you've accomplished today:
             </p>
             <div className="grid gap-4">
-              {celebrations.map((celebration) => <div key={celebration.id} className={`flex items-center gap-4 text-green-700 bg-green-50 rounded-lg p-4 transition-all duration-300 animate-fade-in border border-green-200`}>
+              {celebrations.map((celebration) => (
+                <div key={celebration.id} className={`flex items-center gap-4 text-green-700 bg-green-50 rounded-lg p-4 transition-all duration-300 animate-fade-in border border-green-200`}>
                   <div className="flex-shrink-0 bg-green-500 p-2 rounded-full">
                     <CheckCircle className="h-5 w-5 text-white" />
                   </div>
@@ -489,7 +511,8 @@ const DailyBrief = () => {
                       <p className="text-sm text-green-600 mt-1">{celebration.description}</p>
                     )}
                   </div>
-                </div>)}
+                </div>
+              ))}
               {celebrations.length === 0 && (
                 <div className="text-center py-8 text-slate-500">
                   <Star className="h-8 w-8 mx-auto mb-2" />
@@ -522,6 +545,8 @@ const DailyBrief = () => {
       <div className="md:hidden">
         <FeatureFooter />
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default DailyBrief;
