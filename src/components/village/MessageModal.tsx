@@ -37,8 +37,8 @@ const MessageModal: React.FC<MessageModalProps> = ({
   isOpen,
   onClose,
   selectedMember,
-  conversations,
-  messages,
+  conversations = [],
+  messages = [],
   onSendMessage,
   onCreateConversation
 }) => {
@@ -48,10 +48,10 @@ const MessageModal: React.FC<MessageModalProps> = ({
   const { toast } = useToast();
 
   useEffect(() => {
-    if (selectedMember && isOpen) {
+    if (selectedMember && isOpen && conversations.length >= 0) {
       // Find existing conversation or create new one
       const existingConversation = conversations.find(c => 
-        c.name.toLowerCase().includes(selectedMember.name.toLowerCase())
+        c.name && c.name.toLowerCase().includes(selectedMember.name?.toLowerCase() || '')
       );
       
       if (existingConversation) {

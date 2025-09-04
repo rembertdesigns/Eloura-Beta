@@ -12,7 +12,7 @@ import RequestHelpModal from './RequestHelpModal';
 import ViewResponsesModal from './ViewResponsesModal';
 
 const HelpRequestsLogsEnhanced = () => {
-  const { helpRequests, communicationLogs, analytics, loading, error, addHelpRequest, addCommunicationLog, villageMembers } = useVillageData();
+  const { helpRequests, communicationLogs, analytics, loading, error, addHelpRequest, addCommunicationLog, villageMembers = [] } = useVillageData();
   const [newCommLog, setNewCommLog] = useState({ contact_name: '', type: '', notes: '', category: '' });
   const [showCommLogForm, setShowCommLogForm] = useState(false);
   const [showRequestHelp, setShowRequestHelp] = useState(false);
@@ -24,6 +24,14 @@ const HelpRequestsLogsEnhanced = () => {
   const [thankYouNote, setThankYouNote] = useState('');
   const [selectedHelper, setSelectedHelper] = useState<any>(null);
   const [isThankYouModalOpen, setIsThankYouModalOpen] = useState(false);
+
+  if (loading) {
+    return <div className="flex items-center justify-center py-8">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-600 text-center py-8">Error: {error}</div>;
+  }
 
   // Helper functions for styling
   const getCategoryColor = (category: string) => {

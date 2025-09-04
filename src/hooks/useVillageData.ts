@@ -4,12 +4,12 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export const useVillageData = () => {
   const { user } = useAuth();
-  const [villageMembers, setVillageMembers] = useState([]);
-  const [helpRequests, setHelpRequests] = useState([]);
-  const [communicationLogs, setCommunicationLogs] = useState([]);
-  const [delegationTasks, setDelegationTasks] = useState([]);
-  const [conversations, setConversations] = useState([]);
-  const [messages, setMessages] = useState([]);
+  const [villageMembers, setVillageMembers] = useState<any[]>([]);
+  const [helpRequests, setHelpRequests] = useState<any[]>([]);
+  const [communicationLogs, setCommunicationLogs] = useState<any[]>([]);
+  const [delegationTasks, setDelegationTasks] = useState<any[]>([]);
+  const [conversations, setConversations] = useState<any[]>([]);
+  const [messages, setMessages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -215,11 +215,8 @@ export const useVillageData = () => {
     try {
       const { data, error } = await supabase
         .from('conversations')
-        .select(`
-          *,
-          conversation_participants!inner(user_id)
-        `)
-        .eq('conversation_participants.user_id', user.id)
+        .select('*')
+        .eq('created_by', user.id)
         .order('last_message_at', { ascending: false });
 
       if (error) throw error;
@@ -237,14 +234,8 @@ export const useVillageData = () => {
     try {
       const { data, error } = await supabase
         .from('messages')
-        .select(`
-          *,
-          conversations!inner(
-            id,
-            conversation_participants!inner(user_id)
-          )
-        `)
-        .eq('conversations.conversation_participants.user_id', user.id)
+        .select('*')
+        .eq('sender_id', user.id)
         .order('created_at', { ascending: true });
 
       if (error) throw error;
@@ -271,16 +262,6 @@ export const useVillageData = () => {
         .single();
 
       if (convError) throw convError;
-
-      // Add user as participant
-      const { error: participantError } = await supabase
-        .from('conversation_participants')
-        .insert({
-          conversation_id: conversation.id,
-          user_id: user.id
-        });
-
-      if (participantError) throw participantError;
 
       await fetchConversations();
       return conversation.id;
