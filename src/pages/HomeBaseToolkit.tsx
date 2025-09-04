@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FolderOpen, Share2, Lock, FileText, Phone, Calendar, Utensils, Baby, Heart, Download, Trash2 } from 'lucide-react';
+import { FolderOpen, Share2, Lock, FileText, Phone, Calendar, Utensils, Baby, Heart, Download, Trash2, Plus } from 'lucide-react';
 import FeatureFooter from '@/components/FeatureFooter';
 import AddItemModal from '@/components/toolkit/AddItemModal';
 import { useToolkitItems, type ToolkitItem } from '@/hooks/useToolkitItems';
