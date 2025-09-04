@@ -655,7 +655,15 @@ export type Database = {
           user_id?: string
           village_member_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_tasks_village_member"
+            columns: ["village_member_id"]
+            isOneToOne: false
+            referencedRelation: "village_members"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       time_tracking: {
         Row: {
