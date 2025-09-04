@@ -720,6 +720,48 @@ export type Database = {
         }
         Relationships: []
       }
+      toolkit_items: {
+        Row: {
+          attachments: Json | null
+          category: string
+          content: string | null
+          created_at: string
+          id: string
+          item_type: string
+          shared_with: string[] | null
+          title: string
+          updated_at: string
+          user_id: string
+          visibility: string | null
+        }
+        Insert: {
+          attachments?: Json | null
+          category: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          item_type: string
+          shared_with?: string[] | null
+          title: string
+          updated_at?: string
+          user_id: string
+          visibility?: string | null
+        }
+        Update: {
+          attachments?: Json | null
+          category?: string
+          content?: string | null
+          created_at?: string
+          id?: string
+          item_type?: string
+          shared_with?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          visibility?: string | null
+        }
+        Relationships: []
+      }
       user_onboarding: {
         Row: {
           address: string | null
