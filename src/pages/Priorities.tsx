@@ -5,11 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Star } from 'lucide-react';
+import { useOnboardingProgress } from '@/hooks/useOnboardingProgress';
 import { supabase } from '@/integrations/supabase/client';
 
 const Priorities = () => {
   const navigate = useNavigate();
   const [selectedPriorities, setSelectedPriorities] = useState<string[]>([]);
+  const { saveProgress } = useOnboardingProgress();
 
   const priorities = [
     'Daily planning and organization',
@@ -39,21 +41,11 @@ const Priorities = () => {
     // Save to localStorage for demo
     localStorage.setItem('topPriorities', JSON.stringify(selectedPriorities));
     
-    // Save to Supabase if user is authenticated
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      try {
-        await supabase
-          .from('user_onboarding')
-          .upsert({
-            user_id: user.id,
-            priorities: selectedPriorities,
-            current_step: 'invite'
-          });
-      } catch (error) {
-        console.error('Error saving priorities:', error);
-      }
-    }
+    // Save progress to Supabase
+    await saveProgress({
+      priorities: selectedPriorities,
+      currentStep: 'invite'
+    });
     
     navigate('/invite');
   };

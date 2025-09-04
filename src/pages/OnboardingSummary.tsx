@@ -1,16 +1,17 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Edit2 } from 'lucide-react';
+import { Edit, CheckCircle } from 'lucide-react';
 import LoadingScreen from '@/components/LoadingScreen';
-import { supabase } from '@/integrations/supabase/client';
+import { useOnboardingProgress } from '@/hooks/useOnboardingProgress';
 
 const OnboardingSummary = () => {
   const navigate = useNavigate();
   const [showLoading, setShowLoading] = useState(false);
+  const { saveProgress } = useOnboardingProgress();
   const [summary, setSummary] = useState({
     familyType: '',
     householdName: '',
@@ -69,30 +70,16 @@ const OnboardingSummary = () => {
     });
   }, []);
 
-  const handleFinish = () => {
+  const handleFinish = async () => {
+    // Mark onboarding as completed
+    await saveProgress({
+      currentStep: 'completed',
+      onboardingCompleted: true
+    });
     setShowLoading(true);
   };
 
   const handleLoadingComplete = () => {
-    // Mark onboarding as completed in Supabase
-    const completeOnboarding = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        try {
-          await supabase
-            .from('user_onboarding')
-            .update({
-              onboarding_completed: true,
-              current_step: 'completed'
-            })
-            .eq('user_id', user.id);
-        } catch (error) {
-          console.error('Error completing onboarding:', error);
-        }
-      }
-    };
-    
-    completeOnboarding();
     navigate('/dashboard');
   };
 
@@ -152,7 +139,7 @@ const OnboardingSummary = () => {
                   onClick={() => navigate('/family-structure')}
                   className="h-8 w-8 p-0"
                 >
-                  <Edit2 className="h-4 w-4" />
+                  <Edit className="h-4 w-4" />
                 </Button>
               </CardHeader>
               <CardContent className="pt-0">
@@ -172,7 +159,7 @@ const OnboardingSummary = () => {
                   onClick={() => navigate('/personal-info')}
                   className="h-8 w-8 p-0"
                 >
-                  <Edit2 className="h-4 w-4" />
+                  <Edit className="h-4 w-4" />
                 </Button>
               </CardHeader>
               <CardContent className="pt-0">
@@ -190,7 +177,7 @@ const OnboardingSummary = () => {
                   onClick={() => navigate('/family-structure')}
                   className="h-8 w-8 p-0"
                 >
-                  <Edit2 className="h-4 w-4" />
+                  <Edit className="h-4 w-4" />
                 </Button>
               </CardHeader>
               <CardContent className="pt-0">
@@ -224,7 +211,7 @@ const OnboardingSummary = () => {
                   onClick={() => navigate('/top-challenges')}
                   className="h-8 w-8 p-0"
                 >
-                  <Edit2 className="h-4 w-4" />
+                  <Edit className="h-4 w-4" />
                 </Button>
               </CardHeader>
               <CardContent className="pt-0">
@@ -252,7 +239,7 @@ const OnboardingSummary = () => {
                   onClick={() => navigate('/priorities')}
                   className="h-8 w-8 p-0"
                 >
-                  <Edit2 className="h-4 w-4" />
+                  <Edit className="h-4 w-4" />
                 </Button>
               </CardHeader>
               <CardContent className="pt-0">

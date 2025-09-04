@@ -1,0 +1,177 @@
+import { useState, useCallback } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+
+interface OnboardingData {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  dateOfBirth?: string;
+  pronouns?: string;
+  avatarUrl?: string;
+  familyType?: string;
+  householdName?: string;
+  challenges?: string[];
+  priorities?: string[];
+  currentStep?: string;
+  onboardingCompleted?: boolean;
+}
+
+export const useOnboardingProgress = () => {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+
+  const saveProgress = useCallback(async (data: OnboardingData) => {
+    if (!user) {
+      console.warn('No user found, skipping Supabase save');
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // Prepare onboarding data
+      const onboardingData: any = {
+        user_id: user.id,
+        current_step: data.currentStep,
+        onboarding_completed: data.onboardingCompleted || false,
+      };
+
+      // Add fields if they exist
+      if (data.firstName) onboardingData.first_name = data.firstName;
+      if (data.lastName) onboardingData.last_name = data.lastName;
+      if (data.email) onboardingData.email = data.email;
+      if (data.phone) onboardingData.phone = data.phone;
+      if (data.dateOfBirth) onboardingData.date_of_birth = data.dateOfBirth;
+      if (data.pronouns) onboardingData.pronouns = data.pronouns;
+      if (data.familyType) onboardingData.family_type = data.familyType;
+      if (data.householdName) onboardingData.household_name = data.householdName;
+      if (data.challenges) onboardingData.challenges = JSON.stringify(data.challenges);
+      if (data.priorities) onboardingData.priorities = JSON.stringify(data.priorities);
+
+      // Upsert onboarding data
+      const { error: onboardingError } = await supabase
+        .from('user_onboarding')
+        .upsert(onboardingData);
+
+      if (onboardingError) {
+        console.error('Onboarding save error:', onboardingError);
+        throw onboardingError;
+      }
+
+      // Also update profiles table with relevant fields
+      const profileData: any = {};
+      if (data.firstName && data.lastName) {
+        profileData.full_name = `${data.firstName} ${data.lastName}`;
+      }
+      if (data.email) profileData.email = data.email;
+      if (data.phone) profileData.phone = data.phone;
+      if (data.dateOfBirth) profileData.date_of_birth = data.dateOfBirth;
+      if (data.pronouns) profileData.pronouns = data.pronouns;
+      if (data.familyType) profileData.family_type = data.familyType;
+      if (data.householdName) profileData.household_name = data.householdName;
+      if (data.avatarUrl) profileData.avatar_url = data.avatarUrl;
+
+      if (Object.keys(profileData).length > 0) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update(profileData)
+          .eq('id', user.id);
+
+        if (profileError) {
+          console.error('Profile update error:', profileError);
+          // Don't throw as this is secondary
+        }
+      }
+
+    } catch (error) {
+      console.error('Error saving onboarding progress:', error);
+      toast({
+        title: "Save Error",
+        description: "There was an issue saving your progress. Your data has been saved locally.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [user, toast]);
+
+  const loadProgress = useCallback(async () => {
+    if (!user) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('user_onboarding')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error || !data) {
+        return null;
+      }
+
+      return {
+        firstName: data.first_name || '',
+        lastName: data.last_name || '',
+        email: data.email || '',
+        phone: data.phone || '',
+        dateOfBirth: data.date_of_birth || '',
+        pronouns: data.pronouns || '',
+        familyType: data.family_type || '',
+        householdName: data.household_name || '',
+        challenges: data.challenges ? JSON.parse(data.challenges as string) : [],
+        priorities: data.priorities ? JSON.parse(data.priorities as string) : [],
+        currentStep: data.current_step || 'intro',
+        onboardingCompleted: data.onboarding_completed || false,
+      };
+    } catch (error) {
+      console.error('Error loading onboarding progress:', error);
+      return null;
+    }
+  }, [user]);
+
+  const uploadProfilePhoto = useCallback(async (file: File): Promise<string | null> => {
+    if (!user) return null;
+
+    try {
+      setLoading(true);
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/avatar.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('profile-photos')
+        .upload(fileName, file, { upsert: true });
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      const { data } = supabase.storage
+        .from('profile-photos')
+        .getPublicUrl(fileName);
+
+      return data.publicUrl;
+    } catch (error) {
+      console.error('Error uploading profile photo:', error);
+      toast({
+        title: "Upload Error",
+        description: "There was an issue uploading your photo.",
+        variant: "destructive",
+      });
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, [user, toast]);
+
+  return {
+    saveProgress,
+    loadProgress,
+    uploadProfilePhoto,
+    loading,
+  };
+};

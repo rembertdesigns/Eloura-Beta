@@ -4,8 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Users, Baby, UserCheck, Heart, Home, HelpCircle, HandHeart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useOnboardingProgress } from '@/hooks/useOnboardingProgress';
 
 const FamilySetup = () => {
   const [selectedType, setSelectedType] = useState('');
@@ -13,6 +13,7 @@ const FamilySetup = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { saveProgress } = useOnboardingProgress();
 
   const familyTypes = [
     {
@@ -89,46 +90,21 @@ const FamilySetup = () => {
     try {
       setLoading(true);
       
-      // Save to localStorage for demo
-      localStorage.setItem('familyType', selectedType);
-      
-      // Save family type to profiles table
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({ family_type: selectedType })
-        .eq('id', user.id);
-
-      if (profileError) {
-        toast({
-          title: "Error",
-          description: profileError.message,
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Update onboarding progress
-      const { error: onboardingError } = await supabase
-        .from('user_onboarding')
-        .upsert({
-          user_id: user.id,
-          family_type: selectedType,
-          current_step: 'personal-info'
-        });
-
-      if (onboardingError) {
-        console.error('Onboarding error:', onboardingError);
-      }
+      // Save progress to Supabase
+      await saveProgress({
+        familyType: selectedType,
+        currentStep: 'family-structure'
+      });
 
       toast({
         title: "Family type selected",
-        description: "Let's add your personal information",
+        description: "Let's continue with your family structure",
       });
 
-      navigate('/personal-info');
+      navigate('/family-structure');
     } catch (error) {
       toast({
-        title: "Error",
+        title: "Error", 
         description: "An unexpected error occurred",
         variant: "destructive",
       });

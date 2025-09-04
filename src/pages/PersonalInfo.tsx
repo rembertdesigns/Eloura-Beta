@@ -6,10 +6,10 @@ import { Label } from '@/components/ui/label';
 import { Heart, ArrowLeft, ArrowRight, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
 import ImageCropModal from '@/components/ImageCropModal';
+import { useOnboardingProgress } from '@/hooks/useOnboardingProgress';
 const PersonalInfo = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -26,12 +26,9 @@ const PersonalInfo = () => {
   const [showCropModal, setShowCropModal] = useState(false);
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
   const navigate = useNavigate();
-  const {
-    user
-  } = useAuth();
-  const {
-    toast
-  } = useToast();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const { saveProgress, loadProgress, uploadProfilePhoto } = useOnboardingProgress();
   useEffect(() => {
     const loadExistingData = async () => {
       // First try to load from localStorage for demo purposes
@@ -45,35 +42,28 @@ const PersonalInfo = () => {
 
       // If user is authenticated, try to load from Supabase
       if (user) {
-        try {
-          const {
-            data,
-            error
-          } = await supabase.from('user_onboarding').select('*').eq('user_id', user.id).single();
-          if (data && !error) {
-            setFormData({
-              firstName: data.first_name || '',
-              lastName: data.last_name || '',
-              email: data.email || user.email || '',
-              phone: data.phone || '',
-              dateOfBirth: data.date_of_birth || '',
-              pronouns: '',
-              avatar: null
-            });
-          } else if (user.email) {
-            setFormData(prev => ({
-              ...prev,
-              email: user.email
-            }));
-          }
-        } catch (error) {
-          console.error('Error loading existing data:', error);
+        const progressData = await loadProgress();
+        if (progressData) {
+          setFormData({
+            firstName: progressData.firstName || '',
+            lastName: progressData.lastName || '',
+            email: progressData.email || user.email || '',
+            phone: progressData.phone || '',
+            dateOfBirth: progressData.dateOfBirth || '',
+            pronouns: progressData.pronouns || '',
+            avatar: null
+          });
+        } else if (user.email) {
+          setFormData(prev => ({
+            ...prev,
+            email: user.email
+          }));
         }
       }
       setInitialLoading(false);
     };
     loadExistingData();
-  }, [user]);
+  }, [user, loadProgress]);
   const handleInputChange = (field: string, value: string | File | null) => {
     if (field === 'avatar' && value instanceof File) {
       setSelectedImageFile(value);
@@ -137,72 +127,22 @@ const PersonalInfo = () => {
       setLoading(true);
       let avatarUrl = null;
 
-      // Upload profile photo if provided
-      if (formData.avatar && user) {
-        const fileName = `${user.id}/profile-${Date.now()}.${formData.avatar.name.split('.').pop()}`;
-        const { data: uploadData, error: uploadError } = await supabase.storage
-          .from('profile-photos')
-          .upload(fileName, formData.avatar, {
-            upsert: true,
-            contentType: formData.avatar.type
-          });
-
-        if (uploadError) {
-          console.error('Upload error:', uploadError);
-        } else {
-          const { data: { publicUrl } } = supabase.storage
-            .from('profile-photos')
-            .getPublicUrl(fileName);
-          avatarUrl = publicUrl;
-        }
+      // Upload profile photo if one is selected
+      if (formData.avatar) {
+        avatarUrl = await uploadProfilePhoto(formData.avatar);
       }
 
-      // Save to localStorage for demo purposes
-      localStorage.setItem('personalInfo', JSON.stringify(formData));
-
-      // Save to Supabase if user is authenticated
-      if (user) {
-        const onboardingData = {
-          user_id: user.id,
-          first_name: formData.firstName.trim(),
-          last_name: formData.lastName.trim(),
-          email: formData.email.trim(),
-          phone: formData.phone.trim(),
-          date_of_birth: formData.dateOfBirth || null,
-          pronouns: formData.pronouns.trim() || null,
-          current_step: 'family-setup'
-        };
-
-        const { error: onboardingError } = await supabase
-          .from('user_onboarding')
-          .upsert(onboardingData);
-
-        if (onboardingError) {
-          console.error('Supabase error:', onboardingError);
-        }
-
-        // Update the profiles table
-        const profileUpdates: any = {
-          full_name: `${formData.firstName.trim()} ${formData.lastName.trim()}`,
-          email: formData.email.trim(),
-          phone: formData.phone.trim(),
-          date_of_birth: formData.dateOfBirth || null,
-          pronouns: formData.pronouns.trim() || null
-        };
-
-        if (avatarUrl) {
-          profileUpdates.avatar_url = avatarUrl;
-        }
-
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .update(profileUpdates)
-          .eq('id', user.id);
-
-        if (profileError) {
-          console.error('Profile update error:', profileError);
-        }
-      }
+      // Save progress to Supabase
+      await saveProgress({
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        dateOfBirth: formData.dateOfBirth,
+        pronouns: formData.pronouns.trim(),
+        avatarUrl,
+        currentStep: 'family-setup'
+      });
 
       toast({
         title: "Information saved",
