@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Plus, Calendar, MessageCircle, Car, ShoppingCart, Stethoscope, GraduationCap, Utensils } from 'lucide-react';
+import { Plus, Calendar, MessageCircle, Car, ShoppingCart, Stethoscope, GraduationCap, Utensils, Sparkles } from 'lucide-react';
 
 const QuickActions = () => {
   const actions = [
@@ -83,18 +83,18 @@ const QuickActions = () => {
           ))}
         </div>
 
-        {/* Automation Suggestions */}
-        <div className="mt-6 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg border border-yellow-100">
-          <h4 className="font-medium text-slate-700 mb-2">💡 Smart Suggestion</h4>
+        {/* AI Smart Suggestions */}
+        <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-100">
+          <h4 className="font-medium text-slate-700 mb-2">💡 AI Assistant</h4>
           <p className="text-sm text-slate-600 mb-3">
-            Would you like me to automatically coordinate Emma's soccer carpool with other parents this week?
+            I can help you organize your day and coordinate with your support network.
           </p>
           <div className="flex gap-2">
-            <Button size="sm" className="bg-yellow-500 hover:bg-yellow-600 text-white">
-              Yes, automate
+            <Button size="sm" className="bg-blue-500 hover:bg-blue-600 text-white">
+              Get Suggestions
             </Button>
             <Button size="sm" variant="outline">
-              Maybe later
+              Learn More
             </Button>
           </div>
         </div>
