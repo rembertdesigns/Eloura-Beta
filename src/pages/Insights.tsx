@@ -2,37 +2,45 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Clock, TrendingUp, AlertTriangle, BarChart3 } from 'lucide-react';
+import { Clock, TrendingUp, AlertTriangle, BarChart3, Loader2 } from 'lucide-react';
 import MentalLoadForecast from '@/components/planner/MentalLoadForecast';
+import { useInsightsData } from '@/hooks/useInsightsData';
 
 const Insights = () => {
-  const timeTracking = {
-    childcare: { hours: 35, percentage: 45, color: "bg-green-500" },
-    eldercare: { hours: 20, percentage: 25, color: "bg-orange-500" },
-    selfcare: { hours: 8, percentage: 10, color: "bg-purple-500" },
-    household: { hours: 15, percentage: 20, color: "bg-blue-500" }
-  };
+  const { timeTracking, insights, stressPatterns, loading, error, refetch } = useInsightsData();
 
-  const insights = [
-    { 
-      type: "warning", 
-      text: "Weekends average 8.5 tasks vs 5.2 on weekdays", 
-      action: "Shift 2 errands to weekdays",
-      source: "Based on your scheduled tasks over the past 4 weeks"
-    },
-    { 
-      type: "success", 
-      text: "Tuesday mornings have 85% completion rate", 
-      action: "Keep this pattern",
-      source: "Analysis of 12 Tuesday morning schedules"
-    },
-    { 
-      type: "info", 
-      text: "Outdoor activities rated 4.2/5 for mood improvement", 
-      action: "Schedule more walks",
-      source: "From your task ratings and completion feedback"
-    }
-  ];
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex items-center gap-2">
+          <Loader2 className="h-6 w-6 animate-spin" />
+          <span>Loading insights...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="p-6">
+          <CardContent>
+            <div className="text-center">
+              <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Error Loading Insights</h3>
+              <p className="text-muted-foreground mb-4">{error}</p>
+              <button 
+                onClick={refetch}
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+              >
+                Try Again
+              </button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -53,20 +61,28 @@ const Insights = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {Object.entries(timeTracking).map(([category, data]) => (
-                <div key={category} className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="capitalize font-medium text-gray-700">{category}</span>
-                    <span className="text-sm text-gray-500">{data.hours}h ({data.percentage}%)</span>
+              {Object.entries(timeTracking).length > 0 ? (
+                Object.entries(timeTracking).map(([category, data]) => (
+                  <div key={category} className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="capitalize font-medium text-gray-700">{category}</span>
+                      <span className="text-sm text-gray-500">{data.hours}h ({data.percentage}%)</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div 
+                        className={`${data.color} h-2 rounded-full transition-all duration-300`}
+                        style={{ width: `${data.percentage}%` }}
+                      ></div>
+                    </div>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
-                      className={`${data.color} h-2 rounded-full transition-all duration-300`}
-                      style={{ width: `${data.percentage}%` }}
-                    ></div>
-                  </div>
+                ))
+              ) : (
+                <div className="text-center text-gray-500 py-8">
+                  <Clock className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                  <p>No time tracking data available yet.</p>
+                  <p className="text-sm mt-1">Start logging time for activities to see your breakdown.</p>
                 </div>
-              ))}
+              )}
             </CardContent>
           </Card>
 
@@ -79,22 +95,30 @@ const Insights = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              {insights.map((insight, index) => (
-                <div key={index} className="p-3 border border-gray-200 rounded-lg space-y-2 bg-gray-50">
-                  <div className="flex items-start gap-2">
-                    {insight.type === 'warning' && <AlertTriangle className="h-4 w-4 text-orange-500 mt-0.5" />}
-                    {insight.type === 'success' && <TrendingUp className="h-4 w-4 text-green-500 mt-0.5" />}
-                    {insight.type === 'info' && <BarChart3 className="h-4 w-4 text-blue-500 mt-0.5" />}
-                     <div className="flex-1">
-                       <p className="text-sm text-gray-700">{insight.text}</p>
-                       <p className="text-sm text-gray-500 mt-1">
-                         <strong>Action:</strong> {insight.action}
-                       </p>
-                       <p className="text-xs text-gray-400 mt-1 italic">{insight.source}</p>
-                     </div>
+              {insights.length > 0 ? (
+                insights.map((insight, index) => (
+                  <div key={index} className="p-3 border border-gray-200 rounded-lg space-y-2 bg-gray-50">
+                    <div className="flex items-start gap-2">
+                      {insight.type === 'warning' && <AlertTriangle className="h-4 w-4 text-orange-500 mt-0.5" />}
+                      {insight.type === 'success' && <TrendingUp className="h-4 w-4 text-green-500 mt-0.5" />}
+                      {insight.type === 'info' && <BarChart3 className="h-4 w-4 text-blue-500 mt-0.5" />}
+                       <div className="flex-1">
+                         <p className="text-sm text-gray-700">{insight.text}</p>
+                         <p className="text-sm text-gray-500 mt-1">
+                           <strong>Action:</strong> {insight.action}
+                         </p>
+                         <p className="text-xs text-gray-400 mt-1 italic">{insight.source}</p>
+                       </div>
+                    </div>
                   </div>
+                ))
+              ) : (
+                <div className="text-center text-gray-500 py-8">
+                  <BarChart3 className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                  <p>No insights available yet.</p>
+                  <p className="text-sm mt-1">Complete more tasks and activities to generate personalized insights.</p>
                 </div>
-              ))}
+              )}
             </CardContent>
           </Card>
         </div>
@@ -110,24 +134,63 @@ const Insights = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 bg-red-50 rounded-lg border border-red-100">
-                <h4 className="font-medium text-red-700">High Stress Times</h4>
-                <p className="text-sm text-red-600 mt-1">Tuesday mornings (7-9 AM)</p>
-                <p className="text-xs text-red-500 mt-2">6 tasks scheduled, avg rating 2.1/5</p>
-                <p className="text-xs text-red-400 mt-1">Consider spreading tasks across the week</p>
-              </div>
-              <div className="p-4 bg-green-50 rounded-lg border border-green-100">
-                <h4 className="font-medium text-green-700">Smooth Periods</h4>
-                <p className="text-sm text-green-600 mt-1">Thursday afternoons</p>
-                <p className="text-xs text-green-500 mt-2">3 tasks scheduled, avg rating 4.3/5</p>
-                <p className="text-xs text-green-400 mt-1">Perfect for scheduling new appointments</p>
-              </div>
-              <div className="p-4 bg-orange-50 rounded-lg border border-orange-100">
-                <h4 className="font-medium text-orange-700">Current Week Load</h4>
-                <p className="text-sm text-orange-600 mt-1">This week: High</p>
-                <p className="text-xs text-orange-500 mt-2">8 tasks planned, above average</p>
-                <p className="text-xs text-orange-400 mt-1">See detailed forecast below</p>
-              </div>
+              {stressPatterns.map((pattern, index) => (
+                <div 
+                  key={index} 
+                  className={`p-4 rounded-lg border ${
+                    pattern.type === 'high' 
+                      ? 'bg-red-50 border-red-100' 
+                      : pattern.type === 'smooth' 
+                      ? 'bg-green-50 border-green-100' 
+                      : 'bg-orange-50 border-orange-100'
+                  }`}
+                >
+                  <h4 className={`font-medium ${
+                    pattern.type === 'high' 
+                      ? 'text-red-700'
+                      : pattern.type === 'smooth' 
+                      ? 'text-green-700' 
+                      : 'text-orange-700'
+                  }`}>
+                    {pattern.type === 'high' ? 'High Stress Times' : 
+                     pattern.type === 'smooth' ? 'Smooth Periods' : 
+                     'Current Week Load'}
+                  </h4>
+                  <p className={`text-sm mt-1 ${
+                    pattern.type === 'high' 
+                      ? 'text-red-600'
+                      : pattern.type === 'smooth' 
+                      ? 'text-green-600' 
+                      : 'text-orange-600'
+                  }`}>
+                    {pattern.period}: {pattern.rating}
+                  </p>
+                  <p className={`text-xs mt-2 ${
+                    pattern.type === 'high' 
+                      ? 'text-red-500'
+                      : pattern.type === 'smooth' 
+                      ? 'text-green-500' 
+                      : 'text-orange-500'
+                  }`}>
+                    {pattern.description}
+                  </p>
+                  <p className={`text-xs mt-1 ${
+                    pattern.type === 'high' 
+                      ? 'text-red-400'
+                      : pattern.type === 'smooth' 
+                      ? 'text-green-400' 
+                      : 'text-orange-400'
+                  }`}>
+                    {pattern.recommendation}
+                  </p>
+                </div>
+              ))}
+              {stressPatterns.length === 0 && (
+                <div className="col-span-3 text-center text-gray-500 py-8">
+                  <p>Not enough data yet to analyze stress patterns.</p>
+                  <p className="text-sm mt-1">Complete more tasks to see personalized insights.</p>
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
