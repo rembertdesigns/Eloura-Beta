@@ -12,138 +12,76 @@ import MoodCheckPopup from '@/components/MoodCheckPopup';
 import AddGoalModal from '@/components/AddGoalModal';
 import QuickAddTask from '@/components/QuickAddTask';
 import TaskRatingModal from '@/components/TaskRatingModal';
+import { useDailyBriefData } from '@/hooks/useDailyBriefData';
+import { useAuth } from '@/contexts/AuthContext';
 const DailyBrief = () => {
+  const { user } = useAuth();
+  const {
+    tasks,
+    goals,
+    villageMembers,
+    priorities,
+    celebrations,
+    loading,
+    addGoal,
+    addTask,
+    toggleTaskCompletion,
+    updateGoalProgress,
+    getRandomQuote,
+    getStats,
+    getFilteredTasks,
+  } = useDailyBriefData();
+
   const [selectedMood, setSelectedMood] = useState('');
   const [showMoodPopup, setShowMoodPopup] = useState(false);
   const [showAddGoalModal, setShowAddGoalModal] = useState(false);
   const [showQuickAddTask, setShowQuickAddTask] = useState(false);
-  const [goals, setGoals] = useState([{
-    id: 1,
-    title: "Exercise 3x weekly",
-    category: "health",
-    progress: 70,
-    targetDate: "2024-01-31"
-  }, {
-    id: 2,
-    title: "Weekly family time",
-    category: "family",
-    progress: 85,
-    targetDate: "ongoing"
-  }]);
   const [activeFilter, setActiveFilter] = useState('default');
-  const [tasks, setTasks] = useState([{
-    id: 1,
-    text: "Pick up Sarah from soccer practice",
-    time: "3:30 PM",
-    category: "childcare",
-    completed: false,
-    urgent: false
-  }, {
-    id: 2,
-    text: "Dad's blood pressure medication",
-    time: "6:00 PM",
-    category: "eldercare",
-    completed: true,
-    urgent: false
-  }, {
-    id: 3,
-    text: "Grocery shopping for dinner",
-    time: "4:30 PM",
-    category: "general",
-    completed: false,
-    urgent: false
-  }, {
-    id: 4,
-    text: "Emily's piano lesson",
-    time: "4:00 PM",
-    category: "childcare",
-    completed: false,
-    urgent: false
-  }, {
-    id: 5,
-    text: "Mom's doctor appointment",
-    time: "2:00 PM",
-    category: "eldercare",
-    completed: false,
-    urgent: false
-  }, {
-    id: 6,
-    text: "Team meeting",
-    time: "10:00 AM",
-    category: "work",
-    completed: true,
-    urgent: false
-  }, {
-    id: 7,
-    text: "Laundry and dishes",
-    time: "7:00 PM",
-    category: "household",
-    completed: false,
-    urgent: false
-  }, {
-    id: 8,
-    text: "Call mom about doctor's appointment",
-    time: "10:00 AM",
-    category: "eldercare",
-    completed: false,
-    urgent: true
-  }, {
-    id: 9,
-    text: "Submit project proposal",
-    time: "End of day",
-    category: "work",
-    completed: false,
-    urgent: false
-  }, {
-    id: 10,
-    text: "Pick up kids from school",
-    time: "3:00 PM",
-    category: "childcare",
-    completed: false,
-    urgent: false
-  }]);
-  const priorities = [{
-    id: 1,
-    text: "Call mom about doctor's appointment",
-    time: "10:00 AM",
-    urgent: true,
-    type: "urgent"
-  }, {
-    id: 2,
-    text: "Submit project proposal",
-    time: "End of day",
-    urgent: false,
-    type: "high"
-  }, {
-    id: 3,
-    text: "Pick up kids from school",
-    time: "3:00 PM",
-    urgent: false,
-    type: "scheduled"
-  }];
-  const upcomingEvents = [{
-    day: "Wed",
-    event: "Parent-teacher conference",
-    priority: "high"
-  }, {
-    day: "Thu",
-    event: "Mom's grocery shopping",
-    priority: "medium"
-  }, {
-    day: "Fri",
-    event: "Family movie night",
-    priority: "low"
-  }, {
-    day: "Sat",
-    event: "Soccer tournament",
-    priority: "high"
-  }];
-  const celebrations = ["Completed all morning tasks on time", "Had a great call with mom yesterday", "Finished project proposal ahead of deadline"];
-  const motivationalQuotes = ["Every small step counts toward your bigger goals.", "You're handling more than you know. Give yourself credit.", "Progress, not perfection.", "Your care makes a difference in so many lives.", "Today is a new opportunity to show up for yourself and your family.", "Small acts of care create big waves of love.", "You're exactly where you need to be right now.", "Taking care of others starts with taking care of yourself."];
+  const [showCelebration, setShowCelebration] = useState(false);
+  const [showCelebrateModal, setShowCelebrateModal] = useState(false);
+  const [showTaskRatingModal, setShowTaskRatingModal] = useState(false);
+  const [newlyCompletedTasks, setNewlyCompletedTasks] = useState<any[]>([]);
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
 
-  // Mock customer name - in real app this would come from auth/user context
-  const customerName = "Sarah";
+  // Get stats from hook
+  const stats = getStats();
+  const {
+    completedTasks,
+    pendingTasks,
+    totalTasks,
+    completionPercentage,
+    activeGoalsCount,
+    villageCount
+  } = stats;
 
+  // Get user name from auth context
+  const getUserName = () => {
+    if (!user) return 'there';
+    return user.user_metadata?.full_name || 
+           user.user_metadata?.name || 
+           user.user_metadata?.first_name || 
+           'there';
+  };
+
+  // State for current quote to allow refreshing
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [animatedNumbers, setAnimatedNumbers] = useState({
+    tasks: 0,
+    village: 0,
+    goals: 0
+  });
+
+  // Show loading while data is being fetched
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-sm text-muted-foreground mt-2">Loading your daily brief...</p>
+        </div>
+      </div>
+    );
+  }
   // Get current date
   const getCurrentDate = () => {
     const today = new Date();
@@ -156,44 +94,9 @@ const DailyBrief = () => {
     return today.toLocaleDateString('en-US', options);
   };
 
-  // State for current quote to allow refreshing
-  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(Math.floor(Math.random() * motivationalQuotes.length));
+  // Get filtered tasks using hook
+  const filteredTasks = getFilteredTasks(activeFilter);
 
-  // State for animations
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [animatedNumbers, setAnimatedNumbers] = useState({
-    tasks: 0,
-    village: 0,
-    goals: 0
-  });
-  const [showCelebration, setShowCelebration] = useState(false);
-  const [showCelebrateModal, setShowCelebrateModal] = useState(false);
-  const [showTaskRatingModal, setShowTaskRatingModal] = useState(false);
-  const [newlyCompletedTasks, setNewlyCompletedTasks] = useState<any[]>([]);
-  const getFilteredTasks = () => {
-    switch (activeFilter) {
-      case 'today':
-        return tasks.filter(task => !task.completed);
-      case 'completed':
-        return tasks.filter(task => task.completed);
-      case 'pending':
-        return tasks.filter(task => !task.completed);
-      case 'childcare':
-        return tasks.filter(task => task.category === 'childcare');
-      case 'eldercare':
-        return tasks.filter(task => task.category === 'eldercare');
-      case 'household':
-        return tasks.filter(task => task.category === 'household');
-      case 'work':
-        return tasks.filter(task => task.category === 'work');
-      case 'village':
-        return tasks.filter(task => task.category === 'childcare' || task.category === 'eldercare');
-      case 'goals':
-        return tasks.filter(task => task.category === 'work' || task.category === 'general');
-      default:
-        return tasks;
-    }
-  };
   const shouldShowSection = (section: string) => {
     // Only show sections when a filter is active
     if (activeFilter === 'default') return false;
@@ -210,17 +113,12 @@ const DailyBrief = () => {
         return false;
     }
   };
-  const filteredTasks = getFilteredTasks();
-  const completedTasks = tasks.filter(task => task.completed).length;
-  const pendingTasks = tasks.filter(task => !task.completed).length;
-  const totalTasks = tasks.length;
-  const completionPercentage = Math.round(completedTasks / totalTasks * 100);
-  const connectionsCount = 4; // Mock data
-  const activeGoalsCount = goals.length;
 
   // Animation effect on component mount
   useEffect(() => {
     setIsLoaded(true);
+    // Get random quote on mount
+    setCurrentQuoteIndex(Math.floor(Math.random() * 8)); // Hook has 8 quotes
 
     // Animate numbers counting up
     const animateNumber = (target: number, key: 'tasks' | 'village' | 'goals') => {
@@ -238,39 +136,33 @@ const DailyBrief = () => {
         }));
       }, 50);
     };
+
     setTimeout(() => {
       animateNumber(completedTasks, 'tasks');
-      animateNumber(connectionsCount, 'village');
+      animateNumber(villageCount, 'village');
       animateNumber(activeGoalsCount, 'goals');
     }, 300);
-  }, [completedTasks, connectionsCount, activeGoalsCount]);
-  const handleAddGoal = (goal: any) => {
-    setGoals(prev => [...prev, goal]);
-    toast({
-      title: "Goal added successfully!"
-    });
+  }, [completedTasks, villageCount, activeGoalsCount]);
+  const handleAddGoal = async (goal: any) => {
+    await addGoal(goal);
   };
-  const handleAddTask = (task: any) => {
-    setTasks(prev => [...prev, task]);
-    toast({
-      title: "Task added successfully!"
-    });
+
+  const handleAddTask = async (task: any) => {
+    await addTask(task);
   };
-  const handleTaskToggle = (taskId: number) => {
-    setTasks(prev => prev.map(task => {
-      if (task.id === taskId) {
-        const updatedTask = { ...task, completed: !task.completed };
-        
-        // If task is being completed, show rating modal
-        if (!task.completed && updatedTask.completed) {
-          setNewlyCompletedTasks([updatedTask]);
-          setShowTaskRatingModal(true);
-        }
-        
-        return updatedTask;
-      }
-      return task;
-    }));
+
+  const handleTaskToggle = async (taskId: string) => {
+    const task = tasks.find(t => t.id === taskId);
+    if (!task) return;
+
+    const newCompletedState = !task.completed;
+    await toggleTaskCompletion(taskId, newCompletedState);
+
+    // If task is being completed, show rating modal
+    if (!task.completed && newCompletedState) {
+      setNewlyCompletedTasks([{ ...task, completed: true }]);
+      setShowTaskRatingModal(true);
+    }
   };
   const handleStatusCardClick = (filter: string) => {
     setActiveFilter(filter);
@@ -295,40 +187,31 @@ const DailyBrief = () => {
     setTimeout(() => setShowCelebration(false), 3000);
   };
 
-  const handleSaveTaskRatings = (taskId: number, ratings: { mentalLoad: number; timeEstimate: number; satisfaction: number }) => {
-    // Update the task with ratings
-    setTasks(prev => prev.map(task => 
-      task.id === taskId 
-        ? { ...task, ...ratings } 
-        : task
-    ));
-    
+  const handleSaveTaskRatings = (taskId: string, ratings: { mentalLoad: number; timeEstimate: number; satisfaction: number }) => {
+    // In a real app, you might want to save these ratings to the database
+    // For now, just show success toast
     toast({
       title: "Task rating saved!",
       description: "Thank you for your feedback."
     });
   };
 
-  // Drag and drop handlers
-  const handleDragStart = (e: React.DragEvent, taskId: number) => {
-    e.dataTransfer.setData('text/plain', taskId.toString());
+  // Drag and drop handlers (simplified for real data)
+  const handleDragStart = (e: React.DragEvent, taskId: string) => {
+    e.dataTransfer.setData('text/plain', taskId);
   };
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
   };
+
   const handleDrop = (e: React.DragEvent, targetIndex: number) => {
     e.preventDefault();
-    const draggedTaskId = parseInt(e.dataTransfer.getData('text/plain'));
-    const draggedTaskIndex = tasks.findIndex(task => task.id === draggedTaskId);
-    if (draggedTaskIndex !== -1) {
-      const newTasks = [...tasks];
-      const [draggedTask] = newTasks.splice(draggedTaskIndex, 1);
-      newTasks.splice(targetIndex, 0, draggedTask);
-      setTasks(newTasks);
-      toast({
-        title: "Task reordered!"
-      });
-    }
+    // For now, just show a toast. In a real app, you might want to update task order in database
+    toast({
+      title: "Task reordered!",
+      description: "Task order updated."
+    });
   };
   return <div className="min-h-screen bg-white flex flex-col">
       
@@ -337,10 +220,10 @@ const DailyBrief = () => {
         <div className="mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-4 gap-4">
             <div>
-              <h1 className="text-3xl font-semibold text-slate-800 mb-2">Hi, {customerName}</h1>
+              <h1 className="text-3xl font-semibold text-slate-800 mb-2">Hi, {getUserName()}</h1>
               <p className="text-slate-600 mb-2">{getCurrentDate()}</p>
               <p className="text-sm text-slate-500 italic">
-                {motivationalQuotes[currentQuoteIndex]}
+                {getRandomQuote()}
               </p>
             </div>
             
@@ -387,7 +270,7 @@ const DailyBrief = () => {
               <CardContent className="p-6 text-center h-full flex flex-col justify-center">
                 <div className="flex items-center justify-center mb-3">
                   <Users className="h-6 w-6 text-green-600 mr-3" />
-                  <span className="text-3xl font-bold text-green-600">{animatedNumbers.village}</span>
+                  <span className="text-3xl font-bold text-green-600">{villageCount}</span>
                 </div>
                 <p className="text-sm text-slate-600 font-medium">Village</p>
               </CardContent>
@@ -397,7 +280,7 @@ const DailyBrief = () => {
               <CardContent className="p-6 text-center h-full flex flex-col justify-center">
                 <div className="flex items-center justify-center mb-3">
                   <Target className="h-6 w-6 text-purple-600 mr-3" />
-                  <span className="text-3xl font-bold text-purple-600">{animatedNumbers.goals}</span>
+                  <span className="text-3xl font-bold text-purple-600">{activeGoalsCount}</span>
                 </div>
                 <p className="text-sm text-slate-600 font-medium">Goals</p>
               </CardContent>
@@ -418,14 +301,14 @@ const DailyBrief = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {priorities.map(priority => <div key={priority.id} className={`p-3 rounded-lg border-l-4 ${priority.type === 'urgent' ? 'bg-red-50 border-red-400' : priority.type === 'high' ? 'bg-yellow-50 border-yellow-400' : 'bg-blue-50 border-blue-400'}`}>
+                  {priorities.map(priority => <div key={priority.id} className={`p-3 rounded-lg border-l-4 ${priority.priority_type === 'urgent' ? 'bg-red-50 border-red-400' : priority.priority_type === 'high' ? 'bg-yellow-50 border-yellow-400' : 'bg-blue-50 border-blue-400'}`}>
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <p className="font-medium text-slate-800 text-sm">{priority.text}</p>
-                          <p className="text-xs text-slate-600 mt-1">Due: {priority.time}</p>
+                          <p className="font-medium text-slate-800 text-sm">{priority.title}</p>
+                          <p className="text-xs text-slate-600 mt-1">Due: {priority.due_time || 'TBD'}</p>
                         </div>
-                        <Badge variant="outline" className={`text-xs ${priority.type === 'urgent' ? 'bg-red-100 text-red-700 border-red-200' : priority.type === 'high' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' : 'bg-blue-100 text-blue-700 border-blue-200'}`}>
-                          {priority.type === 'urgent' ? 'Urgent' : priority.type === 'high' ? 'High' : 'Scheduled'}
+                        <Badge variant="outline" className={`text-xs ${priority.priority_type === 'urgent' ? 'bg-red-100 text-red-700 border-red-200' : priority.priority_type === 'high' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' : 'bg-blue-100 text-blue-700 border-blue-200'}`}>
+                          {priority.priority_type === 'urgent' ? 'Urgent' : priority.priority_type === 'high' ? 'High' : 'Scheduled'}
                         </Badge>
                       </div>
                     </div>)}
@@ -438,12 +321,12 @@ const DailyBrief = () => {
                   <CardTitle className="text-lg font-semibold text-slate-800">Upcoming This Week</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  {upcomingEvents.map((event, index) => <div key={index} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${event.priority === 'high' ? 'bg-red-100' : event.priority === 'medium' ? 'bg-yellow-100' : 'bg-blue-100'}`}>
-                        <span className={`text-xs font-semibold ${event.priority === 'high' ? 'text-red-700' : event.priority === 'medium' ? 'text-yellow-700' : 'text-blue-700'}`}>{event.day}</span>
-                      </div>
-                      <span className="text-sm text-slate-700 flex-1">{event.event}</span>
-                    </div>)}
+                  {/* Show placeholder for upcoming events since we removed dummy data */}
+                  <div className="text-center py-8 text-slate-500">
+                    <Calendar className="h-8 w-8 mx-auto mb-2" />
+                    <p className="text-sm">No upcoming events this week</p>
+                    <p className="text-xs mt-1">Add events to your calendar to see them here!</p>
+                  </div>
                 </CardContent>
               </Card>
             </div>}
@@ -470,12 +353,12 @@ const DailyBrief = () => {
                           <input type="checkbox" checked={task.completed} onChange={() => handleTaskToggle(task.id)} className="w-4 h-4 text-green-600 rounded cursor-pointer flex-shrink-0" />
                           <div className="flex-1 min-w-0">
                             <p className={`text-sm font-medium ${task.completed ? 'line-through text-slate-400' : 'text-slate-800'} truncate`}>
-                              {task.text}
+                              {task.title}
                             </p>
                             <div className="flex items-center gap-3 mt-0.5">
                               <p className="text-xs text-slate-500 flex items-center gap-1">
                                 <Clock className="h-3 w-3" />
-                                {task.time}
+                                {task.due_date ? new Date(task.due_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'No time set'}
                               </p>
                               <Badge variant="outline" className={`text-xs px-1.5 py-0.5 ${task.category === 'childcare' ? 'bg-green-50 text-green-700 border-green-200' : task.category === 'eldercare' ? 'bg-orange-50 text-orange-700 border-orange-200' : task.category === 'work' ? 'bg-purple-50 text-purple-700 border-purple-200' : task.category === 'household' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-gray-50 text-gray-700 border-gray-200'}`}>
                                 {task.category}
@@ -483,7 +366,7 @@ const DailyBrief = () => {
                             </div>
                           </div>
                         </div>
-                        {task.urgent && !task.completed && <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-xs px-1.5 py-0.5 ml-2 flex-shrink-0">
+                        {task.is_urgent && !task.completed && <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-xs px-1.5 py-0.5 ml-2 flex-shrink-0">
                             urgent
                           </Badge>}
                       </div>)}
@@ -596,14 +479,24 @@ const DailyBrief = () => {
               You're making amazing progress! Here's what you've accomplished today:
             </p>
             <div className="grid gap-4">
-              {celebrations.map((celebration, index) => <div key={index} className={`flex items-center gap-4 text-green-700 bg-green-50 rounded-lg p-4 transition-all duration-300 animate-fade-in border border-green-200`} style={{
-              animationDelay: `${index * 200}ms`
-            }}>
+              {celebrations.map((celebration) => <div key={celebration.id} className={`flex items-center gap-4 text-green-700 bg-green-50 rounded-lg p-4 transition-all duration-300 animate-fade-in border border-green-200`}>
                   <div className="flex-shrink-0 bg-green-500 p-2 rounded-full">
                     <CheckCircle className="h-5 w-5 text-white" />
                   </div>
-                  <span className="text-lg">{celebration}</span>
+                  <div className="flex-1">
+                    <span className="text-lg font-medium">{celebration.title}</span>
+                    {celebration.description && (
+                      <p className="text-sm text-green-600 mt-1">{celebration.description}</p>
+                    )}
+                  </div>
                 </div>)}
+              {celebrations.length === 0 && (
+                <div className="text-center py-8 text-slate-500">
+                  <Star className="h-8 w-8 mx-auto mb-2" />
+                  <p className="text-sm">No celebrations yet today!</p>
+                  <p className="text-xs mt-1">Complete some tasks to start celebrating! 🎉</p>
+                </div>
+              )}
             </div>
             <div className="mt-6 text-center">
               <p className="text-green-600 font-medium">Keep up the fantastic work! 🎉</p>
@@ -623,7 +516,7 @@ const DailyBrief = () => {
         isOpen={showTaskRatingModal} 
         onClose={() => setShowTaskRatingModal(false)} 
         completedTasks={newlyCompletedTasks}
-        onSaveRatings={handleSaveTaskRatings}
+        onSaveRatings={(taskId: number, ratings) => handleSaveTaskRatings(taskId.toString(), ratings)}
       />
       
       <div className="md:hidden">

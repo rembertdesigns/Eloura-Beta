@@ -19,10 +19,9 @@ const AddGoalModal = ({ isOpen, onOpenChange, onAddGoal }: AddGoalModalProps) =>
     title: '',
     description: '',
     category: '',
-    frequency: '',
-    reminderTime: '',
-    assignedTo: 'me',
-    targetDate: ''
+    target_date: '',
+    progress: 0,
+    is_completed: false
   });
 
   const categories = [
@@ -45,10 +44,12 @@ const AddGoalModal = ({ isOpen, onOpenChange, onAddGoal }: AddGoalModalProps) =>
     if (!goalData.title || !goalData.category) return;
 
     const newGoal = {
-      id: Date.now(),
-      ...goalData,
+      title: goalData.title,
+      description: goalData.description || null,
+      category: goalData.category,
       progress: 0,
-      createdAt: new Date().toISOString()
+      target_date: goalData.target_date || null,
+      is_completed: false
     };
 
     onAddGoal(newGoal);
@@ -56,10 +57,9 @@ const AddGoalModal = ({ isOpen, onOpenChange, onAddGoal }: AddGoalModalProps) =>
       title: '',
       description: '',
       category: '',
-      frequency: '',
-      reminderTime: '',
-      assignedTo: 'me',
-      targetDate: ''
+      target_date: '',
+      progress: 0,
+      is_completed: false
     });
     onOpenChange(false);
   };
@@ -122,74 +122,15 @@ const AddGoalModal = ({ isOpen, onOpenChange, onAddGoal }: AddGoalModalProps) =>
             </div>
 
             <div className="space-y-2">
-              <Label>How often?</Label>
-              <Select 
-                value={goalData.frequency} 
-                onValueChange={(value) => setGoalData(prev => ({ ...prev, frequency: value }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Frequency" />
-                </SelectTrigger>
-                <SelectContent>
-                  {frequencies.map((freq) => (
-                    <SelectItem key={freq.value} value={freq.value}>
-                      {freq.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="assignedTo">Who's responsible?</Label>
-              <Select 
-                value={goalData.assignedTo} 
-                onValueChange={(value) => setGoalData(prev => ({ ...prev, assignedTo: value }))}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="me">Just me</SelectItem>
-                  <SelectItem value="family">Whole family</SelectItem>
-                  <SelectItem value="partner">My partner</SelectItem>
-                  <SelectItem value="kids">Kids</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="targetDate">Target date (optional)</Label>
+              <Label htmlFor="target_date">Target date (optional)</Label>
               <Input
-                id="targetDate"
+                id="target_date"
                 type="date"
-                value={goalData.targetDate}
-                onChange={(e) => setGoalData(prev => ({ ...prev, targetDate: e.target.value }))}
+                value={goalData.target_date}
+                onChange={(e) => setGoalData(prev => ({ ...prev, target_date: e.target.value }))}
               />
             </div>
           </div>
-
-          {goalData.frequency && goalData.frequency !== 'one-time' && (
-            <div className="space-y-2">
-              <Label>Reminder time</Label>
-              <Select 
-                value={goalData.reminderTime} 
-                onValueChange={(value) => setGoalData(prev => ({ ...prev, reminderTime: value }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="When to remind you?" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="morning">Morning (9 AM)</SelectItem>
-                  <SelectItem value="afternoon">Afternoon (2 PM)</SelectItem>
-                  <SelectItem value="evening">Evening (6 PM)</SelectItem>
-                  <SelectItem value="none">No reminders</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
 
           <div className="flex gap-2 pt-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)} className="flex-1">

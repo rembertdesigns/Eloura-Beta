@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      celebrations: {
+        Row: {
+          created_at: string
+          date: string | null
+          description: string | null
+          id: string
+          is_acknowledged: boolean | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date?: string | null
+          description?: string | null
+          id?: string
+          is_acknowledged?: boolean | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string | null
+          description?: string | null
+          id?: string
+          is_acknowledged?: boolean | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       events: {
         Row: {
           category: string | null
@@ -87,6 +117,84 @@ export type Database = {
           name?: string
           notes?: string | null
           relationship?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      goals: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          is_completed: boolean | null
+          progress: number | null
+          target_date: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_completed?: boolean | null
+          progress?: number | null
+          target_date?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_completed?: boolean | null
+          progress?: number | null
+          target_date?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      priorities: {
+        Row: {
+          created_at: string
+          date: string | null
+          description: string | null
+          due_time: string | null
+          id: string
+          is_completed: boolean | null
+          priority_type: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date?: string | null
+          description?: string | null
+          due_time?: string | null
+          id?: string
+          is_completed?: boolean | null
+          priority_type?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string | null
+          description?: string | null
+          due_time?: string | null
+          id?: string
+          is_completed?: boolean | null
+          priority_type?: string
+          title?: string
           updated_at?: string
           user_id?: string
         }
@@ -320,6 +428,39 @@ export type Database = {
           updated_at?: string
           user_id?: string
           zip_code?: string | null
+        }
+        Relationships: []
+      }
+      village_members: {
+        Row: {
+          contact_info: string | null
+          created_at: string
+          id: string
+          is_active: boolean | null
+          name: string
+          relationship: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          contact_info?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          relationship?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          contact_info?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          relationship?: string | null
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
