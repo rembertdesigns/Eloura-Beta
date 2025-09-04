@@ -5,11 +5,16 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Users, Phone, Mail, MessageSquare, Star, Clock, Wifi, WifiOff, UserPlus, Filter } from 'lucide-react';
 import { useVillageData } from '@/hooks/useVillageData';
+import AddVillageMemberModal from './AddVillageMemberModal';
+import MessageModal from './MessageModal';
 
 const CareCircleEnhanced = () => {
-  const { villageMembers, loading, error } = useVillageData();
+  const { villageMembers, loading, error, addVillageMember, conversations, messages, createConversation, sendMessage } = useVillageData();
   const [filterRole, setFilterRole] = useState('');
   const [filterGroup, setFilterGroup] = useState('');
+  const [showAddMember, setShowAddMember] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   const groups = ["All", "Family", "Neighbors", "Extended Family", "Friends"];
   const allRoles = ["Childcare", "Transportation", "Meal Support", "School Support", "Emergency Contact"];
@@ -119,13 +124,31 @@ const CareCircleEnhanced = () => {
                 <span className="text-xs text-gray-400">Added: {new Date(person.created_at).toLocaleDateString()}</span>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm" className="h-8 flex-1">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="h-8 flex-1"
+                  onClick={() => {
+                    setSelectedMember(person);
+                    setShowMessage(true);
+                  }}
+                >
                   <MessageSquare className="h-4 w-4 mr-1" />
                   Message
                 </Button>
-                <Button variant="outline" size="sm" className="h-8 flex-1">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="h-8 flex-1"
+                  onClick={() => {
+                    if (person.phone) {
+                      navigator.clipboard.writeText(person.phone);
+                    }
+                  }}
+                  title={person.phone ? "Copy phone number" : "No phone number"}
+                >
                   <Phone className="h-4 w-4 mr-1" />
-                  Call
+                  Copy Number
                 </Button>
               </div>
             </div>
@@ -180,13 +203,32 @@ const CareCircleEnhanced = () => {
             </div>
             <h3 className="font-semibold text-gray-700 mb-2">Add Village Member</h3>
             <p className="text-sm text-gray-500 mb-4">Expand your care circle</p>
-            <Button className="bg-gray-800 hover:bg-gray-900">
+            <Button className="bg-gray-800 hover:bg-gray-900" onClick={() => setShowAddMember(true)}>
               <UserPlus className="h-4 w-4 mr-2" />
               Add Member
             </Button>
           </CardContent>
         </Card>
       </div>
+      
+      <AddVillageMemberModal
+        isOpen={showAddMember}
+        onClose={() => setShowAddMember(false)}
+        onSave={addVillageMember}
+      />
+      
+      <MessageModal
+        isOpen={showMessage}
+        onClose={() => {
+          setShowMessage(false);
+          setSelectedMember(null);
+        }}
+        selectedMember={selectedMember}
+        conversations={conversations}
+        messages={messages}
+        onSendMessage={sendMessage}
+        onCreateConversation={createConversation}
+      />
     </div>
   );
 };

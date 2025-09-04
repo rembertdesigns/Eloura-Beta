@@ -8,6 +8,8 @@ export const useVillageData = () => {
   const [helpRequests, setHelpRequests] = useState([]);
   const [communicationLogs, setCommunicationLogs] = useState([]);
   const [delegationTasks, setDelegationTasks] = useState([]);
+  const [conversations, setConversations] = useState([]);
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -206,6 +208,109 @@ export const useVillageData = () => {
     }
   };
 
+  // Fetch conversations
+  const fetchConversations = async () => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('conversations')
+        .select(`
+          *,
+          conversation_participants!inner(user_id)
+        `)
+        .eq('conversation_participants.user_id', user.id)
+        .order('last_message_at', { ascending: false });
+
+      if (error) throw error;
+      setConversations(data || []);
+    } catch (err) {
+      console.error('Error fetching conversations:', err);
+      setError('Failed to load conversations');
+    }
+  };
+
+  // Fetch messages
+  const fetchMessages = async () => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('messages')
+        .select(`
+          *,
+          conversations!inner(
+            id,
+            conversation_participants!inner(user_id)
+          )
+        `)
+        .eq('conversations.conversation_participants.user_id', user.id)
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+      setMessages(data || []);
+    } catch (err) {
+      console.error('Error fetching messages:', err);
+      setError('Failed to load messages');
+    }
+  };
+
+  // Create conversation
+  const createConversation = async (memberName: string): Promise<string> => {
+    if (!user) throw new Error('User not authenticated');
+    
+    try {
+      const { data: conversation, error: convError } = await supabase
+        .from('conversations')
+        .insert({
+          name: memberName,
+          created_by: user.id,
+          is_group: false
+        })
+        .select()
+        .single();
+
+      if (convError) throw convError;
+
+      // Add user as participant
+      const { error: participantError } = await supabase
+        .from('conversation_participants')
+        .insert({
+          conversation_id: conversation.id,
+          user_id: user.id
+        });
+
+      if (participantError) throw participantError;
+
+      await fetchConversations();
+      return conversation.id;
+    } catch (err) {
+      console.error('Error creating conversation:', err);
+      throw err;
+    }
+  };
+
+  // Send message
+  const sendMessage = async (conversationId: string, content: string) => {
+    if (!user) throw new Error('User not authenticated');
+    
+    try {
+      const { error } = await supabase
+        .from('messages')
+        .insert({
+          conversation_id: conversationId,
+          sender_id: user.id,
+          content: content
+        });
+
+      if (error) throw error;
+      await fetchMessages();
+    } catch (err) {
+      console.error('Error sending message:', err);
+      throw err;
+    }
+  };
+
   // Initialize data
   useEffect(() => {
     if (user) {
@@ -215,7 +320,9 @@ export const useVillageData = () => {
           fetchVillageMembers(),
           fetchHelpRequests(),
           fetchCommunicationLogs(),
-          fetchDelegationTasks()
+          fetchDelegationTasks(),
+          fetchConversations(),
+          fetchMessages()
         ]);
         setLoading(false);
       };
@@ -250,6 +357,8 @@ export const useVillageData = () => {
     helpRequests,
     communicationLogs,
     delegationTasks,
+    conversations,
+    messages,
     analytics,
     loading,
     error,
@@ -258,11 +367,15 @@ export const useVillageData = () => {
     addCommunicationLog,
     updateTask,
     deleteVillageMember,
+    createConversation,
+    sendMessage,
     refetch: () => {
       fetchVillageMembers();
       fetchHelpRequests();
       fetchCommunicationLogs();
       fetchDelegationTasks();
+      fetchConversations();
+      fetchMessages();
     }
   };
 };

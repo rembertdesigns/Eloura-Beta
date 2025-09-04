@@ -8,11 +8,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Users, MessageSquare, Edit, Plus, Search, Trophy, Clock, FileText, Star, TrendingUp, Calendar, Filter, Heart } from 'lucide-react';
 import { useVillageData } from '@/hooks/useVillageData';
+import RequestHelpModal from './RequestHelpModal';
+import ViewResponsesModal from './ViewResponsesModal';
 
 const HelpRequestsLogsEnhanced = () => {
-  const { helpRequests, communicationLogs, analytics, loading, error, addHelpRequest, addCommunicationLog } = useVillageData();
+  const { helpRequests, communicationLogs, analytics, loading, error, addHelpRequest, addCommunicationLog, villageMembers } = useVillageData();
   const [newCommLog, setNewCommLog] = useState({ contact_name: '', type: '', notes: '', category: '' });
   const [showCommLogForm, setShowCommLogForm] = useState(false);
+  const [showRequestHelp, setShowRequestHelp] = useState(false);
+  const [showViewResponses, setShowViewResponses] = useState(false);
+  const [selectedRequest, setSelectedRequest] = useState(null);
   const [searchLogs, setSearchLogs] = useState('');
   const [filterDate, setFilterDate] = useState('');
   const [filterType, setFilterType] = useState('');
@@ -136,7 +141,15 @@ const HelpRequestsLogsEnhanced = () => {
         </div>
         
         <div className="flex gap-2 mt-auto">
-          <Button variant="outline" size="sm" className="h-8">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="h-8"
+            onClick={() => {
+              setSelectedRequest(request);
+              setShowViewResponses(true);
+            }}
+          >
             <MessageSquare className="h-4 w-4 mr-1" />
             View Responses
           </Button>
@@ -197,7 +210,7 @@ const HelpRequestsLogsEnhanced = () => {
                 </div>
                 <h3 className="font-semibold text-gray-700 mb-2">Need Help?</h3>
                 <p className="text-sm text-gray-500 mb-4">Ask your village for support</p>
-                <Button className="bg-gray-800 hover:bg-gray-900">
+                <Button className="bg-gray-800 hover:bg-gray-900" onClick={() => setShowRequestHelp(true)}>
                   <Plus className="h-4 w-4 mr-2" />
                   Request Help
                 </Button>
@@ -556,6 +569,26 @@ const HelpRequestsLogsEnhanced = () => {
           </div>
         </DialogContent>
       </Dialog>
+      
+      <RequestHelpModal
+        isOpen={showRequestHelp}
+        onClose={() => setShowRequestHelp(false)}
+        onSubmit={addHelpRequest}
+        villageMembers={villageMembers}
+      />
+      
+      <ViewResponsesModal
+        isOpen={showViewResponses}
+        onClose={() => {
+          setShowViewResponses(false);
+          setSelectedRequest(null);
+        }}
+        helpRequest={selectedRequest}
+        responses={[]} // TODO: Implement responses fetching
+        onAcceptResponse={(responseId) => console.log('Accept response:', responseId)}
+        onDeclineResponse={(responseId) => console.log('Decline response:', responseId)}
+        onSendThankYou={(responderId, message) => console.log('Thank you:', responderId, message)}
+      />
     </>
   );
 };

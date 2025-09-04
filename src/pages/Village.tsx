@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import AddVillageMemberModal from '@/components/village/AddVillageMemberModal';
-import RequestHelpModal from '@/components/village/RequestHelpModal';
-import MessageModal from '@/components/village/MessageModal';
+import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Calendar, Heart, MessageSquare, UserPlus } from 'lucide-react';
 import FeatureFooter from '@/components/FeatureFooter';
+import AddVillageMemberModal from '@/components/village/AddVillageMemberModal';
+import RequestHelpModal from '@/components/village/RequestHelpModal';
+import MessageModal from '@/components/village/MessageModal';
 import CareCircleEnhanced from '@/components/village/CareCircleEnhanced';
 import ActiveTasksEnhanced from '@/components/village/ActiveTasksEnhanced';
 import HelpRequestsLogsEnhanced from '@/components/village/HelpRequestsLogsEnhanced';
