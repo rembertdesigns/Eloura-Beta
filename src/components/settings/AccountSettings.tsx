@@ -1,23 +1,95 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { User, Mail, Phone, Lock } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const AccountSettings = () => {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const [profileData, setProfileData] = useState({
-    firstName: 'Sarah',
-    lastName: 'Johnson',
-    email: 'sarah.johnson@email.com',
-    phone: '(555) 123-4567',
-    dateOfBirth: '1985-03-15'
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    dateOfBirth: ''
   });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching profile:', error);
+          return;
+        }
+
+        if (data) {
+          const nameParts = data.full_name?.split(' ') || ['', ''];
+          setProfileData({
+            firstName: nameParts[0] || '',
+            lastName: nameParts.slice(1).join(' ') || '',
+            email: data.email || user.email || '',
+            phone: data.phone || '',
+            dateOfBirth: data.date_of_birth || ''
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    fetchProfile();
+  }, [user]);
 
   const handleInputChange = (field: string, value: string) => {
     setProfileData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSave = async () => {
+    if (!user) return;
+
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({
+          full_name: `${profileData.firstName} ${profileData.lastName}`.trim(),
+          phone: profileData.phone,
+          date_of_birth: profileData.dateOfBirth || null
+        })
+        .eq('id', user.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Profile updated successfully"
+      });
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update profile",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -37,6 +109,7 @@ const AccountSettings = () => {
                 id="firstName"
                 value={profileData.firstName}
                 onChange={(e) => handleInputChange('firstName', e.target.value)}
+                placeholder="Enter your first name"
               />
             </div>
             <div>
@@ -45,6 +118,7 @@ const AccountSettings = () => {
                 id="lastName"
                 value={profileData.lastName}
                 onChange={(e) => handleInputChange('lastName', e.target.value)}
+                placeholder="Enter your last name"
               />
             </div>
           </div>
@@ -57,7 +131,10 @@ const AccountSettings = () => {
                 type="email"
                 value={profileData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
+                placeholder="Enter your email"
+                disabled
               />
+              <p className="text-xs text-gray-500 mt-1">Email cannot be changed here</p>
             </div>
             <div>
               <Label htmlFor="phone">Phone</Label>
@@ -65,6 +142,7 @@ const AccountSettings = () => {
                 id="phone"
                 value={profileData.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
+                placeholder="Enter your phone number"
               />
             </div>
           </div>
@@ -79,8 +157,12 @@ const AccountSettings = () => {
             />
           </div>
 
-          <Button className="bg-[#223b0a] hover:bg-[#1a2e08]">
-            Save Changes
+          <Button 
+            onClick={handleSave}
+            disabled={loading}
+            className="bg-[#223b0a] hover:bg-[#1a2e08]"
+          >
+            {loading ? 'Saving...' : 'Save Changes'}
           </Button>
         </CardContent>
       </Card>
@@ -95,7 +177,7 @@ const AccountSettings = () => {
         <CardContent className="space-y-4">
           <div>
             <h4 className="font-medium mb-2">Password</h4>
-            <p className="text-sm text-slate-600 mb-3">Last changed 3 months ago</p>
+            <p className="text-sm text-slate-600 mb-3">Manage your account password</p>
             <Button variant="outline">Change Password</Button>
           </div>
           
