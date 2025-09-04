@@ -141,7 +141,7 @@ export const useMessages = () => {
     }
   };
 
-  // Create a new conversation
+  // Create a new conversation (kept for compatibility)
   const createConversation = async (participantIds: string[], name?: string, isGroup: boolean = false) => {
     if (!user) return;
 

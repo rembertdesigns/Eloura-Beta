@@ -8,6 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { useMessages } from '@/hooks/useMessages';
 import { useAuth } from '@/contexts/AuthContext';
 import { format } from 'date-fns';
+import { NewConversationModal } from '@/components/NewConversationModal';
 
 const Messages = () => {
   const [messageInput, setMessageInput] = useState('');
@@ -15,6 +16,7 @@ const Messages = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
+  const [showNewConversationModal, setShowNewConversationModal] = useState(false);
   
   const { user } = useAuth();
   const { conversations, messages, loading, fetchMessages, sendMessage, togglePin } = useMessages();
@@ -30,6 +32,11 @@ const Messages = () => {
     setSelectedConversationId(conversationId);
     setShowChat(true);
     fetchMessages(conversationId);
+  };
+
+  const handleConversationCreated = (conversationId: string) => {
+    // Refresh conversations and select the new one
+    handleSelectConversation(conversationId);
   };
 
   const selectedConversation = conversations.find(c => c.id === selectedConversationId);
@@ -107,7 +114,7 @@ const Messages = () => {
                   </div>
                 </PopoverContent>
               </Popover>
-              <Button size="sm" disabled>
+              <Button size="sm" onClick={() => setShowNewConversationModal(true)}>
                 <Plus className="h-4 w-4 mr-1" />
                 New
               </Button>
@@ -304,6 +311,13 @@ const Messages = () => {
           </div>
         </div>
       )}
+
+      {/* New Conversation Modal */}
+      <NewConversationModal
+        open={showNewConversationModal}
+        onOpenChange={setShowNewConversationModal}
+        onConversationCreated={handleConversationCreated}
+      />
     </div>
   );
 };
