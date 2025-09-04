@@ -1,35 +1,27 @@
 import React, { useState } from 'react';
-import { Search, Plus, MoreHorizontal, Send, Pin, Users, Smile, Paperclip } from 'lucide-react';
+import { Search, Plus, MoreHorizontal, Send, Pin, Users, Smile, Paperclip, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { useMessagesData } from '@/hooks/useMessagesData';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { useMessages } from '@/hooks/useMessages';
 import { useAuth } from '@/contexts/AuthContext';
-import { formatDistanceToNow } from 'date-fns';
+import { format } from 'date-fns';
 
 const Messages = () => {
-  const { user } = useAuth();
-  const {
-    conversations,
-    messages,
-    loading,
-    selectedConversationId,
-    setSelectedConversationId,
-    sendMessage,
-    togglePin
-  } = useMessagesData();
-
   const [messageInput, setMessageInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null);
+  
+  const { user } = useAuth();
+  const { conversations, messages, loading, fetchMessages, sendMessage, togglePin } = useMessages();
 
-  const selectedConversation = conversations.find(c => c.id === selectedConversationId);
-
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (messageInput.trim() && selectedConversationId) {
-      sendMessage(selectedConversationId, messageInput);
+      await sendMessage(selectedConversationId, messageInput);
       setMessageInput('');
     }
   };
@@ -37,26 +29,40 @@ const Messages = () => {
   const handleSelectConversation = (conversationId: string) => {
     setSelectedConversationId(conversationId);
     setShowChat(true);
+    fetchMessages(conversationId);
   };
 
+  const selectedConversation = conversations.find(c => c.id === selectedConversationId);
+
   const filteredConversations = conversations
-    .filter(conv => 
-      conv.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      conv.last_message?.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+    .filter(conv => {
+      const name = conv.name || 'Unknown';
+      const lastMessage = conv.last_message || '';
+      return name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+             lastMessage.toLowerCase().includes(searchQuery.toLowerCase());
+    })
     .sort((a, b) => {
-      // Pin conversations first
       if (a.is_pinned && !b.is_pinned) return -1;
       if (!a.is_pinned && b.is_pinned) return 1;
-      // Then sort by last message time
-      return new Date(b.last_message_at).getTime() - new Date(a.last_message_at).getTime();
+      return 0;
     });
 
-  // Show loading or redirect to auth if not authenticated
+  const formatTimestamp = (timestamp: string) => {
+    try {
+      return format(new Date(timestamp), 'MMM d, h:mm a');
+    } catch {
+      return '';
+    }
+  };
+
+  const getInitials = (name: string) => {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  };
+
   if (!user) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <p>Please log in to view messages.</p>
+        <p className="text-muted-foreground">Please sign in to view messages.</p>
       </div>
     );
   }
@@ -64,7 +70,7 @@ const Messages = () => {
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <p>Loading conversations...</p>
+        <p className="text-muted-foreground">Loading conversations...</p>
       </div>
     );
   }
@@ -84,12 +90,24 @@ const Messages = () => {
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="text-sm"
                 onClick={() => setShowSearch(!showSearch)}
               >
                 <Search className="h-4 w-4" />
               </Button>
-              <Button size="sm" className="text-sm">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <Settings className="h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-56">
+                  <div className="space-y-3">
+                    <h4 className="font-medium">Settings</h4>
+                    <p className="text-sm text-muted-foreground">Message settings coming soon</p>
+                  </div>
+                </PopoverContent>
+              </Popover>
+              <Button size="sm" disabled>
                 <Plus className="h-4 w-4 mr-1" />
                 New
               </Button>
@@ -113,85 +131,74 @@ const Messages = () => {
           <div className="p-4">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-medium text-gray-900">Conversations</h2>
-              <Badge variant="secondary">{filteredConversations.filter(c => c.unread_count > 0).length}</Badge>
+              <Badge variant="secondary">{conversations.length}</Badge>
             </div>
             
-            {filteredConversations.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <p>No conversations yet</p>
-                <p className="text-sm">Start a new conversation to get started!</p>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {filteredConversations.map((conversation) => (
-                  <div
-                    key={conversation.id}
-                    className={`relative p-3 rounded-xl cursor-pointer transition-all duration-200 shadow-sm ${
-                      selectedConversationId === conversation.id
-                        ? 'bg-blue-50 border border-blue-200 shadow-md'
-                        : 'hover:bg-gray-50 hover:shadow-sm'
-                    } ${conversation.is_pinned ? 'ring-1 ring-yellow-200 bg-yellow-50' : ''}`}
-                    onClick={() => handleSelectConversation(conversation.id)}
-                  >
-                    {conversation.is_pinned && (
-                      <Pin className="absolute top-2 right-2 h-3 w-3 text-yellow-500" />
-                    )}
-                    
-                    <div className="flex items-center space-x-3">
-                      <div className="relative">
+            <div className="space-y-2">
+              {filteredConversations.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-muted-foreground">No conversations yet</p>
+                  <p className="text-sm text-muted-foreground">Start messaging your village members</p>
+                </div>
+              ) : (
+                filteredConversations.map((conversation) => {
+                  const conversationName = conversation.name || 'Unknown';
+                  const initials = getInitials(conversationName);
+                  
+                  return (
+                    <div
+                      key={conversation.id}
+                      className={`relative p-3 rounded-xl cursor-pointer transition-all duration-200 shadow-sm ${
+                        selectedConversationId === conversation.id
+                          ? 'bg-blue-50 border border-blue-200 shadow-md'
+                          : 'hover:bg-gray-50 hover:shadow-sm'
+                      } ${conversation.is_pinned ? 'ring-1 ring-yellow-200 bg-yellow-50' : ''}`}
+                      onClick={() => handleSelectConversation(conversation.id)}
+                    >
+                      {conversation.is_pinned && (
+                        <Pin className="absolute top-2 right-2 h-3 w-3 text-yellow-500" />
+                      )}
+                      
+                      <div className="flex items-center space-x-3">
                         <Avatar className="h-12 w-12">
-                          <AvatarFallback className={`${conversation.is_group ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'} font-medium`}>
-                            {conversation.is_group ? <Users className="h-6 w-6" /> : conversation.participant_info?.avatar || conversation.name?.[0] || 'U'}
+                          <AvatarFallback className="bg-blue-100 text-blue-600 font-medium">
+                            {initials}
                           </AvatarFallback>
                         </Avatar>
-                        {conversation.is_group && (
-                          <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 bg-gray-600 text-white rounded-full text-xs flex items-center justify-center">
-                            <Users className="h-2 w-2" />
-                          </div>
-                        )}
-                      </div>
-                      
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-2">
-                            <p className={`text-sm font-medium text-gray-900 truncate ${conversation.unread_count ? 'font-semibold' : ''}`}>
-                              {conversation.name || 'Unknown'}
-                            </p>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <span className="text-xs text-gray-500">
-                              {conversation.last_message_at ? formatDistanceToNow(new Date(conversation.last_message_at), { addSuffix: true }) : ''}
-                            </span>
-                            {conversation.unread_count > 0 && (
-                              <Badge className="h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-500">
-                                {conversation.unread_count}
-                              </Badge>
-                            )}
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-6 w-6 p-0 hover:bg-yellow-100"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                togglePin(conversation.id);
-                              }}
-                            >
-                              <Pin className={`h-3 w-3 ${conversation.is_pinned ? 'text-yellow-500' : 'text-gray-400'}`} />
-                            </Button>
-                          </div>
-                        </div>
                         
-                        <div className="flex items-center justify-between mt-1">
-                          <p className={`text-sm text-gray-600 truncate ${conversation.unread_count ? 'font-medium text-gray-800' : ''}`}>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm font-medium text-gray-900 truncate">
+                              {conversationName}
+                            </p>
+                            <div className="flex items-center space-x-2">
+                              <span className="text-xs text-gray-500">
+                                {formatTimestamp(conversation.last_message_at)}
+                              </span>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-6 w-6 p-0 hover:bg-yellow-100"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  togglePin(conversation.id);
+                                }}
+                              >
+                                <Pin className={`h-3 w-3 ${conversation.is_pinned ? 'text-yellow-500' : 'text-gray-400'}`} />
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          <p className="text-sm text-gray-600 truncate">
                             {conversation.last_message || 'No messages yet'}
                           </p>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  );
+                })
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -203,55 +210,35 @@ const Messages = () => {
           <div className="bg-white border-b border-gray-200 px-4 py-4 flex-shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <div className="relative">
-                  <Avatar className="h-12 w-12">
-                    <AvatarFallback className={`${selectedConversation.is_group ? 'bg-purple-100 text-purple-600' : 'bg-blue-100 text-blue-600'} font-medium`}>
-                      {selectedConversation.is_group ? <Users className="h-6 w-6" /> : selectedConversation.participant_info?.avatar || selectedConversation.name?.[0] || 'U'}
-                    </AvatarFallback>
-                  </Avatar>
-                  {selectedConversation.is_group && (
-                    <div className="absolute -bottom-0.5 -right-0.5 h-4 w-4 bg-gray-600 text-white rounded-full text-xs flex items-center justify-center">
-                      <Users className="h-2 w-2" />
-                    </div>
-                  )}
-                </div>
+                <Avatar className="h-12 w-12">
+                  <AvatarFallback className="bg-blue-100 text-blue-600 font-medium">
+                    {getInitials(selectedConversation.name || 'Unknown')}
+                  </AvatarFallback>
+                </Avatar>
                 <div>
-                  <div className="flex items-center space-x-2">
-                    <h3 className="font-medium text-gray-900">{selectedConversation.name}</h3>
-                    {selectedConversation.is_group && (
-                      <Badge variant="outline" className="text-xs">
-                        Group
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-500">
-                    {selectedConversation.is_group ? 'Group conversation' : 'Direct message'}
-                  </p>
+                  <h3 className="font-medium text-gray-900">{selectedConversation.name || 'Unknown'}</h3>
+                  <p className="text-sm text-gray-500">Messages</p>
                 </div>
               </div>
               
-              <div className="flex items-center space-x-2">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  title="Close conversation"
-                  onClick={() => {
-                    setShowChat(false);
-                    setSelectedConversationId(null);
-                  }}
-                >
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => {
+                  setShowChat(false);
+                  setSelectedConversationId(null);
+                }}
+              >
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
             </div>
           </div>
 
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {messages.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <p>No messages in this conversation yet</p>
-                <p className="text-sm">Send a message to get started!</p>
+              <div className="flex items-center justify-center h-full">
+                <p className="text-muted-foreground">No messages yet. Start the conversation!</p>
               </div>
             ) : (
               messages.map((message) => (
@@ -272,7 +259,7 @@ const Messages = () => {
                     
                     <div className={`flex items-center mt-1 ${message.is_sent ? 'justify-end' : 'justify-start'}`}>
                       <span className="text-xs text-gray-500">
-                        {formatDistanceToNow(new Date(message.created_at), { addSuffix: true })}
+                        {formatTimestamp(message.created_at)}
                       </span>
                     </div>
                   </div>
@@ -284,8 +271,8 @@ const Messages = () => {
           {/* Message Input */}
           <div className="bg-white border-t border-gray-200 px-4 py-4 flex-shrink-0">
             <div className="flex items-center space-x-3">
-              <Button variant="ghost" size="sm" title="Attach file">
-                <Paperclip className="h-4 w-4 text-gray-500" />
+              <Button variant="ghost" size="sm" disabled>
+                <Paperclip className="h-4 w-4 text-gray-400" />
               </Button>
               <Input
                 placeholder="Type a message..."
@@ -299,20 +286,18 @@ const Messages = () => {
                   }
                 }}
               />
-              <Button variant="ghost" size="sm" title="Add emoji">
-                <Smile className="h-4 w-4 text-gray-500" />
+              <Button variant="ghost" size="sm" disabled>
+                <Smile className="h-4 w-4 text-gray-400" />
               </Button>
               <Button 
                 onClick={handleSendMessage} 
                 disabled={!messageInput.trim()}
-                className="rounded-full w-10 h-10 p-0 bg-blue-500 hover:bg-blue-600"
-                title="Send message"
+                className="rounded-full w-10 h-10 p-0 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300"
               >
                 <Send className="h-4 w-4" />
               </Button>
             </div>
             
-            {/* Keyboard shortcut hint */}
             <div className="text-xs text-gray-400 mt-2 text-center">
               Press Enter to send • Shift + Enter for new line
             </div>
