@@ -300,6 +300,47 @@ export const usePlannerInsightsData = () => {
     }
   };
 
+  const addGoal = async (goalData: {
+    title: string;
+    description?: string;
+    category: string;
+    target_date?: string;
+  }) => {
+    if (!user) return;
+
+    try {
+      const { error } = await supabase
+        .from('goals')
+        .insert([{
+          user_id: user.id,
+          title: goalData.title,
+          description: goalData.description,
+          category: goalData.category,
+          target_date: goalData.target_date,
+          progress: 0,
+          is_completed: false,
+        }]);
+
+      if (error) throw error;
+      
+      // Refresh data after adding
+      fetchAllData();
+
+      toast({
+        title: "Success",
+        description: "Goal added successfully",
+      });
+
+    } catch (error) {
+      console.error('Error adding goal:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add goal",
+        variant: "destructive",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchAllData();
   }, [user]);
@@ -309,5 +350,6 @@ export const usePlannerInsightsData = () => {
     refetch: fetchAllData,
     saveReflection,
     updateGoalProgress,
+    addGoal,
   };
 };

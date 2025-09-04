@@ -87,9 +87,9 @@ const MonthView: React.FC<MonthViewProps> = ({
   const [monthlyReflection, setMonthlyReflection] = useState('');
 
   const monthDays = Array.from({ length: 31 }, (_, i) => i + 1);
-  const daysWithEvents = [5, 12, 18, 25]; // Days that have events
-  const productiveDays = [3, 7, 9, 14, 16, 21, 23, 28]; // High productivity days
-  const goalCompletionDays = [1, 8, 15, 22, 29]; // Days with goal completions
+  const daysWithEvents: number[] = []; // No dummy events
+  const productiveDays: number[] = []; // No dummy productivity days
+  const goalCompletionDays: number[] = []; // No dummy goal completion days
 
   const monthlyGoals = goals.map(goal => ({
     name: goal.title,
@@ -150,7 +150,7 @@ const MonthView: React.FC<MonthViewProps> = ({
         <CardHeader className="pb-4">
           <CardTitle className="flex items-center gap-3 text-slate-700">
             <CalendarIcon className="h-5 w-5" />
-            July 2024 - Productivity Heatmap
+            Monthly Productivity Overview
           </CardTitle>
           <div className="flex items-center gap-4 text-sm text-slate-600">
             <div className="flex items-center gap-2">
@@ -270,7 +270,7 @@ const MonthView: React.FC<MonthViewProps> = ({
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-slate-700">
                     <PieChart className="h-5 w-5 text-blue-600" />
-                    July Time Allocation
+                    Monthly Time Allocation
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -426,20 +426,9 @@ const MonthView: React.FC<MonthViewProps> = ({
                   </div>
 
                   <div className="pt-4 border-t">
-                    <h4 className="font-medium text-slate-700 mb-3">August Preview</h4>
+                    <h4 className="font-medium text-slate-700 mb-3">Upcoming Events</h4>
                     <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <Calendar className="h-4 w-4" />
-                        <span>Summer vacation - Aug 15-22</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <Target className="h-4 w-4" />
-                        <span>Q3 project deadline - Aug 30</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <Award className="h-4 w-4" />
-                        <span>Kids' back-to-school prep</span>
-                      </div>
+                      <p className="text-sm text-slate-500">No upcoming events scheduled. Add events to see them here.</p>
                     </div>
                   </div>
 

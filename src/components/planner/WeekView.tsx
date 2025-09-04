@@ -377,18 +377,7 @@ const WeekView: React.FC<WeekViewProps> = ({
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
-                    <div className="flex items-center gap-3 p-2 bg-white/80 rounded">
-                      <span className="text-xs text-gray-500 min-w-[60px]">Mon 22</span>
-                      <span className="text-sm text-gray-700">Team meeting & project kickoff</span>
-                    </div>
-                    <div className="flex items-center gap-3 p-2 bg-white/80 rounded">
-                      <span className="text-xs text-gray-500 min-w-[60px]">Wed 24</span>
-                      <span className="text-sm text-gray-700">Parent-teacher conference</span>
-                    </div>
-                    <div className="flex items-center gap-3 p-2 bg-white/80 rounded">
-                      <span className="text-xs text-gray-500 min-w-[60px]">Sat 27</span>
-                      <span className="text-sm text-gray-700">Family weekend trip</span>
-                    </div>
+                    <p className="text-sm text-gray-500">No upcoming events scheduled. Add events to see them here.</p>
                   </div>
                 </CardContent>
               </Card>
