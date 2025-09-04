@@ -25,9 +25,11 @@ export const useVillageData = () => {
         .eq('is_active', true);
 
       if (error) throw error;
+      console.log('Village members fetched:', data?.length || 0);
       setVillageMembers(data || []);
     } catch (err) {
       console.error('Error fetching village members:', err);
+      setVillageMembers([]);
       setError('Failed to load village members');
     }
   };
@@ -44,9 +46,11 @@ export const useVillageData = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
+      console.log('Help requests fetched:', data?.length || 0);
       setHelpRequests(data || []);
     } catch (err) {
       console.error('Error fetching help requests:', err);
+      setHelpRequests([]);
       setError('Failed to load help requests');
     }
   };
@@ -306,6 +310,14 @@ export const useVillageData = () => {
       const loadData = async () => {
         setLoading(true);
         setError(null);
+        
+        // Clear all data first for new users
+        setVillageMembers([]);
+        setHelpRequests([]);
+        setCommunicationLogs([]);
+        setDelegationTasks([]);
+        setConversations([]);
+        setMessages([]);
         
         // Load critical data first
         try {
