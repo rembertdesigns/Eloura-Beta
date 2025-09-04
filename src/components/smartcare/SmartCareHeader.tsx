@@ -7,8 +7,8 @@ const SmartCareHeader = () => {
     <div className="px-4 py-4 flex-shrink-0">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-sm">
-            <Heart className="h-6 w-6 text-white" />
+          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+            <Heart className="h-6 w-6 text-primary-foreground" />
           </div>
           <div>
             <h1 className="text-2xl font-semibold text-gray-900 mb-1">Smart Care Assistant</h1>

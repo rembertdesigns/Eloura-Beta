@@ -74,7 +74,7 @@ const SmartCareAssistant = () => {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-emerald-50 to-teal-50 flex flex-col overflow-hidden">
+    <div className="h-screen bg-white flex flex-col overflow-hidden">
       <div className="container mx-auto px-4 py-6 max-w-7xl h-full flex flex-col">
         {/* Header */}
         <div className="flex-shrink-0 mb-6">
