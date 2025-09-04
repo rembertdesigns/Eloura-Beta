@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
 import welcomeIllustration from '@/assets/welcome-family-illustration.png';
+import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
 const Welcome = () => {
   const navigate = useNavigate();
+  const { isOnboardingComplete, loading } = useOnboardingStatus();
+
+  useEffect(() => {
+    // Redirect to dashboard if onboarding is already completed
+    if (!loading && isOnboardingComplete) {
+      navigate('/dashboard');
+    }
+  }, [loading, isOnboardingComplete, navigate]);
+
   const handleContinue = () => {
     navigate('/intro');
   };
+
+  // Show loading or nothing while checking status
+  if (loading || isOnboardingComplete) {
+    return null;
+  }
   return <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl p-8 max-w-md w-full relative shadow-xl">
         {/* Close button */}

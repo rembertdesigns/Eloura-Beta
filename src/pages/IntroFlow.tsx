@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import chaosIllustration from '@/assets/intro-chaos-illustration.png';
 import supportIllustration from '@/assets/intro-support-illustration.png';
 import setupIllustration from '@/assets/intro-setup-woman-illustration.png';
+import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
 
 const IntroFlow = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const navigate = useNavigate();
+  const { isOnboardingComplete, loading } = useOnboardingStatus();
+
+  useEffect(() => {
+    // Redirect to dashboard if onboarding is already completed
+    if (!loading && isOnboardingComplete) {
+      navigate('/dashboard');
+    }
+  }, [loading, isOnboardingComplete, navigate]);
 
   const steps = [
     {
@@ -48,6 +57,11 @@ const IntroFlow = () => {
       navigate('/welcome');
     }
   };
+
+  // Show loading or nothing while checking status
+  if (loading || isOnboardingComplete) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
