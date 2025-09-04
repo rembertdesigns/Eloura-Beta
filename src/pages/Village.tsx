@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import AddVillageMemberModal from '@/components/village/AddVillageMemberModal';
+import RequestHelpModal from '@/components/village/RequestHelpModal';
+import MessageModal from '@/components/village/MessageModal';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,7 +14,11 @@ import HelpRequestsLogsEnhanced from '@/components/village/HelpRequestsLogsEnhan
 import { useVillageData } from '@/hooks/useVillageData';
 
 const Village = () => {
-  const { analytics, loading } = useVillageData();
+  const { analytics, loading, villageMembers, addVillageMember, addHelpRequest, conversations, messages, createConversation, sendMessage } = useVillageData();
+  const [showAddMember, setShowAddMember] = useState(false);
+  const [showRequestHelp, setShowRequestHelp] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
   
   const stats = [
     {
@@ -43,11 +51,11 @@ const Village = () => {
             <p className="text-sm text-gray-600">All the people in your support network - your village of care</p>
           </div>
           <div className="flex gap-3">
-            <Button variant="outline" className="flex items-center gap-2 text-sm">
+            <Button variant="outline" className="flex items-center gap-2 text-sm" onClick={() => setShowMessage(true)}>
               <MessageSquare className="h-4 w-4" />
               Send Message
             </Button>
-            <Button className="bg-green-600 hover:bg-green-700 flex items-center gap-2 text-sm">
+            <Button className="bg-green-600 hover:bg-green-700 flex items-center gap-2 text-sm" onClick={() => setShowAddMember(true)}>
               <UserPlus className="h-4 w-4" />
               Add Village Member
             </Button>
@@ -105,6 +113,29 @@ const Village = () => {
       <div className="md:hidden">
         <FeatureFooter />
       </div>
+      
+      <AddVillageMemberModal
+        isOpen={showAddMember}
+        onClose={() => setShowAddMember(false)}
+        onSave={addVillageMember}
+      />
+      
+      <RequestHelpModal
+        isOpen={showRequestHelp}
+        onClose={() => setShowRequestHelp(false)}
+        onSubmit={addHelpRequest}
+        villageMembers={villageMembers}
+      />
+      
+      <MessageModal
+        isOpen={showMessage}
+        onClose={() => setShowMessage(false)}
+        selectedMember={selectedMember}
+        conversations={conversations}
+        messages={messages}
+        onSendMessage={sendMessage}
+        onCreateConversation={createConversation}
+      />
     </div>
   );
 };
