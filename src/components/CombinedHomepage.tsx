@@ -48,11 +48,7 @@ const CombinedHomepage = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* Award badge */}
-            <div className="inline-flex items-center bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 mb-12 border border-[#E1CFE3]/30">
-              <span className="text-[#223B0A] font-medium">
-                Named <strong>Best Family Care App</strong> by <strong>TechCrunch</strong>
-              </span>
-            </div>
+            
 
             {/* Main headline */}
             <h1 className="text-5xl md:text-7xl font-light text-[#223B0A] mb-8 leading-tight">
