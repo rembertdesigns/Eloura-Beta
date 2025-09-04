@@ -343,15 +343,15 @@ const HelpRequestsLogsEnhanced = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Requests Made</span>
-                    <span className="font-medium">8</span>
+                    <span className="font-medium">{helpRequests.length}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Requests Fulfilled</span>
-                    <span className="font-medium">7</span>
+                    <span className="font-medium">{helpRequests.filter(r => r.status === 'fulfilled').length}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-sm text-gray-600">Avg Response Time</span>
-                    <span className="font-medium">2.3 hours</span>
+                    <span className="text-sm text-gray-600">Open Requests</span>
+                    <span className="font-medium">{helpRequests.filter(r => r.status === 'open').length}</span>
                   </div>
                 </div>
               </CardContent>
@@ -406,11 +406,25 @@ const HelpRequestsLogsEnhanced = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">This Week</span>
-                    <span className="font-medium">12</span>
+                    <span className="font-medium">{communicationLogs.filter(log => {
+                      const logDate = new Date(log.created_at);
+                      const weekAgo = new Date();
+                      weekAgo.setDate(weekAgo.getDate() - 7);
+                      return logDate >= weekAgo;
+                    }).length}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">Most Active Contact</span>
-                    <span className="font-medium">Mike</span>
+                    <span className="font-medium">{
+                      communicationLogs.length > 0 
+                        ? Object.entries(
+                            communicationLogs.reduce((acc, log) => {
+                              acc[log.contact_name] = (acc[log.contact_name] || 0) + 1;
+                              return acc;
+                            }, {} as Record<string, number>)
+                          ).sort(([,a], [,b]) => Number(b) - Number(a))[0]?.[0] || 'None'
+                        : 'None'
+                    }</span>
                   </div>
                 </div>
               </CardContent>
@@ -418,27 +432,44 @@ const HelpRequestsLogsEnhanced = () => {
           </div>
 
           {/* Category Breakdown */}
-          <Card>
+          <Card className="bg-gradient-to-r from-indigo-50 to-blue-50 border-indigo-200">
             <CardContent className="p-6">
-              <h4 className="font-semibold text-gray-900 mb-4">Help Request Categories</h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-pink-600">35%</div>
-                  <div className="text-sm text-gray-600">Childcare</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">25%</div>
-                  <div className="text-sm text-gray-600">Transportation</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">20%</div>
-                  <div className="text-sm text-gray-600">Errands</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-purple-600">20%</div>
-                  <div className="text-sm text-gray-600">Other</div>
-                </div>
+              <div className="flex items-center gap-3 mb-4">
+                <Clock className="h-5 w-5 text-indigo-600" />
+                <h4 className="font-semibold text-gray-900">Help Request Categories</h4>
               </div>
+              {helpRequests.length > 0 ? (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                  {Object.entries(
+                    helpRequests.reduce((acc, request) => {
+                      acc[request.category] = (acc[request.category] || 0) + 1;
+                      return acc;
+                    }, {} as Record<string, number>)
+                  ).map(([category, count]) => {
+                    const percentage = Math.round((Number(count) / Number(helpRequests.length)) * 100);
+                    const getColor = (cat: string) => {
+                      switch (cat.toLowerCase()) {
+                        case 'childcare': return 'text-pink-600';
+                        case 'transportation': return 'text-blue-600';
+                        case 'errands': return 'text-green-600';
+                        default: return 'text-purple-600';
+                      }
+                    };
+                    return (
+                      <div key={category} className="text-center">
+                        <div className={`text-2xl font-bold ${getColor(category)}`}>
+                          {percentage}%
+                        </div>
+                        <div className="text-sm text-gray-600">{category}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="text-center text-gray-500 py-8">
+                  No help requests yet. Create your first request to see category breakdown!
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>

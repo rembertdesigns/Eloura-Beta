@@ -235,6 +235,95 @@ export const useVillageData = () => {
     }
   }, [user]);
 
+  // Initialize sample data if none exists
+  useEffect(() => {
+    const addSampleData = async () => {
+      if (user && villageMembers.length === 0 && helpRequests.length === 0 && !loading) {
+        // Add sample village members
+        await addVillageMember({
+          name: 'Mom (Patricia)',
+          relationship: 'mother',
+          rating: 5,
+          rating_count: 5,
+          description: 'Great with kids, loves to help with meals',
+          phone: '(555) 123-4567',
+          email: 'patricia@email.com',
+          status: 'Available',
+          skills: ['Cooking', 'Childcare', 'Transportation'],
+          group_name: 'Family',
+          recent_activity: 'Picked up groceries yesterday',
+          roles: ['Childcare', 'Meal Support', 'Transportation'],
+          is_online: true,
+          avatar: 'M'
+        });
+
+        await addVillageMember({
+          name: 'Mike (Partner)',
+          relationship: 'partner',
+          rating: 5,
+          rating_count: 5,  
+          description: 'Great with school stuff, weekend activities',
+          phone: '(555) 456-7890',
+          email: 'mike@email.com',
+          status: 'Available evenings',
+          skills: ['School Support', 'Sports', 'Tech Help'],
+          group_name: 'Family',
+          recent_activity: 'Helped with homework 2 hours ago',
+          roles: ['School Support', 'Weekend Activities'],
+          is_online: false,
+          avatar: 'M'
+        });
+
+        // Add sample help requests
+        await addHelpRequest({
+          title: 'Need babysitter for date night',
+          description: 'Looking for someone to watch the kids while we go out for our anniversary',
+          category: 'Childcare',
+          date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          time: '6:00 PM - 11:00 PM',
+          status: 'open',
+          urgent: false,
+          responses_count: 2
+        });
+
+        await addHelpRequest({
+          title: 'School pickup emergency',
+          description: 'Stuck in meeting, need someone to pick up kids from school',
+          category: 'Transportation',
+          date: new Date().toISOString().split('T')[0],
+          time: '3:15 PM',
+          status: 'fulfilled',
+          urgent: true,
+          responses_count: 1
+        });
+
+        // Add sample communication logs
+        await addCommunicationLog({
+          contact_name: 'Mom (Patricia)',
+          type: 'Phone call',
+          notes: 'Called to check on her appointment. She\'s doing well and confirmed grocery pickup tomorrow.',
+          category: 'Health'
+        });
+
+        await addCommunicationLog({
+          contact_name: 'Mike (Partner)',
+          type: 'Text message',
+          notes: 'Confirmed soccer practice carpool. He\'ll pick up kids at 3 PM.',
+          category: 'Transportation'
+        });
+      }
+    };
+
+    // Add delay to ensure data is loaded first
+    const timer = setTimeout(() => {
+      if (user && !loading) {
+        addSampleData();
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [user, loading, villageMembers.length, helpRequests.length]);
+
   // Generate analytics from data
   const analytics = {
     totalMembers: villageMembers.length,
