@@ -23,13 +23,31 @@ import {
 } from 'lucide-react';
 import FirstTimeDashboard from './FirstTimeDashboard';
 import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
+import { useDashboardData } from '@/hooks/useDashboardData';
+import { useAuth } from '@/contexts/AuthContext';
+import QuickAddTaskModal from './QuickAddTaskModal';
+import AddEventModal from './AddEventModal';
+import AddReminderModal from './AddReminderModal';
+import { format } from 'date-fns';
 
 const Dashboard = () => {
   const [taskFilter, setTaskFilter] = useState('all');
+  const [quickAddModal, setQuickAddModal] = useState<'task' | 'event' | 'reminder' | null>(null);
   const { isOnboardingComplete, isTourComplete, loading } = useOnboardingStatus();
+  const { user } = useAuth();
+  const {
+    tasks,
+    events,
+    loading: dataLoading,
+    addTask,
+    addEvent,
+    addReminder,
+    toggleTaskCompletion,
+    getRandomTip,
+  } = useDashboardData();
 
   // Show loading while checking status
-  if (loading) {
+  if (loading || dataLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -45,78 +63,105 @@ const Dashboard = () => {
   if (isOnboardingComplete && !isTourComplete) {
     return <FirstTimeDashboard />;
   }
+
+  // Filter tasks for display
+  const mustDoTasks = tasks.filter(task => task.is_urgent || task.priority === 'high');
+  const pendingCount = mustDoTasks.filter(task => !task.completed).length;
   
-  const mustDoTasks = [
-    { id: 1, text: "Pick up kids from school", urgent: true, completed: false, assignedTo: "me" },
-    { id: 2, text: "Call mom about doctor's appointment", urgent: true, completed: false, assignedTo: "me" },
-    { id: 3, text: "Submit project proposal", urgent: false, completed: true, assignedTo: "me" },
-    { id: 4, text: "Grocery shopping", urgent: false, completed: false, assignedTo: "partner" },
-    { id: 5, text: "Schedule parent-teacher conference", urgent: false, completed: false, assignedTo: "me" }
-  ];
+  // Get today's events formatted for display
+  const todaysSchedule = events.map(event => ({
+    time: format(new Date(event.start_time), 'h:mm a'),
+    event: event.title,
+    category: event.category || 'event',
+    color: getCategoryColor(event.category),
+    location: event.location,
+  }));
 
-  const todaysSchedule = [
-    { time: "9:00 AM", event: "Team meeting", category: "work", color: "bg-blue-100 text-blue-700" },
-    { time: "11:30 AM", event: "Doctor visit with mom", category: "family", color: "bg-green-100 text-green-700" },
-    { time: "2:00 PM", event: "Kids pickup", category: "parenting", color: "bg-purple-100 text-purple-700" },
-    { time: "4:00 PM", event: "Soccer practice", category: "parenting", color: "bg-purple-100 text-purple-700" },
-    { time: "6:00 PM", event: "Family dinner", category: "family", color: "bg-green-100 text-green-700" }
-  ];
-
-  const taskCategories = [
-    {
-      title: "Caretaking",
-      tasks: ["Mom's medication reminder", "Dad's physical therapy", "Kids' lunch prep"],
-      color: "border-red-200 bg-red-50",
-      assignedTo: "me"
-    },
-    {
-      title: "Family & Parenting", 
-      tasks: ["Soccer practice pickup", "Homework help", "Bedtime routine"],
-      color: "border-green-200 bg-green-50",
-      assignedTo: "me"
-    },
-    {
-      title: "Essential Daily",
-      tasks: ["Meal planning", "Laundry", "Groceries"],
-      color: "border-purple-200 bg-purple-50",
-      assignedTo: "partner"
+  // Group tasks by category
+  const tasksByCategory = tasks.reduce((acc, task) => {
+    const category = task.category || 'uncategorized';
+    if (!acc[category]) {
+      acc[category] = [];
     }
-  ];
+    acc[category].push(task);
+    return acc;
+  }, {} as Record<string, typeof tasks>);
 
-  const filteredTasks = taskCategories.filter(category => {
+  const taskCategories = Object.entries(tasksByCategory).map(([category, categoryTasks]) => ({
+    title: getCategoryTitle(category),
+    tasks: categoryTasks,
+    color: getCategoryBorderColor(category),
+    assignedTo: 'me', // For now, all tasks are assigned to current user
+  }));
+
+  const filteredTaskCategories = taskCategories.filter(category => {
     if (taskFilter === 'all') return true;
     if (taskFilter === 'my-tasks') return category.assignedTo === 'me';
     if (taskFilter === 'others-tasks') return category.assignedTo !== 'me';
     return true;
   });
 
-  const villageMembers = [
-    { name: "Mom", status: "Available today", role: "Helper", initial: "M" },
-    { name: "Sarah (neighbor)", status: "Carpool buddy", role: "Active", initial: "S" }
-  ];
+  // Get personalized greeting
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    const name = user?.user_metadata?.full_name || user?.user_metadata?.name || 'there';
+    if (hour < 12) return `Good Morning, ${name}`;
+    if (hour < 17) return `Good Afternoon, ${name}`;
+    return `Good Evening, ${name}`;
+  };
 
-  const activeDelegations = [
-    { task: "Grocery shopping", delegatedTo: "Partner", due: "Today 3 PM", status: "pending" },
-    { task: "Laundry pickup", delegatedTo: "Mom", due: "Completed ✓", status: "completed" }
-  ];
+  // Get random tip
+  const currentTip = getRandomTip();
 
-  const careCircle = [
-    { item: "Mom's doctor visit", time: "Today 11:30 AM", status: "Needs attention", urgent: true },
-    { item: "Dad's medication", time: "Refill due Tomorrow", status: "On track", urgent: false }
-  ];
+  // Helper functions
+  function getCategoryColor(category?: string) {
+    const colors = {
+      work: 'bg-blue-100 text-blue-700',
+      family: 'bg-green-100 text-green-700',
+      parenting: 'bg-purple-100 text-purple-700',
+      personal: 'bg-orange-100 text-orange-700',
+      health: 'bg-pink-100 text-pink-700',
+      default: 'bg-slate-100 text-slate-700',
+    };
+    return colors[category as keyof typeof colors] || colors.default;
+  }
 
-  const pendingCount = mustDoTasks.filter(task => !task.completed).length;
+  function getCategoryTitle(category: string) {
+    const titles = {
+      caretaking: 'Caretaking',
+      parenting: 'Family & Parenting',
+      daily: 'Essential Daily',
+      work: 'Work',
+      personal: 'Personal',
+      health: 'Health',
+      uncategorized: 'Other Tasks',
+    };
+    return titles[category as keyof typeof titles] || category;
+  }
+
+  function getCategoryBorderColor(category: string) {
+    const colors = {
+      caretaking: 'border-red-200 bg-red-50',
+      parenting: 'border-green-200 bg-green-50',
+      daily: 'border-purple-200 bg-purple-50',
+      work: 'border-blue-200 bg-blue-50',
+      personal: 'border-orange-200 bg-orange-50',
+      health: 'border-pink-200 bg-pink-50',
+      uncategorized: 'border-slate-200 bg-slate-50',
+    };
+    return colors[category as keyof typeof colors] || colors.uncategorized;
+  }
 
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-light text-slate-800">Good Morning, Linda</h1>
+          <h1 className="text-3xl font-light text-slate-800">{getGreeting()}</h1>
           <div className="flex items-center gap-4 mt-2">
             <span className="text-slate-600">Today's Balance:</span>
             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-              1/5 - Take it easy
+              {pendingCount}/10 - {pendingCount <= 3 ? 'Take it easy' : pendingCount <= 6 ? 'Balanced day' : 'Busy day ahead'}
             </Badge>
           </div>
         </div>
@@ -127,22 +172,23 @@ const Dashboard = () => {
       </div>
 
       {/* Daily Tip */}
-      <Card className="border-blue-200 bg-blue-50">
-        <CardContent className="p-4">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1">
-              <Lightbulb className="h-4 w-4 text-blue-600" />
+      {currentTip && (
+        <Card className="border-blue-200 bg-blue-50">
+          <CardContent className="p-4">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1">
+                <Lightbulb className="h-4 w-4 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="font-medium text-slate-800 mb-1">💡 Tip</h3>
+                <p className="text-sm text-slate-600">
+                  {currentTip.content}
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-medium text-slate-800 mb-1">💡 Tip</h3>
-              <p className="text-sm text-slate-600">
-                You have 2 urgent tasks today. Consider delegating grocery shopping to free up time for the important calls. 
-                Remember to take a 10-minute break after your team meeting! 💙
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Quick Add */}
       <Card>
@@ -152,19 +198,34 @@ const Dashboard = () => {
             <h3 className="font-medium text-slate-800">Quick Add</h3>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            <Button variant="outline" size="sm" className="justify-start">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="justify-start"
+              onClick={() => setQuickAddModal('task')}
+            >
               <Plus className="h-4 w-4 mr-2" />
               Task
             </Button>
-            <Button variant="outline" size="sm" className="justify-start">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="justify-start"
+              onClick={() => setQuickAddModal('event')}
+            >
               <Calendar className="h-4 w-4 mr-2" />
               Event
             </Button>
-            <Button variant="outline" size="sm" className="justify-start">
+            <Button variant="outline" size="sm" className="justify-start" disabled>
               <Users className="h-4 w-4 mr-2" />
               Delegate
             </Button>
-            <Button variant="outline" size="sm" className="justify-start">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="justify-start"
+              onClick={() => setQuickAddModal('reminder')}
+            >
               <Bell className="h-4 w-4 mr-2" />
               Reminder
             </Button>
@@ -190,22 +251,31 @@ const Dashboard = () => {
             </div>
           </CardHeader>
           <CardContent className="space-y-2">
-            {mustDoTasks.map((task) => (
-              <div key={task.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50">
-                <Checkbox 
-                  checked={task.completed}
-                  className={task.completed ? "data-[state=checked]:bg-green-500" : ""}
-                />
-                <span className={`flex-1 text-sm ${task.completed ? 'line-through text-slate-400' : 'text-slate-700'}`}>
-                  {task.text}
-                </span>
-                {task.urgent && !task.completed && (
-                  <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-xs">
-                    urgent
-                  </Badge>
-                )}
+            {mustDoTasks.length === 0 ? (
+              <div className="text-center py-8 text-slate-500">
+                <CheckCircle2 className="h-8 w-8 mx-auto mb-2 text-green-500" />
+                <p className="text-sm">No urgent tasks today! 🎉</p>
+                <p className="text-xs mt-1">Take it easy or get ahead on other tasks.</p>
               </div>
-            ))}
+            ) : (
+              mustDoTasks.map((task) => (
+                <div key={task.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50">
+                  <Checkbox 
+                    checked={task.completed}
+                    onCheckedChange={(checked) => toggleTaskCompletion(task.id, !!checked)}
+                    className={task.completed ? "data-[state=checked]:bg-green-500" : ""}
+                  />
+                  <span className={`flex-1 text-sm ${task.completed ? 'line-through text-slate-400' : 'text-slate-700'}`}>
+                    {task.title}
+                  </span>
+                  {task.is_urgent && !task.completed && (
+                    <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-xs">
+                      urgent
+                    </Badge>
+                  )}
+                </div>
+              ))
+            )}
           </CardContent>
         </Card>
 
@@ -220,19 +290,30 @@ const Dashboard = () => {
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
-            {todaysSchedule.map((item, index) => (
-              <div key={index} className="flex items-center gap-4">
-                <div className="text-sm font-medium text-blue-600 w-16">
-                  {item.time}
-                </div>
-                <div className="flex-1 text-sm text-slate-700">
-                  {item.event}
-                </div>
-                <Badge className={`text-xs ${item.color} border-0`}>
-                  {item.category}
-                </Badge>
+            {todaysSchedule.length === 0 ? (
+              <div className="text-center py-8 text-slate-500">
+                <Calendar className="h-8 w-8 mx-auto mb-2" />
+                <p className="text-sm">No events scheduled for today</p>
+                <p className="text-xs mt-1">Perfect time to plan ahead or take it easy!</p>
               </div>
-            ))}
+            ) : (
+              todaysSchedule.map((item, index) => (
+                <div key={index} className="flex items-center gap-4 cursor-pointer hover:bg-slate-50 p-2 rounded-lg -m-2">
+                  <div className="text-sm font-medium text-blue-600 w-16">
+                    {item.time}
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-sm text-slate-700">{item.event}</div>
+                    {item.location && (
+                      <div className="text-xs text-slate-500 mt-1">{item.location}</div>
+                    )}
+                  </div>
+                  <Badge className={`text-xs ${item.color} border-0`}>
+                    {item.category}
+                  </Badge>
+                </div>
+              ))
+            )}
           </CardContent>
         </Card>
       </div>
@@ -279,27 +360,66 @@ const Dashboard = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {filteredTasks.map((category, index) => (
-              <div key={index} className={`p-4 rounded-lg border-2 ${category.color}`}>
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-medium text-slate-800">{category.title}</h4>
-                  <Badge variant="outline" className="text-xs">
-                    {category.assignedTo === 'me' ? 'Mine' : 'Delegated'}
-                  </Badge>
+          {filteredTaskCategories.length === 0 ? (
+            <div className="text-center py-12 text-slate-500">
+              <FileText className="h-12 w-12 mx-auto mb-4" />
+              <p className="text-lg mb-2">No tasks yet</p>
+              <p className="text-sm mb-4">Get started by adding your first task above!</p>
+              <Button onClick={() => setQuickAddModal('task')} size="sm">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Your First Task
+              </Button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {filteredTaskCategories.map((category, index) => (
+                <div key={index} className={`p-4 rounded-lg border-2 ${category.color}`}>
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="font-medium text-slate-800">{category.title}</h4>
+                    <Badge variant="outline" className="text-xs">
+                      {category.assignedTo === 'me' ? 'Mine' : 'Delegated'}
+                    </Badge>
+                  </div>
+                  <div className="space-y-2">
+                    {category.tasks.map((task) => (
+                      <div key={task.id} className="flex items-center gap-2 p-2 bg-white rounded">
+                        <Checkbox 
+                          checked={task.completed}
+                          onCheckedChange={(checked) => toggleTaskCompletion(task.id, !!checked)}
+                          className="h-4 w-4"
+                        />
+                        <span className={`flex-1 text-sm ${task.completed ? 'line-through text-slate-400' : 'text-slate-600'}`}>
+                          {task.title}
+                        </span>
+                        {task.is_urgent && !task.completed && (
+                          <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  {category.tasks.map((task, taskIndex) => (
-                    <div key={taskIndex} className="text-sm text-slate-600 p-2 bg-white rounded">
-                      {task}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
+
+      {/* Modals */}
+      <QuickAddTaskModal
+        isOpen={quickAddModal === 'task'}
+        onOpenChange={(open) => !open && setQuickAddModal(null)}
+        onAddTask={addTask}
+      />
+      <AddEventModal
+        isOpen={quickAddModal === 'event'}
+        onOpenChange={(open) => !open && setQuickAddModal(null)}
+        onAddEvent={addEvent}
+      />
+      <AddReminderModal
+        isOpen={quickAddModal === 'reminder'}
+        onOpenChange={(open) => !open && setQuickAddModal(null)}
+        onAddReminder={addReminder}
+      />
     </div>
   );
 };
