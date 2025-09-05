@@ -1,69 +1,45 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SmartCareHeader from '@/components/smartcare/SmartCareHeader';
 import ChatHeader from '@/components/smartcare/ChatHeader';
 import ChatMessages from '@/components/smartcare/ChatMessages';
 import ChatInput from '@/components/smartcare/ChatInput';
 import SavedContent from '@/components/smartcare/SavedContent';
-
-interface ChatMessage {
-  type: 'user' | 'assistant';
-  message: string;
-  time: string;
-}
+import { useChatMessages } from '@/hooks/useChatMessages';
+import { useSavedContent } from '@/hooks/useSavedContent';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const SmartCareAssistant = () => {
+  const { user, loading: authLoading } = useAuth();
+  const { toast } = useToast();
   const [question, setQuestion] = useState('');
-  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([
-    {
-      type: 'assistant' as const,
-      message: "Hi! I'm Eloura, your personal AI assistant. I'm here to help you navigate your busy life as a parent, caregiver, and goal-achiever. How can I support you today?",
-      time: "02:11 PM"
-    }
-  ]);
-  const [loading, setLoading] = useState(false);
+  
+  const {
+    messages,
+    loading: chatLoading,
+    sendMessage,
+    startNewConversation
+  } = useChatMessages();
+  
+  const {
+    savedContent,
+    saveContent,
+    getContentByCategory
+  } = useSavedContent();
 
-  const savedContent = [
-    {
-      id: 1,
-      title: "Morning Routine Optimization",
-      content: "Based on our conversation, here are 5 ways to streamline your morning routine...",
-      date: "6/28/2025",
-      type: "notes" as const
-    },
-    {
-      id: 2,
-      title: "Delegation Strategy for Eldercare",
-      content: "Key points for managing parent care responsibilities with siblings...",
-      date: "6/27/2025",
-      type: "guides" as const
+  // Add welcome message when user first visits
+  useEffect(() => {
+    if (user && messages.length === 0) {
+      // The welcome message will be handled by the chat system if needed
     }
-  ];
+  }, [user, messages]);
 
   const handleSendQuestion = async () => {
     if (!question.trim()) return;
     
-    // Add user message
-    const userMessage: ChatMessage = {
-      type: 'user',
-      message: question,
-      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-    
-    setChatHistory(prev => [...prev, userMessage]);
+    await sendMessage(question);
     setQuestion('');
-    setLoading(true);
-    
-    // Simulate AI response
-    setTimeout(() => {
-      const assistantMessage: ChatMessage = {
-        type: 'assistant',
-        message: "I understand you're looking for guidance on this. Let me provide you with some personalized suggestions based on your family's needs and preferences. This takes into account any care requirements and preferences you've shared with me...",
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setChatHistory(prev => [...prev, assistantMessage]);
-      setLoading(false);
-    }, 2000);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -72,6 +48,43 @@ const SmartCareAssistant = () => {
       handleSendQuestion();
     }
   };
+
+  const handleSaveContent = async (content: string, category: 'notes' | 'guides') => {
+    // Extract a title from the content (first 50 characters)
+    const title = content.substring(0, 50) + (content.length > 50 ? '...' : '');
+    
+    const success = await saveContent(title, content, category);
+    if (success) {
+      toast({
+        title: "Success",
+        description: `Content saved to ${category}`,
+      });
+    }
+  };
+
+  // Show loading if auth is still loading
+  if (authLoading) {
+    return (
+      <div className="h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login prompt if user is not authenticated
+  if (!user) {
+    return (
+      <div className="h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Please log in</h2>
+          <p className="text-gray-600">You need to be logged in to use the Smart Care Assistant.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen bg-white flex flex-col overflow-hidden">
@@ -86,19 +99,23 @@ const SmartCareAssistant = () => {
           {/* Chat Section - 60% of space */}
           <div className="flex-[3] flex flex-col shadow-2xl bg-white border-r border-gray-200 mr-4 rounded-lg overflow-hidden">
             <ChatHeader />
-            <ChatMessages chatHistory={chatHistory} loading={loading} />
+            <ChatMessages 
+              chatHistory={messages} 
+              loading={chatLoading}
+              onSaveContent={handleSaveContent}
+            />
             <ChatInput
               question={question}
               setQuestion={setQuestion}
               onSend={handleSendQuestion}
-              loading={loading}
+              loading={chatLoading}
               onKeyPress={handleKeyPress}
             />
           </div>
 
           {/* Saved Content - 40% of space */}
           <div className="flex-[2] shadow-2xl bg-white rounded-lg overflow-hidden">
-            <SavedContent savedContent={savedContent} />
+            <SavedContent onNewConversation={startNewConversation} />
           </div>
         </div>
       </div>
