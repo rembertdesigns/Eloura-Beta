@@ -27,7 +27,7 @@ const ChatMessage = ({ type, message, time, onSaveContent }: ChatMessageProps) =
         {type === 'assistant' && (
           <div className="flex items-center gap-2 mb-2">
             <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-xs">
-              🤖
+              💙
             </div>
             <span className="text-xs text-gray-500">{time}</span>
           </div>

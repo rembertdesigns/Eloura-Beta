@@ -25,7 +25,7 @@ const ChatMessages = ({ chatHistory, loading, onSaveContent }: ChatMessagesProps
         <div className="flex justify-center items-center h-full">
           <div className="text-center text-gray-500">
             <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">🤖</span>
+              <span className="text-2xl">💙</span>
             </div>
             <h3 className="text-lg font-medium mb-2">Hi! I'm Eloura</h3>
             <p className="text-sm">Your personal AI assistant ready to help you navigate your busy life as a parent, caregiver, and goal-achiever.</p>
@@ -47,7 +47,7 @@ const ChatMessages = ({ chatHistory, loading, onSaveContent }: ChatMessagesProps
         <div className="flex justify-start">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center text-xs">
-              🤖
+              💙
             </div>
             <span className="text-xs text-gray-500">Eloura is thinking...</span>
           </div>
