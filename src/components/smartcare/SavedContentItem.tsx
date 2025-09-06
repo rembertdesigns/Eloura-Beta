@@ -6,7 +6,7 @@ import { FileText, BookOpen, Star, Trash2 } from 'lucide-react';
 import { useSavedContent } from '@/hooks/useSavedContent';
 import { useToast } from '@/hooks/use-toast';
 
-interface SavedContentItemProps {
+interface SavedContentData {
   id: string;
   title: string;
   content: string;
@@ -14,7 +14,11 @@ interface SavedContentItemProps {
   category: 'notes' | 'guides';
 }
 
-const SavedContentItem = ({ id, title, content, date_saved, category }: SavedContentItemProps) => {
+interface SavedContentItemProps extends SavedContentData {
+  onView: (content: SavedContentData) => void;
+}
+
+const SavedContentItem = ({ id, title, content, date_saved, category, onView }: SavedContentItemProps) => {
   const { deleteSavedContent } = useSavedContent();
   const { toast } = useToast();
   
@@ -39,8 +43,12 @@ const SavedContentItem = ({ id, title, content, date_saved, category }: SavedCon
     }
   };
 
+  const handleClick = () => {
+    onView({ id, title, content, date_saved, category });
+  };
+
   return (
-    <Card className="border border-gray-200 hover:border-gray-300 transition-colors cursor-pointer shadow-sm group">
+    <Card className="border border-gray-200 hover:border-gray-300 transition-colors cursor-pointer shadow-sm group" onClick={handleClick}>
       <CardContent className="p-4">
         <div className="flex items-start gap-3">
           <div className={`w-8 h-8 ${config.bgColor} rounded-lg flex items-center justify-center flex-shrink-0`}>

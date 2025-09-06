@@ -1,7 +1,9 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { BookOpen, Plus } from 'lucide-react';
 import SavedContentItem from './SavedContentItem';
 import { useSavedContent } from '@/hooks/useSavedContent';
@@ -11,8 +13,23 @@ interface SavedContentProps {
   onNewConversation: () => void;
 }
 
+interface SelectedContent {
+  id: string;
+  title: string;
+  content: string;
+  date_saved: string;
+  category: 'notes' | 'guides';
+}
+
 const SavedContent = ({ onNewConversation }: SavedContentProps) => {
   const { savedContent, loading, getContentByCategory } = useSavedContent();
+  const [selectedContent, setSelectedContent] = useState<SelectedContent | null>(null);
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+
+  const handleViewContent = (content: SelectedContent) => {
+    setSelectedContent(content);
+    setViewModalOpen(true);
+  };
 
   if (loading) {
     return (
@@ -59,7 +76,12 @@ const SavedContent = ({ onNewConversation }: SavedContentProps) => {
             </div>
           ) : (
             getContentByCategory('notes').map((item) => (
-              <SavedContentItem key={item.id} {...item} category={item.category as 'notes' | 'guides'} />
+              <SavedContentItem 
+                key={item.id} 
+                {...item} 
+                category={item.category as 'notes' | 'guides'} 
+                onView={handleViewContent}
+              />
             ))
           )}
         </TabsContent>
@@ -73,11 +95,44 @@ const SavedContent = ({ onNewConversation }: SavedContentProps) => {
             </div>
           ) : (
             getContentByCategory('guides').map((item) => (
-              <SavedContentItem key={item.id} {...item} category={item.category as 'notes' | 'guides'} />
+              <SavedContentItem 
+                key={item.id} 
+                {...item} 
+                category={item.category as 'notes' | 'guides'} 
+                onView={handleViewContent}
+              />
             ))
           )}
         </TabsContent>
       </Tabs>
+
+      {/* View Content Modal */}
+      <Dialog open={viewModalOpen} onOpenChange={setViewModalOpen}>
+        <DialogContent className="sm:max-w-2xl max-h-[80vh]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              {selectedContent?.category === 'notes' ? (
+                <BookOpen className="h-5 w-5 text-orange-600" />
+              ) : (
+                <BookOpen className="h-5 w-5 text-blue-600" />
+              )}
+              {selectedContent?.title}
+            </DialogTitle>
+          </DialogHeader>
+          <ScrollArea className="max-h-[60vh]">
+            <div className="space-y-4">
+              <div className="text-sm text-gray-500">
+                Saved on {selectedContent?.date_saved ? new Date(selectedContent.date_saved).toLocaleDateString() : ''}
+              </div>
+              <div className="prose prose-sm max-w-none">
+                <p className="whitespace-pre-wrap text-gray-900 leading-relaxed">
+                  {selectedContent?.content}
+                </p>
+              </div>
+            </div>
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
