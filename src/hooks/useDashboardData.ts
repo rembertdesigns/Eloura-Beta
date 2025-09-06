@@ -64,11 +64,13 @@ export const useDashboardData = () => {
     try {
       setLoading(true);
       
-      // Fetch tasks
+      // Fetch tasks (incomplete tasks or tasks completed today)
+      const todayDate = new Date().toISOString().split('T')[0];
       const { data: tasksData, error: tasksError } = await supabase
         .from('tasks')
         .select('*')
         .eq('user_id', user.id)
+        .or(`completed.eq.false,and(completed.eq.true,updated_at.gte.${todayDate})`)
         .order('created_at', { ascending: false });
 
       if (tasksError) throw tasksError;

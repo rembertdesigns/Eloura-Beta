@@ -94,11 +94,12 @@ export const useDailyBriefData = () => {
       const endOfDay = new Date(today.setHours(23, 59, 59, 999)).toISOString();
 
       const [tasksResult, goalsResult, villageResult, prioritiesResult, celebrationsResult] = await Promise.all([
-        // Tasks
+        // Tasks (incomplete tasks or tasks completed today)
         supabase
           .from('tasks')
           .select('*')
           .eq('user_id', user.id)
+          .or(`completed.eq.false,and(completed.eq.true,updated_at.gte.${new Date().toISOString().split('T')[0]})`)
           .order('created_at', { ascending: false }),
         
         // Goals
