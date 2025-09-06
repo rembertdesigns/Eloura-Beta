@@ -60,7 +60,10 @@ export const useOnboardingProgress = () => {
       // Upsert onboarding data
       const { data: upsertResult, error: onboardingError } = await supabase
         .from('user_onboarding')
-        .upsert(onboardingData)
+        .upsert(onboardingData, { 
+          onConflict: 'user_id',
+          ignoreDuplicates: false 
+        })
         .select();
 
       if (onboardingError) {
