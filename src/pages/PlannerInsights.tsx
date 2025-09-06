@@ -17,10 +17,10 @@ const PlannerInsights = () => {
 
   if (plannerData.loading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="flex items-center gap-2">
           <Loader2 className="h-6 w-6 animate-spin" />
-          <span>Loading insights...</span>
+          <span className="text-sm sm:text-base">Loading insights...</span>
         </div>
       </div>
     );
@@ -28,16 +28,16 @@ const PlannerInsights = () => {
 
   if (plannerData.error) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <Card className="p-6">
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="p-4 sm:p-6 max-w-md w-full">
           <CardContent>
             <div className="text-center">
               <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">Error Loading Insights</h3>
-              <p className="text-muted-foreground mb-4">{plannerData.error}</p>
+              <p className="text-muted-foreground mb-4 text-sm">{plannerData.error}</p>
               <button 
                 onClick={plannerData.refetch}
-                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 touch-manipulation min-h-[44px]"
               >
                 Try Again
               </button>
@@ -50,56 +50,72 @@ const PlannerInsights = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 pt-6 pb-4 max-w-7xl space-y-6">
-        <PlannerHeader />
+      <div className="container mx-auto px-4 sm:px-6 pt-4 sm:pt-6 pb-4 max-w-7xl space-y-4 sm:space-y-6">
+        <div className="px-2 sm:px-0">
+          <PlannerHeader />
+        </div>
 
         {/* Planner Tabs */}
-        <Card className="shadow-2xl">
-          <CardContent className="p-6">
+        <Card className="shadow-lg sm:shadow-2xl">
+          <CardContent className="p-4 sm:p-6">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-3 mb-6">
-                <TabsTrigger value="week">Week View</TabsTrigger>
-                <TabsTrigger value="month">Month View</TabsTrigger>
-                <TabsTrigger value="goals">Goals</TabsTrigger>
-              </TabsList>
+              {/* Mobile - Scrollable tabs */}
+              <div className="sm:hidden overflow-x-auto mb-4">
+                <TabsList className="flex w-max min-w-full h-auto">
+                  <TabsTrigger value="week" className="text-xs whitespace-nowrap px-3 py-2 min-h-[44px]">Week View</TabsTrigger>
+                  <TabsTrigger value="month" className="text-xs whitespace-nowrap px-3 py-2 min-h-[44px]">Month View</TabsTrigger>
+                  <TabsTrigger value="goals" className="text-xs whitespace-nowrap px-3 py-2 min-h-[44px]">Goals</TabsTrigger>
+                </TabsList>
+              </div>
+
+              {/* Desktop - Standard tabs */}
+              <div className="hidden sm:block">
+                <TabsList className="grid w-full grid-cols-3 mb-6">
+                  <TabsTrigger value="week" className="min-h-[44px]">Week View</TabsTrigger>
+                  <TabsTrigger value="month" className="min-h-[44px]">Month View</TabsTrigger>
+                  <TabsTrigger value="goals" className="min-h-[44px]">Goals</TabsTrigger>
+                </TabsList>
+              </div>
               
-              <TabsContent value="week" className="space-y-4">
-                <WeekView 
-                  weekData={plannerData.weekData}
-                  achievements={plannerData.achievements}
-                  milestones={plannerData.milestones.filter(m => m.is_highlight)}
-                  timeAllocation={plannerData.timeAllocation}
-                  goals={plannerData.goals}
-                  patterns={plannerData.patterns}
-                  onSaveReflection={plannerData.saveReflection}
-                />
-              </TabsContent>
-              
-              <TabsContent value="month" className="space-y-4">
-                <MonthView 
-                  achievements={plannerData.achievements}
-                  milestones={plannerData.milestones}
-                  timeAllocation={plannerData.timeAllocation}
-                  goals={plannerData.goals}
-                  patterns={plannerData.patterns}
-                  onSaveReflection={plannerData.saveReflection}
-                />
-              </TabsContent>
-              
-              <TabsContent value="goals" className="space-y-4">
-                <GoalsView 
-                  goals={plannerData.goals}
-                  onUpdateProgress={plannerData.updateGoalProgress}
-                  onAddGoal={plannerData.addGoal}
-                />
-              </TabsContent>
+              <div className="space-y-4">
+                <TabsContent value="week" className="space-y-4 pb-safe">
+                  <WeekView 
+                    weekData={plannerData.weekData}
+                    achievements={plannerData.achievements}
+                    milestones={plannerData.milestones.filter(m => m.is_highlight)}
+                    timeAllocation={plannerData.timeAllocation}
+                    goals={plannerData.goals}
+                    patterns={plannerData.patterns}
+                    onSaveReflection={plannerData.saveReflection}
+                  />
+                </TabsContent>
+                
+                <TabsContent value="month" className="space-y-4 pb-safe">
+                  <MonthView 
+                    achievements={plannerData.achievements}
+                    milestones={plannerData.milestones}
+                    timeAllocation={plannerData.timeAllocation}
+                    goals={plannerData.goals}
+                    patterns={plannerData.patterns}
+                    onSaveReflection={plannerData.saveReflection}
+                  />
+                </TabsContent>
+                
+                <TabsContent value="goals" className="space-y-4 pb-safe">
+                  <GoalsView 
+                    goals={plannerData.goals}
+                    onUpdateProgress={plannerData.updateGoalProgress}
+                    onAddGoal={plannerData.addGoal}
+                  />
+                </TabsContent>
+              </div>
             </Tabs>
           </CardContent>
         </Card>
 
       </div>
       
-      <div className="md:hidden">
+      <div className="lg:hidden">
         <FeatureFooter />
       </div>
     </div>
