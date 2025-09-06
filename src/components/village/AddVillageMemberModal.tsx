@@ -188,7 +188,7 @@ const AddVillageMemberModal: React.FC<AddVillageMemberModalProps> = ({
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                placeholder="email@example.com"
+                placeholder="Enter email address"
               />
             </div>
           </div>
