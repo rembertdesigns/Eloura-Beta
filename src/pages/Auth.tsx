@@ -26,7 +26,7 @@ const Auth = () => {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/welcome`,
+            emailRedirectTo: `${window.location.origin}/dashboard`,
           },
         });
 
@@ -37,10 +37,10 @@ const Auth = () => {
             variant: "destructive",
           });
         } else {
-          toast({
-            title: "Success",
-            description: "Check your email for the confirmation link!",
-          });
+            toast({
+              title: "Success!",
+              description: isSignUp ? "Account created! Check your email to verify your account." : "Welcome back! Redirecting to your dashboard...",
+            });
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -55,7 +55,11 @@ const Auth = () => {
             variant: "destructive",
           });
         } else {
-          navigate('/welcome');
+          toast({
+            title: "Welcome back!",
+            description: "Redirecting to your dashboard...",
+          });
+          navigate('/dashboard');
         }
       }
     } catch (error) {
@@ -75,7 +79,7 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/welcome`,
+          redirectTo: `${window.location.origin}/dashboard`,
         },
       });
 

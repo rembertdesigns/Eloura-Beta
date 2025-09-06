@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { HelmetProvider } from "react-helmet-async";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Index from "./pages/Index";
 import HomepageV2 from "./pages/HomepageV2";
 import Auth from "./pages/Auth";
@@ -44,28 +45,28 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/v2" element={<HomepageV2 />} />
               <Route path="/auth" element={<Auth />} />
-              <Route path="/welcome" element={<Welcome />} />
-              <Route path="/intro" element={<IntroFlow />} />
+              <Route path="/welcome" element={<ProtectedRoute><Welcome /></ProtectedRoute>} />
+              <Route path="/intro" element={<ProtectedRoute><IntroFlow /></ProtectedRoute>} />
               
-              {/* Onboarding Flow with Layout */}
-              <Route path="/personal-info" element={<OnboardingLayout><PersonalInfo /></OnboardingLayout>} />
-              <Route path="/family-setup" element={<OnboardingLayout><FamilySetup /></OnboardingLayout>} />
-              <Route path="/family-structure" element={<OnboardingLayout><FamilyStructure /></OnboardingLayout>} />
-              <Route path="/top-challenges" element={<OnboardingLayout><TopChallenges /></OnboardingLayout>} />
-              <Route path="/priorities" element={<OnboardingLayout><Priorities /></OnboardingLayout>} />
-              <Route path="/invite" element={<OnboardingLayout><Invite /></OnboardingLayout>} />
-              <Route path="/onboarding-summary" element={<OnboardingLayout><OnboardingSummary /></OnboardingLayout>} />
+              {/* Onboarding Flow with Layout - Protected */}
+              <Route path="/personal-info" element={<ProtectedRoute><OnboardingLayout><PersonalInfo /></OnboardingLayout></ProtectedRoute>} />
+              <Route path="/family-setup" element={<ProtectedRoute><OnboardingLayout><FamilySetup /></OnboardingLayout></ProtectedRoute>} />
+              <Route path="/family-structure" element={<ProtectedRoute><OnboardingLayout><FamilyStructure /></OnboardingLayout></ProtectedRoute>} />
+              <Route path="/top-challenges" element={<ProtectedRoute><OnboardingLayout><TopChallenges /></OnboardingLayout></ProtectedRoute>} />
+              <Route path="/priorities" element={<ProtectedRoute><OnboardingLayout><Priorities /></OnboardingLayout></ProtectedRoute>} />
+              <Route path="/invite" element={<ProtectedRoute><OnboardingLayout><Invite /></OnboardingLayout></ProtectedRoute>} />
+              <Route path="/onboarding-summary" element={<ProtectedRoute><OnboardingLayout><OnboardingSummary /></OnboardingLayout></ProtectedRoute>} />
               
-              {/* Main App Routes */}
-              <Route path="/dashboard" element={<DashboardLayout />} />
-              <Route path="/daily-brief" element={<DailyBriefLayout />} />
-              <Route path="/village" element={<VillageLayout />} />
-              <Route path="/smart-care-assistant" element={<SmartCareAssistantLayout />} />
-              <Route path="/planner-insights" element={<PlannerInsightsLayout />} />
-              <Route path="/insights" element={<InsightsLayout />} />
-              <Route path="/home-base-toolkit" element={<HomeBaseToolkitLayout />} />
-              <Route path="/messages" element={<MessagesLayout />} />
-              <Route path="/settings" element={<Settings />} />
+              {/* Main App Routes - Protected */}
+              <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>} />
+              <Route path="/daily-brief" element={<ProtectedRoute><DailyBriefLayout /></ProtectedRoute>} />
+              <Route path="/village" element={<ProtectedRoute><VillageLayout /></ProtectedRoute>} />
+              <Route path="/smart-care-assistant" element={<ProtectedRoute><SmartCareAssistantLayout /></ProtectedRoute>} />
+              <Route path="/planner-insights" element={<ProtectedRoute><PlannerInsightsLayout /></ProtectedRoute>} />
+              <Route path="/insights" element={<ProtectedRoute><InsightsLayout /></ProtectedRoute>} />
+              <Route path="/home-base-toolkit" element={<ProtectedRoute><HomeBaseToolkitLayout /></ProtectedRoute>} />
+              <Route path="/messages" element={<ProtectedRoute><MessagesLayout /></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
