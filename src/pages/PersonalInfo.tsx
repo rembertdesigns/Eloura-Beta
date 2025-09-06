@@ -124,6 +124,10 @@ const PersonalInfo = () => {
       });
       return;
     }
+
+    console.log('🔍 PersonalInfo: Starting handleContinue');
+    console.log('🔍 PersonalInfo: Current user:', user);
+    console.log('🔍 PersonalInfo: Form data:', formData);
     
     try {
       setLoading(true);
@@ -133,6 +137,17 @@ const PersonalInfo = () => {
       if (formData.avatar) {
         avatarUrl = await uploadProfilePhoto(formData.avatar);
       }
+
+      console.log('🔍 PersonalInfo: About to save progress with data:', {
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        dateOfBirth: formData.dateOfBirth,
+        pronouns: formData.pronouns.trim(),
+        avatarUrl,
+        currentStep: 'family-setup'
+      });
 
       // Save progress to Supabase
       await saveProgress({
@@ -163,9 +178,10 @@ const PersonalInfo = () => {
       navigate(isEditing ? '/onboarding-summary' : '/family-setup');
     } catch (error) {
       console.error('Error saving data:', error);
+      console.error('Error details:', JSON.stringify(error, null, 2));
       toast({
         title: "Error",
-        description: "There was a problem saving your information. Please try again.",
+        description: `There was a problem saving your information: ${error?.message || 'Unknown error'}. Please try again.`,
         variant: "destructive"
       });
     } finally {
