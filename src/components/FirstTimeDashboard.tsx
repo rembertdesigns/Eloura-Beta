@@ -109,7 +109,7 @@ const FirstTimeDashboard = () => {
 
           <Button 
             onClick={handleStartTour}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-3 text-base font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse hover:animate-none transform hover:scale-105"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-3 text-base font-medium rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
             Start Your Tour
           </Button>
