@@ -169,7 +169,7 @@ export const NewConversationModal: React.FC<NewConversationModalProps> = ({
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
-              placeholder="Search users..."
+              placeholder="Search members..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9"
@@ -181,7 +181,7 @@ export const NewConversationModal: React.FC<NewConversationModalProps> = ({
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium">Selected:</span>
-                <Badge variant="secondary">{selectedProfiles.length} user{selectedProfiles.length > 1 ? 's' : ''}</Badge>
+                <Badge variant="secondary">{selectedProfiles.length} member{selectedProfiles.length > 1 ? 's' : ''}</Badge>
               </div>
               <div className="flex flex-wrap gap-2">
                 {selectedProfiles.map(profile => (
@@ -215,11 +215,11 @@ export const NewConversationModal: React.FC<NewConversationModalProps> = ({
           <div className="max-h-60 overflow-y-auto space-y-2">
             {loading ? (
               <div className="text-center py-4">
-                <p className="text-sm text-gray-500">Loading users...</p>
+                <p className="text-sm text-gray-500">Loading members...</p>
               </div>
             ) : filteredProfiles.length === 0 ? (
               <div className="text-center py-4">
-                <p className="text-sm text-gray-500">No users found</p>
+                <p className="text-sm text-gray-500">No members found</p>
               </div>
             ) : (
               filteredProfiles.map(profile => {
