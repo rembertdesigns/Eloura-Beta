@@ -25,6 +25,7 @@ import FirstTimeDashboard from './FirstTimeDashboard';
 import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
 import { useDashboardData } from '@/hooks/useDashboardData';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserProfile } from '@/hooks/useUserProfile';
 import QuickAddTaskModal from './QuickAddTaskModal';
 import AddEventModal from './AddEventModal';
 import AddReminderModal from './AddReminderModal';
@@ -35,6 +36,7 @@ const Dashboard = () => {
   const [quickAddModal, setQuickAddModal] = useState<'task' | 'event' | 'reminder' | null>(null);
   const { isOnboardingComplete, isTourComplete, loading } = useOnboardingStatus();
   const { user } = useAuth();
+  const { getFirstName } = useUserProfile();
   const {
     tasks,
     events,
@@ -104,7 +106,7 @@ const Dashboard = () => {
   // Get personalized greeting
   const getGreeting = () => {
     const hour = new Date().getHours();
-    const name = user?.user_metadata?.full_name || user?.user_metadata?.name || 'there';
+    const name = getFirstName();
     if (hour < 12) return `Good Morning, ${name}`;
     if (hour < 17) return `Good Afternoon, ${name}`;
     return `Good Evening, ${name}`;
