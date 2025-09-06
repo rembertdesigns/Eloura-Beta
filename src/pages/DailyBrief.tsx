@@ -14,9 +14,11 @@ import QuickAddTask from '@/components/QuickAddTask';
 import TaskRatingModal from '@/components/TaskRatingModal';
 import { useDailyBriefData } from '@/hooks/useDailyBriefData';
 import { useAuth } from '@/contexts/AuthContext';
+import { useUserProfile } from '@/hooks/useUserProfile';
 
 const DailyBrief = () => {
   const { user } = useAuth();
+  const { getFirstName } = useUserProfile();
   const {
     tasks,
     goals,
@@ -91,13 +93,9 @@ const DailyBrief = () => {
     }, 300);
   }, [completedTasks, villageCount, activeGoalsCount]);
 
-  // Get user name from auth context
+  // Get user name from profile
   const getUserName = () => {
-    if (!user) return 'there';
-    return user.user_metadata?.full_name || 
-           user.user_metadata?.name || 
-           user.user_metadata?.first_name || 
-           'there';
+    return getFirstName();
   };
 
   // Show loading while data is being fetched
