@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { HelmetProvider } from "react-helmet-async";
 import ProtectedRoute from "./components/ProtectedRoute";
+import OnboardingProtectedRoute from "./components/OnboardingProtectedRoute";
 import Index from "./pages/Index";
 import HomepageV2 from "./pages/HomepageV2";
 import Auth from "./pages/Auth";
@@ -57,16 +58,16 @@ const App = () => (
               <Route path="/invite" element={<ProtectedRoute><OnboardingLayout><Invite /></OnboardingLayout></ProtectedRoute>} />
               <Route path="/onboarding-summary" element={<ProtectedRoute><OnboardingLayout><OnboardingSummary /></OnboardingLayout></ProtectedRoute>} />
               
-              {/* Main App Routes - Protected */}
-              <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>} />
-              <Route path="/daily-brief" element={<ProtectedRoute><DailyBriefLayout /></ProtectedRoute>} />
-              <Route path="/village" element={<ProtectedRoute><VillageLayout /></ProtectedRoute>} />
-              <Route path="/smart-care-assistant" element={<ProtectedRoute><SmartCareAssistantLayout /></ProtectedRoute>} />
-              <Route path="/planner-insights" element={<ProtectedRoute><PlannerInsightsLayout /></ProtectedRoute>} />
-              <Route path="/insights" element={<ProtectedRoute><InsightsLayout /></ProtectedRoute>} />
-              <Route path="/home-base-toolkit" element={<ProtectedRoute><HomeBaseToolkitLayout /></ProtectedRoute>} />
-              <Route path="/messages" element={<ProtectedRoute><MessagesLayout /></ProtectedRoute>} />
-              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              {/* Main App Routes - Protected with Onboarding Check */}
+              <Route path="/dashboard" element={<OnboardingProtectedRoute><DashboardLayout /></OnboardingProtectedRoute>} />
+              <Route path="/daily-brief" element={<OnboardingProtectedRoute><DailyBriefLayout /></OnboardingProtectedRoute>} />
+              <Route path="/village" element={<OnboardingProtectedRoute><VillageLayout /></OnboardingProtectedRoute>} />
+              <Route path="/smart-care-assistant" element={<OnboardingProtectedRoute><SmartCareAssistantLayout /></OnboardingProtectedRoute>} />
+              <Route path="/planner-insights" element={<OnboardingProtectedRoute><PlannerInsightsLayout /></OnboardingProtectedRoute>} />
+              <Route path="/insights" element={<OnboardingProtectedRoute><InsightsLayout /></OnboardingProtectedRoute>} />
+              <Route path="/home-base-toolkit" element={<OnboardingProtectedRoute><HomeBaseToolkitLayout /></OnboardingProtectedRoute>} />
+              <Route path="/messages" element={<OnboardingProtectedRoute><MessagesLayout /></OnboardingProtectedRoute>} />
+              <Route path="/settings" element={<OnboardingProtectedRoute><Settings /></OnboardingProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
