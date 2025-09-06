@@ -4,13 +4,16 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Heart, ArrowLeft, ArrowRight, User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { Progress } from '@/components/ui/progress';
 import ImageCropModal from '@/components/ImageCropModal';
 import { useOnboardingProgress } from '@/hooks/useOnboardingProgress';
 const PersonalInfo = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isEditing = searchParams.get('editing') === 'true';
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -25,7 +28,6 @@ const PersonalInfo = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showCropModal, setShowCropModal] = useState(false);
   const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
-  const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
   const { saveProgress, loadProgress, uploadProfilePhoto } = useOnboardingProgress();
@@ -156,9 +158,9 @@ const PersonalInfo = () => {
 
       toast({
         title: "Information saved",
-        description: "Moving to family setup..."
+        description: isEditing ? "Returning to summary..." : "Moving to family setup..."
       });
-      navigate('/family-setup');
+      navigate(isEditing ? '/onboarding-summary' : '/family-setup');
     } catch (error) {
       console.error('Error saving data:', error);
       toast({

@@ -136,7 +136,7 @@ const OnboardingSummary = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate('/family-structure')}
+                  onClick={() => navigate('/family-structure?editing=true')}
                   className="h-8 w-8 p-0"
                 >
                   <Edit className="h-4 w-4" />
@@ -156,7 +156,7 @@ const OnboardingSummary = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate('/personal-info')}
+                  onClick={() => navigate('/personal-info?editing=true')}
                   className="h-8 w-8 p-0"
                 >
                   <Edit className="h-4 w-4" />
@@ -174,7 +174,7 @@ const OnboardingSummary = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate('/family-structure')}
+                  onClick={() => navigate('/family-structure?editing=true')}
                   className="h-8 w-8 p-0"
                 >
                   <Edit className="h-4 w-4" />
@@ -208,7 +208,7 @@ const OnboardingSummary = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate('/top-challenges')}
+                  onClick={() => navigate('/top-challenges?editing=true')}
                   className="h-8 w-8 p-0"
                 >
                   <Edit className="h-4 w-4" />
@@ -236,7 +236,7 @@ const OnboardingSummary = () => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() => navigate('/priorities')}
+                  onClick={() => navigate('/priorities?editing=true')}
                   className="h-8 w-8 p-0"
                 >
                   <Edit className="h-4 w-4" />

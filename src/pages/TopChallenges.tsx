@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -10,8 +10,22 @@ import { supabase } from '@/integrations/supabase/client';
 
 const TopChallenges = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isEditing = searchParams.get('editing') === 'true';
   const [selectedChallenges, setSelectedChallenges] = useState<string[]>([]);
   const { saveProgress } = useOnboardingProgress();
+
+  // Load existing challenges from localStorage when editing
+  useEffect(() => {
+    const savedChallenges = localStorage.getItem('topChallenges');
+    if (savedChallenges && isEditing) {
+      try {
+        setSelectedChallenges(JSON.parse(savedChallenges));
+      } catch (e) {
+        console.error('Error parsing saved challenges:', e);
+      }
+    }
+  }, [isEditing]);
 
   const challenges = [
     "I feel overwhelmed juggling too many tasks",
@@ -43,7 +57,7 @@ const TopChallenges = () => {
       currentStep: 'priorities'
     });
     
-    navigate('/priorities');
+    navigate(isEditing ? '/onboarding-summary' : '/priorities');
   };
 
   return (

@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -10,8 +10,22 @@ import { supabase } from '@/integrations/supabase/client';
 
 const Priorities = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isEditing = searchParams.get('editing') === 'true';
   const [selectedPriorities, setSelectedPriorities] = useState<string[]>([]);
   const { saveProgress } = useOnboardingProgress();
+
+  // Load existing priorities from localStorage when editing
+  useEffect(() => {
+    const savedPriorities = localStorage.getItem('topPriorities');
+    if (savedPriorities && isEditing) {
+      try {
+        setSelectedPriorities(JSON.parse(savedPriorities));
+      } catch (e) {
+        console.error('Error parsing saved priorities:', e);
+      }
+    }
+  }, [isEditing]);
 
   const priorities = [
     'Daily planning and organization',
@@ -47,7 +61,7 @@ const Priorities = () => {
       currentStep: 'invite'
     });
     
-    navigate('/invite');
+    navigate(isEditing ? '/onboarding-summary' : '/invite');
   };
 
   return (

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, ArrowLeft, ArrowRight, Users, Edit, Trash2, UserPlus } from 'lucide-react';
 import { Cat, Dog } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -22,13 +22,15 @@ interface FamilyMember {
   breed?: string | null;
 }
 const FamilyStructure = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isEditing = searchParams.get('editing') === 'true';
   const [familyMembers, setFamilyMembers] = useState<FamilyMember[]>([]);
   const [householdName, setHouseholdName] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMember, setEditingMember] = useState<FamilyMember | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const navigate = useNavigate();
   const {
     user
   } = useAuth();
@@ -160,19 +162,19 @@ const FamilyStructure = () => {
       }
       toast({
         title: "Family structure saved",
-        description: "Moving to next step..."
+        description: isEditing ? "Returning to summary..." : "Moving to next step..."
       });
 
-      // Navigate to top challenges
-      navigate('/top-challenges');
+      // Navigate to next step or back to summary
+      navigate(isEditing ? '/onboarding-summary' : '/top-challenges');
     } catch (error) {
       console.error('Error saving progress:', error);
       // Don't block the user from continuing for demo purposes
       toast({
         title: "Family structure saved locally",
-        description: "Moving to next step..."
+        description: isEditing ? "Returning to summary..." : "Moving to next step..."
       });
-      navigate('/top-challenges');
+      navigate(isEditing ? '/onboarding-summary' : '/top-challenges');
     } finally {
       setSaving(false);
     }
