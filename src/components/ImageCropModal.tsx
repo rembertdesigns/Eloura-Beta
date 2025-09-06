@@ -173,7 +173,7 @@ const ImageCropModal = ({ isOpen, onClose, imageFile, onCropComplete }: ImageCro
                 >
                   <img
                     ref={imgRef}
-                    alt="Crop me"
+                    alt="Image cropping interface for user profile photo in family care management system"
                     src={imageSrc}
                     style={{ maxHeight: '400px', maxWidth: '100%' }}
                     onLoad={onImageLoad}

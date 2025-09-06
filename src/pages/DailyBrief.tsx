@@ -15,6 +15,7 @@ import TaskRatingModal from '@/components/TaskRatingModal';
 import { useDailyBriefData } from '@/hooks/useDailyBriefData';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
+import SEOHead from '@/components/SEOHead';
 
 const DailyBrief = () => {
   const { user } = useAuth();
@@ -215,8 +216,16 @@ const DailyBrief = () => {
     });
   };
 
+  const firstName = getUserName();
+
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <>
+      <SEOHead
+        title={`Daily Brief - ${firstName}'s Family Dashboard | Eloura Family Care Management`}
+        description={`Your personalized daily brief with family tasks, goals, and care coordination. Stay organized with Eloura's smart family management dashboard for ${firstName}.`}
+        keywords="daily brief, family dashboard, daily tasks, family goals, care coordination, family planner dashboard, personal family management"
+      />
+      <div className="min-h-screen bg-white flex flex-col">
       <div className="container mx-auto px-4 py-12 md:py-16 lg:py-12 max-w-7xl flex-1 flex flex-col justify-center">
         {/* 1. Top Section (Header) */}
         <div className="mb-6">
@@ -544,6 +553,7 @@ const DailyBrief = () => {
         <FeatureFooter />
       </div>
     </div>
+    </>
   );
 };
 

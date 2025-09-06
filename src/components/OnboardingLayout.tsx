@@ -35,7 +35,7 @@ const OnboardingLayout = ({ children }: OnboardingLayoutProps) => {
       <div className="hidden lg:flex lg:w-80 bg-white/80 backdrop-blur-sm border-r border-slate-200 flex-col">
         <div className="p-6 border-b border-slate-200">
           <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] rounded-2xl mb-4">
-            <img src={familyCareIcon} alt="Family Care" className="h-6 w-6" />
+            <img src={familyCareIcon} alt="Eloura family care management icon - smart caregiving and family coordination tools" className="h-6 w-6" />
           </div>
           <h2 className="text-xl font-bold text-slate-900 mb-2">Setting Up Eloura</h2>
           <p className="text-sm text-slate-600">Let's personalize your experience</p>
@@ -98,7 +98,7 @@ const OnboardingLayout = ({ children }: OnboardingLayoutProps) => {
       <div className="lg:hidden fixed top-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-b border-slate-200 p-4 z-10">
         <div className="flex items-center justify-between mb-2">
           <div className="inline-flex items-center justify-center w-8 h-8 bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] rounded-lg">
-            <img src={familyCareIcon} alt="Family Care" className="h-4 w-4" />
+            <img src={familyCareIcon} alt="Eloura family care management icon - smart caregiving and family coordination tools" className="h-4 w-4" />
           </div>
           <span className="text-sm font-medium text-slate-600">
             Step {currentStepIndex + 1} of {steps.length}

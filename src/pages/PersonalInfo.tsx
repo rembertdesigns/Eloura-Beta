@@ -205,7 +205,7 @@ const PersonalInfo = () => {
                 <div className="flex items-center space-x-6">
                   <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center overflow-hidden border-2 border-border">
                      {formData.avatar ? 
-                      <img src={URL.createObjectURL(formData.avatar)} alt="Profile preview" className="w-full h-full object-cover" /> : 
+                      <img src={URL.createObjectURL(formData.avatar)} alt="User profile photo preview for family care coordination account setup" className="w-full h-full object-cover" /> : 
                       <User className="h-10 w-10 text-muted-foreground" />
                     }
                   </div>

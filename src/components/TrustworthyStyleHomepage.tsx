@@ -69,7 +69,7 @@ const TrustworthyStyleHomepage = () => {
         <div className="absolute inset-0">
           <img 
             src="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=1200&h=800&fit=crop&crop=center" 
-            alt="Person with laptop managing family care" 
+            alt="Professional caregiver using laptop for family care coordination and management - Eloura smart caregiving solutions" 
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gray-900/60"></div>

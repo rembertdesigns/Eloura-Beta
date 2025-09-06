@@ -96,7 +96,7 @@ const IntroFlow = () => {
           <div className="py-4">
             <img 
               src={currentStepData.illustration} 
-              alt={`Step ${currentStep} illustration`}
+              alt={`${currentStepData.headline} - Family care management setup illustration for better family organization with Eloura's smart tools`}
               className="w-full max-w-sm mx-auto rounded-2xl"
             />
           </div>
