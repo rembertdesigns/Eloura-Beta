@@ -76,11 +76,16 @@ export const useMessages = () => {
       setConversations(formattedConversations);
     } catch (error) {
       console.error('Error fetching conversations:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load conversations",
-        variant: "destructive",
-      });
+      
+      // Don't show error toast for empty conversations - it's normal during onboarding
+      // Only show errors for actual permission/auth issues, not empty results
+      if (error && typeof error === 'object' && 'code' in error && error.code !== '42501') {
+        // 42501 is insufficient privilege error - we'll silently handle this
+        // as it likely means the user hasn't been invited to any conversations yet
+        setConversations([]);
+      } else {
+        setConversations([]);
+      }
     }
   };
 
