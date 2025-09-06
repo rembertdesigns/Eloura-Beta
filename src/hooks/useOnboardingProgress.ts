@@ -33,6 +33,8 @@ export const useOnboardingProgress = () => {
 
     try {
       setLoading(true);
+      console.log('🔍 Starting saveProgress for user:', user.id);
+      console.log('🔍 Data being saved:', data);
 
       // Prepare onboarding data
       const onboardingData: any = {
@@ -53,15 +55,20 @@ export const useOnboardingProgress = () => {
       if (data.challenges) onboardingData.challenges = JSON.stringify(data.challenges);
       if (data.priorities) onboardingData.priorities = JSON.stringify(data.priorities);
 
+      console.log('🔍 Prepared onboarding data:', onboardingData);
+
       // Upsert onboarding data
-      const { error: onboardingError } = await supabase
+      const { data: upsertResult, error: onboardingError } = await supabase
         .from('user_onboarding')
-        .upsert(onboardingData);
+        .upsert(onboardingData)
+        .select();
 
       if (onboardingError) {
-        console.error('Onboarding save error:', onboardingError);
+        console.error('❌ Onboarding save error:', onboardingError);
         throw onboardingError;
       }
+
+      console.log('✅ Onboarding data saved successfully:', upsertResult);
 
       // Also update profiles table with relevant fields
       const profileData: any = {};
@@ -77,24 +84,31 @@ export const useOnboardingProgress = () => {
       if (data.avatarUrl) profileData.avatar_url = data.avatarUrl;
 
       if (Object.keys(profileData).length > 0) {
-        const { error: profileError } = await supabase
+        console.log('🔍 Updating profiles table with:', profileData);
+        
+        const { data: profileResult, error: profileError } = await supabase
           .from('profiles')
-          .update(profileData)
-          .eq('id', user.id);
+          .upsert({ id: user.id, ...profileData })
+          .select();
 
         if (profileError) {
-          console.error('Profile update error:', profileError);
+          console.error('❌ Profile update error:', profileError);
           // Don't throw as this is secondary
+        } else {
+          console.log('✅ Profile data saved successfully:', profileResult);
         }
       }
 
+      console.log('✅ saveProgress completed successfully');
+
     } catch (error) {
-      console.error('Error saving onboarding progress:', error);
+      console.error('❌ Error saving onboarding progress:', error);
       toast({
         title: "Save Error",
-        description: "There was an issue saving your progress. Your data has been saved locally.",
+        description: "There was an issue saving your progress. Please try again.",
         variant: "destructive",
       });
+      throw error; // Re-throw to let the component handle it
     } finally {
       setLoading(false);
     }
