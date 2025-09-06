@@ -19,6 +19,12 @@ export default {
 			}
 		},
 		extend: {
+			screens: {
+				xs: '475px',
+			},
+			spacing: {
+				safe: 'env(safe-area-inset-bottom)',
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -106,6 +112,14 @@ export default {
 						opacity: '1'
 					}
 				},
+				'slide-up': {
+					'0%': {
+						transform: 'translateY(100%)'
+					},
+					'100%': {
+						transform: 'translateY(0)'
+					}
+				},
 				'float': {
 					'0%, 100%': {
 						transform: 'translateY(0)'
@@ -120,9 +134,55 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.3s ease-out',
 				'scale-in': 'scale-in 0.2s ease-out',
+				'slide-up': 'slide-up 0.3s ease-out',
 				'float': 'float 4s ease-in-out infinite'
-			}
+			},
+			fontSize: {
+				xs: ['0.75rem', { lineHeight: '1rem' }],
+				sm: ['0.875rem', { lineHeight: '1.25rem' }],
+				base: ['1rem', { lineHeight: '1.5rem' }],
+				lg: ['1.125rem', { lineHeight: '1.75rem' }],
+				xl: ['1.25rem', { lineHeight: '1.75rem' }],
+				'2xl': ['1.5rem', { lineHeight: '2rem' }],
+				'3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+				'4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+				'5xl': ['3rem', { lineHeight: '1' }],
+				'6xl': ['3.75rem', { lineHeight: '1' }],
+				'7xl': ['4.5rem', { lineHeight: '1' }],
+			},
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		function({ addUtilities }: { addUtilities: any }) {
+			addUtilities({
+				'.touch-manipulation': {
+					'touch-action': 'manipulation',
+				},
+				'.safe-area-inset-bottom': {
+					'padding-bottom': 'env(safe-area-inset-bottom)',
+				},
+				'.pb-safe': {
+					'padding-bottom': 'env(safe-area-inset-bottom)',
+				},
+				'.min-touch-target': {
+					'min-height': '44px',
+					'min-width': '44px',
+				},
+				// Prevent horizontal scrolling
+				'.no-scrollbar': {
+					'-ms-overflow-style': 'none',
+					'scrollbar-width': 'none',
+				},
+				'.no-scrollbar::-webkit-scrollbar': {
+					'display': 'none',
+				},
+				// Responsive text utilities
+				'.responsive-text': {
+					'font-size': 'clamp(0.875rem, 2.5vw, 1.125rem)',
+					'line-height': '1.6',
+				},
+			});
+		},
+	],
 } satisfies Config;

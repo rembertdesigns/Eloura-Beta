@@ -99,28 +99,28 @@ const Auth = () => {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-6">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-md mx-auto">
         {/* Logo and Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] rounded-2xl mb-6 shadow-lg">
             <Heart className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">Welcome to Eloura</h1>
-          <p className="text-slate-600 text-lg">Sign in to start your compassionate caregiving journey</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2 leading-tight">Welcome to Eloura</h1>
+          <p className="text-slate-600 text-base sm:text-lg px-4">Sign in to start your compassionate caregiving journey</p>
         </div>
 
         {/* Auth Card */}
         <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
-          <CardHeader className="text-center pb-4">
-            <CardTitle className="text-xl">
+          <CardHeader className="text-center pb-4 px-4 sm:px-6">
+            <CardTitle className="text-lg sm:text-xl">
               {isSignUp ? 'Create Account' : 'Sign In'}
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm sm:text-base">
               {isSignUp ? 'Join our caregiving community' : 'Welcome back to Eloura'}
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-8 space-y-4">
+          <CardContent className="p-4 sm:p-8 space-y-4">
             {/* Email/Password Form */}
             <form onSubmit={handleEmailAuth} className="space-y-4">
               <div>
@@ -130,7 +130,8 @@ const Auth = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="h-12"
+                  className="h-12 sm:h-14 text-base touch-manipulation"
+                  autoComplete="email"
                 />
               </div>
               <div>
@@ -140,37 +141,38 @@ const Auth = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="h-12"
+                  className="h-12 sm:h-14 text-base touch-manipulation"
+                  autoComplete={isSignUp ? "new-password" : "current-password"}
                 />
               </div>
               <Button
                 type="submit"
-                className="w-full h-12 bg-[#223b0a] hover:bg-[#223b0a]/90"
+                className="w-full h-12 sm:h-14 text-base bg-[#223b0a] hover:bg-[#223b0a]/90 touch-manipulation font-medium"
                 disabled={loading}
               >
                 <Mail className="h-4 w-4 mr-2" />
-                {isSignUp ? 'Sign Up' : 'Sign In'} with Email
+                {loading ? 'Please wait...' : (isSignUp ? 'Sign Up' : 'Sign In')} with Email
               </Button>
             </form>
 
             {/* Toggle Sign Up/Sign In */}
-            <div className="text-center">
+            <div className="text-center py-2">
               <button
                 type="button"
                 onClick={() => setIsSignUp(!isSignUp)}
-                className="text-sm text-[#223b0a] hover:underline"
+                className="text-sm sm:text-base text-[#223b0a] hover:underline font-medium min-h-[44px] px-4 touch-manipulation"
               >
                 {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
               </button>
             </div>
 
             {/* Divider */}
-            <div className="relative">
+            <div className="relative py-4">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-slate-200" />
               </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-slate-500">Or continue with</span>
+              <div className="relative flex justify-center text-xs sm:text-sm uppercase">
+                <span className="bg-white px-4 text-slate-500 font-medium">Or continue with</span>
               </div>
             </div>
 
@@ -178,12 +180,12 @@ const Auth = () => {
             <div className="space-y-3">
               {/* Google Login - Official Google Style */}
               <Button
-                className="w-full h-14 text-base font-medium bg-white hover:bg-gray-50 text-[#3c4043] border border-[#dadce0] hover:border-[#d2e3fc] transition-all duration-200 shadow-sm hover:shadow-md"
+                className="w-full h-14 sm:h-16 text-base font-medium bg-white hover:bg-gray-50 text-[#3c4043] border border-[#dadce0] hover:border-[#d2e3fc] transition-all duration-200 shadow-sm hover:shadow-md touch-manipulation"
                 onClick={() => handleSocialLogin('google')}
                 disabled={loading}
               >
                 <div className="flex items-center gap-3">
-                  <svg className="w-5 h-5" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
@@ -195,12 +197,12 @@ const Auth = () => {
               
               {/* Apple Login - Official Apple Style */}
               <Button
-                className="w-full h-14 text-base font-medium bg-black hover:bg-black/90 text-white border-0 transition-all duration-200"
+                className="w-full h-14 sm:h-16 text-base font-medium bg-black hover:bg-black/90 text-white border-0 transition-all duration-200 touch-manipulation"
                 onClick={() => handleSocialLogin('apple')}
                 disabled={loading}
               >
                 <div className="flex items-center gap-3">
-                  <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                  <svg className="h-5 w-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
                   </svg>
                   <span>Sign in with Apple</span>
@@ -211,12 +213,12 @@ const Auth = () => {
         </Card>
         
         {/* Footer */}
-        <div className="text-center mt-8">
-          <p className="text-sm text-slate-500 leading-relaxed">
+        <div className="text-center mt-8 px-4">
+          <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
             By continuing, you agree to our{' '}
-            <a href="#" className="text-[#223b0a] hover:underline font-medium">Terms of Service</a>
+            <a href="#" className="text-[#223b0a] hover:underline font-medium touch-manipulation">Terms of Service</a>
             {' '}and{' '}
-            <a href="#" className="text-[#223b0a] hover:underline font-medium">Privacy Policy</a>
+            <a href="#" className="text-[#223b0a] hover:underline font-medium touch-manipulation">Privacy Policy</a>
           </p>
         </div>
       </div>

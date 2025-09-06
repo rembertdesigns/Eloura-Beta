@@ -33,16 +33,16 @@ const Welcome = () => {
         description="Welcome to Eloura! Start organizing your family life with our smart assistant for caregiving, daily planning, and family coordination. Set up your personalized experience in minutes."
         keywords="welcome to Eloura, family care setup, family planner onboarding, caregiving organization, family management tools"
       />
-      <main className="min-h-screen bg-white flex items-center justify-center p-4">
-        <section className="bg-white rounded-3xl p-8 max-w-md w-full relative shadow-xl">
+      <main className="min-h-screen bg-white flex items-center justify-center p-4 sm:p-6">
+        <section className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full relative shadow-xl">
           {/* Content */}
           <div className="text-center space-y-6">
             {/* Header */}
             <header className="space-y-3">
-              <h1 className="text-2xl font-bold text-slate-900">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
                 Welcome to Eloura
               </h1>
-              <p className="text-slate-600 text-lg">
+              <p className="text-slate-600 text-base sm:text-lg">
                 Your smart assistant for family life.
               </p>
             </header>
@@ -58,7 +58,7 @@ const Welcome = () => {
 
             {/* Body text */}
             <div className="space-y-4">
-              <p className="text-slate-700 leading-relaxed">
+              <p className="text-slate-700 leading-relaxed text-sm sm:text-base px-4 sm:px-0">
                 From daily routines to shared responsibilities, 
                 Eloura helps you manage it all in one place—
                 so you can spend more time on what 
@@ -68,10 +68,13 @@ const Welcome = () => {
 
             {/* CTA Button */}
             <div className="pt-4">
-              <Button onClick={handleContinue} className="w-full h-12 bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-medium text-base rounded-xl shadow-lg">
+              <Button 
+                onClick={handleContinue} 
+                className="w-full h-12 sm:h-14 bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-medium text-base sm:text-lg rounded-xl shadow-lg touch-manipulation"
+              >
                 Let's set things up
               </Button>
-              <p className="text-sm text-slate-500 mt-3">
+              <p className="text-xs sm:text-sm text-slate-500 mt-3 px-4">
                 We'll guide you through every step of the way.
               </p>
             </div>

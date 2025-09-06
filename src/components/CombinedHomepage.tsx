@@ -15,28 +15,28 @@ const CombinedHomepage = () => {
     // For now, navigate to auth - could be a separate mental load test page
     navigate('/auth');
   };
-  return <div className="min-h-screen bg-white">
+  return <div className="min-h-screen bg-white overflow-x-hidden">
       {/* Navigation - Clean and professional */}
-      <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-50 py-4 border-b border-[#E1CFE3]/20">
-        <div className="container mx-auto px-4">
+      <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-50 py-3 sm:py-4 border-b border-[#E1CFE3]/20">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <div className="bg-gradient-to-br from-[#223B0A] to-[#D7642A] p-2 rounded-xl">
-                <Heart className="h-6 w-6 text-white" />
+                <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
-              <span className="text-2xl font-medium text-[#302D2C]">Eloura</span>
+              <span className="text-xl sm:text-2xl font-medium text-[#302D2C]">Eloura</span>
             </div>
-            <div className="hidden md:flex items-center gap-8">
-              <a href="#about" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">About Us</a>
-              <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Features</a>
+            <div className="hidden md:flex items-center gap-6 lg:gap-8">
+              <a href="#about" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">About Us</a>
+              <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">Features</a>
               
-              <a href="#community" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors flex items-center gap-1">
+              <a href="#community" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors flex items-center gap-1 min-h-[44px] px-2">
                 Community
                 <ExternalLink className="h-3 w-3" />
               </a>
-              <a href="#resources" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors">Resources</a>
+              <a href="#resources" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">Resources</a>
             </div>
-            <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6" onClick={handleLogin}>
+            <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-4 sm:px-6 min-h-[44px] touch-manipulation" onClick={handleLogin}>
               Log In
             </Button>
           </div>
@@ -44,31 +44,31 @@ const CombinedHomepage = () => {
       </nav>
 
       {/* Hero Section - Clean Simple Style */}
-      <section className="bg-gradient-to-br from-[#E1CFE3]/40 via-[#FFE5C4]/30 to-[#E1CFE3]/20 py-32 text-center">
-        <div className="container mx-auto px-4">
+      <section className="bg-gradient-to-br from-[#E1CFE3]/40 via-[#FFE5C4]/30 to-[#E1CFE3]/20 py-16 sm:py-24 lg:py-32 text-center overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="max-w-4xl mx-auto">
             {/* Award badge */}
             
 
             {/* Main headline */}
-            <h1 className="text-5xl md:text-7xl font-light text-[#223B0A] mb-8 leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-[#223B0A] mb-6 sm:mb-8 leading-tight">
               Make family caregiving
               <br />
               <span className="font-medium">feel manageable</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xl md:text-2xl text-[#302D2C]/80 mb-12 leading-relaxed max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#302D2C]/80 mb-8 sm:mb-12 leading-relaxed max-w-3xl mx-auto px-4 sm:px-0">
               The digital daily planner that helps you coordinate care, reduce mental load, and stay connected with your family.
             </p>
 
             {/* CTA Button */}
-            <Button size="lg" className="bg-[#D7642A] hover:bg-[#223B0A] text-white rounded-full px-12 py-4 text-lg font-medium shadow-lg" onClick={handleGetStarted}>
+            <Button size="lg" className="bg-[#D7642A] hover:bg-[#223B0A] text-white rounded-full px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg font-medium shadow-lg touch-manipulation min-h-[48px] sm:min-h-[56px]" onClick={handleGetStarted}>
               Try for free
             </Button>
 
             {/* Small print */}
-            <p className="text-sm text-[#302D2C]/60 mt-4">
+            <p className="text-xs sm:text-sm text-[#302D2C]/60 mt-4 px-4">
               14-day free trial, no credit card required
             </p>
           </div>
