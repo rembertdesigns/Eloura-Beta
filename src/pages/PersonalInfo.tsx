@@ -144,6 +144,16 @@ const PersonalInfo = () => {
         currentStep: 'family-setup'
       });
 
+      // Also save to localStorage for the summary page
+      localStorage.setItem('personalInfo', JSON.stringify({
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        dateOfBirth: formData.dateOfBirth,
+        pronouns: formData.pronouns.trim()
+      }));
+
       toast({
         title: "Information saved",
         description: "Moving to family setup..."
