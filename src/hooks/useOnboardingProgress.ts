@@ -166,6 +166,19 @@ export const useOnboardingProgress = () => {
         return null;
       }
 
+      // Safe JSON parsing helper
+      const safeJSONParse = (jsonString: any, fallback: any = []) => {
+        if (!jsonString || typeof jsonString !== 'string' || jsonString.trim() === '') {
+          return fallback;
+        }
+        try {
+          return JSON.parse(jsonString);
+        } catch (error) {
+          console.warn('Invalid JSON found, using fallback:', jsonString);
+          return fallback;
+        }
+      };
+
       return {
         firstName: data.first_name || '',
         lastName: data.last_name || '',
@@ -175,8 +188,8 @@ export const useOnboardingProgress = () => {
         pronouns: data.pronouns || '',
         familyType: data.family_type || '',
         householdName: data.household_name || '',
-        challenges: data.challenges ? JSON.parse(data.challenges as string) : [],
-        priorities: data.priorities ? JSON.parse(data.priorities as string) : [],
+        challenges: safeJSONParse(data.challenges, []),
+        priorities: safeJSONParse(data.priorities, []),
         currentStep: data.current_step || 'intro',
         onboardingCompleted: data.onboarding_completed || false,
         tourCompleted: data.tour_completed || false,
