@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { Home, Calendar, BarChart3, Users, MessageSquare, Settings, Brain, FolderOpen, TrendingUp } from 'lucide-react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Home, Calendar, BarChart3, Users, MessageSquare, Settings, Brain, FolderOpen, TrendingUp, LogOut } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
@@ -12,6 +12,8 @@ import {
   SidebarMenuButton,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const mainNavigationItems = [
   {
@@ -67,7 +69,28 @@ const settingsItems = [
 export function AppSidebar() {
   const { state } = useSidebar();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
+  const { toast } = useToast();
   const collapsed = state === 'collapsed';
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Logged out successfully",
+        description: "You have been signed out of your account.",
+      });
+      navigate('/auth');
+    } catch (error) {
+      console.error('Error logging out:', error);
+      toast({
+        title: "Error logging out",
+        description: "There was a problem signing you out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const renderNavItems = (items: typeof mainNavigationItems) => {
     return items.map((item) => {
@@ -126,6 +149,36 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-3">
               {renderNavItems(settingsItems)}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Enhanced Separator */}
+        <div className="mx-4 my-8 h-px bg-gradient-to-r from-transparent via-sidebar-border to-transparent opacity-60" />
+
+        {/* Account Section */}
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu className="space-y-3">
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <button
+                    onClick={handleLogout}
+                    aria-label="Logout"
+                    className="group flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-300 ease-out focus:outline-none focus:ring-2 focus:ring-destructive/50 focus:ring-offset-2 focus:ring-offset-sidebar active:scale-[0.98] text-sidebar-foreground hover:bg-destructive/10 hover:text-destructive hover:shadow-md hover:translate-x-1 hover:shadow-destructive/10 w-full"
+                  >
+                    <LogOut 
+                      className="h-5 w-5 transition-all duration-300 flex-shrink-0 text-sidebar-foreground group-hover:text-destructive"
+                      strokeWidth={2}
+                    />
+                    {!collapsed && (
+                      <span className="text-sm font-medium transition-all duration-300 leading-tight text-sidebar-foreground group-hover:text-destructive">
+                        Logout
+                      </span>
+                    )}
+                  </button>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
