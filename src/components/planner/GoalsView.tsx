@@ -9,10 +9,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
 import AddGoalModal from '@/components/AddGoalModal';
 import UpdateGoalModal from '@/components/UpdateGoalModal';
+import GoalCelebrationModal from '@/components/GoalCelebrationModal';
+import GoalHistoryModal from '@/components/GoalHistoryModal';
+import GoalSuggestionsCard from '@/components/GoalSuggestionsCard';
 import { 
   Target, Users, Share, Plus, Calendar, Star, 
   TrendingUp, MessageSquare, Award, Archive, 
-  CheckCircle, Heart, Flame, Edit
+  CheckCircle, Heart, Flame, Edit, History
 } from 'lucide-react';
 
 interface Goal {
@@ -23,6 +26,12 @@ interface Goal {
   progress: number;
   target_date: string;
   is_completed: boolean;
+  completion_count?: number;
+  current_streak?: number;
+  best_streak?: number;
+  last_completed_at?: string;
+  is_recurring?: boolean;
+  sharing_enabled?: boolean;
 }
 
 interface GoalsViewProps {
@@ -35,14 +44,30 @@ interface GoalsViewProps {
     category: string;
     target_date?: string;
   }) => Promise<void>;
+  onCompleteGoal?: (goalId: string) => Promise<void>;
+  onAddReflection?: (goalId: string, reflection: any) => Promise<void>;
+  onRestartGoal?: (goalId: string) => Promise<void>;
+  onShareGoal?: (goalId: string) => Promise<void>;
 }
 
-const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onUpdateGoal, onAddGoal }) => {
+const GoalsView: React.FC<GoalsViewProps> = ({ 
+  goals, 
+  onUpdateProgress, 
+  onUpdateGoal, 
+  onAddGoal,
+  onCompleteGoal,
+  onAddReflection,
+  onRestartGoal,
+  onShareGoal
+}) => {
   const [activeGoalTab, setActiveGoalTab] = useState('active');
   const [filterCategory, setFilterCategory] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showCelebrationModal, setShowCelebrationModal] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
+  const [celebratingGoal, setCelebratingGoal] = useState<Goal | null>(null);
 
   const handleAddGoal = async (goalData: any) => {
     if (onAddGoal) {
@@ -59,6 +84,21 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onUpdate
   const handleOpenUpdateModal = (goal: Goal) => {
     setSelectedGoal(goal);
     setShowUpdateModal(true);
+  };
+
+  const handleGoalCompleted = (goal: Goal) => {
+    setCelebratingGoal(goal);
+    setShowCelebrationModal(true);
+  };
+
+  const handleShowHistory = (goal: Goal) => {
+    setSelectedGoal(goal);
+    setShowHistoryModal(true);
+  };
+
+  const handleCelebrationClose = () => {
+    setCelebratingGoal(null);
+    setShowCelebrationModal(false);
   };
 
   const getCategoryColor = (category: string) => {
@@ -187,14 +227,26 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onUpdate
                         <Calendar className="h-4 w-4 text-slate-500" />
                         <span className="text-slate-600">Due: {goal.target_date || 'Ongoing'}</span>
                       </div>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        onClick={() => handleOpenUpdateModal(goal)}
-                      >
-                        <Edit className="h-3 w-3 mr-1" />
-                        Update Progress
-                      </Button>
+                      <div className="flex gap-2">
+                        {(goal.completion_count || 0) > 0 && (
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleShowHistory(goal)}
+                          >
+                            <History className="h-3 w-3 mr-1" />
+                            History
+                          </Button>
+                        )}
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          onClick={() => handleOpenUpdateModal(goal)}
+                        >
+                          <Edit className="h-3 w-3 mr-1" />
+                          Update Progress
+                        </Button>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -232,9 +284,24 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onUpdate
                   <CardContent>
                     <div className="space-y-3">
                       <Progress value={100} className="h-2" />
-                      <div className="text-sm text-slate-600">
-                        Completed: {new Date(goal.target_date || Date.now()).toLocaleDateString()}
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-slate-600">
+                          Completed: {new Date(goal.last_completed_at || goal.target_date || Date.now()).toLocaleDateString()}
+                        </span>
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => handleShowHistory(goal)}
+                        >
+                          <History className="h-3 w-3 mr-1" />
+                          View History
+                        </Button>
                       </div>
+                      {(goal.completion_count || 0) > 1 && (
+                        <div className="text-xs text-blue-600">
+                          Completed {goal.completion_count} times • Best streak: {goal.best_streak || 0} days
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -244,6 +311,13 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onUpdate
         </TabsContent>
       </Tabs>
 
+      {/* Smart Goal Suggestions */}
+      <GoalSuggestionsCard 
+        completedGoals={completedGoals}
+        onCreateGoal={handleAddGoal}
+      />
+
+      {/* Modals */}
       <AddGoalModal
         isOpen={showAddModal}
         onOpenChange={setShowAddModal}
@@ -255,6 +329,24 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onUpdate
         onOpenChange={setShowUpdateModal}
         goal={selectedGoal}
         onUpdateGoal={handleUpdateGoal}
+        onGoalCompleted={handleGoalCompleted}
+      />
+
+      <GoalCelebrationModal
+        isOpen={showCelebrationModal}
+        onOpenChange={setShowCelebrationModal}
+        goal={celebratingGoal}
+        onAddReflection={onAddReflection}
+        onRestartGoal={onRestartGoal}
+        onShareGoal={onShareGoal}
+        onClose={handleCelebrationClose}
+      />
+
+      <GoalHistoryModal
+        isOpen={showHistoryModal}
+        onOpenChange={setShowHistoryModal}
+        goal={selectedGoal}
+        onRestartGoal={onRestartGoal}
       />
     </div>
   );

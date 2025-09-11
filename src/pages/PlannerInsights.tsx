@@ -12,9 +12,26 @@ import { usePlannerInsightsData } from '@/hooks/usePlannerInsightsData';
 
 const PlannerInsights = () => {
   const [activeTab, setActiveTab] = useState('week');
-  const plannerData = usePlannerInsightsData();
+  const {
+    achievements,
+    milestones,
+    patterns,
+    timeAllocation,
+    goals,
+    weekData,
+    loading,
+    error,
+    refetch,
+    saveReflection,
+    updateGoalProgress,
+    updateGoal,
+    addGoal,
+    addGoalReflection,
+    restartGoal,
+    shareGoal,
+  } = usePlannerInsightsData();
 
-  if (plannerData.loading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="flex items-center gap-2">
@@ -25,7 +42,7 @@ const PlannerInsights = () => {
     );
   }
 
-  if (plannerData.error) {
+  if (error) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="p-4 sm:p-6 max-w-md w-full">
@@ -33,9 +50,9 @@ const PlannerInsights = () => {
             <div className="text-center">
               <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">Error Loading Insights</h3>
-              <p className="text-muted-foreground mb-4 text-sm">{plannerData.error}</p>
+              <p className="text-muted-foreground mb-4 text-sm">{error}</p>
               <button 
-                onClick={plannerData.refetch}
+                onClick={refetch}
                 className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 touch-manipulation min-h-[44px]"
               >
                 Try Again
@@ -85,33 +102,36 @@ const PlannerInsights = () => {
               <div className="space-y-3 md:space-y-4">
                 <TabsContent value="week" className="space-y-3 md:space-y-4 pb-safe">
                   <WeekView 
-                    weekData={plannerData.weekData}
-                    achievements={plannerData.achievements}
-                    milestones={plannerData.milestones.filter(m => m.is_highlight)}
-                    timeAllocation={plannerData.timeAllocation}
-                    goals={plannerData.goals}
-                    patterns={plannerData.patterns}
-                    onSaveReflection={plannerData.saveReflection}
+                    weekData={weekData}
+                    achievements={achievements}
+                    milestones={milestones.filter(m => m.is_highlight)}
+                    timeAllocation={timeAllocation}
+                    goals={goals}
+                    patterns={patterns}
+                    onSaveReflection={saveReflection}
                   />
                 </TabsContent>
                 
                 <TabsContent value="month" className="space-y-3 md:space-y-4 pb-safe">
                   <MonthView 
-                    achievements={plannerData.achievements}
-                    milestones={plannerData.milestones}
-                    timeAllocation={plannerData.timeAllocation}
-                    goals={plannerData.goals}
-                    patterns={plannerData.patterns}
-                    onSaveReflection={plannerData.saveReflection}
+                    achievements={achievements}
+                    milestones={milestones}
+                    timeAllocation={timeAllocation}
+                    goals={goals}
+                    patterns={patterns}
+                    onSaveReflection={saveReflection}
                   />
                 </TabsContent>
                 
                 <TabsContent value="goals" className="space-y-3 md:space-y-4 pb-safe">
                   <GoalsView 
-                    goals={plannerData.goals}
-                    onUpdateProgress={plannerData.updateGoalProgress}
-                    onUpdateGoal={plannerData.updateGoal}
-                    onAddGoal={plannerData.addGoal}
+                    goals={goals}
+                    onUpdateProgress={updateGoalProgress}
+                    onUpdateGoal={updateGoal}
+                    onAddGoal={addGoal}
+                    onAddReflection={addGoalReflection}
+                    onRestartGoal={restartGoal}
+                    onShareGoal={shareGoal}
                   />
                 </TabsContent>
               </div>

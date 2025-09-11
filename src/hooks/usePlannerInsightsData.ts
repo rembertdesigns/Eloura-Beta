@@ -56,6 +56,12 @@ interface Goal {
   progress: number;
   target_date: string;
   is_completed: boolean;
+  completion_count?: number;
+  current_streak?: number;
+  best_streak?: number;
+  last_completed_at?: string;
+  is_recurring?: boolean;
+  sharing_enabled?: boolean;
 }
 
 interface PlannerInsightsData {
@@ -301,36 +307,76 @@ export const usePlannerInsightsData = () => {
   };
 
   const updateGoalProgress = async (goalId: string, progress: number) => {
-    if (!user) return;
-
     try {
+      const updates: any = { progress };
+      
+      if (progress >= 100) {
+        // Get current goal data for streak calculation
+        const { data: currentGoal } = await supabase
+          .from('goals')
+          .select('*')
+          .eq('id', goalId)
+          .single();
+
+        if (currentGoal) {
+          const newCompletionCount = (currentGoal.completion_count || 0) + 1;
+          const newCurrentStreak = (currentGoal.current_streak || 0) + 1;
+          const newBestStreak = Math.max(newCurrentStreak, currentGoal.best_streak || 0);
+
+          updates.is_completed = true;
+          updates.completion_count = newCompletionCount;
+          updates.current_streak = newCurrentStreak;
+          updates.best_streak = newBestStreak;
+          updates.last_completed_at = new Date().toISOString();
+
+          // Record completion
+          await supabase
+            .from('goal_completions')
+            .insert({
+              user_id: user?.id,
+              goal_id: goalId,
+              streak_count: newCurrentStreak
+            });
+
+          // Log activity
+          await supabase
+            .from('goal_activity_log')
+            .insert({
+              user_id: user?.id,
+              goal_id: goalId,
+              activity_type: 'completed',
+              activity_data: { 
+                completion_count: newCompletionCount,
+                streak: newCurrentStreak 
+              }
+            });
+        }
+      }
+      
       const { error } = await supabase
         .from('goals')
-        .update({ 
-          progress,
-          is_completed: progress >= 100,
-          updated_at: new Date().toISOString()
-        })
+        .update(updates)
         .eq('id', goalId)
-        .eq('user_id', user.id);
+        .eq('user_id', user?.id);
 
       if (error) throw error;
-
-      // Refresh data
-      fetchAllData();
-
+      
+      await fetchAllData();
+      
       toast({
-        title: "Success",
-        description: "Goal progress updated",
+        title: "Progress updated!",
+        description: progress >= 100 ? "Congratulations on completing your goal!" : "Goal progress saved successfully.",
       });
 
+      return updates.is_completed;
     } catch (error) {
       console.error('Error updating goal progress:', error);
       toast({
         title: "Error",
-        description: "Failed to update goal progress",
-        variant: "destructive",
+        description: "Failed to update goal progress.",
+        variant: "destructive"
       });
+      return false;
     }
   };
 
@@ -379,6 +425,111 @@ export const usePlannerInsightsData = () => {
     fetchAllData();
   }, [user]);
 
+  const addGoalReflection = async (goalId: string, reflection: any) => {
+    try {
+      // Get the most recent completion for this goal
+      const { data: completion } = await supabase
+        .from('goal_completions')
+        .select('id')
+        .eq('goal_id', goalId)
+        .eq('user_id', user?.id)
+        .order('completed_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (!completion) throw new Error('No completion found for this goal');
+
+      const { error } = await supabase
+        .from('goal_reflections')
+        .insert({
+          user_id: user?.id,
+          goal_id: goalId,
+          completion_id: completion.id,
+          ...reflection
+        });
+
+      if (error) throw error;
+
+      toast({
+        title: "Reflection saved!",
+        description: "Your goal reflection has been recorded.",
+      });
+    } catch (error) {
+      console.error('Error saving goal reflection:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save reflection.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const restartGoal = async (goalId: string) => {
+    try {
+      const { error } = await supabase
+        .from('goals')
+        .update({
+          is_completed: false,
+          progress: 0
+        })
+        .eq('id', goalId)
+        .eq('user_id', user?.id);
+
+      if (error) throw error;
+
+      // Log restart activity
+      await supabase
+        .from('goal_activity_log')
+        .insert({
+          user_id: user?.id,
+          goal_id: goalId,
+          activity_type: 'restarted',
+          activity_data: {}
+        });
+
+      await fetchAllData();
+      
+      toast({
+        title: "Goal restarted!",
+        description: "Ready for another round!",
+      });
+    } catch (error) {
+      console.error('Error restarting goal:', error);
+      toast({
+        title: "Error",
+        description: "Failed to restart goal.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const shareGoal = async (goalId: string) => {
+    try {
+      // Here you could implement sharing to village or social media
+      // For now, we'll just log the share activity
+      await supabase
+        .from('goal_activity_log')
+        .insert({
+          user_id: user?.id,
+          goal_id: goalId,
+          activity_type: 'shared',
+          activity_data: { shared_at: new Date().toISOString() }
+        });
+
+      toast({
+        title: "Goal shared!",
+        description: "Your achievement has been shared with your village!",
+      });
+    } catch (error) {
+      console.error('Error sharing goal:', error);
+      toast({
+        title: "Error",
+        description: "Failed to share goal.",
+        variant: "destructive"
+      });
+    }
+  };
+
   return {
     ...data,
     refetch: fetchAllData,
@@ -386,5 +537,8 @@ export const usePlannerInsightsData = () => {
     updateGoalProgress,
     updateGoal,
     addGoal,
+    addGoalReflection,
+    restartGoal,
+    shareGoal,
   };
 };

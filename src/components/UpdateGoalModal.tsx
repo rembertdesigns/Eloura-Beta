@@ -29,10 +29,11 @@ interface UpdateGoalModalProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   goal: Goal | null;
-  onUpdateGoal: (goalId: string, updates: any) => Promise<void>;
+  onUpdateGoal?: (goalId: string, updates: any) => Promise<void>;
+  onGoalCompleted?: (goal: Goal) => void;
 }
 
-const UpdateGoalModal = ({ isOpen, onOpenChange, goal, onUpdateGoal }: UpdateGoalModalProps) => {
+const UpdateGoalModal = ({ isOpen, onOpenChange, goal, onUpdateGoal, onGoalCompleted }: UpdateGoalModalProps) => {
   const [goalData, setGoalData] = useState({
     title: '',
     description: '',
@@ -143,7 +144,7 @@ const UpdateGoalModal = ({ isOpen, onOpenChange, goal, onUpdateGoal }: UpdateGoa
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!goal) return;
+    if (!goal || !onUpdateGoal) return;
 
     const updates = {
       title: goalData.title,
@@ -154,8 +155,19 @@ const UpdateGoalModal = ({ isOpen, onOpenChange, goal, onUpdateGoal }: UpdateGoa
       is_completed: goalData.is_completed || goalData.progress >= 100
     };
 
-    await onUpdateGoal(goal.id, updates);
-    onOpenChange(false);
+    try {
+      await onUpdateGoal(goal.id, updates);
+      
+      // If progress reaches 100% and goal wasn't already completed, trigger celebration
+      if (updates.progress >= 100 && !goal.is_completed) {
+        const updatedGoal = { ...goal, ...updates };
+        onGoalCompleted?.(updatedGoal);
+      }
+      
+      onOpenChange(false);
+    } catch (error) {
+      console.error('Error updating goal:', error);
+    }
   };
 
   const progressLogic = goalData.category ? getCategoryProgressLogic(goalData.category, goalData.progress) : null;

@@ -307,38 +307,155 @@ export type Database = {
         }
         Relationships: []
       }
+      goal_activity_log: {
+        Row: {
+          activity_data: Json | null
+          activity_type: string
+          created_at: string
+          goal_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          activity_data?: Json | null
+          activity_type: string
+          created_at?: string
+          goal_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          activity_data?: Json | null
+          activity_type?: string
+          created_at?: string
+          goal_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      goal_completions: {
+        Row: {
+          completed_at: string
+          created_at: string
+          goal_id: string
+          id: string
+          streak_count: number | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          created_at?: string
+          goal_id: string
+          id?: string
+          streak_count?: number | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          goal_id?: string
+          id?: string
+          streak_count?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      goal_reflections: {
+        Row: {
+          challenges_faced: string | null
+          completion_id: string
+          created_at: string
+          goal_id: string
+          id: string
+          lessons_learned: string | null
+          rating: number | null
+          reflection_text: string | null
+          updated_at: string
+          user_id: string
+          what_helped: string | null
+          would_do_again: boolean | null
+        }
+        Insert: {
+          challenges_faced?: string | null
+          completion_id: string
+          created_at?: string
+          goal_id: string
+          id?: string
+          lessons_learned?: string | null
+          rating?: number | null
+          reflection_text?: string | null
+          updated_at?: string
+          user_id: string
+          what_helped?: string | null
+          would_do_again?: boolean | null
+        }
+        Update: {
+          challenges_faced?: string | null
+          completion_id?: string
+          created_at?: string
+          goal_id?: string
+          id?: string
+          lessons_learned?: string | null
+          rating?: number | null
+          reflection_text?: string | null
+          updated_at?: string
+          user_id?: string
+          what_helped?: string | null
+          would_do_again?: boolean | null
+        }
+        Relationships: []
+      }
       goals: {
         Row: {
+          best_streak: number | null
           category: string | null
+          completion_count: number | null
           created_at: string
+          current_streak: number | null
           description: string | null
           id: string
           is_completed: boolean | null
+          is_recurring: boolean | null
+          last_completed_at: string | null
           progress: number | null
+          sharing_enabled: boolean | null
           target_date: string | null
           title: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          best_streak?: number | null
           category?: string | null
+          completion_count?: number | null
           created_at?: string
+          current_streak?: number | null
           description?: string | null
           id?: string
           is_completed?: boolean | null
+          is_recurring?: boolean | null
+          last_completed_at?: string | null
           progress?: number | null
+          sharing_enabled?: boolean | null
           target_date?: string | null
           title: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          best_streak?: number | null
           category?: string | null
+          completion_count?: number | null
           created_at?: string
+          current_streak?: number | null
           description?: string | null
           id?: string
           is_completed?: boolean | null
+          is_recurring?: boolean | null
+          last_completed_at?: string | null
           progress?: number | null
+          sharing_enabled?: boolean | null
           target_date?: string | null
           title?: string
           updated_at?: string
