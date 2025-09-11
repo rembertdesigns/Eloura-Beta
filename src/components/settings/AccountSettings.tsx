@@ -93,39 +93,41 @@ const AccountSettings = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base">
             <User className="h-5 w-5" />
             Personal Information
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 pt-0">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="firstName">First Name</Label>
+            <div className="space-y-2">
+              <Label htmlFor="firstName" className="text-sm font-medium">First Name</Label>
               <Input
                 id="firstName"
                 value={profileData.firstName}
                 onChange={(e) => handleInputChange('firstName', e.target.value)}
                 placeholder="Enter your first name"
+                className="h-11"
               />
             </div>
-            <div>
-              <Label htmlFor="lastName">Last Name</Label>
+            <div className="space-y-2">
+              <Label htmlFor="lastName" className="text-sm font-medium">Last Name</Label>
               <Input
                 id="lastName"
                 value={profileData.lastName}
                 onChange={(e) => handleInputChange('lastName', e.target.value)}
                 placeholder="Enter your last name"
+                className="h-11"
               />
             </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="email">Email</Label>
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-sm font-medium">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -133,60 +135,67 @@ const AccountSettings = () => {
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 placeholder="Enter your email"
                 disabled
+                className="h-11"
               />
-              <p className="text-xs text-gray-500 mt-1">Email cannot be changed here</p>
+              <p className="text-xs text-muted-foreground">Email cannot be changed here</p>
             </div>
-            <div>
-              <Label htmlFor="phone">Phone</Label>
+            <div className="space-y-2">
+              <Label htmlFor="phone" className="text-sm font-medium">Phone</Label>
               <Input
                 id="phone"
                 value={profileData.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
                 placeholder="Enter your phone number"
+                className="h-11"
               />
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="dateOfBirth">Date of Birth</Label>
+          <div className="space-y-2">
+            <Label htmlFor="dateOfBirth" className="text-sm font-medium">Date of Birth</Label>
             <Input
               id="dateOfBirth"
               type="date"
               value={profileData.dateOfBirth}
               onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
+              className="h-11"
             />
           </div>
 
-          <Button 
-            onClick={handleSave}
-            disabled={loading}
-            className="bg-[#223b0a] hover:bg-[#1a2e08]"
-          >
-            {loading ? 'Saving...' : 'Save Changes'}
-          </Button>
+          <div className="flex justify-end pt-2">
+            <Button 
+              onClick={handleSave}
+              disabled={loading}
+              className="px-6 h-11 touch-manipulation"
+            >
+              {loading ? 'Saving...' : 'Save Changes'}
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base">
             <Lock className="h-5 w-5" />
             Security
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <h4 className="font-medium mb-2">Password</h4>
-            <p className="text-sm text-slate-600 mb-3">Manage your account password</p>
-            <Button variant="outline">Change Password</Button>
-          </div>
-          
-          <Separator />
-          
-          <div>
-            <h4 className="font-medium mb-2">Two-Factor Authentication</h4>
-            <p className="text-sm text-slate-600 mb-3">Add an extra layer of security to your account</p>
-            <Button variant="outline">Enable 2FA</Button>
+        <CardContent className="space-y-4 pt-0">
+          <div className="space-y-3">
+            <div>
+              <h4 className="font-medium text-sm mb-1">Password</h4>
+              <p className="text-xs text-muted-foreground mb-3">Manage your account password</p>
+              <Button variant="outline" className="h-11 touch-manipulation">Change Password</Button>
+            </div>
+            
+            <Separator />
+            
+            <div>
+              <h4 className="font-medium text-sm mb-1">Two-Factor Authentication</h4>
+              <p className="text-xs text-muted-foreground mb-3">Add an extra layer of security to your account</p>
+              <Button variant="outline" className="h-11 touch-manipulation">Enable 2FA</Button>
+            </div>
           </div>
         </CardContent>
       </Card>

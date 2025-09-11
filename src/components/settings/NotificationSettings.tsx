@@ -22,32 +22,33 @@ const NotificationSettings = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base">
             <Bell className="h-5 w-5" />
             Daily Brief Settings
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="dailyBrief">Enable Daily Brief</Label>
-              <p className="text-sm text-slate-600">Receive your personalized daily summary</p>
+        <CardContent className="space-y-4 pt-0">
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="dailyBrief" className="text-sm font-medium">Enable Daily Brief</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Receive your personalized daily summary</p>
             </div>
             <Switch
               id="dailyBrief"
               checked={settings.dailyBrief}
               onCheckedChange={(checked) => updateSetting('dailyBrief', checked)}
+              className="flex-shrink-0"
             />
           </div>
           
           {settings.dailyBrief && (
-            <div>
-              <Label htmlFor="briefTime">Daily Brief Time</Label>
+            <div className="space-y-2">
+              <Label htmlFor="briefTime" className="text-sm font-medium">Daily Brief Time</Label>
               <Select value={settings.dailyBriefTime} onValueChange={(value) => updateSetting('dailyBriefTime', value)}>
-                <SelectTrigger className="w-full mt-1">
+                <SelectTrigger className="w-full h-11">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -63,74 +64,79 @@ const NotificationSettings = () => {
       </Card>
 
       <Card>
-        <CardHeader>
-          <CardTitle>App Notifications</CardTitle>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">App Notifications</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="messageNotifications">Message Notifications</Label>
-              <p className="text-sm text-slate-600">Get notified of new messages</p>
+        <CardContent className="space-y-4 pt-0">
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="messageNotifications" className="text-sm font-medium">Message Notifications</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Get notified of new messages</p>
             </div>
             <Switch
               id="messageNotifications"
               checked={settings.messageNotifications}
               onCheckedChange={(checked) => updateSetting('messageNotifications', checked)}
+              className="flex-shrink-0"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="careAlerts">Smart Care Alerts</Label>
-              <p className="text-sm text-slate-600">Important care reminders and alerts</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="careAlerts" className="text-sm font-medium">Smart Care Alerts</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Important care reminders and alerts</p>
             </div>
             <Switch
               id="careAlerts"
               checked={settings.careAlerts}
               onCheckedChange={(checked) => updateSetting('careAlerts', checked)}
+              className="flex-shrink-0"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="villageActivity">Village Activity</Label>
-              <p className="text-sm text-slate-600">Updates from your village community</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="villageActivity" className="text-sm font-medium">Village Activity</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Updates from your village community</p>
             </div>
             <Switch
               id="villageActivity"
               checked={settings.villageActivity}
               onCheckedChange={(checked) => updateSetting('villageActivity', checked)}
+              className="flex-shrink-0"
             />
           </div>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Delivery Methods</CardTitle>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">Delivery Methods</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="emailNotifications">Email Notifications</Label>
-              <p className="text-sm text-slate-600">Receive notifications via email</p>
+        <CardContent className="space-y-4 pt-0">
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="emailNotifications" className="text-sm font-medium">Email Notifications</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Receive notifications via email</p>
             </div>
             <Switch
               id="emailNotifications"
               checked={settings.emailNotifications}
               onCheckedChange={(checked) => updateSetting('emailNotifications', checked)}
+              className="flex-shrink-0"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="pushNotifications">Push Notifications</Label>
-              <p className="text-sm text-slate-600">Receive push notifications on your device</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="pushNotifications" className="text-sm font-medium">Push Notifications</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Receive push notifications on your device</p>
             </div>
             <Switch
               id="pushNotifications"
               checked={settings.pushNotifications}
               onCheckedChange={(checked) => updateSetting('pushNotifications', checked)}
+              className="flex-shrink-0"
             />
           </div>
         </CardContent>

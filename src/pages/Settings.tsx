@@ -70,31 +70,33 @@ const Settings = () => {
 
             {/* Settings Tabs */}
             <Card className="border-0 shadow-lg sm:shadow-2xl">
-              <CardContent className="p-4 sm:pt-6">
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-                  {/* Mobile - Scrollable tabs */}
-                  <div className="sm:hidden overflow-x-auto">
-                    <TabsList className="flex w-max min-w-full h-auto p-1 gap-1">
-                      {settingsTabs.map((tab) => (
-                        <TabsTrigger 
-                          key={tab.id}
-                          value={tab.id} 
-                          className="text-xs whitespace-nowrap px-2 py-2 min-h-[40px] text-center"
-                        >
-                          {tab.shortLabel}
-                        </TabsTrigger>
-                      ))}
-                    </TabsList>
+              <CardContent className="p-2 sm:p-4">
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-3 sm:space-y-4">
+                  {/* Mobile - Scrollable tabs with improved sizing */}
+                  <div className="sm:hidden">
+                    <div className="overflow-x-auto pb-2">
+                      <TabsList className="flex w-max h-auto p-1 gap-0.5">
+                        {settingsTabs.map((tab) => (
+                          <TabsTrigger 
+                            key={tab.id}
+                            value={tab.id} 
+                            className="text-xs whitespace-nowrap px-3 py-2.5 min-h-[44px] min-w-[60px] flex-shrink-0"
+                          >
+                            {tab.shortLabel}
+                          </TabsTrigger>
+                        ))}
+                      </TabsList>
+                    </div>
                   </div>
                   
-                  {/* Tablet - 4 columns */}
+                  {/* Tablet - 4 columns with better spacing */}
                   <div className="hidden sm:block md:hidden">
                     <TabsList className="grid w-full grid-cols-4 h-auto p-1 gap-1">
                       {settingsTabs.map((tab) => (
                         <TabsTrigger 
                           key={tab.id}
                           value={tab.id} 
-                          className="text-xs p-2 min-h-[44px] text-center"
+                          className="text-xs p-2.5 min-h-[44px] text-center"
                         >
                           {tab.shortLabel}
                         </TabsTrigger>
@@ -109,7 +111,7 @@ const Settings = () => {
                         <TabsTrigger 
                           key={tab.id}
                           value={tab.id} 
-                          className="text-xs p-2 min-h-[44px] text-center"
+                          className="text-xs p-2.5 min-h-[44px] text-center"
                         >
                           <span className="lg:hidden">{tab.shortLabel}</span>
                           <span className="hidden lg:inline">{tab.label}</span>
