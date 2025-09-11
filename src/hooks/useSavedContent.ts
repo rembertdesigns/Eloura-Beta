@@ -45,21 +45,18 @@ export const useSavedContent = () => {
     if (!user) return false;
 
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('saved_content')
         .insert({
           user_id: user.id,
           title,
           content,
           category
-        })
-        .select()
-        .single();
+        });
 
       if (error) throw error;
 
-      setSavedContent(prev => [data as SavedContentItem, ...prev]);
-      
+      // Don't update local state here - let real-time subscription handle it
       toast({
         title: "Success",
         description: `Content saved to ${category}`,
