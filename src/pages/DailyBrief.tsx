@@ -9,7 +9,7 @@ import { toast } from '@/hooks/use-toast';
 import { Calendar, Clock, Heart, Brain, Edit3, Pause, CheckCircle, User, MapPin, AlertTriangle, Target, TrendingUp, CalendarDays, Users, Star, Plus, Sparkles } from 'lucide-react';
 import MoodCheckPopup from '@/components/MoodCheckPopup';
 import AddGoalModal from '@/components/AddGoalModal';
-import QuickAddTask from '@/components/QuickAddTask';
+import QuickAddTaskModal from '@/components/QuickAddTaskModal';
 import TaskRatingModal from '@/components/TaskRatingModal';
 import { useDailyBriefData } from '@/hooks/useDailyBriefData';
 import { useAuth } from '@/contexts/AuthContext';
@@ -38,7 +38,7 @@ const DailyBrief = () => {
   const [selectedMood, setSelectedMood] = useState('');
   const [showMoodPopup, setShowMoodPopup] = useState(false);
   const [showAddGoalModal, setShowAddGoalModal] = useState(false);
-  const [showQuickAddTask, setShowQuickAddTask] = useState(false);
+  const [showQuickAddTaskModal, setShowQuickAddTaskModal] = useState(false);
   const [activeFilter, setActiveFilter] = useState('default');
   const [showCelebration, setShowCelebration] = useState(false);
   const [showCelebrateModal, setShowCelebrateModal] = useState(false);
@@ -314,7 +314,7 @@ const DailyBrief = () => {
                      </CardTitle>
                     <Button 
                       size="sm" 
-                      onClick={() => setShowQuickAddTask(true)} 
+                      onClick={() => setShowQuickAddTaskModal(true)} 
                       className="flex items-center gap-1 min-touch-target touch-manipulation text-xs md:text-sm px-2 md:px-3"
                     >
                       <Plus className="h-3 w-3 md:h-4 md:w-4" />
@@ -556,7 +556,7 @@ const DailyBrief = () => {
 
       <AddGoalModal isOpen={showAddGoalModal} onOpenChange={setShowAddGoalModal} onAddGoal={handleAddGoal} />
 
-      <QuickAddTask isOpen={showQuickAddTask} onOpenChange={setShowQuickAddTask} onAddTask={handleAddTask} />
+      <QuickAddTaskModal isOpen={showQuickAddTaskModal} onOpenChange={setShowQuickAddTaskModal} onAddTask={handleAddTask} />
       
       <TaskRatingModal 
         isOpen={showTaskRatingModal} 
