@@ -43,25 +43,11 @@ const Village = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Page Header */}
-      <div className="px-2 sm:px-4 py-2 sm:py-4 flex-shrink-0">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
-              <Users className="h-4 w-4 sm:h-6 sm:w-6 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-lg sm:text-2xl font-semibold text-gray-900 mb-0.5 sm:mb-1">My Village</h1>
-              <p className="text-xs sm:text-sm text-gray-600 leading-tight">Your community support network and connections</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl flex flex-col flex-1">
         {/* Header - Mobile optimized */}
         <div className="flex items-center justify-between py-4 sm:py-6 flex-shrink-0">
           <div className="flex-1 min-w-0">
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-1 truncate">My Village</h1>
             <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">All the people in your support network - your village of care</p>
           </div>
           
@@ -74,52 +60,41 @@ const Village = () => {
             </Button>
             <Button className="bg-green-600 hover:bg-green-700 flex items-center gap-2 text-sm touch-manipulation min-h-[44px]" onClick={() => setShowAddMember(true)}>
               <UserPlus className="h-4 w-4" />
-              <span className="hidden md:inline">Add Member</span>
-              <span className="md:hidden">Add</span>
+              <span className="hidden md:inline">Add Village Member</span>
+              <span className="md:hidden">Add Member</span>
             </Button>
           </div>
 
           {/* Mobile Actions Menu */}
-          <div className="sm:hidden flex items-center gap-2 flex-shrink-0">
+          <div className="sm:hidden">
             <Sheet open={showMobileActions} onOpenChange={setShowMobileActions}>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="touch-manipulation min-h-[44px] min-w-[44px]">
+                <Button variant="ghost" size="sm" className="touch-manipulation h-8 w-8 p-1" aria-label="Village actions">
                   <MoreVertical className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-64">
-                <div className="pt-6 space-y-3">
-                  <Button 
-                    className="w-full justify-start touch-manipulation min-h-[44px]" 
-                    onClick={() => {
-                      setShowAddMember(true);
-                      setShowMobileActions(false);
-                    }}
-                  >
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Add Village Member
-                  </Button>
+              <SheetContent side="bottom" className="h-auto">
+                <div className="py-4 space-y-3">
                   <Button 
                     variant="outline" 
-                    className="w-full justify-start touch-manipulation min-h-[44px]" 
+                    className="w-full justify-start gap-3 touch-manipulation min-h-[52px]" 
                     onClick={() => {
                       setShowMessage(true);
                       setShowMobileActions(false);
                     }}
                   >
-                    <MessageSquare className="h-4 w-4 mr-2" />
+                    <MessageSquare className="h-4 w-4" />
                     Send Message
                   </Button>
                   <Button 
-                    variant="outline" 
-                    className="w-full justify-start touch-manipulation min-h-[44px]" 
+                    className="w-full justify-start gap-3 bg-green-600 hover:bg-green-700 touch-manipulation min-h-[52px]" 
                     onClick={() => {
-                      setShowRequestHelp(true);
+                      setShowAddMember(true);
                       setShowMobileActions(false);
                     }}
                   >
-                    <Heart className="h-4 w-4 mr-2" />
-                    Request Help
+                    <UserPlus className="h-4 w-4" />
+                    Add Village Member
                   </Button>
                 </div>
               </SheetContent>
@@ -134,12 +109,14 @@ const Village = () => {
             return (
               <Card key={index} className="bg-white border-0 shadow-lg hover:shadow-xl transition-shadow">
                 <CardContent className="p-3 sm:p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xs sm:text-sm text-gray-600 mb-1">{stat.label}</p>
-                      <p className="text-lg sm:text-2xl font-bold text-gray-900">{stat.value}</p>
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gray-50 rounded-lg flex-shrink-0">
+                      <IconComponent className={`h-4 w-4 ${stat.color}`} />
                     </div>
-                    <IconComponent className={`h-6 w-6 sm:h-8 sm:w-8 ${stat.color}`} />
+                    <div className="min-w-0 flex-1">
+                      <div className="text-lg sm:text-xl font-bold text-gray-900">{stat.value}</div>
+                      <div className="text-xs text-gray-500 truncate">{stat.label}</div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -147,62 +124,66 @@ const Village = () => {
           })}
         </div>
 
-        {/* Main Content Tabs */}
+        {/* Tabs Section - Mobile optimized */}
         <div className="flex-1 flex flex-col min-h-0">
-          <Tabs defaultValue="circle" className="flex-1 flex flex-col">
-            <TabsList className="grid w-full grid-cols-3 mb-3 sm:mb-4 h-auto">
-              <div className="col-span-3 sm:col-span-1">
-                <div className="grid grid-cols-3 w-full h-full">
-                  <TabsTrigger value="circle" className="text-xs px-2 py-2 sm:px-3 sm:py-3 min-h-[44px]">
-                    <Users className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
-                    <span className="hidden sm:inline">Circle</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="tasks" className="text-xs px-2 py-2 sm:px-3 sm:py-3 min-h-[44px]">
-                    <Calendar className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
-                    <span className="hidden sm:inline">Tasks</span>
-                  </TabsTrigger>
-                  <TabsTrigger value="help" className="text-xs px-2 py-2 sm:px-3 sm:py-3 min-h-[44px]">
-                    <Heart className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
-                    <span className="hidden sm:inline">Help</span>
-                  </TabsTrigger>
-                </div>
-              </div>
-            </TabsList>
+          <Tabs defaultValue="care-circle" className="w-full flex flex-col h-full">
+            {/* Mobile - Scrollable tabs */}
+            <div className="sm:hidden overflow-x-auto mb-4 flex-shrink-0">
+              <TabsList className="flex w-max min-w-full h-auto">
+                <TabsTrigger value="care-circle" className="text-xs whitespace-nowrap px-3 py-2 min-h-[44px]">Care Circle</TabsTrigger>
+                <TabsTrigger value="delegations" className="text-xs whitespace-nowrap px-3 py-2 min-h-[44px]">Active Tasks</TabsTrigger>
+                <TabsTrigger value="help-requests" className="text-xs whitespace-nowrap px-3 py-2 min-h-[44px]">Help & Logs</TabsTrigger>
+              </TabsList>
+            </div>
 
-            <div className="flex-1 overflow-auto">
-              <TabsContent value="circle" className="mt-0 h-full">
-                <div className="p-4">
-                  <p className="text-gray-500">Care circle content coming soon</p>
-                </div>
+            {/* Desktop - Standard tabs */}
+            <div className="hidden sm:block">
+              <TabsList className="grid w-full grid-cols-3 mb-4 flex-shrink-0">
+                <TabsTrigger value="care-circle" className="text-sm min-h-[44px]">Care Circle</TabsTrigger>
+                <TabsTrigger value="delegations" className="text-sm min-h-[44px]">Active Tasks</TabsTrigger>
+                <TabsTrigger value="help-requests" className="text-sm min-h-[44px]">Help Requests & Logs</TabsTrigger>
+              </TabsList>
+            </div>
+
+            <div className="flex-1 overflow-hidden">
+              <TabsContent value="care-circle" className="h-full overflow-auto pb-safe">
+                <CareCircleEnhanced />
               </TabsContent>
 
-              <TabsContent value="tasks" className="mt-0 h-full">
-                <div className="p-4">
-                  <p className="text-gray-500">Active tasks content coming soon</p>
-                </div>
+              <TabsContent value="delegations" className="h-full overflow-auto pb-safe">
+                <ActiveTasksEnhanced />
               </TabsContent>
 
-              <TabsContent value="help" className="mt-0 h-full">
-                <div className="p-4">
-                  <p className="text-gray-500">Help requests content coming soon</p>
-                </div>
+              <TabsContent value="help-requests" className="h-full overflow-auto pb-safe">
+                <HelpRequestsLogsEnhanced />
               </TabsContent>
             </div>
           </Tabs>
         </div>
       </div>
-
-      {/* Modals */}
+      
       <AddVillageMemberModal
         isOpen={showAddMember}
         onClose={() => setShowAddMember(false)}
         onSave={addVillageMember}
       />
-
-      <div>
-        {showRequestHelp && <p>Request help modal placeholder</p>}
-        {showMessage && <p>Message modal placeholder</p>}
-      </div>
+      
+      <RequestHelpModal
+        isOpen={showRequestHelp}
+        onClose={() => setShowRequestHelp(false)}
+        onSubmit={addHelpRequest}
+        villageMembers={villageMembers}
+      />
+      
+      <MessageModal
+        isOpen={showMessage}
+        onClose={() => setShowMessage(false)}
+        selectedMember={selectedMember}
+        conversations={conversations}
+        messages={messages}
+        onSendMessage={sendMessage}
+        onCreateConversation={createConversation}
+      />
     </div>
   );
 };

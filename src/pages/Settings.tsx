@@ -50,27 +50,22 @@ const Settings = () => {
                 <ChevronLeft className="h-5 w-5" />
               </Button>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
-                  <SettingsIcon className="h-4 w-4 sm:h-6 sm:w-6 text-primary-foreground" />
+                <div className="bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] p-2 rounded-xl">
+                  <SettingsIcon className="h-5 w-5 text-white" />
                 </div>
-                <div>
-                  <h1 className="text-lg sm:text-2xl font-semibold text-gray-900 mb-0.5 sm:mb-1">Settings</h1>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-tight">Customize your Eloura experience</p>
-                </div>
+                <h1 className="text-xl sm:text-2xl font-light text-gray-900">Settings</h1>
               </div>
             </div>
 
             {/* Desktop Header */}
             <div className="hidden lg:block mb-8">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
-                  <SettingsIcon className="h-4 w-4 sm:h-6 sm:w-6 text-primary-foreground" />
+                <div className="bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] p-2 rounded-xl">
+                  <SettingsIcon className="h-6 w-6 text-white" />
                 </div>
-                <div>
-                  <h1 className="text-lg sm:text-2xl font-semibold text-gray-900 mb-0.5 sm:mb-1">Settings</h1>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-tight">Customize your Eloura experience</p>
-                </div>
+                <h1 className="text-3xl font-light text-gray-900">Settings</h1>
               </div>
+              <p className="text-gray-600">Customize your Eloura experience</p>
             </div>
 
             {/* Settings Tabs */}
