@@ -4,7 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FolderOpen, Share2, Lock, FileText, Phone, Calendar, Utensils, Baby, Heart, Download, Trash2, Plus } from 'lucide-react';
-import AddItemModal from '@/components/toolkit/AddItemModal';
+import ChildcareModal from '@/components/toolkit/ChildcareModal';
+import EldercareModal from '@/components/toolkit/EldercareModal';
+import EmergencyModal from '@/components/toolkit/EmergencyModal';
+import MealsModal from '@/components/toolkit/MealsModal';
+import PDFViewer from '@/components/toolkit/PDFViewer';
 import { useToolkitItems, type ToolkitItem } from '@/hooks/useToolkitItems';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -121,7 +125,10 @@ const HomeBaseToolkit = () => {
                           <p className="text-xs sm:text-sm text-gray-600 mt-0.5">{section.description}</p>
                         </div>
                         <div className="flex-shrink-0 ml-2">
-                          <AddItemModal category={key as ToolkitItem['category']} />
+                          {key === 'childcare' && <ChildcareModal />}
+                          {key === 'eldercare' && <EldercareModal />}
+                          {key === 'emergency' && <EmergencyModal />}
+                          {key === 'meals' && <MealsModal />}
                         </div>
                       </div>
                     </CardHeader>
@@ -184,16 +191,17 @@ const HomeBaseToolkit = () => {
                                     <p className="text-xs font-medium text-gray-900 mb-1">Attachments:</p>
                                     <div className="flex flex-wrap gap-1">
                                       {item.attachments.map((attachment, index) => (
-                                        <Badge key={index} variant="outline" className="text-xs h-6">
-                                          <Download className="h-3 w-3 mr-1" />
-                                          <a 
-                                            href={attachment.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="hover:underline"
-                                          >
-                                            {attachment.name}
-                                          </a>
+                                        <Badge key={index} variant="outline" className="text-xs h-6 cursor-pointer hover:bg-gray-50">
+                                          <PDFViewer
+                                            fileUrl={attachment.url}
+                                            fileName={attachment.name}
+                                            trigger={
+                                              <div className="flex items-center gap-1">
+                                                <Download className="h-3 w-3" />
+                                                <span>{attachment.name}</span>
+                                              </div>
+                                            }
+                                          />
                                         </Badge>
                                       ))}
                                     </div>
