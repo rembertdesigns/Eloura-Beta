@@ -10,14 +10,17 @@ import { Users, MessageSquare, Edit, Plus, Search, Trophy, Clock, FileText, Star
 import { useVillageData } from '@/hooks/useVillageData';
 import RequestHelpModal from './RequestHelpModal';
 import ViewResponsesModal from './ViewResponsesModal';
+import EditHelpRequestModal from './EditHelpRequestModal';
 
 const HelpRequestsLogsEnhanced = () => {
-  const { helpRequests, communicationLogs, analytics, loading, error, addHelpRequest, addCommunicationLog, villageMembers = [] } = useVillageData();
+  const { helpRequests, communicationLogs, analytics, loading, error, addHelpRequest, updateHelpRequest, deleteHelpRequest, addCommunicationLog, villageMembers = [] } = useVillageData();
   const [newCommLog, setNewCommLog] = useState({ contact_name: '', type: '', notes: '', category: '' });
   const [showCommLogForm, setShowCommLogForm] = useState(false);
   const [showRequestHelp, setShowRequestHelp] = useState(false);
   const [showViewResponses, setShowViewResponses] = useState(false);
+  const [showEditRequest, setShowEditRequest] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
+  const [editingRequest, setEditingRequest] = useState(null);
   const [searchLogs, setSearchLogs] = useState('');
   const [filterDate, setFilterDate] = useState('');
   const [filterType, setFilterType] = useState('');
@@ -162,7 +165,10 @@ const HelpRequestsLogsEnhanced = () => {
             <MessageSquare className="h-4 w-4 mr-1" />
             View Responses
           </Button>
-          <Button variant="outline" size="sm" className="h-8">
+          <Button variant="outline" size="sm" className="h-8" onClick={() => {
+            setEditingRequest(request);
+            setShowEditRequest(true);
+          }}>
             <Edit className="h-4 w-4 mr-1" />
             Edit Request
           </Button>
@@ -597,6 +603,18 @@ const HelpRequestsLogsEnhanced = () => {
         onAcceptResponse={(responseId) => console.log('Accept response:', responseId)}
         onDeclineResponse={(responseId) => console.log('Decline response:', responseId)}
         onSendThankYou={(responderId, message) => console.log('Thank you:', responderId, message)}
+      />
+      
+      <EditHelpRequestModal
+        isOpen={showEditRequest}
+        onClose={() => {
+          setShowEditRequest(false);
+          setEditingRequest(null);
+        }}
+        onUpdate={updateHelpRequest}
+        onDelete={deleteHelpRequest}
+        request={editingRequest}
+        villageMembers={villageMembers}
       />
     </>
   );

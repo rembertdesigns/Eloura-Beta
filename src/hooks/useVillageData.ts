@@ -217,6 +217,53 @@ export const useVillageData = () => {
     }
   };
 
+  const updateHelpRequest = async (id: string, updates: any) => {
+    if (!user) return false;
+
+    try {
+      const { error } = await supabase
+        .from('help_requests')
+        .update({
+          ...updates,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', id)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      
+      // Refresh the help requests list
+      await fetchHelpRequests();
+      return true;
+    } catch (err) {
+      console.error('Error updating help request:', err);
+      setError('Failed to update help request');
+      return false;
+    }
+  };
+
+  const deleteHelpRequest = async (id: string) => {
+    if (!user) return false;
+
+    try {
+      const { error } = await supabase
+        .from('help_requests')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      
+      // Refresh the help requests list
+      await fetchHelpRequests();
+      return true;
+    } catch (err) {
+      console.error('Error deleting help request:', err);
+      setError('Failed to delete help request');
+      return false;
+    }
+  };
+
   // Delete village member
   const deleteVillageMember = async (memberId: string) => {
     if (!user) return false;
@@ -405,6 +452,8 @@ export const useVillageData = () => {
     addVillageMember,
     updateVillageMember,
     addHelpRequest,
+    updateHelpRequest,
+    deleteHelpRequest,
     addCommunicationLog,
     updateTask,
     deleteVillageMember,
