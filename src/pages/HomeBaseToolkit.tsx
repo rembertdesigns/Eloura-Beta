@@ -113,7 +113,7 @@ const HomeBaseToolkit = () => {
         {/* Category Tabs */}
         <Card className="w-full border-0 shadow-lg">
           <CardContent className="p-2">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full space-y-2">
+            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="w-full space-y-2">
               {/* Mobile: Horizontal scroll tabs */}
               <div className="sm:hidden">
                 <div className="overflow-x-auto pb-2">
@@ -208,13 +208,11 @@ const HomeBaseToolkit = () => {
                                 </Button>
                               </div>
                             </div>
-                            {item.tags && item.tags.length > 0 && (
+                            {item.content && (
                               <div className="flex flex-wrap gap-1">
-                                {item.tags.map((tag, index) => (
-                                  <Badge key={index} variant="secondary" className="text-xs px-1 py-0">
-                                    {tag}
-                                  </Badge>
-                                ))}
+                                <Badge variant="secondary" className="text-xs px-1 py-0">
+                                  Document
+                                </Badge>
                               </div>
                             )}
                           </CardHeader>

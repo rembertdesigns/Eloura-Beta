@@ -43,7 +43,8 @@ const Insights = () => {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-white">
+      {/* Page Header */}
       <div className="px-2 sm:px-4 py-2 sm:py-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -57,153 +58,182 @@ const Insights = () => {
           </div>
         </div>
       </div>
+
       <div className="container mx-auto px-4 pt-4 pb-2 max-w-7xl space-y-3 md:space-y-4">
+        <div>
           <p className="text-sm md:text-base text-gray-600">Analyze your patterns and optimize your family life</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 md:gap-4">
           {/* Time Tracking */}
-          <Card className="shadow-2xl">
-            <CardHeader className="pb-2 md:pb-3">
-              <CardTitle className="flex items-center gap-2 md:gap-3 text-gray-700 text-base md:text-lg">
-                <Clock className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
-                Time Spent This Week
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm md:text-base flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                Time Analysis
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 md:space-y-4">
-              {Object.entries(timeTracking).length > 0 ? (
-                Object.entries(timeTracking).map(([category, data]) => (
-                  <div key={category} className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="capitalize font-medium text-gray-700 text-sm md:text-base">{category}</span>
-                      <span className="text-xs md:text-sm text-gray-500">{data.hours}h ({data.percentage}%)</span>
+            <CardContent className="pt-0">
+              {timeTracking && Array.isArray(timeTracking) && timeTracking.length > 0 ? (
+                <div className="space-y-2">
+                  {timeTracking.slice(0, 5).map((item, index) => (
+                    <div key={index} className="flex justify-between items-center py-1">
+                      <span className="text-xs md:text-sm text-gray-700">{item.task || 'Task'}</span>
+                      <Badge variant="outline" className="text-xs">
+                        {item.time || 0}min
+                      </Badge>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className={`${data.color} h-2 rounded-full transition-all duration-300`}
-                        style={{ width: `${data.percentage}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                ))
+                  ))}
+                </div>
               ) : (
-                <div className="text-center text-gray-500 py-4 md:py-6">
-                  <Clock className="h-8 w-8 md:h-10 md:w-10 mx-auto mb-2 md:mb-3 text-gray-300" />
-                  <p className="text-sm md:text-base">No time tracking data available yet.</p>
-                  <p className="text-xs md:text-sm mt-1">Start logging time for activities to see your breakdown.</p>
+                <div className="text-center py-6 text-gray-500">
+                  <p className="text-sm md:text-base">No time tracking data yet.</p>
+                  <p className="text-xs md:text-sm mt-1">Complete tasks to see time insights.</p>
                 </div>
               )}
             </CardContent>
           </Card>
 
-          {/* Patterns & Insights */}
-          <Card className="shadow-2xl">
-            <CardHeader className="pb-2 md:pb-3">
-              <CardTitle className="flex items-center gap-2 md:gap-3 text-gray-700 text-base md:text-lg">
-                <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-orange-600" />
-                Patterns & Insights
+          {/* Insights */}
+          <Card className="border-0 shadow-lg">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm md:text-base flex items-center gap-2">
+                <TrendingUp className="h-4 w-4" />
+                Smart Insights
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 md:space-y-4">
-              {insights.length > 0 ? (
-                insights.map((insight, index) => (
-                  <div key={index} className="p-2 md:p-3 border border-gray-200 rounded-lg space-y-1 md:space-y-2 bg-gray-50">
-                    <div className="flex items-start gap-2">
-                      {insight.type === 'warning' && <AlertTriangle className="h-4 w-4 text-orange-500 mt-0.5" />}
-                      {insight.type === 'success' && <TrendingUp className="h-4 w-4 text-green-500 mt-0.5" />}
-                      {insight.type === 'info' && <BarChart3 className="h-4 w-4 text-blue-500 mt-0.5" />}
-                       <div className="flex-1">
-                         <p className="text-xs md:text-sm text-gray-700">{insight.text}</p>
-                         <p className="text-xs md:text-sm text-gray-500 mt-1">
-                           <strong>Action:</strong> {insight.action}
-                         </p>
-                         <p className="text-xs text-gray-400 mt-1 italic">{insight.source}</p>
-                       </div>
+            <CardContent className="pt-0">
+              {insights && Array.isArray(insights) && insights.length > 0 ? (
+                <div className="space-y-2">
+                  {insights.slice(0, 3).map((insight, index) => (
+                    <div key={index} className="p-2 bg-blue-50 rounded-lg">
+                      <p className="text-xs md:text-sm text-blue-900">{insight.category || 'Insight'}</p>
+                      <p className="text-xs text-blue-600 mt-1">{insight.type || 'General'}</p>
                     </div>
-                  </div>
-                ))
+                  ))}
+                </div>
               ) : (
-                <div className="text-center text-gray-500 py-4 md:py-6">
-                  <BarChart3 className="h-8 w-8 md:h-10 md:w-10 mx-auto mb-2 md:mb-3 text-gray-300" />
+                <div className="text-center py-6 text-gray-500">
                   <p className="text-sm md:text-base">No insights available yet.</p>
-                  <p className="text-xs md:text-sm mt-1">Complete more tasks and activities to generate personalized insights.</p>
+                  <p className="text-xs md:text-sm mt-1">Use the app more to generate personalized insights.</p>
                 </div>
               )}
             </CardContent>
           </Card>
         </div>
 
-        {/* Mental Load Forecast */}
-        <MentalLoadForecast />
+        <Tabs defaultValue="overview" className="space-y-3">
+          <TabsList className="grid w-full grid-cols-3 sm:grid-cols-4">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="time">Time</TabsTrigger>
+            <TabsTrigger value="stress">Stress</TabsTrigger>
+            <TabsTrigger value="forecast" className="hidden sm:block">Forecast</TabsTrigger>
+          </TabsList>
 
-        {/* Stress Patterns */}
-        <Card className="shadow-2xl">
-          <CardHeader className="pb-2 md:pb-3">
-            <CardTitle className="text-gray-700 text-base md:text-lg">Stress Patterns & Recommendations</CardTitle>
-            <p className="text-xs md:text-sm text-gray-500 mt-1">Based on task completion rates and your stress ratings</p>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3">
-              {stressPatterns.map((pattern, index) => (
-                <div 
-                  key={index} 
-                  className={`p-3 md:p-4 rounded-lg border ${
-                    pattern.type === 'high' 
-                      ? 'bg-red-50 border-red-100' 
-                      : pattern.type === 'smooth' 
-                      ? 'bg-green-50 border-green-100' 
-                      : 'bg-orange-50 border-orange-100'
-                  }`}
-                >
-                  <h4 className={`font-medium text-sm md:text-base ${
-                    pattern.type === 'high' 
-                      ? 'text-red-700'
-                      : pattern.type === 'smooth' 
-                      ? 'text-green-700' 
-                      : 'text-orange-700'
-                  }`}>
-                    {pattern.type === 'high' ? 'High Stress Times' : 
-                     pattern.type === 'smooth' ? 'Smooth Periods' : 
-                     'Current Week Load'}
-                  </h4>
-                  <p className={`text-xs md:text-sm mt-1 ${
-                    pattern.type === 'high' 
-                      ? 'text-red-600'
-                      : pattern.type === 'smooth' 
-                      ? 'text-green-600' 
-                      : 'text-orange-600'
-                  }`}>
-                    {pattern.period}: {pattern.rating}
-                  </p>
-                  <p className={`text-xs mt-1 md:mt-2 ${
-                    pattern.type === 'high' 
-                      ? 'text-red-500'
-                      : pattern.type === 'smooth' 
-                      ? 'text-green-500' 
-                      : 'text-orange-500'
-                  }`}>
-                    {pattern.description}
-                  </p>
-                  <p className={`text-xs mt-1 ${
-                    pattern.type === 'high' 
-                      ? 'text-red-400'
-                      : pattern.type === 'smooth' 
-                      ? 'text-green-400' 
-                      : 'text-orange-400'
-                  }`}>
-                    {pattern.recommendation}
-                  </p>
-                </div>
-              ))}
-              {stressPatterns.length === 0 && (
-                <div className="col-span-3 text-center text-gray-500 py-4 md:py-6">
-                  <p className="text-sm md:text-base">Not enough data yet to analyze stress patterns.</p>
-                  <p className="text-xs md:text-sm mt-1">Complete more tasks to see personalized insights.</p>
-                </div>
-              )}
+          <TabsContent value="overview">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <Card className="border-0 shadow-lg">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm md:text-base">Weekly Overview</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="text-center py-6 text-gray-500">
+                    <p className="text-sm md:text-base">Overview coming soon</p>
+                    <p className="text-xs md:text-sm mt-1">Weekly patterns and trends will appear here.</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-0 shadow-lg">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm md:text-base">Performance Metrics</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="text-center py-6 text-gray-500">
+                    <p className="text-sm md:text-base">Metrics coming soon</p>
+                    <p className="text-xs md:text-sm mt-1">Your performance data will be displayed here.</p>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-          </CardContent>
-        </Card>
+          </TabsContent>
+
+          <TabsContent value="time">
+            <Card className="border-0 shadow-lg">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm md:text-base">Detailed Time Analysis</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                {timeTracking && Array.isArray(timeTracking) && timeTracking.length > 0 ? (
+                  <div className="space-y-3">
+                    {timeTracking.map((item, index) => (
+                      <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded-lg">
+                        <div>
+                          <span className="text-sm font-medium">{item.task || 'Task'}</span>
+                          <p className="text-xs text-gray-600">{item.category || 'General'}</p>
+                        </div>
+                        <Badge variant="outline" className="text-sm">
+                          {item.time || 0}min
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <Clock className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                    <p className="text-sm md:text-base">No time data available</p>
+                    <p className="text-xs md:text-sm mt-1">Complete tasks to see detailed time analysis.</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="stress">
+            <Card className="border-0 shadow-lg">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm md:text-base">Stress Patterns</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                {stressPatterns && Array.isArray(stressPatterns) && stressPatterns.length > 0 ? (
+                  <div className="space-y-3">
+                    {stressPatterns.map((pattern, index) => (
+                      <div key={index} className="p-3 border border-orange-200 bg-orange-50 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-sm font-medium text-orange-900">{pattern.category || 'Stress source'}</span>
+                          <Badge variant="outline" className="text-xs border-orange-300 text-orange-700">
+                            {pattern.severity || 'Medium'}
+                          </Badge>
+                        </div>
+                        <p className="text-xs text-orange-700">{pattern.recommendation || 'Take regular breaks to manage stress.'}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <AlertTriangle className="h-12 w-12 mx-auto mb-4 text-gray-300" />
+                    <p className="text-sm md:text-base">Not enough data yet to analyze stress patterns.</p>
+                    <p className="text-xs md:text-sm mt-1">Complete more tasks to see personalized insights.</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="forecast">
+            <Card className="border-0 shadow-lg">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm md:text-base">Mental Load Forecast</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0">
+                <MentalLoadForecast />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  );
 };
 
 export default Insights;

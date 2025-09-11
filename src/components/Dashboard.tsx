@@ -122,7 +122,7 @@ const Dashboard = () => {
                 Welcome back, {getFirstName()}! 👋
               </h2>
               <p className="text-gray-600 text-sm">
-                {getRandomTip()}
+                Here's a tip to help you manage your day effectively.
               </p>
             </div>
 
@@ -237,9 +237,11 @@ const Dashboard = () => {
                     <Card key={task.id} className="hover:shadow-md transition-shadow">
                       <CardContent className="p-4">
                         <div className="flex items-center gap-3">
-                          <Checkbox
+                          <input
+                            type="checkbox"
                             checked={task.completed}
-                            onCheckedChange={() => toggleTaskCompletion(task.id)}
+                            onChange={() => toggleTaskCompletion(task.id, !task.completed)}
+                            className="w-4 h-4"
                           />
                           <div className="flex-1">
                             <h4 className={`font-medium ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
@@ -288,7 +290,7 @@ const Dashboard = () => {
                             )}
                             <div className="flex items-center gap-1 mt-2">
                               <Clock className="h-4 w-4 text-gray-400" />
-                              <span className="text-sm text-gray-500">{event.start_date}</span>
+                              <span className="text-sm text-gray-500">{event.start_time}</span>
                             </div>
                           </div>
                         </div>
@@ -302,31 +304,14 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* Modals */}
+      {/* Modals - placeholder for now */}
       {quickAddModal && (
-        <>
-          {quickAddModal === 'task' && (
-            <QuickAddTaskModal
-              open={true}
-              onClose={() => setQuickAddModal(null)}
-              onSave={handleQuickAddSave}
-            />
-          )}
-          {quickAddModal === 'event' && (
-            <AddEventModal
-              open={true}
-              onClose={() => setQuickAddModal(null)}
-              onSave={handleQuickAddSave}
-            />
-          )}
-          {quickAddModal === 'reminder' && (
-            <AddReminderModal
-              open={true}
-              onClose={() => setQuickAddModal(null)}
-              onSave={handleQuickAddSave}
-            />
-          )}
-        </>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg">
+            <h3 className="text-lg font-semibold mb-4">Add {quickAddModal}</h3>
+            <Button onClick={() => setQuickAddModal(null)}>Close</Button>
+          </div>
+        </div>
       )}
     </div>
   );
