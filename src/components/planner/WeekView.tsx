@@ -114,6 +114,10 @@ const WeekView: React.FC<WeekViewProps> = ({
   };
 
   const weekDates = getCurrentWeekDates();
+  
+  // Get current month and week info
+  const currentMonthYear = weekDates[0].toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const weekOfMonth = Math.ceil(weekDates[0].getDate() / 7);
 
   // Prepare data for display
   const weekHighlights = milestones.slice(0, 3);
@@ -137,7 +141,7 @@ const WeekView: React.FC<WeekViewProps> = ({
         <CardHeader>
           <CardTitle className="text-lg md:text-xl flex items-center gap-2">
             <Calendar className="h-5 w-5" />
-            Weekly Calendar
+            Weekly Calendar - {currentMonthYear}, Week {weekOfMonth}
           </CardTitle>
         </CardHeader>
         <CardContent>
