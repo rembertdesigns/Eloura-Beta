@@ -257,6 +257,36 @@ export const useDashboardData = () => {
     }
   };
 
+  // Toggle reminder completion
+  const toggleReminderCompletion = async (reminderId: string, completed: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('reminders')
+        .update({ completed })
+        .eq('id', reminderId);
+
+      if (error) throw error;
+
+      setReminders(prev => 
+        prev.map(reminder => 
+          reminder.id === reminderId ? { ...reminder, completed } : reminder
+        )
+      );
+
+      toast({
+        title: completed ? "Reminder completed!" : "Reminder uncompleted",
+        description: completed ? "Great job! 🎉" : "Reminder marked as incomplete",
+      });
+    } catch (error) {
+      console.error('Error updating reminder:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update reminder",
+        variant: "destructive",
+      });
+    }
+  };
+
   // Get random tip
   const getRandomTip = () => {
     if (tips.length === 0) return null;
@@ -318,6 +348,7 @@ export const useDashboardData = () => {
     addEvent,
     addReminder,
     toggleTaskCompletion,
+    toggleReminderCompletion,
     getRandomTip,
     refetch: fetchDashboardData,
   };

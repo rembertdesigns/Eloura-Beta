@@ -49,6 +49,7 @@ const Dashboard = () => {
     addEvent,
     addReminder,
     toggleTaskCompletion,
+    toggleReminderCompletion,
     getRandomTip,
   } = useDashboardData();
 
@@ -85,20 +86,24 @@ const Dashboard = () => {
   // Get today's events and reminders formatted for display
   const todaysSchedule = [
     ...events.map(event => ({
+      id: event.id,
       time: format(new Date(event.start_time), 'h:mm a'),
       event: event.title,
       category: event.category || 'event',
       color: getCategoryColor(event.category),
       location: event.location,
-      type: 'event' as const
+      type: 'event' as const,
+      completed: false // Events don't have completion status
     })),
     ...todaysScheduleReminders.map(reminder => ({
+      id: reminder.id,
       time: format(new Date(reminder.reminder_time), 'h:mm a'),
       event: reminder.title,
       category: 'reminder',
       color: 'bg-yellow-100 text-yellow-700',
       location: reminder.description,
-      type: 'reminder' as const
+      type: 'reminder' as const,
+      completed: reminder.completed || false
     }))
   ].sort((a, b) => {
     const timeA = new Date(`2000/01/01 ${a.time}`).getTime();
@@ -347,8 +352,12 @@ const Dashboard = () => {
                   <Checkbox 
                     checked={'completed' in item ? item.completed : false}
                     onCheckedChange={(checked) => {
-                      if ('completed' in item) {
+                      if ('completed' in item && 'is_urgent' in item) {
+                        // This is a task
                         toggleTaskCompletion(item.id, !!checked);
+                      } else if ('type' in item && item.type === 'reminder') {
+                        // This is a reminder
+                        toggleReminderCompletion(item.id, !!checked);
                       }
                     }}
                     className={`min-touch-target ${'completed' in item && item.completed ? "data-[state=checked]:bg-green-500" : ""}`}
@@ -396,7 +405,16 @@ const Dashboard = () => {
               </div>
             ) : (
               todaysSchedule.map((item, index) => (
-                <div key={index} className="flex items-center gap-2 md:gap-4 cursor-pointer hover:bg-slate-50 p-2 rounded-lg -m-2 min-touch-target">
+                <div key={index} className="flex items-center gap-2 md:gap-3 py-2 px-2 rounded-lg hover:bg-slate-50 touch-manipulation min-touch-target">
+                  {item.type === 'reminder' && (
+                    <Checkbox 
+                      checked={item.completed}
+                      onCheckedChange={(checked) => {
+                        toggleReminderCompletion(item.id, !!checked);
+                      }}
+                      className="h-4 w-4 min-touch-target flex-shrink-0"
+                    />
+                  )}
                   <div className="text-xs md:text-sm font-medium text-blue-600 w-12 md:w-16 flex-shrink-0">
                     {item.time}
                   </div>
@@ -405,7 +423,7 @@ const Dashboard = () => {
                       <AlarmClock className="h-3 w-3 text-yellow-600 flex-shrink-0" />
                     )}
                     <div className="min-w-0 flex-1">
-                      <div className="text-xs md:text-sm text-slate-700 truncate">{item.event}</div>
+                      <div className={`text-xs md:text-sm truncate ${item.completed ? 'line-through text-slate-500' : 'text-slate-700'}`}>{item.event}</div>
                       {item.location && (
                         <div className="text-xs text-slate-500 mt-1 truncate">{item.location}</div>
                       )}
