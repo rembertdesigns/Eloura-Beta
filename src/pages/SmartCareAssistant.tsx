@@ -151,14 +151,16 @@ const SmartCareAssistant = () => {
               )}
             </div>
 
-            <div className="flex-1 min-h-0">
-              <TabsContent value="chat" className="h-full flex flex-col shadow-lg bg-white border border-gray-200 rounded-lg overflow-hidden mt-0 mx-1">
+            <div className="flex-1 min-h-0 flex flex-col">
+              <TabsContent value="chat" className="flex-1 flex flex-col shadow-lg bg-white border border-gray-200 rounded-lg overflow-hidden mt-0 mx-1">
                 <ChatHeader />
-                <ChatMessages 
-                  chatHistory={messages} 
-                  loading={chatLoading}
-                  onSaveContent={handleSaveContent}
-                />
+                <div className="flex-1 min-h-0 flex flex-col">
+                  <ChatMessages 
+                    chatHistory={messages} 
+                    loading={chatLoading}
+                    onSaveContent={handleSaveContent}
+                  />
+                </div>
                 <ChatInput
                   question={question}
                   setQuestion={setQuestion}
@@ -168,7 +170,7 @@ const SmartCareAssistant = () => {
                 />
               </TabsContent>
 
-              <TabsContent value="saved" className="h-full shadow-lg bg-white border border-gray-200 rounded-lg overflow-hidden mt-0 mx-1 pb-safe">
+              <TabsContent value="saved" className="flex-1 shadow-lg bg-white border border-gray-200 rounded-lg overflow-hidden mt-0 mx-1 pb-safe">
                 <SavedContent onNewConversation={() => {
                   startNewConversation();
                   setActiveTab('chat');
