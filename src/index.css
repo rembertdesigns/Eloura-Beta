@@ -178,6 +178,23 @@
   .card-warm {
     @apply bg-white/90 backdrop-blur-sm border border-white/50 shadow-lg;
   }
+
+  /* Mobile-specific utilities */
+  .mobile-compact {
+    @apply p-3 space-y-3 md:p-6 md:space-y-6;
+  }
+
+  .mobile-text {
+    @apply text-sm md:text-base;
+  }
+
+  .mobile-heading {
+    @apply text-lg md:text-2xl lg:text-3xl;
+  }
+
+  .mobile-grid {
+    @apply grid grid-cols-1 gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3;
+  }
 }
 
 .wavy-divider {
