@@ -51,6 +51,7 @@ interface WeekData {
 interface Goal {
   id: string;
   title: string;
+  description?: string;
   category: string;
   progress: number;
   target_date: string;
@@ -266,6 +267,39 @@ export const usePlannerInsightsData = () => {
     }
   };
 
+  const updateGoal = async (goalId: string, updates: any) => {
+    if (!user) return;
+
+    try {
+      const { error } = await supabase
+        .from('goals')
+        .update({ 
+          ...updates,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', goalId)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      // Refresh data
+      fetchAllData();
+
+      toast({
+        title: "Success",
+        description: "Goal updated successfully",
+      });
+
+    } catch (error) {
+      console.error('Error updating goal:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update goal",
+        variant: "destructive",
+      });
+    }
+  };
+
   const updateGoalProgress = async (goalId: string, progress: number) => {
     if (!user) return;
 
@@ -350,6 +384,7 @@ export const usePlannerInsightsData = () => {
     refetch: fetchAllData,
     saveReflection,
     updateGoalProgress,
+    updateGoal,
     addGoal,
   };
 };

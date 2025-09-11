@@ -110,6 +110,7 @@ const PlannerInsights = () => {
                   <GoalsView 
                     goals={plannerData.goals}
                     onUpdateProgress={plannerData.updateGoalProgress}
+                    onUpdateGoal={plannerData.updateGoal}
                     onAddGoal={plannerData.addGoal}
                   />
                 </TabsContent>

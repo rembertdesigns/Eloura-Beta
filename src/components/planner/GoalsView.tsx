@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
 import AddGoalModal from '@/components/AddGoalModal';
+import UpdateGoalModal from '@/components/UpdateGoalModal';
 import { 
   Target, Users, Share, Plus, Calendar, Star, 
   TrendingUp, MessageSquare, Award, Archive, 
@@ -17,6 +18,7 @@ import {
 interface Goal {
   id: string;
   title: string;
+  description?: string;
   category: string;
   progress: number;
   target_date: string;
@@ -26,6 +28,7 @@ interface Goal {
 interface GoalsViewProps {
   goals: Goal[];
   onUpdateProgress: (goalId: string, progress: number) => Promise<void>;
+  onUpdateGoal?: (goalId: string, updates: any) => Promise<void>;
   onAddGoal?: (goalData: {
     title: string;
     description?: string;
@@ -34,10 +37,12 @@ interface GoalsViewProps {
   }) => Promise<void>;
 }
 
-const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onAddGoal }) => {
+const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onUpdateGoal, onAddGoal }) => {
   const [activeGoalTab, setActiveGoalTab] = useState('active');
   const [filterCategory, setFilterCategory] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null);
 
   const handleAddGoal = async (goalData: any) => {
     if (onAddGoal) {
@@ -45,13 +50,26 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onAddGoa
     }
   };
 
+  const handleUpdateGoal = async (goalId: string, updates: any) => {
+    if (onUpdateGoal) {
+      await onUpdateGoal(goalId, updates);
+    }
+  };
+
+  const handleOpenUpdateModal = (goal: Goal) => {
+    setSelectedGoal(goal);
+    setShowUpdateModal(true);
+  };
+
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
-      'Work': 'bg-blue-100 text-blue-700',
-      'Personal': 'bg-green-100 text-green-700',
-      'Family': 'bg-purple-100 text-purple-700',
-      'Health': 'bg-pink-100 text-pink-700',
-      'Career': 'bg-blue-100 text-blue-700',
+      'health': 'bg-green-100 text-green-700',
+      'family': 'bg-blue-100 text-blue-700',
+      'career': 'bg-purple-100 text-purple-700',
+      'personal': 'bg-orange-100 text-orange-700',
+      'care': 'bg-pink-100 text-pink-700',
+      'financial': 'bg-yellow-100 text-yellow-700',
+      'home': 'bg-indigo-100 text-indigo-700',
     };
     return colors[category] || 'bg-gray-100 text-gray-700';
   };
@@ -66,7 +84,7 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onAddGoa
   const activeGoals = transformedGoals.filter(goal => !goal.is_completed);
   const completedGoals = transformedGoals.filter(goal => goal.is_completed);
 
-  const categories = ['all', 'Career', 'Health', 'Family', 'Personal'];
+  const categories = ['all', 'health', 'family', 'career', 'personal', 'care', 'financial', 'home'];
 
   const filteredGoals = activeGoals.filter(goal => 
     filterCategory === 'all' || goal.category === filterCategory
@@ -158,9 +176,9 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onAddGoa
                       <Button 
                         variant="outline" 
                         size="sm" 
-                        onClick={() => onUpdateProgress(goal.id, Math.min(100, goal.progress + 10))}
+                        onClick={() => handleOpenUpdateModal(goal)}
                       >
-                        <Target className="h-3 w-3 mr-1" />
+                        <Edit className="h-3 w-3 mr-1" />
                         Update Progress
                       </Button>
                     </div>
@@ -216,6 +234,13 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onAddGoa
         isOpen={showAddModal}
         onOpenChange={setShowAddModal}
         onAddGoal={handleAddGoal}
+      />
+
+      <UpdateGoalModal
+        isOpen={showUpdateModal}
+        onOpenChange={setShowUpdateModal}
+        goal={selectedGoal}
+        onUpdateGoal={handleUpdateGoal}
       />
     </div>
   );
