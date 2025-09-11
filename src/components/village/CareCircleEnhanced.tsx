@@ -3,18 +3,20 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Users, Phone, Mail, MessageSquare, Star, Clock, Wifi, WifiOff, UserPlus, Filter } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Users, Phone, Mail, MessageSquare, Star, Clock, Wifi, WifiOff, UserPlus, Filter, Edit, MoreVertical } from 'lucide-react';
 import { useVillageData } from '@/hooks/useVillageData';
 import AddVillageMemberModal from './AddVillageMemberModal';
 import MessageModal from './MessageModal';
 
 const CareCircleEnhanced = () => {
-  const { villageMembers, loading, error, addVillageMember, conversations = [], messages = [], createConversation, sendMessage } = useVillageData();
+  const { villageMembers, loading, error, addVillageMember, updateVillageMember, conversations = [], messages = [], createConversation, sendMessage } = useVillageData();
   const [filterRole, setFilterRole] = useState('');
   const [filterGroup, setFilterGroup] = useState('');
   const [showAddMember, setShowAddMember] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
+  const [editingMember, setEditingMember] = useState(null);
 
   if (loading) {
     return <div className="flex items-center justify-center py-8">Loading...</div>;
@@ -76,9 +78,27 @@ const CareCircleEnhanced = () => {
                 <h3 className="font-semibold text-gray-900 truncate">{person.name}</h3>
                 <p className="text-sm text-gray-500">{person.group_name || person.relationship}</p>
               </div>
-              <Badge className={`${getStatusColor(person.status)} border-0 flex-shrink-0 ml-2`}>
-                {person.status || 'Available'}
-              </Badge>
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <Badge className={`${getStatusColor(person.status)} border-0`}>
+                  {person.status || 'Available'}
+                </Badge>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => {
+                      setEditingMember(person);
+                      setShowAddMember(true);
+                    }}>
+                      <Edit className="h-4 w-4 mr-2" />
+                      Edit Member
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
             
             {/* Multiple Role Badges */}
@@ -157,7 +177,7 @@ const CareCircleEnhanced = () => {
                   title={person.phone ? "Copy phone number" : "No phone number"}
                 >
                   <Phone className="h-4 w-4 mr-1" />
-                  Copy Number
+                  Copy #
                 </Button>
               </div>
             </div>
@@ -222,8 +242,18 @@ const CareCircleEnhanced = () => {
       
       <AddVillageMemberModal
         isOpen={showAddMember}
-        onClose={() => setShowAddMember(false)}
-        onSave={addVillageMember}
+        onClose={() => {
+          setShowAddMember(false);
+          setEditingMember(null);
+        }}
+        onSave={async (memberData) => {
+          if (editingMember) {
+            await updateVillageMember(editingMember.id, memberData);
+          } else {
+            await addVillageMember(memberData);
+          }
+        }}
+        editingMember={editingMember}
       />
       
       <MessageModal

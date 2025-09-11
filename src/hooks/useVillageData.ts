@@ -191,6 +191,32 @@ export const useVillageData = () => {
     }
   };
 
+  // Update village member
+  const updateVillageMember = async (memberId: string, updates: any) => {
+    if (!user) return false;
+
+    try {
+      const { error } = await supabase
+        .from('village_members')
+        .update({
+          ...updates,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', memberId)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      
+      // Refresh the village members list
+      await fetchVillageMembers();
+      return true;
+    } catch (err) {
+      console.error('Error updating village member:', err);
+      setError('Failed to update village member');
+      return false;
+    }
+  };
+
   // Delete village member
   const deleteVillageMember = async (memberId: string) => {
     if (!user) return false;
@@ -377,6 +403,7 @@ export const useVillageData = () => {
     loading,
     error,
     addVillageMember,
+    updateVillageMember,
     addHelpRequest,
     addCommunicationLog,
     updateTask,
