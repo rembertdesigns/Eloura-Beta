@@ -76,6 +76,12 @@ const Auth = () => {
       return "Please check your email and click the verification link before signing in.";
     } else if (message.includes('signup_disabled')) {
       return "New account registration is currently disabled. Please contact support.";
+    } else if (message.includes('captcha') || message.includes('hcaptcha')) {
+      return "Please complete the security verification to continue.";
+    } else if (message.includes('bot_like_activity') || message.includes('suspicious_activity')) {
+      return "We've detected unusual activity. Please try again or contact support if this persists.";
+    } else if (message.includes('challenge_required')) {
+      return "Additional verification required. Please complete the security challenge.";
     }
     
     return error.message;
