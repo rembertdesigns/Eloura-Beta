@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Users, Phone, Mail, MessageSquare, Star, Clock, Wifi, WifiOff, UserPlus, Filter, Edit, MoreVertical } from 'lucide-react';
+import { Users, Phone, Mail, MessageSquare, Star, Clock, Wifi, WifiOff, UserPlus, Filter, Edit, MoreVertical, Monitor, Shield } from 'lucide-react';
 import { useVillageData } from '@/hooks/useVillageData';
 import AddVillageMemberModal from './AddVillageMemberModal';
 import MessageModal from './MessageModal';
@@ -63,20 +63,33 @@ const CareCircleEnhanced = () => {
         <div className="flex items-start gap-4 flex-1">
           {/* Avatar with online status */}
           <div className="relative flex-shrink-0">
-            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-semibold text-lg">
-              {person.avatar}
+            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-700 font-semibold text-lg overflow-hidden">
+              {person.profile_photo_url ? (
+                <img src={person.profile_photo_url} alt={person.name} className="w-full h-full object-cover" />
+              ) : (
+                person.name.charAt(0).toUpperCase()
+              )}
             </div>
             {/* Online status indicator */}
-            <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${person.isOnline ? 'bg-green-500' : 'bg-gray-400'}`}>
-              {person.isOnline ? <Wifi className="h-2 w-2 text-white m-0.5" /> : <WifiOff className="h-2 w-2 text-white m-0.5" />}
+            <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${person.is_online ? 'bg-green-500' : 'bg-gray-400'}`}>
+              {person.is_online ? <Wifi className="h-2 w-2 text-white m-0.5" /> : <WifiOff className="h-2 w-2 text-white m-0.5" />}
             </div>
+            {/* Color tag indicator */}
+            {person.color_tag && (
+              <div className={`absolute -top-1 -left-1 w-3 h-3 rounded-full border border-white bg-${person.color_tag}-500`} />
+            )}
           </div>
 
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-2">
               <div className="min-w-0 flex-1">
                 <h3 className="font-semibold text-gray-900 truncate">{person.name}</h3>
-                <p className="text-sm text-gray-500">{person.group_name || person.relationship}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-gray-500">{person.group_name || person.relationship}</p>
+                  {person.location && (
+                    <span className="text-xs text-gray-400">• {person.neighborhood || person.location}</span>
+                  )}
+                </div>
               </div>
               <div className="flex items-center gap-2 flex-shrink-0">
                 <Badge className={`${getStatusColor(person.status)} border-0`}>
@@ -88,11 +101,14 @@ const CareCircleEnhanced = () => {
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => {
-                      setEditingMember(person);
-                      setShowAddMember(true);
-                    }}>
+                  <DropdownMenuContent align="end" className="bg-white border shadow-lg z-50">
+                    <DropdownMenuItem 
+                      onClick={() => {
+                        setEditingMember(person);
+                        setShowAddMember(true);
+                      }}
+                      className="cursor-pointer"
+                    >
                       <Edit className="h-4 w-4 mr-2" />
                       Edit Member
                     </DropdownMenuItem>
@@ -117,35 +133,73 @@ const CareCircleEnhanced = () => {
             
             <p className="text-sm text-gray-600 mb-2 line-clamp-2">{person.description}</p>
             
-            {/* Skills */}
+            {/* Skills and Languages */}
             <div className="mb-2">
               <p className="text-xs text-gray-500 mb-1">Skills:</p>
               <div className="flex flex-wrap gap-1">
-                {person.skills.map((skill, index) => (
+                {person.skills && person.skills.map((skill, index) => (
                   <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
                     {skill}
                   </span>
                 ))}
               </div>
+              {person.languages && person.languages.length > 0 && (
+                <div className="mt-1">
+                  <p className="text-xs text-gray-500 mb-1">Languages:</p>
+                  <div className="flex flex-wrap gap-1">
+                    {person.languages.map((language, index) => (
+                      <span key={index} className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded">
+                        {language}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Support Type and Emergency Status */}
+            <div className="mb-2 text-xs text-gray-600">
+              {person.support_type && (
+                <div className="flex items-center gap-1">
+                  <Monitor className="h-3 w-3" />
+                  <span>{person.support_type === 'both' ? 'In-person & Remote' : person.support_type}</span>
+                </div>
+              )}
+              {person.emergency_status && (
+                <div className="flex items-center gap-1 text-red-600">
+                  <Shield className="h-3 w-3" />
+                  <span>{person.emergency_status}</span>
+                </div>
+              )}
             </div>
 
             {/* Recent Activity */}
             <div className="mb-3">
               <div className="flex items-center gap-1 text-xs text-gray-500">
                 <Clock className="h-3 w-3" />
-                <span>{person.recentActivity}</span>
+                <span>{person.recent_activity || 'Recently added'}</span>
               </div>
+              {person.trust_level && (
+                <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                  <Shield className="h-3 w-3" />
+                  <span className="capitalize">{person.trust_level.replace('-', ' ')}</span>
+                </div>
+              )}
             </div>
             
             <div className="space-y-1 mb-4 text-sm text-gray-600">
-              <div className="flex items-center gap-2 truncate">
-                <Phone className="h-4 w-4 flex-shrink-0" />
-                <span className="truncate">{person.phone}</span>
-              </div>
-              <div className="flex items-center gap-2 truncate">
-                <Mail className="h-4 w-4 flex-shrink-0" />
-                <span className="truncate">{person.email}</span>
-              </div>
+              {person.phone && (
+                <div className="flex items-center gap-2 truncate">
+                  <Phone className="h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">{person.phone}</span>
+                </div>
+              )}
+              {person.email && (
+                <div className="flex items-center gap-2 truncate">
+                  <Mail className="h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">{person.email}</span>
+                </div>
+              )}
             </div>
             
             <div className="mt-auto">

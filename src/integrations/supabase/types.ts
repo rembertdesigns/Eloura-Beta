@@ -1130,16 +1130,30 @@ export type Database = {
       village_members: {
         Row: {
           avatar: string | null
+          color_tag: string | null
           contact_info: string | null
+          contact_preferences: Json | null
           created_at: string
+          custom_role_descriptions: Json | null
+          custom_skill_descriptions: Json | null
           description: string | null
+          detailed_availability: Json | null
           email: string | null
+          emergency_status: string | null
+          extra_notes: string | null
           group_name: string | null
+          history_notes: string | null
           id: string
+          invitation_sent_at: string | null
+          invited_as_user: boolean | null
           is_active: boolean | null
           is_online: boolean | null
+          languages: string[] | null
+          location: string | null
           name: string
+          neighborhood: string | null
           phone: string | null
+          profile_photo_url: string | null
           rating: number | null
           rating_count: number | null
           recent_activity: string | null
@@ -1147,21 +1161,37 @@ export type Database = {
           roles: string[] | null
           skills: string[] | null
           status: string | null
+          support_type: string | null
+          trust_level: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
           avatar?: string | null
+          color_tag?: string | null
           contact_info?: string | null
+          contact_preferences?: Json | null
           created_at?: string
+          custom_role_descriptions?: Json | null
+          custom_skill_descriptions?: Json | null
           description?: string | null
+          detailed_availability?: Json | null
           email?: string | null
+          emergency_status?: string | null
+          extra_notes?: string | null
           group_name?: string | null
+          history_notes?: string | null
           id?: string
+          invitation_sent_at?: string | null
+          invited_as_user?: boolean | null
           is_active?: boolean | null
           is_online?: boolean | null
+          languages?: string[] | null
+          location?: string | null
           name: string
+          neighborhood?: string | null
           phone?: string | null
+          profile_photo_url?: string | null
           rating?: number | null
           rating_count?: number | null
           recent_activity?: string | null
@@ -1169,21 +1199,37 @@ export type Database = {
           roles?: string[] | null
           skills?: string[] | null
           status?: string | null
+          support_type?: string | null
+          trust_level?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
           avatar?: string | null
+          color_tag?: string | null
           contact_info?: string | null
+          contact_preferences?: Json | null
           created_at?: string
+          custom_role_descriptions?: Json | null
+          custom_skill_descriptions?: Json | null
           description?: string | null
+          detailed_availability?: Json | null
           email?: string | null
+          emergency_status?: string | null
+          extra_notes?: string | null
           group_name?: string | null
+          history_notes?: string | null
           id?: string
+          invitation_sent_at?: string | null
+          invited_as_user?: boolean | null
           is_active?: boolean | null
           is_online?: boolean | null
+          languages?: string[] | null
+          location?: string | null
           name?: string
+          neighborhood?: string | null
           phone?: string | null
+          profile_photo_url?: string | null
           rating?: number | null
           rating_count?: number | null
           recent_activity?: string | null
@@ -1191,6 +1237,8 @@ export type Database = {
           roles?: string[] | null
           skills?: string[] | null
           status?: string | null
+          support_type?: string | null
+          trust_level?: string | null
           updated_at?: string
           user_id?: string
         }
