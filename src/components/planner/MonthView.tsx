@@ -87,7 +87,18 @@ const MonthView: React.FC<MonthViewProps> = ({
   const [activeSubTab, setActiveSubTab] = useState('overview');
   const [monthlyReflection, setMonthlyReflection] = useState('');
 
-  const monthDays = Array.from({ length: 31 }, (_, i) => i + 1);
+  // Get current month data
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth();
+  
+  // Calculate first day of month and how many days it has
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+  const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+  const daysInMonth = lastDayOfMonth.getDate();
+  const startingDayOfWeek = firstDayOfMonth.getDay(); // 0 = Sunday, 1 = Monday, etc.
+  
+  const monthDays = Array.from({ length: daysInMonth }, (_, i) => i + 1);
   const daysWithEvents: number[] = []; // No dummy events
   const productiveDays: number[] = []; // No dummy productivity days
   const goalCompletionDays: number[] = []; // No dummy goal completion days
@@ -151,7 +162,7 @@ const MonthView: React.FC<MonthViewProps> = ({
         <CardHeader className="pb-2 md:pb-4">
           <CardTitle className="flex items-center gap-2 md:gap-3 text-slate-700 text-base md:text-lg">
             <CalendarIcon className="h-4 w-4 md:h-5 md:w-5" />
-            Monthly Productivity Overview
+            {firstDayOfMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} Productivity Overview
           </CardTitle>
           <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs md:text-sm text-slate-600">
             <div className="flex items-center gap-1 md:gap-2">
@@ -178,7 +189,7 @@ const MonthView: React.FC<MonthViewProps> = ({
           </div>
           <div className="grid grid-cols-7 gap-1 md:gap-2">
             {/* Empty cells for days before month starts */}
-            {Array.from({ length: 3 }, (_, i) => (
+            {Array.from({ length: startingDayOfWeek }, (_, i) => (
               <div key={`empty-${i}`} className="h-12 md:h-16 bg-slate-50 rounded border"></div>
             ))}
             
