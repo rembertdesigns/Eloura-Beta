@@ -39,20 +39,20 @@ const MentalLoadForecast = () => {
 
   return (
     <Card className="card-warm">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-3 text-slate-700">
-          <Brain className="h-5 w-5 text-purple-600" />
+      <CardHeader className="pb-2 md:pb-3">
+        <CardTitle className="flex items-center gap-2 md:gap-3 text-slate-700 text-base md:text-lg">
+          <Brain className="h-4 w-4 md:h-5 md:w-5 text-purple-600" />
           Mental Load Forecast ({forecastDays} Days)
         </CardTitle>
-        <p className="text-sm text-slate-500">
+        <p className="text-xs md:text-sm text-slate-500">
           Predicted mental load based on your patterns and scheduled tasks
         </p>
         {forecastData.length > 0 && (
-          <div className="flex items-center gap-4 pt-2">
-            <div className="text-sm text-slate-600">
+          <div className="flex items-center gap-3 md:gap-4 pt-1 md:pt-2">
+            <div className="text-xs md:text-sm text-slate-600">
               Weekly Average: <span className="font-semibold">{weeklyAverage.toFixed(1)}/10</span>
             </div>
-            <Badge variant="outline" className="text-slate-600">
+            <Badge variant="outline" className="text-slate-600 text-xs">
               {weeklyAverage < 4 ? 'Light Week' : weeklyAverage < 7 ? 'Balanced Week' : 'Heavy Week'}
             </Badge>
           </div>
@@ -61,20 +61,31 @@ const MentalLoadForecast = () => {
       
       <CardContent>
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="overview">Daily Overview</TabsTrigger>
-            <TabsTrigger value="recommendations">Smart Recommendations</TabsTrigger>
-          </TabsList>
+          {/* Mobile: Compact horizontal tabs */}
+          <div className="md:hidden mb-3">
+            <TabsList className="grid w-full grid-cols-2 h-10">
+              <TabsTrigger value="overview" className="text-xs px-2 min-touch-target">Daily Overview</TabsTrigger>
+              <TabsTrigger value="recommendations" className="text-xs px-2 min-touch-target">Smart Recommendations</TabsTrigger>
+            </TabsList>
+          </div>
+
+          {/* Desktop: Standard tabs */}
+          <div className="hidden md:block">
+            <TabsList className="grid w-full grid-cols-2 mb-4 md:mb-6">
+              <TabsTrigger value="overview">Daily Overview</TabsTrigger>
+              <TabsTrigger value="recommendations">Smart Recommendations</TabsTrigger>
+            </TabsList>
+          </div>
           
-          <TabsContent value="overview" className="space-y-4">
+          <TabsContent value="overview" className="space-y-3 md:space-y-4">
             {forecastData.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
                 {forecastData.map((day, index) => (
-                  <div key={index} className="p-4 border border-white/50 rounded-lg bg-white/30">
-                    <div className="flex items-center justify-between mb-3">
+                  <div key={index} className="p-3 md:p-4 border border-white/50 rounded-lg bg-white/30">
+                    <div className="flex items-center justify-between mb-2 md:mb-3">
                       <div>
-                        <h4 className="font-medium text-slate-700">{day.date}</h4>
-                        <p className="text-sm text-slate-500">{day.day}</p>
+                        <h4 className="font-medium text-slate-700 text-sm md:text-base">{day.date}</h4>
+                        <p className="text-xs md:text-sm text-slate-500">{day.day}</p>
                       </div>
                       <Badge className={getLoadColor(day.level)} variant="outline">
                         {getLoadIcon(day.level)}
@@ -83,7 +94,7 @@ const MentalLoadForecast = () => {
                     </div>
                     
                     <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center justify-between text-xs md:text-sm">
                         <span className="text-slate-600">Tasks:</span>
                         <span className="font-medium">{day.tasks}</span>
                       </div>
@@ -92,13 +103,13 @@ const MentalLoadForecast = () => {
                         {day.categories.map((category, catIndex) => (
                           <div
                             key={catIndex}
-                            className={`w-3 h-3 rounded ${categoryColors[category as keyof typeof categoryColors]}`}
+                            className={`w-2 h-2 md:w-3 md:h-3 rounded ${categoryColors[category as keyof typeof categoryColors]}`}
                             title={category}
                           />
                         ))}
                       </div>
                       
-                      <div className="w-full bg-slate-200 rounded-full h-2 mt-3">
+                      <div className="w-full bg-slate-200 rounded-full h-2 mt-2 md:mt-3">
                         <div 
                           className={`h-2 rounded-full transition-all duration-300 ${
                             day.level === 'high' ? 'bg-red-500' :
@@ -112,27 +123,27 @@ const MentalLoadForecast = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center text-slate-500 py-12">
-                <Brain className="h-12 w-12 mx-auto mb-4 text-slate-300" />
-                <p className="text-lg font-medium mb-2">No forecast data available</p>
-                <p className="text-sm">Complete tasks and activities to generate your mental load forecast.</p>
+              <div className="text-center text-slate-500 py-6 md:py-8">
+                <Brain className="h-8 w-8 md:h-10 md:w-10 mx-auto mb-2 md:mb-3 text-slate-300" />
+                <p className="text-sm md:text-base font-medium mb-1">No forecast data available</p>
+                <p className="text-xs md:text-sm">Complete tasks and activities to generate your mental load forecast.</p>
               </div>
             )}
           </TabsContent>
           
-          <TabsContent value="recommendations" className="space-y-4">
+          <TabsContent value="recommendations" className="space-y-3 md:space-y-4">
             {forecastData.filter(day => day.recommendations && day.recommendations.length > 0).length > 0 ? (
               forecastData.filter(day => day.recommendations && day.recommendations.length > 0).map((day, index) => (
-                <div key={index} className="p-4 border border-white/50 rounded-lg bg-white/30">
-                  <div className="flex items-center gap-2 mb-3">
-                    <h4 className="font-medium text-slate-700">{day.date} ({day.day})</h4>
+                <div key={index} className="p-3 md:p-4 border border-white/50 rounded-lg bg-white/30">
+                  <div className="flex items-center gap-2 mb-2 md:mb-3">
+                    <h4 className="font-medium text-slate-700 text-sm md:text-base">{day.date} ({day.day})</h4>
                     <Badge className={getLoadColor(day.level)} variant="outline">
                       {day.level} load
                     </Badge>
                   </div>
-                  <ul className="space-y-2">
+                  <ul className="space-y-1 md:space-y-2">
                     {day.recommendations.map((rec, recIndex) => (
-                      <li key={recIndex} className="flex items-start gap-2 text-sm text-slate-600">
+                      <li key={recIndex} className="flex items-start gap-2 text-xs md:text-sm text-slate-600">
                         <div className="w-1.5 h-1.5 rounded-full bg-slate-400 mt-2 flex-shrink-0" />
                         {rec}
                       </li>
@@ -141,10 +152,10 @@ const MentalLoadForecast = () => {
                 </div>
               ))
             ) : (
-              <div className="text-center text-slate-500 py-12">
-                <TrendingUp className="h-12 w-12 mx-auto mb-4 text-slate-300" />
-                <p className="text-lg font-medium mb-2">No recommendations available</p>
-                <p className="text-sm">Add tasks and track your activities to receive personalized recommendations.</p>
+              <div className="text-center text-slate-500 py-6 md:py-8">
+                <TrendingUp className="h-8 w-8 md:h-10 md:w-10 mx-auto mb-2 md:mb-3 text-slate-300" />
+                <p className="text-sm md:text-base font-medium mb-1">No recommendations available</p>
+                <p className="text-xs md:text-sm">Add tasks and track your activities to receive personalized recommendations.</p>
               </div>
             )}
           </TabsContent>
