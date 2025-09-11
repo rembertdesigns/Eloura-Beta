@@ -74,6 +74,11 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onUpdate
     return colors[category] || 'bg-gray-100 text-gray-700';
   };
 
+  const getCategoryLabel = (category: string) => {
+    const categoryObj = categories.find(cat => cat.value === category);
+    return categoryObj ? categoryObj.label : category;
+  };
+
   const transformedGoals = goals.map(goal => ({
     ...goal,
     priority: goal.progress > 70 ? 'High' : goal.progress > 30 ? 'Medium' : 'Low',
@@ -84,7 +89,16 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onUpdate
   const activeGoals = transformedGoals.filter(goal => !goal.is_completed);
   const completedGoals = transformedGoals.filter(goal => goal.is_completed);
 
-  const categories = ['all', 'health', 'family', 'career', 'personal', 'care', 'financial', 'home'];
+  const categories = [
+    { value: 'all', label: 'All Categories' },
+    { value: 'health', label: 'Health' },
+    { value: 'family', label: 'Family' },
+    { value: 'career', label: 'Career' },
+    { value: 'personal', label: 'Personal' },
+    { value: 'care', label: 'Care' },
+    { value: 'financial', label: 'Financial' },
+    { value: 'home', label: 'Home' }
+  ];
 
   const filteredGoals = activeGoals.filter(goal => 
     filterCategory === 'all' || goal.category === filterCategory
@@ -103,10 +117,10 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onUpdate
             <SelectTrigger className="w-32">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white dark:bg-gray-800 z-50">
               {categories.map(cat => (
-                <SelectItem key={cat} value={cat}>
-                  {cat === 'all' ? 'All Categories' : cat}
+                <SelectItem key={cat.value} value={cat.value}>
+                  {cat.label}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -141,7 +155,7 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onUpdate
                         <h3 className="font-semibold text-slate-800">{goal.title}</h3>
                         <div className="flex items-center gap-2 mt-1">
                           <Badge className={`text-xs ${goal.color}`}>
-                            {goal.category}
+                            {getCategoryLabel(goal.category)}
                           </Badge>
                           <Badge variant="outline" className="text-xs">
                             {goal.priority} Priority
@@ -206,7 +220,7 @@ const GoalsView: React.FC<GoalsViewProps> = ({ goals, onUpdateProgress, onUpdate
                         <h3 className="font-semibold text-slate-800">{goal.title}</h3>
                         <div className="flex items-center gap-2 mt-1">
                           <Badge className={`text-xs ${goal.color}`}>
-                            {goal.category}
+                            {getCategoryLabel(goal.category)}
                           </Badge>
                           <CheckCircle className="h-4 w-4 text-green-500" />
                           <span className="text-xs text-green-600">Completed</span>
