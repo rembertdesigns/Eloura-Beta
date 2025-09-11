@@ -55,6 +55,7 @@ export const useDashboardData = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [tips, setTips] = useState<Tip[]>([]);
+  const [villageMembers, setVillageMembers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch all dashboard data
@@ -100,6 +101,15 @@ export const useDashboardData = () => {
 
       if (remindersError) throw remindersError;
 
+      // Fetch village members to check if delegation is possible
+      const { data: villageMembersData, error: villageMembersError } = await supabase
+        .from('village_members')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('is_active', true);
+
+      if (villageMembersError) throw villageMembersError;
+
       // Fetch tips
       const { data: tipsData, error: tipsError } = await supabase
         .from('tips')
@@ -112,6 +122,7 @@ export const useDashboardData = () => {
       setTasks(tasksData || []);
       setEvents(eventsData || []);
       setReminders(remindersData || []);
+      setVillageMembers(villageMembersData || []);
       setTips(tipsData || []);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -252,6 +263,44 @@ export const useDashboardData = () => {
     return tips[Math.floor(Math.random() * tips.length)];
   };
 
+  // Check if user can delegate (has village members)
+  const canDelegate = villageMembers.length > 0;
+
+  // Categorize reminders for different sections
+  const categorizeReminders = () => {
+    const today = new Date();
+    const todayDate = today.toDateString();
+    
+    const todaysScheduleReminders = reminders.filter(reminder => {
+      const reminderDate = new Date(reminder.reminder_time);
+      return reminderDate.toDateString() === todayDate && 
+             reminderDate.getHours() > 0; // Has specific time set
+    });
+
+    const mustDoReminders = reminders.filter(reminder => {
+      const reminderDate = new Date(reminder.reminder_time);
+      return reminderDate <= today || 
+             reminder.title.toLowerCase().includes('urgent') ||
+             reminder.title.toLowerCase().includes('important');
+    });
+
+    const generalReminders = reminders.filter(reminder => {
+      const reminderDate = new Date(reminder.reminder_time);
+      const hasSpecificTime = reminderDate.getHours() > 0;
+      const isUrgent = reminder.title.toLowerCase().includes('urgent') ||
+                      reminder.title.toLowerCase().includes('important');
+      const isToday = reminderDate.toDateString() === todayDate;
+      
+      return !hasSpecificTime && !isUrgent && !isToday;
+    });
+
+    return {
+      todaysScheduleReminders,
+      mustDoReminders,
+      generalReminders
+    };
+  };
+
   useEffect(() => {
     fetchDashboardData();
   }, [user]);
@@ -261,7 +310,10 @@ export const useDashboardData = () => {
     events,
     reminders,
     tips,
+    villageMembers,
     loading,
+    canDelegate,
+    categorizeReminders,
     addTask,
     addEvent,
     addReminder,

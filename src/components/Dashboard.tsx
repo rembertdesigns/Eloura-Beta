@@ -19,7 +19,8 @@ import {
   AlertCircle,
   ArrowRight,
   GripVertical,
-  Filter
+  Filter,
+  AlarmClock
 } from 'lucide-react';
 import FirstTimeDashboard from './FirstTimeDashboard';
 import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
@@ -40,7 +41,10 @@ const Dashboard = () => {
   const {
     tasks,
     events,
+    reminders,
     loading: dataLoading,
+    canDelegate,
+    categorizeReminders,
     addTask,
     addEvent,
     addReminder,
@@ -66,28 +70,60 @@ const Dashboard = () => {
     return <FirstTimeDashboard />;
   }
 
-  // Filter tasks for display
-  const mustDoTasks = tasks.filter(task => task.is_urgent || task.priority === 'high');
-  const pendingCount = mustDoTasks.filter(task => !task.completed).length;
+  // Categorize reminders
+  const { todaysScheduleReminders, mustDoReminders, generalReminders } = categorizeReminders();
   
-  // Get today's events formatted for display
-  const todaysSchedule = events.map(event => ({
-    time: format(new Date(event.start_time), 'h:mm a'),
-    event: event.title,
-    category: event.category || 'event',
-    color: getCategoryColor(event.category),
-    location: event.location,
-  }));
+  // Filter tasks for display (combine with urgent reminders)
+  const mustDoTasks = [
+    ...tasks.filter(task => task.is_urgent || task.priority === 'high'),
+    ...mustDoReminders
+  ];
+  const pendingCount = mustDoTasks.filter(item => 
+    'completed' in item ? !item.completed : true
+  ).length;
+  
+  // Get today's events and reminders formatted for display
+  const todaysSchedule = [
+    ...events.map(event => ({
+      time: format(new Date(event.start_time), 'h:mm a'),
+      event: event.title,
+      category: event.category || 'event',
+      color: getCategoryColor(event.category),
+      location: event.location,
+      type: 'event' as const
+    })),
+    ...todaysScheduleReminders.map(reminder => ({
+      time: format(new Date(reminder.reminder_time), 'h:mm a'),
+      event: reminder.title,
+      category: 'reminder',
+      color: 'bg-yellow-100 text-yellow-700',
+      location: reminder.description,
+      type: 'reminder' as const
+    }))
+  ].sort((a, b) => {
+    const timeA = new Date(`2000/01/01 ${a.time}`).getTime();
+    const timeB = new Date(`2000/01/01 ${b.time}`).getTime();
+    return timeA - timeB;
+  });
 
-  // Group tasks by category
-  const tasksByCategory = tasks.reduce((acc, task) => {
-    const category = task.category || 'uncategorized';
+  // Group tasks and general reminders by category
+  const allTaskItems = [
+    ...tasks,
+    ...generalReminders.map(reminder => ({
+      ...reminder,
+      type: 'reminder' as const,
+      category: reminder.description ? 'reminders' : 'uncategorized'
+    }))
+  ];
+
+  const tasksByCategory = allTaskItems.reduce((acc, item) => {
+    const category = item.category || 'uncategorized';
     if (!acc[category]) {
       acc[category] = [];
     }
-    acc[category].push(task);
+    acc[category].push(item);
     return acc;
-  }, {} as Record<string, typeof tasks>);
+  }, {} as Record<string, any[]>);
 
   const taskCategories = Object.entries(tasksByCategory).map(([category, categoryTasks]) => ({
     title: getCategoryTitle(category),
@@ -136,6 +172,7 @@ const Dashboard = () => {
       work: 'Work',
       personal: 'Personal',
       health: 'Health',
+      reminders: 'Reminders',
       uncategorized: 'Other Tasks',
     };
     return titles[category as keyof typeof titles] || category;
@@ -149,6 +186,7 @@ const Dashboard = () => {
       work: 'border-blue-200 bg-blue-50',
       personal: 'border-orange-200 bg-orange-50',
       health: 'border-pink-200 bg-pink-50',
+      reminders: 'border-yellow-200 bg-yellow-50',
       uncategorized: 'border-slate-200 bg-slate-50',
     };
     return colors[category as keyof typeof colors] || colors.uncategorized;
@@ -218,7 +256,13 @@ const Dashboard = () => {
               <Calendar className="h-4 w-4 mr-2" />
               <span className="text-xs md:text-sm">Event</span>
             </Button>
-            <Button variant="outline" size="sm" className="justify-start min-touch-target touch-manipulation" disabled>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="justify-start min-touch-target touch-manipulation" 
+              disabled={!canDelegate}
+              title={!canDelegate ? "Add village members first to enable delegation" : "Delegate to village members"}
+            >
               <Users className="h-4 w-4 mr-2" />
               <span className="text-xs md:text-sm">Delegate</span>
             </Button>
@@ -298,19 +342,33 @@ const Dashboard = () => {
                 <p className="text-xs mt-1 hidden md:block">Take it easy or get ahead on other tasks.</p>
               </div>
             ) : (
-              mustDoTasks.map((task) => (
-                <div key={task.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 min-touch-target">
+              mustDoTasks.map((item) => (
+                <div key={item.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 min-touch-target">
                   <Checkbox 
-                    checked={task.completed}
-                    onCheckedChange={(checked) => toggleTaskCompletion(task.id, !!checked)}
-                    className={`min-touch-target ${task.completed ? "data-[state=checked]:bg-green-500" : ""}`}
+                    checked={'completed' in item ? item.completed : false}
+                    onCheckedChange={(checked) => {
+                      if ('completed' in item) {
+                        toggleTaskCompletion(item.id, !!checked);
+                      }
+                    }}
+                    className={`min-touch-target ${'completed' in item && item.completed ? "data-[state=checked]:bg-green-500" : ""}`}
                   />
-                  <span className={`flex-1 text-xs md:text-sm ${task.completed ? 'line-through text-slate-400' : 'text-slate-700'}`}>
-                    {task.title}
-                  </span>
-                  {task.is_urgent && !task.completed && (
+                  <div className="flex items-center gap-2 flex-1">
+                    {'type' in item && item.type === 'reminder' && (
+                      <AlarmClock className="h-3 w-3 text-yellow-600" />
+                    )}
+                    <span className={`text-xs md:text-sm ${'completed' in item && item.completed ? 'line-through text-slate-400' : 'text-slate-700'}`}>
+                      {item.title}
+                    </span>
+                  </div>
+                  {'is_urgent' in item && item.is_urgent && !('completed' in item && item.completed) && (
                     <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-xs">
                       urgent
+                    </Badge>
+                  )}
+                  {'type' in item && item.type === 'reminder' && (
+                    <Badge variant="outline" className="bg-yellow-50 text-yellow-600 border-yellow-200 text-xs">
+                      reminder
                     </Badge>
                   )}
                 </div>
@@ -342,14 +400,19 @@ const Dashboard = () => {
                   <div className="text-xs md:text-sm font-medium text-blue-600 w-12 md:w-16 flex-shrink-0">
                     {item.time}
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-xs md:text-sm text-slate-700 truncate">{item.event}</div>
-                    {item.location && (
-                      <div className="text-xs text-slate-500 mt-1 truncate">{item.location}</div>
+                  <div className="flex-1 min-w-0 flex items-center gap-2">
+                    {item.type === 'reminder' && (
+                      <AlarmClock className="h-3 w-3 text-yellow-600 flex-shrink-0" />
                     )}
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs md:text-sm text-slate-700 truncate">{item.event}</div>
+                      {item.location && (
+                        <div className="text-xs text-slate-500 mt-1 truncate">{item.location}</div>
+                      )}
+                    </div>
                   </div>
                   <Badge className={`text-xs ${item.color} border-0 hidden md:inline-flex`}>
-                    {item.category}
+                    {item.type === 'reminder' ? 'reminder' : item.category}
                   </Badge>
                 </div>
               ))
@@ -425,18 +488,32 @@ const Dashboard = () => {
                     </Badge>
                   </div>
                   <div className="space-y-2">
-                    {category.tasks.map((task) => (
-                      <div key={task.id} className="flex items-center gap-2 p-2 bg-white rounded min-touch-target">
+                    {category.tasks.map((item) => (
+                      <div key={item.id} className="flex items-center gap-2 p-2 bg-white rounded min-touch-target">
                         <Checkbox 
-                          checked={task.completed}
-                          onCheckedChange={(checked) => toggleTaskCompletion(task.id, !!checked)}
+                          checked={'completed' in item ? item.completed : false}
+                          onCheckedChange={(checked) => {
+                            if ('completed' in item && 'is_urgent' in item) {
+                              toggleTaskCompletion(item.id, !!checked);
+                            }
+                          }}
                           className="h-4 w-4 min-touch-target"
                         />
-                        <span className={`flex-1 text-xs md:text-sm ${task.completed ? 'line-through text-slate-400' : 'text-slate-600'}`}>
-                          {task.title}
-                        </span>
-                        {task.is_urgent && !task.completed && (
+                        <div className="flex items-center gap-1 flex-1">
+                          {'type' in item && item.type === 'reminder' && (
+                            <AlarmClock className="h-3 w-3 text-yellow-600" />
+                          )}
+                          <span className={`text-xs md:text-sm ${'completed' in item && item.completed ? 'line-through text-slate-400' : 'text-slate-600'}`}>
+                            {item.title}
+                          </span>
+                        </div>
+                        {'is_urgent' in item && item.is_urgent && !('completed' in item && item.completed) && (
                           <div className="w-2 h-2 bg-red-500 rounded-full flex-shrink-0"></div>
+                        )}
+                        {'type' in item && item.type === 'reminder' && (
+                          <Badge variant="outline" className="bg-yellow-50 text-yellow-600 border-yellow-200 text-xs">
+                            reminder
+                          </Badge>
                         )}
                       </div>
                     ))}
