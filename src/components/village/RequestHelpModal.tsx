@@ -6,7 +6,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, AlertTriangle } from 'lucide-react';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarIcon, Clock, AlertTriangle } from 'lucide-react';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
 interface HelpRequest {
@@ -39,6 +43,7 @@ const RequestHelpModal: React.FC<RequestHelpModalProps> = ({
     time: '',
     urgent: false
   });
+  const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -52,6 +57,12 @@ const RequestHelpModal: React.FC<RequestHelpModalProps> = ({
     'House Sitting',
     'Emergency',
     'Other'
+  ];
+
+  const timeOptions = [
+    '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
+    '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM',
+    '7:00 PM', '8:00 PM', 'Morning', 'Afternoon', 'Evening', 'Flexible'
   ];
 
   const quickTemplates = [
@@ -119,7 +130,7 @@ const RequestHelpModal: React.FC<RequestHelpModalProps> = ({
       return;
     }
 
-    if (!formData.date) {
+    if (!selectedDate) {
       toast({
         title: "Error",
         description: "Date is required", 
@@ -130,7 +141,11 @@ const RequestHelpModal: React.FC<RequestHelpModalProps> = ({
 
     setLoading(true);
     try {
-      await onSubmit(formData);
+      const requestData = {
+        ...formData,
+        date: selectedDate ? format(selectedDate, 'yyyy-MM-dd') : ''
+      };
+      await onSubmit(requestData);
       toast({
         title: "Success",
         description: "Help request sent to your village"
@@ -145,6 +160,7 @@ const RequestHelpModal: React.FC<RequestHelpModalProps> = ({
         time: '',
         urgent: false
       });
+      setSelectedDate(undefined);
       setSelectedMembers([]);
       onClose();
     } catch (error) {
@@ -209,7 +225,7 @@ const RequestHelpModal: React.FC<RequestHelpModalProps> = ({
                 id="category"
                 value={formData.category}
                 onChange={(e) => handleInputChange('category', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white border shadow-sm z-10"
                 required
               >
                 <option value="">Select category...</option>
@@ -235,29 +251,51 @@ const RequestHelpModal: React.FC<RequestHelpModalProps> = ({
           {/* Date and Time */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="date" className="flex items-center gap-2">
-                <Calendar className="h-4 w-4" />
+              <Label className="flex items-center gap-2 mb-2">
+                <CalendarIcon className="h-4 w-4" />
                 Date Needed *
               </Label>
-              <Input
-                id="date"
-                type="date"
-                value={formData.date}
-                onChange={(e) => handleInputChange('date', e.target.value)}
-                required
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !selectedDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {selectedDate ? format(selectedDate, "PPP") : "Select date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 bg-white border shadow-lg z-50" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             <div>
-              <Label htmlFor="time" className="flex items-center gap-2">
+              <Label htmlFor="time" className="flex items-center gap-2 mb-2">
                 <Clock className="h-4 w-4" />
                 Time (optional)
               </Label>
-              <Input
+              <select
                 id="time"
                 value={formData.time}
                 onChange={(e) => handleInputChange('time', e.target.value)}
-                placeholder="e.g. 3:00 PM or flexible"
-              />
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              >
+                <option value="">Select time...</option>
+                {timeOptions.map(time => (
+                  <option key={time} value={time}>{time}</option>
+                ))}
+              </select>
             </div>
           </div>
 
