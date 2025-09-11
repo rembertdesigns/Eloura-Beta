@@ -72,31 +72,37 @@ const Settings = () => {
             <Card className="border-0 shadow-lg sm:shadow-2xl">
               <CardContent className="p-2 sm:p-4">
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-3 sm:space-y-4">
-                  {/* Mobile - Scrollable tabs with improved sizing */}
+                  {/* Mobile - Scrollable tabs */}
                   <div className="sm:hidden">
-                    <div className="overflow-x-auto pb-2">
-                      <TabsList className="flex w-max h-auto p-1 gap-0.5">
-                        {settingsTabs.map((tab) => (
-                          <TabsTrigger 
-                            key={tab.id}
-                            value={tab.id} 
-                            className="text-xs whitespace-nowrap px-3 py-2.5 min-h-[44px] min-w-[60px] flex-shrink-0"
-                          >
-                            {tab.shortLabel}
-                          </TabsTrigger>
-                        ))}
-                      </TabsList>
+                    <div className="overflow-x-auto overflow-y-hidden pb-2" 
+                         style={{
+                           scrollbarWidth: 'none',
+                           msOverflowStyle: 'none'
+                         }}>
+                      <div className="[&::-webkit-scrollbar]:hidden">
+                        <TabsList className="inline-flex w-max h-auto p-1 gap-1 bg-muted rounded-md">
+                          {settingsTabs.map((tab) => (
+                            <TabsTrigger 
+                              key={tab.id}
+                              value={tab.id} 
+                              className="text-xs whitespace-nowrap px-4 py-3 min-h-[44px] min-w-[70px] flex-shrink-0 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                            >
+                              {tab.shortLabel}
+                            </TabsTrigger>
+                          ))}
+                        </TabsList>
+                      </div>
                     </div>
                   </div>
                   
-                  {/* Tablet - 4 columns with better spacing */}
+                  {/* Tablet - 2x4 grid layout */}
                   <div className="hidden sm:block md:hidden">
-                    <TabsList className="grid w-full grid-cols-4 h-auto p-1 gap-1">
+                    <TabsList className="grid w-full grid-cols-4 grid-rows-2 h-auto p-1 gap-1 bg-muted rounded-md">
                       {settingsTabs.map((tab) => (
                         <TabsTrigger 
                           key={tab.id}
                           value={tab.id} 
-                          className="text-xs p-2.5 min-h-[44px] text-center"
+                          className="text-xs p-2.5 min-h-[44px] text-center data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
                         >
                           {tab.shortLabel}
                         </TabsTrigger>
@@ -104,17 +110,17 @@ const Settings = () => {
                     </TabsList>
                   </div>
 
-                  {/* Desktop - 8 columns */}
+                  {/* Desktop - Responsive columns */}
                   <div className="hidden md:block">
-                    <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8 h-auto p-1 gap-1">
+                    <TabsList className="grid w-full grid-cols-4 xl:grid-cols-8 h-auto p-1 gap-1 bg-muted rounded-md">
                       {settingsTabs.map((tab) => (
                         <TabsTrigger 
                           key={tab.id}
                           value={tab.id} 
-                          className="text-xs p-2.5 min-h-[44px] text-center"
+                          className="text-xs p-2.5 min-h-[44px] text-center data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
                         >
-                          <span className="lg:hidden">{tab.shortLabel}</span>
-                          <span className="hidden lg:inline">{tab.label}</span>
+                          <span className="xl:hidden">{tab.shortLabel}</span>
+                          <span className="hidden xl:inline">{tab.label}</span>
                         </TabsTrigger>
                       ))}
                     </TabsList>
