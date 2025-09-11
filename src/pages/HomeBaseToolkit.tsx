@@ -86,23 +86,23 @@ const HomeBaseToolkit = () => {
     <div className="h-screen bg-white flex flex-col overflow-hidden">
       <div className="container mx-auto px-4 max-w-7xl flex flex-col h-full justify-between">
         {/* Header */}
-        <div className="flex-shrink-0 pt-6 pb-4">
-          <div className="text-center space-y-1 animate-fade-in">
-            <h1 className="text-2xl font-light text-gray-900">
+        <div className="flex-shrink-0 pt-3 pb-2 sm:pt-4 sm:pb-3">
+          <div className="text-center animate-fade-in">
+            <h1 className="text-xl sm:text-2xl font-light text-gray-900">
               Home Base <span className="font-medium text-primary">Toolkit</span>
             </h1>
-            <p className="text-sm text-gray-600">One calm place for all your family's essential information</p>
+            <p className="text-xs sm:text-sm text-gray-600 mt-1">One calm place for all your family's essential information</p>
           </div>
         </div>
 
         {/* Toolkit Tabs */}
         <div className="flex-1 flex flex-col min-h-0">
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as ToolkitItem['category'])} className="w-full h-full flex flex-col">
-            <TabsList className="grid w-full grid-cols-4 flex-shrink-0 mb-3">
+            <TabsList className="grid w-full grid-cols-4 flex-shrink-0 mb-2 h-9">
               {Object.entries(toolkitSections).map(([key, section]) => (
-                <TabsTrigger key={key} value={key} className="flex items-center gap-1 text-sm py-2">
+                <TabsTrigger key={key} value={key} className="flex items-center gap-1 text-xs sm:text-sm py-1 px-2">
                   {section.icon}
-                  <span className="hidden sm:inline">{section.title}</span>
+                  <span className="hidden sm:inline truncate">{section.title}</span>
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -111,35 +111,37 @@ const HomeBaseToolkit = () => {
               {Object.entries(toolkitSections).map(([key, section]) => (
                 <TabsContent key={key} value={key} className="h-full overflow-auto">
                   <Card className="border-0 shadow-2xl h-full flex flex-col">
-                    <CardHeader className="pb-2 flex-shrink-0">
+                    <CardHeader className="pb-1 pt-3 flex-shrink-0">
                       <div className="flex items-center justify-between">
-                        <div>
-                          <CardTitle className="flex items-center gap-2 text-lg text-gray-900">
+                        <div className="min-w-0 flex-1">
+                          <CardTitle className="flex items-center gap-2 text-base sm:text-lg text-gray-900">
                             <FolderOpen className="h-4 w-4 text-primary" />
                             {section.title}
                           </CardTitle>
-                          <p className="text-sm text-gray-600 mt-1">{section.description}</p>
+                          <p className="text-xs sm:text-sm text-gray-600 mt-0.5">{section.description}</p>
                         </div>
-                        <AddItemModal category={key as ToolkitItem['category']} />
+                        <div className="flex-shrink-0 ml-2">
+                          <AddItemModal category={key as ToolkitItem['category']} />
+                        </div>
                       </div>
                     </CardHeader>
-                    <CardContent className="flex-1 space-y-3 overflow-auto">
+                    <CardContent className="flex-1 space-y-2 overflow-auto pt-2">
                       {loading ? (
-                        <div className="flex items-center justify-center py-8">
-                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-                          <span className="ml-2 text-gray-600">Loading items...</span>
+                        <div className="flex items-center justify-center py-4">
+                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-primary"></div>
+                          <span className="ml-2 text-sm text-gray-600">Loading items...</span>
                         </div>
                       ) : items.length === 0 ? (
-                        <div className="text-center py-8">
-                          <div className="text-gray-400 mb-2">{section.icon}</div>
-                          <h3 className="font-medium text-gray-900 mb-1">No items yet</h3>
-                          <p className="text-sm text-gray-600">Add your first item to get started organizing your {section.title.toLowerCase()}.</p>
+                        <div className="text-center py-4">
+                          <div className="text-gray-400 mb-2 flex justify-center">{section.icon}</div>
+                          <h3 className="font-medium text-gray-900 mb-1 text-sm">No items yet</h3>
+                          <p className="text-xs text-gray-600 px-4">Add your first item to get started organizing your {section.title.toLowerCase()}.</p>
                         </div>
                       ) : (
-                        <div className="grid gap-3">
+                        <div className="grid gap-2">
                           {items.map((item) => (
                             <Card key={item.id} className="border shadow-sm hover:shadow-md transition-shadow">
-                              <CardContent className="pt-3 pb-3">
+                              <CardContent className="pt-2 pb-2">
                                 <div className="flex items-start justify-between mb-2">
                                   <div className="flex items-center gap-2 flex-1">
                                     <Badge variant="outline" className={`${getTypeColor(item.item_type)} text-xs py-1`}>
@@ -224,14 +226,14 @@ const HomeBaseToolkit = () => {
         </div>
 
         {/* Sharing Permissions Info */}
-        <div className="flex-shrink-0 pt-4 pb-6">
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-blue-50 to-purple-50">
-            <CardContent className="pt-3 pb-3">
+        <div className="flex-shrink-0 pt-2 pb-3 sm:pt-3 sm:pb-4">
+          <Card className="border-0 shadow-lg bg-gradient-to-br from-blue-50 to-purple-50">
+            <CardContent className="pt-2 pb-2 px-3">
               <div className="flex items-start gap-2">
-                <Lock className="h-4 w-4 text-blue-500 mt-0.5" />
-                <div>
-                  <h3 className="font-medium text-sm text-gray-900 mb-1">Smart Sharing Permissions</h3>
-                  <p className="text-xs text-gray-600">
+                <Lock className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                <div className="min-w-0">
+                  <h3 className="font-medium text-xs sm:text-sm text-gray-900 mb-0.5">Smart Sharing Permissions</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed">
                     Your toolkit automatically manages what each person can see. Partners see everything, 
                     babysitters only see child-related sections, and health aides access relevant medical information.
                   </p>
