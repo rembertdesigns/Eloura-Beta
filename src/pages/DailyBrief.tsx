@@ -11,6 +11,7 @@ import MoodCheckPopup from '@/components/MoodCheckPopup';
 import AddGoalModal from '@/components/AddGoalModal';
 import QuickAddTaskModal from '@/components/QuickAddTaskModal';
 import TaskRatingModal from '@/components/TaskRatingModal';
+import PlanConnectionModal from '@/components/PlanConnectionModal';
 import { useDailyBriefData } from '@/hooks/useDailyBriefData';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserProfile } from '@/hooks/useUserProfile';
@@ -25,6 +26,8 @@ const DailyBrief = () => {
     villageMembers,
     priorities,
     celebrations,
+    communicationLogs,
+    socialEvents,
     loading,
     addGoal,
     addTask,
@@ -43,6 +46,7 @@ const DailyBrief = () => {
   const [showCelebration, setShowCelebration] = useState(false);
   const [showCelebrateModal, setShowCelebrateModal] = useState(false);
   const [showTaskRatingModal, setShowTaskRatingModal] = useState(false);
+  const [showPlanConnectionModal, setShowPlanConnectionModal] = useState(false);
   const [newlyCompletedTasks, setNewlyCompletedTasks] = useState<any[]>([]);
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -420,20 +424,48 @@ const DailyBrief = () => {
                       Social Connection
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="p-3 bg-white/60 rounded-lg">
-                      <p className="text-sm font-medium text-slate-700 mb-1">Today's connections</p>
-                      <p className="text-xs text-slate-600">Called mom, texted sister about weekend</p>
-                    </div>
-                    <div className="p-3 bg-white/60 rounded-lg">
-                      <p className="text-sm font-medium text-slate-700 mb-1">Upcoming social time</p>
-                      <p className="text-xs text-slate-600">Family movie night Friday</p>
-                    </div>
-                    <Button variant="outline" className="w-full text-sm">
-                      <Users className="h-4 w-4 mr-2" />
-                      Plan Connection Time
-                    </Button>
-                  </CardContent>
+                   <CardContent className="space-y-3">
+                     {/* Recent Communication Logs */}
+                     <div className="p-3 bg-white/60 rounded-lg">
+                       <p className="text-sm font-medium text-slate-700 mb-1">Recent connections</p>
+                       {communicationLogs.length > 0 ? (
+                         <div className="space-y-1">
+                           {communicationLogs.slice(0, 2).map((log) => (
+                             <p key={log.id} className="text-xs text-slate-600">
+                               {log.type === 'phone_call' ? '📞' : log.type === 'video_call' ? '📹' : '💬'} {log.contact_name}: {log.notes}
+                             </p>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-slate-600">No recent connections logged</p>
+                       )}
+                     </div>
+                     
+                     {/* Upcoming Social Events */}
+                     <div className="p-3 bg-white/60 rounded-lg">
+                       <p className="text-sm font-medium text-slate-700 mb-1">Upcoming social time</p>
+                       {socialEvents.length > 0 ? (
+                         <div className="space-y-1">
+                           {socialEvents.slice(0, 2).map((event) => (
+                             <p key={event.id} className="text-xs text-slate-600">
+                               📅 {event.title} {event.start_time && `- ${new Date(event.start_time).toLocaleDateString()}`}
+                             </p>
+                           ))}
+                         </div>
+                       ) : (
+                         <p className="text-xs text-slate-600">No upcoming social events</p>
+                       )}
+                     </div>
+                     
+                     <Button 
+                       variant="outline" 
+                       className="w-full text-sm"
+                       onClick={() => setShowPlanConnectionModal(true)}
+                     >
+                       <Users className="h-4 w-4 mr-2" />
+                       Plan Connection Time
+                     </Button>
+                   </CardContent>
                 </Card>
               )}
 
@@ -563,6 +595,14 @@ const DailyBrief = () => {
         onClose={() => setShowTaskRatingModal(false)} 
         completedTasks={newlyCompletedTasks}
         onSaveRatings={(taskId: number, ratings) => handleSaveTaskRatings(taskId.toString(), ratings)}
+      />
+      
+      <PlanConnectionModal 
+        isOpen={showPlanConnectionModal} 
+        onOpenChange={setShowPlanConnectionModal}
+        onConnectionPlanned={() => {
+          // Optionally refresh data here
+        }}
       />
     </div>
     </>

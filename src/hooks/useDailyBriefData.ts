@@ -59,6 +59,27 @@ export interface Task {
   updated_at: string;
 }
 
+export interface CommunicationLog {
+  id: string;
+  contact_name: string;
+  type: string;
+  notes: string;
+  category?: string;
+  logged_by?: string;
+  created_at: string;
+}
+
+export interface SocialEvent {
+  id: string;
+  title: string;
+  description?: string;
+  start_time?: string;
+  end_time?: string;
+  location?: string;
+  category?: string;
+  created_at: string;
+}
+
 export const useDailyBriefData = () => {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -67,6 +88,8 @@ export const useDailyBriefData = () => {
   const [villageMembers, setVillageMembers] = useState<VillageMember[]>([]);
   const [priorities, setPriorities] = useState<Priority[]>([]);
   const [celebrations, setCelebrations] = useState<Celebration[]>([]);
+  const [communicationLogs, setCommunicationLogs] = useState<CommunicationLog[]>([]);
+  const [socialEvents, setSocialEvents] = useState<SocialEvent[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Motivational quotes array
@@ -93,7 +116,7 @@ export const useDailyBriefData = () => {
       const startOfDay = new Date(today.setHours(0, 0, 0, 0)).toISOString();
       const endOfDay = new Date(today.setHours(23, 59, 59, 999)).toISOString();
 
-      const [tasksResult, goalsResult, villageResult, prioritiesResult, celebrationsResult] = await Promise.all([
+      const [tasksResult, goalsResult, villageResult, prioritiesResult, celebrationsResult, communicationResult, socialEventsResult] = await Promise.all([
         // Tasks (incomplete tasks or tasks completed today)
         supabase
           .from('tasks')
@@ -133,6 +156,26 @@ export const useDailyBriefData = () => {
           .eq('user_id', user.id)
           .gte('date', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0])
           .order('created_at', { ascending: false })
+          .limit(5),
+          
+        // Recent communication logs (last 7 days)
+        supabase
+          .from('communication_logs')
+          .select('*')
+          .eq('user_id', user.id)
+          .gte('created_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+          .order('created_at', { ascending: false })
+          .limit(10),
+          
+        // Upcoming social events (next 30 days)
+        supabase
+          .from('events')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('category', 'social')
+          .gte('start_time', new Date().toISOString())
+          .lte('start_time', new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString())
+          .order('start_time', { ascending: true })
           .limit(5)
       ]);
 
@@ -141,6 +184,8 @@ export const useDailyBriefData = () => {
       if (villageResult.error) throw villageResult.error;
       if (prioritiesResult.error) throw prioritiesResult.error;
       if (celebrationsResult.error) throw celebrationsResult.error;
+      if (communicationResult.error) throw communicationResult.error;
+      if (socialEventsResult.error) throw socialEventsResult.error;
 
       setTasks(tasksResult.data || []);
       setGoals(goalsResult.data || []);
@@ -150,6 +195,8 @@ export const useDailyBriefData = () => {
         priority_type: p.priority_type as 'urgent' | 'high' | 'medium' | 'low'
       })));
       setCelebrations(celebrationsResult.data || []);
+      setCommunicationLogs(communicationResult.data || []);
+      setSocialEvents(socialEventsResult.data || []);
     } catch (error) {
       console.error('Error fetching daily brief data:', error);
       toast({
@@ -381,6 +428,8 @@ export const useDailyBriefData = () => {
     villageMembers,
     priorities,
     celebrations,
+    communicationLogs,
+    socialEvents,
     loading,
     addGoal,
     addTask,
