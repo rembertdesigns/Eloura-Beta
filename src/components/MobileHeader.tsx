@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 const navigationItems = [
   { title: 'Dashboard', url: '/dashboard', icon: Home },
@@ -26,10 +25,22 @@ const MobileHeader = () => {
   const navigate = useNavigate();
   const { signOut } = useAuth();
   const { toast } = useToast();
-  const isMobile = useIsMobile();
 
-  // Only show on mobile and tablet (not desktop)
-  if (!isMobile) return null;
+  // Show on mobile and tablet (hide only on desktop lg+ breakpoint)
+  // Use window width directly to include tablets up to 1024px
+  const [showMobileHeader, setShowMobileHeader] = React.useState(false);
+  
+  React.useEffect(() => {
+    const checkScreenSize = () => {
+      setShowMobileHeader(window.innerWidth < 1024); // Show on screens smaller than lg (1024px)
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  if (!showMobileHeader) return null;
 
   const handleLogout = async () => {
     try {
