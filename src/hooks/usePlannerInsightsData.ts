@@ -288,8 +288,8 @@ export const usePlannerInsightsData = () => {
 
       if (error) throw error;
 
-      // Refresh data
-      fetchAllData();
+      // Refresh data immediately
+      await fetchAllData();
 
       toast({
         title: "Success",
