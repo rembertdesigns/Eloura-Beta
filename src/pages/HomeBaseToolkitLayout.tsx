@@ -2,8 +2,8 @@
 import React from 'react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
+import MobileHeader from '@/components/MobileHeader';
 import HomeBaseToolkit from './HomeBaseToolkit';
-import FeatureFooter from '@/components/FeatureFooter';
 
 const HomeBaseToolkitLayout = () => {
   return (
@@ -13,11 +13,9 @@ const HomeBaseToolkitLayout = () => {
           <AppSidebar />
         </div>
         <SidebarInset>
+          <MobileHeader />
           <HomeBaseToolkit />
         </SidebarInset>
-      </div>
-      <div className="lg:hidden">
-        <FeatureFooter />
       </div>
     </SidebarProvider>
   );

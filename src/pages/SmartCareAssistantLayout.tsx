@@ -2,8 +2,8 @@
 import React from 'react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
+import MobileHeader from '@/components/MobileHeader';
 import SmartCareAssistant from './SmartCareAssistant';
-import FeatureFooter from '@/components/FeatureFooter';
 
 const SmartCareAssistantLayout = () => {
   return (
@@ -13,11 +13,9 @@ const SmartCareAssistantLayout = () => {
           <AppSidebar />
         </div>
         <SidebarInset>
+          <MobileHeader />
           <SmartCareAssistant />
         </SidebarInset>
-      </div>
-      <div className="lg:hidden">
-        <FeatureFooter />
       </div>
     </SidebarProvider>
   );

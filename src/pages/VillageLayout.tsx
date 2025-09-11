@@ -2,8 +2,8 @@
 import React from 'react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
+import MobileHeader from '@/components/MobileHeader';
 import Village from './Village';
-import FeatureFooter from '@/components/FeatureFooter';
 
 const VillageLayout = () => {
   return (
@@ -13,11 +13,9 @@ const VillageLayout = () => {
           <AppSidebar />
         </div>
         <SidebarInset>
+          <MobileHeader />
           <Village />
         </SidebarInset>
-      </div>
-      <div className="lg:hidden">
-        <FeatureFooter />
       </div>
     </SidebarProvider>
   );

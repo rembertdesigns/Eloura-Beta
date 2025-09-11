@@ -3,7 +3,7 @@ import React from 'react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
 import Dashboard from '@/components/Dashboard';
-import FeatureFooter from '@/components/FeatureFooter';
+import MobileHeader from '@/components/MobileHeader';
 
 const DashboardLayout = () => {
   return (
@@ -13,11 +13,9 @@ const DashboardLayout = () => {
           <AppSidebar />
         </div>
         <SidebarInset className="flex-1">
+          <MobileHeader />
           <Dashboard />
         </SidebarInset>
-      </div>
-      <div className="lg:hidden">
-        <FeatureFooter />
       </div>
     </SidebarProvider>
   );

@@ -2,8 +2,8 @@
 import React from 'react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
+import MobileHeader from '@/components/MobileHeader';
 import DailyBrief from './DailyBrief';
-import FeatureFooter from '@/components/FeatureFooter';
 
 const DailyBriefLayout = () => {
   return (
@@ -13,11 +13,9 @@ const DailyBriefLayout = () => {
           <AppSidebar />
         </div>
         <SidebarInset>
+          <MobileHeader />
           <DailyBrief />
         </SidebarInset>
-      </div>
-      <div className="lg:hidden">
-        <FeatureFooter />
       </div>
     </SidebarProvider>
   );

@@ -2,8 +2,8 @@
 import React from 'react';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
+import MobileHeader from '@/components/MobileHeader';
 import PlannerInsights from './PlannerInsights';
-import FeatureFooter from '@/components/FeatureFooter';
 
 const PlannerInsightsLayout = () => {
   return (
@@ -13,11 +13,9 @@ const PlannerInsightsLayout = () => {
           <AppSidebar />
         </div>
         <SidebarInset>
+          <MobileHeader />
           <PlannerInsights />
         </SidebarInset>
-      </div>
-      <div className="lg:hidden">
-        <FeatureFooter />
       </div>
     </SidebarProvider>
   );
