@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,13 +27,15 @@ interface RequestHelpModalProps {
   onClose: () => void;
   onSubmit: (request: HelpRequest) => void;
   villageMembers: any[];
+  template?: any;
 }
 
 const RequestHelpModal: React.FC<RequestHelpModalProps> = ({
   isOpen,
   onClose,
   onSubmit,
-  villageMembers
+  villageMembers,
+  template
 }) => {
   const [formData, setFormData] = useState<HelpRequest>({
     title: '',
@@ -87,6 +89,17 @@ const RequestHelpModal: React.FC<RequestHelpModalProps> = ({
       description: "Need someone to watch/walk pets while away"
     }
   ];
+
+  useEffect(() => {
+    if (template && isOpen) {
+      setFormData(prev => ({
+        ...prev,
+        title: template.title || '',
+        description: template.description || '',
+        category: template.category || ''
+      }));
+    }
+  }, [template, isOpen]);
 
   const handleInputChange = (field: keyof HelpRequest, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -184,27 +197,29 @@ const RequestHelpModal: React.FC<RequestHelpModalProps> = ({
           </DialogDescription>
         </DialogHeader>
 
-        {/* Quick Templates */}
-        <div className="mb-4">
-          <Label className="text-sm font-medium mb-2 block">Quick Templates</Label>
-          <div className="grid grid-cols-2 gap-2">
-            {quickTemplates.map((template, index) => (
-              <Button
-                key={index}
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => useTemplate(template)}
-                className="text-left justify-start h-auto p-3"
-              >
-                <div>
-                  <div className="font-medium text-sm">{template.title}</div>
-                  <div className="text-xs text-gray-500">{template.category}</div>
-                </div>
-              </Button>
-            ))}
-          </div>
-        </div>
+          {/* Quick Templates */}
+          {!template && (
+            <div className="mb-4">
+              <Label className="text-sm font-medium mb-2 block">Quick Templates</Label>
+              <div className="grid grid-cols-2 gap-2">
+                {quickTemplates.map((template, index) => (
+                  <Button
+                    key={index}
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => useTemplate(template)}
+                    className="text-left justify-start h-auto p-3"
+                  >
+                    <div>
+                      <div className="font-medium text-sm">{template.title}</div>
+                      <div className="text-xs text-gray-500">{template.category}</div>
+                    </div>
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title and Category */}

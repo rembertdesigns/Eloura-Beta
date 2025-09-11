@@ -6,21 +6,24 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Users, MessageSquare, Edit, Plus, Search, Trophy, Clock, FileText, Star, TrendingUp, Calendar, Filter, Heart } from 'lucide-react';
+import { Users, MessageSquare, Edit, Plus, Search, Trophy, Clock, FileText, Star, TrendingUp, Calendar, Filter, Heart, Trash2 } from 'lucide-react';
 import { useVillageData } from '@/hooks/useVillageData';
 import RequestHelpModal from './RequestHelpModal';
 import ViewResponsesModal from './ViewResponsesModal';
 import EditHelpRequestModal from './EditHelpRequestModal';
+import CreateTemplateModal from './CreateTemplateModal';
 
 const HelpRequestsLogsEnhanced = () => {
-  const { helpRequests, communicationLogs, analytics, loading, error, addHelpRequest, updateHelpRequest, deleteHelpRequest, addCommunicationLog, villageMembers = [] } = useVillageData();
+  const { helpRequests, communicationLogs, analytics, loading, error, addHelpRequest, updateHelpRequest, deleteHelpRequest, addCommunicationLog, templates, addTemplate, deleteTemplate, villageMembers = [] } = useVillageData();
   const [newCommLog, setNewCommLog] = useState({ contact_name: '', type: '', notes: '', category: '' });
   const [showCommLogForm, setShowCommLogForm] = useState(false);
   const [showRequestHelp, setShowRequestHelp] = useState(false);
   const [showViewResponses, setShowViewResponses] = useState(false);
   const [showEditRequest, setShowEditRequest] = useState(false);
+  const [showCreateTemplate, setShowCreateTemplate] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [editingRequest, setEditingRequest] = useState(null);
+  const [templateToUse, setTemplateToUse] = useState(null);
   const [searchLogs, setSearchLogs] = useState('');
   const [filterDate, setFilterDate] = useState('');
   const [filterType, setFilterType] = useState('');
@@ -103,8 +106,15 @@ const HelpRequestsLogsEnhanced = () => {
   };
 
   const useTemplate = (template: any) => {
-    console.log('Using template:', template);
-    // Here you would open a form with the template data pre-filled
+    setTemplateToUse(template);
+    setShowRequestHelp(true);
+  };
+
+  const handleDeleteTemplate = async (templateId: string) => {
+    const success = await deleteTemplate(templateId);
+    if (success) {
+      // Template removed from state automatically
+    }
   };
 
   const handleThankYou = (helper: any) => {
@@ -503,26 +513,65 @@ const HelpRequestsLogsEnhanced = () => {
         </TabsContent>
 
         <TabsContent value="templates" className="space-y-6">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Request Templates</h3>
-            <p className="text-sm text-gray-600 mb-6">Use these templates to quickly create common help requests</p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {requestTemplates.map((template, index) => (
-                <Card key={index} className="bg-white border border-gray-200 hover:shadow-md transition-shadow cursor-pointer" onClick={() => useTemplate(template)}>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-medium text-gray-900">{template.title}</h4>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Request Templates</h3>
+              <p className="text-sm text-gray-600">Use templates to quickly create common help requests</p>
+            </div>
+            <Button 
+              onClick={() => setShowCreateTemplate(true)}
+              className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Create Template
+            </Button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {templates.map((template, index) => (
+              <Card key={template.id || index} className="bg-white border border-gray-200 hover:shadow-md transition-shadow">
+                <CardContent className="p-4">
+                  <div className="flex items-start justify-between mb-2">
+                    <h4 className="font-medium text-gray-900">{template.title}</h4>
+                    <div className="flex items-center gap-2">
                       <Badge variant="outline" className="text-xs">{template.category}</Badge>
+                      {template.is_custom && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteTemplate(template.id)}
+                          className="h-6 w-6 p-0 text-red-500 hover:text-red-700"
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      )}
                     </div>
-                    <p className="text-sm text-gray-600 mb-3">{template.description}</p>
-                    <Button size="sm" variant="outline" className="w-full">
+                  </div>
+                  <p className="text-sm text-gray-600 mb-3">{template.description}</p>
+                  <div className="flex items-center justify-between">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      className="flex-1"
+                      onClick={() => useTemplate(template)}
+                    >
                       Use Template
                     </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    {!template.is_custom && (
+                      <Badge variant="secondary" className="ml-2 text-xs">Default</Badge>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+            
+            {templates.length === 0 && (
+              <div className="col-span-full text-center py-8 text-gray-500">
+                <FileText className="h-12 w-12 mx-auto mb-4 opacity-40" />
+                <h3 className="text-lg font-medium mb-2">No templates yet</h3>
+                <p className="text-sm">Create your first template to get started</p>
+              </div>
+            )}
           </div>
         </TabsContent>
       </Tabs>
@@ -587,9 +636,13 @@ const HelpRequestsLogsEnhanced = () => {
       
       <RequestHelpModal
         isOpen={showRequestHelp}
-        onClose={() => setShowRequestHelp(false)}
+        onClose={() => {
+          setShowRequestHelp(false);
+          setTemplateToUse(null);
+        }}
         onSubmit={addHelpRequest}
         villageMembers={villageMembers}
+        template={templateToUse}
       />
       
       <ViewResponsesModal
@@ -615,6 +668,12 @@ const HelpRequestsLogsEnhanced = () => {
         onDelete={deleteHelpRequest}
         request={editingRequest}
         villageMembers={villageMembers}
+      />
+      
+      <CreateTemplateModal
+        isOpen={showCreateTemplate}
+        onClose={() => setShowCreateTemplate(false)}
+        onSave={addTemplate}
       />
     </>
   );

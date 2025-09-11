@@ -10,6 +10,7 @@ export const useVillageData = () => {
   const [delegationTasks, setDelegationTasks] = useState<any[]>([]);
   const [conversations, setConversations] = useState<any[]>([]);
   const [messages, setMessages] = useState<any[]>([]);
+  const [templates, setTemplates] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -319,6 +320,28 @@ export const useVillageData = () => {
     }
   };
 
+  // Fetch templates
+  const fetchTemplates = async () => {
+    if (!user) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('help_request_templates')
+        .select('*')
+        .or(`user_id.eq.${user.id},is_custom.eq.false`)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching templates:', error);
+        return;
+      }
+      setTemplates(data || []);
+    } catch (err) {
+      console.error('Templates not available:', err);
+      setTemplates([]);
+    }
+  };
+
   // Fetch messages
   const fetchMessages = async () => {
     if (!user) return;
@@ -339,6 +362,53 @@ export const useVillageData = () => {
     } catch (err) {
       console.log('Messages not available:', err);
       setMessages([]);
+    }
+  };
+
+  // Add template
+  const addTemplate = async (templateData: any) => {
+    if (!user) return false;
+
+    try {
+      const { data, error } = await supabase
+        .from('help_request_templates')
+        .insert([{
+          user_id: user.id,
+          ...templateData
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+      setTemplates(prev => [data, ...prev]);
+      return true;
+    } catch (err) {
+      console.error('Error adding template:', err);
+      setError('Failed to add template');
+      return false;
+    }
+  };
+
+  // Delete template
+  const deleteTemplate = async (id: string) => {
+    if (!user) return false;
+
+    try {
+      const { error } = await supabase
+        .from('help_request_templates')
+        .delete()
+        .eq('id', id)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      
+      // Remove from local state immediately
+      setTemplates(prev => prev.filter(template => template.id !== id));
+      return true;
+    } catch (err) {
+      console.error('Error deleting template:', err);
+      setError('Failed to delete template');
+      return false;
     }
   };
 
@@ -402,6 +472,7 @@ export const useVillageData = () => {
         setDelegationTasks([]);
         setConversations([]);
         setMessages([]);
+        setTemplates([]);
         
         // Load critical data first
         try {
@@ -409,7 +480,8 @@ export const useVillageData = () => {
             fetchVillageMembers(),
             fetchHelpRequests(),
             fetchCommunicationLogs(),
-            fetchDelegationTasks()
+            fetchDelegationTasks(),
+            fetchTemplates()
           ]);
         } catch (err) {
           console.error('Error loading main data:', err);
@@ -457,6 +529,7 @@ export const useVillageData = () => {
     delegationTasks,
     conversations,
     messages,
+    templates,
     analytics,
     loading,
     error,
@@ -466,6 +539,8 @@ export const useVillageData = () => {
     updateHelpRequest,
     deleteHelpRequest,
     addCommunicationLog,
+    addTemplate,
+    deleteTemplate,
     updateTask,
     deleteVillageMember,
     createConversation,
@@ -475,6 +550,7 @@ export const useVillageData = () => {
       fetchHelpRequests();
       fetchCommunicationLogs();
       fetchDelegationTasks();
+      fetchTemplates();
       fetchConversations();
       fetchMessages();
     }
