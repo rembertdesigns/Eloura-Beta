@@ -43,11 +43,21 @@ const Insights = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <>
+      <div className="px-2 sm:px-4 py-2 sm:py-4 flex-shrink-0">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+              <BarChart3 className="h-4 w-4 sm:h-6 sm:w-6 text-primary-foreground" />
+            </div>
+            <div>
+              <h1 className="text-lg sm:text-2xl font-semibold text-gray-900 mb-0.5 sm:mb-1">Insights</h1>
+              <p className="text-xs sm:text-sm text-gray-600 leading-tight">Analytics and patterns to optimize your well-being</p>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="container mx-auto px-4 pt-4 pb-2 max-w-7xl space-y-3 md:space-y-4">
-        {/* Header */}
-        <div className="mb-4 md:mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">Insights</h1>
           <p className="text-sm md:text-base text-gray-600">Analyze your patterns and optimize your family life</p>
         </div>
 
@@ -194,9 +204,6 @@ const Insights = () => {
             </div>
           </CardContent>
         </Card>
-      </div>
-    </div>
-  );
 };
 
 export default Insights;
