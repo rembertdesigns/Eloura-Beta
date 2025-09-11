@@ -191,24 +191,29 @@ export const useVillageData = () => {
     }
   };
 
-  // Update village member
   const updateVillageMember = async (memberId: string, updates: any) => {
     if (!user) return false;
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('village_members')
         .update({
           ...updates,
           updated_at: new Date().toISOString()
         })
         .eq('id', memberId)
-        .eq('user_id', user.id);
+        .eq('user_id', user.id)
+        .select()
+        .maybeSingle();
 
       if (error) throw error;
       
-      // Refresh the village members list
-      await fetchVillageMembers();
+      if (data) {
+        setVillageMembers(prev => prev.map(member => 
+          member.id === memberId ? data : member
+        ));
+      }
+      
       return true;
     } catch (err) {
       console.error('Error updating village member:', err);
@@ -221,19 +226,25 @@ export const useVillageData = () => {
     if (!user) return false;
 
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('help_requests')
         .update({
           ...updates,
           updated_at: new Date().toISOString()
         })
         .eq('id', id)
-        .eq('user_id', user.id);
+        .eq('user_id', user.id)
+        .select()
+        .maybeSingle();
 
       if (error) throw error;
       
-      // Refresh the help requests list
-      await fetchHelpRequests();
+      if (data) {
+        setHelpRequests(prev => prev.map(request => 
+          request.id === id ? data : request
+        ));
+      }
+      
       return true;
     } catch (err) {
       console.error('Error updating help request:', err);
@@ -254,8 +265,8 @@ export const useVillageData = () => {
 
       if (error) throw error;
       
-      // Refresh the help requests list
-      await fetchHelpRequests();
+      // Remove from local state immediately
+      setHelpRequests(prev => prev.filter(request => request.id !== id));
       return true;
     } catch (err) {
       console.error('Error deleting help request:', err);
