@@ -38,39 +38,42 @@ const ToolkitSettings = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="autoOrganize">Auto-organize Documents</Label>
-              <p className="text-sm text-slate-600">Automatically categorize new documents</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="autoOrganize" className="text-sm font-medium">Auto-organize Documents</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Automatically categorize new documents</p>
             </div>
             <Switch
               id="autoOrganize"
               checked={settings.autoOrganize}
               onCheckedChange={(checked) => updateSetting('autoOrganize', checked)}
+              className="flex-shrink-0"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="smartTags">Smart Tags</Label>
-              <p className="text-sm text-slate-600">AI-powered document tagging</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="smartTags" className="text-sm font-medium">Smart Tags</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">AI-powered document tagging</p>
             </div>
             <Switch
               id="smartTags"
               checked={settings.smartTags}
               onCheckedChange={(checked) => updateSetting('smartTags', checked)}
+              className="flex-shrink-0"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="documentScanning">Document Scanning</Label>
-              <p className="text-sm text-slate-600">OCR text extraction from images</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="documentScanning" className="text-sm font-medium">Document Scanning</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">OCR text extraction from images</p>
             </div>
             <Switch
               id="documentScanning"
               checked={settings.documentScanning}
               onCheckedChange={(checked) => updateSetting('documentScanning', checked)}
+              className="flex-shrink-0"
             />
           </div>
         </CardContent>
@@ -100,24 +103,25 @@ const ToolkitSettings = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="cloudStorage">Cloud Storage Sync</Label>
-              <p className="text-sm text-slate-600">Sync documents to cloud storage</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="cloudStorage" className="text-sm font-medium">Cloud Storage Sync</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Sync documents to cloud storage</p>
             </div>
             <Switch
               id="cloudStorage"
               checked={settings.cloudStorage}
               onCheckedChange={(checked) => updateSetting('cloudStorage', checked)}
+              className="flex-shrink-0"
             />
           </div>
 
-          <div className="bg-slate-50 p-3 rounded-lg">
-            <p className="text-sm text-slate-600 mb-2">Storage Usage</p>
-            <div className="w-full bg-slate-200 rounded-full h-2">
-              <div className="bg-[#223b0a] h-2 rounded-full" style={{ width: '45%' }}></div>
+          <div className="bg-muted/50 p-3 rounded-lg">
+            <p className="text-sm text-muted-foreground mb-2">Storage Usage</p>
+            <div className="w-full bg-muted rounded-full h-2">
+              <div className="bg-primary h-2 rounded-full" style={{ width: '45%' }}></div>
             </div>
-            <p className="text-xs text-slate-500 mt-1">2.3 GB of 5 GB used</p>
+            <p className="text-xs text-muted-foreground mt-1">2.3 GB of 5 GB used</p>
           </div>
 
           <Button variant="outline" className="w-full">

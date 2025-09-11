@@ -31,9 +31,9 @@ const VillageSettings = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <Label htmlFor="profileVisibility">Profile Visibility</Label>
+            <Label htmlFor="profileVisibility" className="text-sm font-medium">Profile Visibility</Label>
             <Select value={settings.profileVisibility} onValueChange={(value) => updateSetting('profileVisibility', value)}>
-              <SelectTrigger className="w-full mt-1">
+              <SelectTrigger className="w-full mt-1 h-11">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -45,39 +45,42 @@ const VillageSettings = () => {
             </Select>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="allowMessages">Allow Messages</Label>
-              <p className="text-sm text-slate-600">Let village members send you messages</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="allowMessages" className="text-sm font-medium">Allow Messages</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Let village members send you messages</p>
             </div>
             <Switch
               id="allowMessages"
               checked={settings.allowMessages}
               onCheckedChange={(checked) => updateSetting('allowMessages', checked)}
+              className="flex-shrink-0"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="shareCalendar">Share Calendar</Label>
-              <p className="text-sm text-slate-600">Share your availability with village</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="shareCalendar" className="text-sm font-medium">Share Calendar</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Share your availability with village</p>
             </div>
             <Switch
               id="shareCalendar"
               checked={settings.shareCalendar}
               onCheckedChange={(checked) => updateSetting('shareCalendar', checked)}
+              className="flex-shrink-0"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="shareLocation">Share Location</Label>
-              <p className="text-sm text-slate-600">Share your general location for local connections</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="shareLocation" className="text-sm font-medium">Share Location</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Share your general location for local connections</p>
             </div>
             <Switch
               id="shareLocation"
               checked={settings.shareLocation}
               onCheckedChange={(checked) => updateSetting('shareLocation', checked)}
+              className="flex-shrink-0"
             />
           </div>
         </CardContent>
@@ -91,27 +94,29 @@ const VillageSettings = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="autoJoinGroups">Auto-join Suggested Groups</Label>
-              <p className="text-sm text-slate-600">Automatically join groups based on your interests</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="autoJoinGroups" className="text-sm font-medium">Auto-join Suggested Groups</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Automatically join groups based on your interests</p>
             </div>
             <Switch
               id="autoJoinGroups"
               checked={settings.autoJoinGroups}
               onCheckedChange={(checked) => updateSetting('autoJoinGroups', checked)}
+              className="flex-shrink-0"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="communityNotifications">Community Notifications</Label>
-              <p className="text-sm text-slate-600">Get notified of community events and updates</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="communityNotifications" className="text-sm font-medium">Community Notifications</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Get notified of community events and updates</p>
             </div>
             <Switch
               id="communityNotifications"
               checked={settings.communityNotifications}
               onCheckedChange={(checked) => updateSetting('communityNotifications', checked)}
+              className="flex-shrink-0"
             />
           </div>
         </CardContent>

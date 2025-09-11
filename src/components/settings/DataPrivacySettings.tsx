@@ -29,51 +29,55 @@ const DataPrivacySettings = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="dataCollection">Allow Data Collection</Label>
-              <p className="text-sm text-slate-600">Help improve our services with usage data</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="dataCollection" className="text-sm font-medium">Allow Data Collection</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Help improve our services with usage data</p>
             </div>
             <Switch
               id="dataCollection"
               checked={settings.dataCollection}
               onCheckedChange={(checked) => updateSetting('dataCollection', checked)}
+              className="flex-shrink-0"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="analyticsSharing">Analytics Sharing</Label>
-              <p className="text-sm text-slate-600">Share anonymized analytics data</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="analyticsSharing" className="text-sm font-medium">Analytics Sharing</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Share anonymized analytics data</p>
             </div>
             <Switch
               id="analyticsSharing"
               checked={settings.analyticsSharing}
               onCheckedChange={(checked) => updateSetting('analyticsSharing', checked)}
+              className="flex-shrink-0"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="personalizedAds">Personalized Recommendations</Label>
-              <p className="text-sm text-slate-600">Use your data to personalize content</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="personalizedAds" className="text-sm font-medium">Personalized Recommendations</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Use your data to personalize content</p>
             </div>
             <Switch
               id="personalizedAds"
               checked={settings.personalizedAds}
               onCheckedChange={(checked) => updateSetting('personalizedAds', checked)}
+              className="flex-shrink-0"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <Label htmlFor="thirdPartySharing">Third-party Integration</Label>
-              <p className="text-sm text-slate-600">Allow integrations with external services</p>
+          <div className="flex items-center justify-between gap-4 min-h-[48px]">
+            <div className="flex-1">
+              <Label htmlFor="thirdPartySharing" className="text-sm font-medium">Third-party Integration</Label>
+              <p className="text-xs text-muted-foreground mt-0.5">Allow integrations with external services</p>
             </div>
             <Switch
               id="thirdPartySharing"
               checked={settings.thirdPartySharing}
               onCheckedChange={(checked) => updateSetting('thirdPartySharing', checked)}
+              className="flex-shrink-0"
             />
           </div>
         </CardContent>
@@ -84,16 +88,16 @@ const DataPrivacySettings = () => {
           <CardTitle>Data Management</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full h-11">
             <Download className="h-4 w-4 mr-2" />
             Download My Data
           </Button>
 
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full h-11">
             View Privacy Policy
           </Button>
 
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full h-11">
             Manage Consent Preferences
           </Button>
         </CardContent>
@@ -101,7 +105,7 @@ const DataPrivacySettings = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-red-600">Danger Zone</CardTitle>
+          <CardTitle className="text-destructive">Danger Zone</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <Alert>
@@ -111,11 +115,11 @@ const DataPrivacySettings = () => {
             </AlertDescription>
           </Alert>
 
-          <Button variant="outline" className="w-full text-red-600 border-red-200 hover:bg-red-50">
+          <Button variant="outline" className="w-full h-11 text-destructive border-destructive/20 hover:bg-destructive/10">
             Clear All Data
           </Button>
 
-          <Button variant="outline" className="w-full text-red-600 border-red-200 hover:bg-red-50">
+          <Button variant="outline" className="w-full h-11 text-destructive border-destructive/20 hover:bg-destructive/10">
             <Trash className="h-4 w-4 mr-2" />
             Delete Account
           </Button>
