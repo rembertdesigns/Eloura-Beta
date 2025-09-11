@@ -20,8 +20,7 @@ import {
   ArrowRight,
   GripVertical,
   Filter,
-  AlarmClock,
-  LayoutDashboard
+  AlarmClock
 } from 'lucide-react';
 import FirstTimeDashboard from './FirstTimeDashboard';
 import { useOnboardingStatus } from '@/hooks/useOnboardingStatus';
@@ -194,58 +193,42 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="space-y-4 md:space-y-6 pb-safe">
-      {/* Dashboard Header */}
-      <div className="px-2 sm:px-4 py-2 sm:py-4 flex-shrink-0">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
-              <LayoutDashboard className="h-4 w-4 sm:h-6 sm:w-6 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-lg sm:text-2xl font-semibold text-gray-900 mb-0.5 sm:mb-1">Dashboard</h1>
-              <p className="text-xs sm:text-sm text-gray-600 leading-tight">Your personalized family management hub</p>
-            </div>
+    <div className="p-3 md:p-6 space-y-4 md:space-y-6 pb-safe">
+      {/* Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-0">
+        <div className="min-w-0 flex-1">
+          <h1 className="text-xl md:text-3xl font-light text-slate-800 truncate">{getGreeting()}</h1>
+          <div className="flex items-center gap-2 md:gap-4 mt-2 flex-wrap">
+            <span className="text-slate-600 text-sm md:text-base">Today's Balance:</span>
+            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs md:text-sm">
+              {pendingCount}/10 - {pendingCount <= 3 ? 'Take it easy' : pendingCount <= 6 ? 'Balanced day' : 'Busy day ahead'}
+            </Badge>
           </div>
+        </div>
+        <div className="hidden md:flex items-center gap-2 text-blue-600">
+          <Heart className="h-5 w-5" />
+          <span className="text-sm font-medium">You're doing amazing!</span>
         </div>
       </div>
 
-      <div className="px-3 md:px-6 space-y-4 md:space-y-6">
-        {/* Personalized Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-0">
-          <div className="min-w-0 flex-1">
-            <h2 className="text-xl md:text-2xl font-light text-slate-800 truncate">{getGreeting()}</h2>
-            <div className="flex items-center gap-2 md:gap-4 mt-2 flex-wrap">
-              <span className="text-slate-600 text-sm md:text-base">Today's Balance:</span>
-              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs md:text-sm">
-                {pendingCount}/10 - {pendingCount <= 3 ? 'Take it easy' : pendingCount <= 6 ? 'Balanced day' : 'Busy day ahead'}
-              </Badge>
-            </div>
-          </div>
-          <div className="hidden md:flex items-center gap-2 text-blue-600">
-            <Heart className="h-5 w-5" />
-            <span className="text-sm font-medium">You're doing amazing!</span>
-          </div>
-        </div>
-
-        {/* Daily Tip */}
-        {currentTip && (
-          <Card className="border-blue-200 bg-blue-50">
-            <CardContent className="p-3 md:p-4">
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 md:w-8 md:h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1 flex-shrink-0">
-                  <Lightbulb className="h-3 w-3 md:h-4 md:w-4 text-blue-600" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className="font-medium text-slate-800 mb-1 text-sm md:text-base">💡 Tip</h3>
-                  <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
-                    {currentTip.content}
-                  </p>
-                </div>
+      {/* Daily Tip */}
+      {currentTip && (
+        <Card className="border-blue-200 bg-blue-50">
+          <CardContent className="p-3 md:p-4">
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 md:w-8 md:h-8 bg-blue-100 rounded-full flex items-center justify-center mt-1 flex-shrink-0">
+                <Lightbulb className="h-3 w-3 md:h-4 md:w-4 text-blue-600" />
               </div>
-            </CardContent>
-          </Card>
-        )}
+              <div className="min-w-0 flex-1">
+                <h3 className="font-medium text-slate-800 mb-1 text-sm md:text-base">💡 Tip</h3>
+                <p className="text-xs md:text-sm text-slate-600 leading-relaxed">
+                  {currentTip.content}
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Quick Add - Mobile Optimized */}
       <Card className="md:block hidden">
@@ -569,7 +552,6 @@ const Dashboard = () => {
         onOpenChange={(open) => !open && setQuickAddModal(null)}
         onAddReminder={addReminder}
       />
-      </div>
     </div>
   );
 };
