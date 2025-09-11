@@ -92,9 +92,9 @@ const SmartCareAssistant = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 max-w-7xl h-full flex flex-col flex-1">
+      <div className="container mx-auto px-3 sm:px-6 py-2 sm:py-6 max-w-7xl h-full flex flex-col flex-1">
         {/* Header */}
-        <div className="flex-shrink-0 mb-4 sm:mb-6">
+        <div className="flex-shrink-0 mb-3 sm:mb-6">
           <SmartCareHeader />
         </div>
 
@@ -124,15 +124,15 @@ const SmartCareAssistant = () => {
         </div>
 
         {/* Mobile/Tablet Layout - Tabbed interface */}
-        <div className="lg:hidden flex-1 flex flex-col min-h-0">
+        <div className="lg:hidden flex-1 flex flex-col min-h-0 pb-2">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
-            <div className="flex items-center justify-between mb-4">
-              <TabsList className="grid w-full max-w-sm grid-cols-2">
-                <TabsTrigger value="chat" className="flex items-center gap-2 text-sm min-h-[44px]">
+            <div className="flex items-center justify-between mb-3 px-1">
+              <TabsList className="grid w-full max-w-xs grid-cols-2 h-10">
+                <TabsTrigger value="chat" className="flex items-center gap-2 text-sm h-8">
                   <MessageSquare className="h-4 w-4" />
                   <span className="hidden sm:inline">Chat</span>
                 </TabsTrigger>
-                <TabsTrigger value="saved" className="flex items-center gap-2 text-sm min-h-[44px]">
+                <TabsTrigger value="saved" className="flex items-center gap-2 text-sm h-8">
                   <BookOpen className="h-4 w-4" />
                   <span className="hidden sm:inline">Saved</span>
                 </TabsTrigger>
@@ -144,15 +144,15 @@ const SmartCareAssistant = () => {
                   variant="outline" 
                   size="sm" 
                   onClick={startNewConversation}
-                  className="touch-manipulation min-h-[44px] px-3"
+                  className="touch-manipulation h-10 px-3 text-xs"
                 >
-                  <span className="text-xs sm:text-sm">New Chat</span>
+                  New Chat
                 </Button>
               )}
             </div>
 
             <div className="flex-1 min-h-0">
-              <TabsContent value="chat" className="h-full flex flex-col shadow-xl bg-white border border-gray-200 rounded-lg overflow-hidden mt-0">
+              <TabsContent value="chat" className="h-full flex flex-col shadow-lg bg-white border border-gray-200 rounded-lg overflow-hidden mt-0 mx-1">
                 <ChatHeader />
                 <ChatMessages 
                   chatHistory={messages} 
@@ -168,7 +168,7 @@ const SmartCareAssistant = () => {
                 />
               </TabsContent>
 
-              <TabsContent value="saved" className="h-full shadow-xl bg-white border border-gray-200 rounded-lg overflow-hidden mt-0 pb-safe">
+              <TabsContent value="saved" className="h-full shadow-lg bg-white border border-gray-200 rounded-lg overflow-hidden mt-0 mx-1 pb-safe">
                 <SavedContent onNewConversation={() => {
                   startNewConversation();
                   setActiveTab('chat');

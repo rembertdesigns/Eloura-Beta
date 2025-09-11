@@ -20,15 +20,15 @@ interface ChatMessagesProps {
 
 const ChatMessages = ({ chatHistory, loading, onSaveContent }: ChatMessagesProps) => {
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-white">
+    <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 bg-white min-h-0">
       {chatHistory.length === 0 && !loading && (
-        <div className="flex justify-center items-center h-full">
-          <div className="text-center text-gray-500">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">💙</span>
+        <div className="flex justify-center items-start pt-8 sm:pt-16 h-full">
+          <div className="text-center text-gray-500 max-w-sm px-4">
+            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+              <span className="text-lg sm:text-2xl">💙</span>
             </div>
-            <h3 className="text-lg font-medium mb-2">Hi! I'm Eloura</h3>
-            <p className="text-sm">Your personal AI assistant ready to help you navigate your busy life as a parent, caregiver, and goal-achiever.</p>
+            <h3 className="text-base sm:text-lg font-medium mb-2">Hi! I'm Eloura</h3>
+            <p className="text-sm text-gray-600 leading-relaxed">Your personal AI assistant ready to help you navigate your busy life as a parent, caregiver, and goal-achiever.</p>
           </div>
         </div>
       )}
