@@ -12,12 +12,7 @@ const IntroFlow = () => {
   const navigate = useNavigate();
   const { isOnboardingComplete, loading } = useOnboardingStatus();
 
-  useEffect(() => {
-    // Redirect to dashboard if onboarding is already completed
-    if (!loading && isOnboardingComplete) {
-      navigate('/dashboard');
-    }
-  }, [loading, isOnboardingComplete, navigate]);
+  // Remove automatic redirects - let OnboardingProtectedRoute handle routing logic
 
   const steps = [
     {
@@ -58,9 +53,16 @@ const IntroFlow = () => {
     }
   };
 
-  // Show loading or nothing while checking status
-  if (loading || isOnboardingComplete) {
-    return null;
+  // Show loading while checking status
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-sm text-muted-foreground mt-2">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   return (

@@ -23,10 +23,24 @@ const OnboardingProtectedRoute: React.FC<OnboardingProtectedRouteProps> = ({ chi
       return;
     }
 
-    // Redirect to welcome if onboarding not complete and not already in onboarding flow
-    if (isOnboardingComplete === false && location.pathname !== '/welcome') {
-      navigate('/welcome');
-      return;
+    // Only redirect to welcome if onboarding is not complete
+    // Allow access to all routes if onboarding is complete (preserve current page)
+    if (isOnboardingComplete === false) {
+      // Only redirect if not already in the onboarding flow
+      const onboardingPaths = ['/welcome', '/intro', '/personal-info', '/family-setup', '/family-structure', '/top-challenges', '/priorities', '/invite', '/onboarding-summary'];
+      if (!onboardingPaths.includes(location.pathname)) {
+        navigate('/welcome');
+        return;
+      }
+    }
+
+    // If onboarding is complete but user is on onboarding pages, redirect to dashboard
+    if (isOnboardingComplete === true) {
+      const onboardingOnlyPaths = ['/welcome', '/intro'];
+      if (onboardingOnlyPaths.includes(location.pathname)) {
+        navigate('/dashboard');
+        return;
+      }
     }
   }, [user, isOnboardingComplete, authLoading, onboardingLoading, navigate, location.pathname]);
 
@@ -42,9 +56,17 @@ const OnboardingProtectedRoute: React.FC<OnboardingProtectedRouteProps> = ({ chi
     );
   }
 
-  // Don't render children if user is not authenticated or onboarding not complete
-  if (!user || (isOnboardingComplete === false && location.pathname !== '/welcome')) {
+  // Don't render children if user is not authenticated
+  if (!user) {
     return null;
+  }
+
+  // Don't render if onboarding is not complete and user is not in onboarding flow
+  if (isOnboardingComplete === false) {
+    const onboardingPaths = ['/welcome', '/intro', '/personal-info', '/family-setup', '/family-structure', '/top-challenges', '/priorities', '/invite', '/onboarding-summary'];
+    if (!onboardingPaths.includes(location.pathname)) {
+      return null;
+    }
   }
 
   return <>{children}</>;
