@@ -124,112 +124,50 @@ const WeekView: React.FC<WeekViewProps> = ({
 
   return (
     <div className="space-y-3 md:space-y-6">
-      {/* Weekly Calendar Grid - Improved Layout */}
-      <Card className="shadow-lg md:shadow-2xl">
-        <CardHeader className="pb-2 md:pb-4">
-          <CardTitle className="text-gray-700 text-base md:text-lg">This Week's Schedule</CardTitle>
-        </CardHeader>
-        <CardContent className="p-2 md:p-6">
-          {/* Mobile: Compact grid that fits all 7 days */}
-          <div className="md:hidden">
-            <div className="grid grid-cols-7 gap-1 mb-3">
-              {weekData.map((day, index) => (
-                <div key={index} className="min-w-0">
-                  <h3 className="font-medium text-center text-gray-700 py-1 border-b text-xs truncate">
-                    {day.day.substring(0, 3)}
-                  </h3>
-                </div>
-              ))}
-            </div>
-            <div className="grid grid-cols-7 gap-1">
-              {weekData.map((day, index) => (
-                <div key={index} className="min-w-0 space-y-1">
-                  {day.tasks.length === 0 ? (
-                    <div className="h-12 border border-dashed border-gray-200 rounded flex items-center justify-center">
-                      <Plus className="h-3 w-3 text-gray-300" />
-                    </div>
-                  ) : (
-                    day.tasks.slice(0, 2).map((task, taskIndex) => (
-                      <div key={taskIndex} className="p-1 bg-white border rounded text-xs min-touch-target">
-                        <div className="text-xs text-gray-400 mb-0.5">{task.time}</div>
-                        <div className="font-medium text-xs text-gray-700 line-clamp-1 mb-0.5">{task.title}</div>
-                        <div className={`text-xs px-1 py-0.5 rounded ${task.color} text-white text-center`}>
-                          {task.category.substring(0, 4)}
-                        </div>
-                      </div>
-                    ))
-                  )}
-                  {day.tasks.length > 2 && (
-                    <div className="text-xs text-gray-500 text-center py-1">
-                      +{day.tasks.length - 2} more
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Desktop: Full grid layout */}
-          <div className="hidden md:grid grid-cols-7 gap-4">
-            {weekData.map((day, index) => (
-              <div key={index} className="space-y-2">
-                <h3 className="font-medium text-center text-gray-700 py-2 border-b">{day.day}</h3>
-                <div className="space-y-2 min-h-[200px]">
-                  {day.tasks.length === 0 ? (
-                    <div className="h-24 border border-dashed border-gray-200 rounded-lg flex items-center justify-center">
-                      <Plus className="h-5 w-5 text-gray-300" />
-                    </div>
-                  ) : (
-                    day.tasks.map((task, taskIndex) => (
-                      <Card key={taskIndex} className="p-3 hover:shadow-sm transition-shadow">
-                        <CardContent className="p-0">
-                          <div className="text-xs text-gray-500 mb-1">{task.time}</div>
-                          <div className="font-medium text-sm text-gray-700 mb-2">{task.title}</div>
-                          <Badge className={`text-xs ${task.color}`}>
-                            {task.category}
-                          </Badge>
-                        </CardContent>
-                      </Card>
-                    ))
-                  )}
-                </div>
+      {/* Weekly Calendar Grid */}
+      <Card className="bg-white/60">
+        <CardContent className="p-4 md:p-6">
+          {/* Calendar Grid Header */}
+          <div className="grid grid-cols-7 gap-2 mb-4">
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+              <div key={day} className="text-center text-gray-700 font-medium py-2">
+                {day}
               </div>
             ))}
           </div>
-
-          {/* Add horizontal scroll alternative for very narrow screens */}
-          <div className="md:hidden mt-4">
-            <div className="text-xs text-gray-500 text-center">
-              Swipe left/right to see all events
-            </div>
-            <div className="overflow-x-auto mt-2">
-              <div className="flex gap-2 pb-2" style={{ width: 'max-content' }}>
-                {weekData.map((day, index) => (
-                  <div key={index} className="flex-shrink-0 w-32 space-y-2">
-                    <h3 className="font-medium text-center text-gray-700 py-2 border-b text-sm">{day.day}</h3>
-                    <div className="space-y-2">
-                      {day.tasks.length === 0 ? (
-                        <div className="h-16 border border-dashed border-gray-200 rounded flex items-center justify-center">
+          
+          {/* Calendar Grid Content */}
+          <div className="grid grid-cols-7 gap-2">
+            {weekData.map((day, index) => {
+              const dayNumber = new Date().getDate() + index - 3; // Example day numbers
+              return (
+                <div key={index} className="min-h-[80px] md:min-h-[120px]">
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-2 h-full">
+                    <div className="text-sm font-medium text-gray-700 mb-2">
+                      {dayNumber > 0 ? dayNumber : ''}
+                    </div>
+                    <div className="space-y-1">
+                      {day.tasks.slice(0, 2).map((task, taskIndex) => (
+                        <div key={taskIndex} className="text-xs p-1 bg-white rounded border">
+                          <div className="font-medium text-gray-700 truncate">{task.title}</div>
+                          <div className="text-gray-500">{task.time}</div>
+                        </div>
+                      ))}
+                      {day.tasks.length > 2 && (
+                        <div className="text-xs text-gray-500 text-center">
+                          +{day.tasks.length - 2}
+                        </div>
+                      )}
+                      {day.tasks.length === 0 && (
+                        <div className="flex items-center justify-center h-8">
                           <Plus className="h-4 w-4 text-gray-300" />
                         </div>
-                      ) : (
-                        day.tasks.map((task, taskIndex) => (
-                          <Card key={taskIndex} className="p-2 hover:shadow-sm transition-shadow">
-                            <CardContent className="p-0">
-                              <div className="text-xs text-gray-500 mb-1">{task.time}</div>
-                              <div className="font-medium text-xs text-gray-700 mb-1 line-clamp-2">{task.title}</div>
-                              <Badge className={`text-xs ${task.color}`}>
-                                {task.category}
-                              </Badge>
-                            </CardContent>
-                          </Card>
-                        ))
                       )}
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+              );
+            })}
           </div>
         </CardContent>
       </Card>
