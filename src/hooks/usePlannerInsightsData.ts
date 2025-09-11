@@ -186,8 +186,8 @@ export const usePlannerInsightsData = () => {
         supabase.from('user_patterns').select('*').eq('user_id', user.id).order('date_computed', { ascending: false }),
         supabase.from('time_tracking').select('*').eq('user_id', user.id).gte('date', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]),
         supabase.from('goals').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
-        supabase.from('tasks').select('*').eq('user_id', user.id).gte('due_date', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()),
-        supabase.from('events').select('*').eq('user_id', user.id).gte('start_time', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+        supabase.from('tasks').select('*').eq('user_id', user.id).gte('due_date', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()).lte('due_date', new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()),
+        supabase.from('events').select('*').eq('user_id', user.id).gte('start_time', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()).lte('start_time', new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString())
       ]);
 
       if (achievementsError) throw achievementsError;

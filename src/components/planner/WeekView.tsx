@@ -108,11 +108,22 @@ const WeekView: React.FC<WeekViewProps> = ({
   const bestCategory = patterns.find(p => p.pattern_type === 'best_category');
   const streakRecord = patterns.find(p => p.pattern_type === 'streak_record');
 
+  const getCurrentWeekDates = () => {
+    const now = new Date();
+    const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 1)); // Monday
+    
+    return Array.from({ length: 7 }, (_, index) => {
+      const date = new Date(startOfWeek);
+      date.setDate(startOfWeek.getDate() + index);
+      return date;
+    });
+  };
+
+  const weekDates = getCurrentWeekDates();
+
   const handleSaveReflection = () => {
-    const startOfWeek = new Date();
-    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    const startOfWeek = weekDates[0];
+    const endOfWeek = weekDates[6];
 
     onSaveReflection('weekly', {
       periodStart: startOfWeek.toISOString().split('T')[0],
@@ -129,7 +140,7 @@ const WeekView: React.FC<WeekViewProps> = ({
         <CardContent className="p-4 md:p-6">
           {/* Calendar Grid Header */}
           <div className="grid grid-cols-7 gap-2 mb-4">
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
               <div key={day} className="text-center text-gray-700 font-medium py-2">
                 {day}
               </div>
@@ -138,27 +149,36 @@ const WeekView: React.FC<WeekViewProps> = ({
           
           {/* Calendar Grid Content */}
           <div className="grid grid-cols-7 gap-2">
-            {weekData.map((day, index) => {
-              const dayNumber = new Date().getDate() + index - 3; // Example day numbers
+            {weekDates.map((date, index) => {
+              const dayData = weekData.find((_, i) => i === index) || { day: '', tasks: [] };
+              const isToday = date.toDateString() === new Date().toDateString();
+              
               return (
                 <div key={index} className="min-h-[80px] md:min-h-[120px]">
-                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-2 h-full">
-                    <div className="text-sm font-medium text-gray-700 mb-2">
-                      {dayNumber > 0 ? dayNumber : ''}
+                  <div className={`border rounded-lg p-2 h-full transition-colors ${
+                    isToday ? 'bg-blue-50 border-blue-300' : 'bg-gray-50 border-gray-200'
+                  }`}>
+                    <div className={`text-sm font-medium mb-2 ${
+                      isToday ? 'text-blue-700' : 'text-gray-700'
+                    }`}>
+                      {date.getDate()}
                     </div>
                     <div className="space-y-1">
-                      {day.tasks.slice(0, 2).map((task, taskIndex) => (
-                        <div key={taskIndex} className="text-xs p-1 bg-white rounded border">
+                      {dayData.tasks.slice(0, 2).map((task, taskIndex) => (
+                        <div key={taskIndex} className="text-xs p-1 bg-white rounded border shadow-sm">
                           <div className="font-medium text-gray-700 truncate">{task.title}</div>
                           <div className="text-gray-500">{task.time}</div>
+                          <div className={`text-xs px-1 py-0.5 rounded text-center mt-0.5 ${task.color}`}>
+                            {task.category}
+                          </div>
                         </div>
                       ))}
-                      {day.tasks.length > 2 && (
+                      {dayData.tasks.length > 2 && (
                         <div className="text-xs text-gray-500 text-center">
-                          +{day.tasks.length - 2}
+                          +{dayData.tasks.length - 2} more
                         </div>
                       )}
-                      {day.tasks.length === 0 && (
+                      {dayData.tasks.length === 0 && (
                         <div className="flex items-center justify-center h-8">
                           <Plus className="h-4 w-4 text-gray-300" />
                         </div>
