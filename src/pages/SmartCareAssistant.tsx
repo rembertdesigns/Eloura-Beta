@@ -12,7 +12,6 @@ import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MessageSquare, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import FeatureFooter from '@/components/FeatureFooter';
 
 const SmartCareAssistant = () => {
   const { user, loading: authLoading } = useAuth();
@@ -178,10 +177,6 @@ const SmartCareAssistant = () => {
             </div>
           </Tabs>
         </div>
-      </div>
-      
-      <div className="lg:hidden">
-        <FeatureFooter />
       </div>
     </div>
   );

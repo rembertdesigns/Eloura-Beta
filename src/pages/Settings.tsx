@@ -13,7 +13,6 @@ import AppPreferences from '@/components/settings/AppPreferences';
 import VillageSettings from '@/components/settings/VillageSettings';
 import ToolkitSettings from '@/components/settings/ToolkitSettings';
 import DataPrivacySettings from '@/components/settings/DataPrivacySettings';
-import FeatureFooter from '@/components/FeatureFooter';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -157,9 +156,6 @@ const Settings = () => {
             </Card>
           </div>
         </SidebarInset>
-      </div>
-      <div className="lg:hidden">
-        <FeatureFooter />
       </div>
     </SidebarProvider>
   );

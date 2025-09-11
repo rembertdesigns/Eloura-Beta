@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart3, Clock, Target, TrendingUp, AlertTriangle, Loader2 } from 'lucide-react';
-import FeatureFooter from '@/components/FeatureFooter';
 import PlannerHeader from '@/components/planner/PlannerHeader';
 import WeekView from '@/components/planner/WeekView';
 import MonthView from '@/components/planner/MonthView';
@@ -119,10 +118,6 @@ const PlannerInsights = () => {
           </CardContent>
         </Card>
 
-      </div>
-      
-      <div className="lg:hidden sticky bottom-0 z-50">
-        <FeatureFooter />
       </div>
     </div>
   );

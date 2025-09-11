@@ -3,7 +3,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, Calendar, Heart, MessageSquare, UserPlus, Menu } from 'lucide-react';
-import FeatureFooter from '@/components/FeatureFooter';
 import AddVillageMemberModal from '@/components/village/AddVillageMemberModal';
 import RequestHelpModal from '@/components/village/RequestHelpModal';
 import MessageModal from '@/components/village/MessageModal';
@@ -161,10 +160,6 @@ const Village = () => {
             </div>
           </Tabs>
         </div>
-      </div>
-      
-      <div className="lg:hidden">
-        <FeatureFooter />
       </div>
       
       <AddVillageMemberModal

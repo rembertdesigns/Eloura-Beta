@@ -7,7 +7,6 @@ import { Progress } from '@/components/ui/progress';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { toast } from '@/hooks/use-toast';
 import { Calendar, Clock, Heart, Brain, Edit3, Pause, CheckCircle, User, MapPin, AlertTriangle, Target, TrendingUp, CalendarDays, Users, Star, Plus, Sparkles } from 'lucide-react';
-import FeatureFooter from '@/components/FeatureFooter';
 import MoodCheckPopup from '@/components/MoodCheckPopup';
 import AddGoalModal from '@/components/AddGoalModal';
 import QuickAddTask from '@/components/QuickAddTask';
@@ -565,10 +564,6 @@ const DailyBrief = () => {
         completedTasks={newlyCompletedTasks}
         onSaveRatings={(taskId: number, ratings) => handleSaveTaskRatings(taskId.toString(), ratings)}
       />
-      
-      <div className="lg:hidden sticky bottom-0 z-50">
-        <FeatureFooter />
-      </div>
     </div>
     </>
   );
