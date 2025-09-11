@@ -69,8 +69,8 @@ const Village = () => {
           <div className="sm:hidden">
             <Sheet open={showMobileActions} onOpenChange={setShowMobileActions}>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="touch-manipulation min-h-[44px] min-w-[44px]" aria-label="Village actions">
-                  <MoreVertical className="h-5 w-5" />
+                <Button variant="ghost" size="sm" className="touch-manipulation h-8 w-8 p-1" aria-label="Village actions">
+                  <MoreVertical className="h-4 w-4" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="bottom" className="h-auto">
