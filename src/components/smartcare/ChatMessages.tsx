@@ -20,9 +20,9 @@ interface ChatMessagesProps {
 
 const ChatMessages = ({ chatHistory, loading, onSaveContent }: ChatMessagesProps) => {
   return (
-    <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 bg-white min-h-0 max-h-full">
+    <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-4 bg-white min-h-0">
       {chatHistory.length === 0 && !loading && (
-        <div className="flex justify-center items-center min-h-[200px] sm:min-h-[300px] max-h-[60vh]">
+        <div className="flex justify-center items-center py-6 sm:py-8">
           <div className="text-center text-gray-500 max-w-sm px-4">
             <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
               <span className="text-lg sm:text-2xl">💙</span>
