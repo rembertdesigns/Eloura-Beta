@@ -225,99 +225,168 @@ const DailyBrief = () => {
         description={`Your personalized daily brief with family tasks, goals, and care coordination. Stay organized with Eloura's smart family management dashboard for ${firstName}.`}
         keywords="daily brief, family dashboard, daily tasks, family goals, care coordination, family planner dashboard, personal family management"
       />
-      <div className="min-h-screen bg-white flex flex-col">
-      <div className="container mx-auto px-4 py-12 md:py-16 lg:py-12 max-w-7xl flex-1 flex flex-col justify-center">
-        {/* 1. Top Section (Header) */}
-        <div className="mb-6">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-4 gap-4">
-            <div>
-              <h1 className="text-3xl font-semibold text-slate-800 mb-2">Hi, {getUserName()}</h1>
-              <p className="text-slate-600 mb-2">{getCurrentDate()}</p>
-              <p className="text-sm text-slate-500 italic">
+      <div className="min-h-screen bg-background flex flex-col">
+      <div className="container mx-auto px-3 md:px-4 py-4 md:py-8 lg:py-12 max-w-7xl flex-1 flex flex-col justify-start pb-safe">
+        {/* 1. Top Section (Header) - Mobile Optimized */}
+        <div className="mb-4 md:mb-6">
+          <div className="flex flex-col gap-3 md:gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-xl md:text-3xl font-semibold text-foreground mb-1 md:mb-2 truncate">Hi, {getUserName()}</h1>
+              <p className="text-muted-foreground text-sm md:text-base mb-1 md:mb-2">{getCurrentDate()}</p>
+              <p className="text-xs md:text-sm text-muted-foreground italic hidden md:block">
                 {getRandomQuote()}
               </p>
             </div>
             
-            <div className="flex items-center gap-6">
+            <div className="flex items-center justify-between md:justify-center gap-4 md:gap-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-green-600 mb-1">{completionPercentage}%</div>
-                <div className="text-sm text-slate-600">Complete</div>
+                <div className="text-2xl md:text-3xl font-bold text-primary mb-1">{completionPercentage}%</div>
+                <div className="text-xs md:text-sm text-muted-foreground">Complete</div>
               </div>
-              <Button onClick={() => setShowMoodPopup(true)} variant="outline" className="flex items-center gap-2 border-orange-200 hover:bg-orange-50 hover:border-orange-300 transition-all duration-300 hover:scale-105 group min-h-[48px] px-6">
-                <Heart className="h-5 w-5 text-orange-500 group-hover:animate-pulse" />
-                <span className="font-medium">Check In</span>
+              <Button 
+                onClick={() => setShowMoodPopup(true)} 
+                variant="outline" 
+                className="flex items-center gap-2 border-primary/20 hover:bg-primary/5 hover:border-primary/30 transition-all duration-300 hover:scale-105 group min-touch-target touch-manipulation px-3 md:px-6"
+              >
+                <Heart className="h-4 w-4 md:h-5 md:w-5 text-primary group-hover:animate-pulse" />
+                <span className="font-medium text-sm md:text-base">Check In</span>
               </Button>
             </div>
           </div>
         </div>
 
-        {/* 3. Summary Status Bar (Enhanced with center alignment and animations) */}
-        <div className="flex justify-center mb-8">
-          <div className={`grid grid-cols-1 md:grid-cols-4 gap-4 w-full max-w-5xl transition-all duration-700 ${isLoaded ? 'animate-scale-in' : 'opacity-0 scale-95'}`}>
-            <Card className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl ${activeFilter === 'today' ? 'ring-2 ring-orange-500 bg-orange-100 shadow-xl' : 'bg-orange-50 hover:bg-orange-100 shadow-lg'} border-orange-200 h-32`} onClick={() => handleStatusCardClick('today')}>
-              <CardContent className="p-6 text-center h-full flex flex-col justify-center">
-                <div className="flex items-center justify-center mb-3">
-                  <Calendar className="h-6 w-6 text-orange-600 mr-3" />
-                  <span className="text-3xl font-bold text-orange-600">{pendingTasks}</span>
+        {/* 2. Summary Status Bar - Mobile First Design */}
+        <div className="flex justify-center mb-4 md:mb-8">
+          <div className={`grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 w-full max-w-5xl transition-all duration-700 ${isLoaded ? 'animate-scale-in' : 'opacity-0 scale-95'}`}>
+            <Card className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg ${activeFilter === 'today' ? 'ring-2 ring-primary bg-primary/10 shadow-lg' : 'bg-primary/5 hover:bg-primary/10 shadow-md'} border-primary/20 h-20 md:h-32 min-touch-target touch-manipulation`} onClick={() => handleStatusCardClick('today')}>
+              <CardContent className="p-3 md:p-6 text-center h-full flex flex-col justify-center">
+                <div className="flex items-center justify-center mb-1 md:mb-3">
+                  <Calendar className="h-4 w-4 md:h-6 md:w-6 text-primary mr-1 md:mr-3" />
+                  <span className="text-xl md:text-3xl font-bold text-primary">{pendingTasks}</span>
                 </div>
-                <p className="text-sm text-slate-600 font-medium">Today's Tasks</p>
+                <p className="text-xs md:text-sm text-muted-foreground font-medium">Today's Tasks</p>
               </CardContent>
             </Card>
 
-            <Card className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl ${activeFilter === 'completed' ? 'ring-2 ring-blue-500 bg-blue-100 shadow-xl' : 'bg-blue-50 hover:bg-blue-100 shadow-lg'} border-blue-200 h-32`} onClick={() => handleStatusCardClick('completed')}>
-              <CardContent className="p-6 text-center h-full flex flex-col justify-center">
-                <div className="flex items-center justify-center mb-3">
-                  <CheckCircle className="h-6 w-6 text-blue-600 mr-3" />
-                  <span className="text-3xl font-bold text-blue-600">{completedTasks}</span>
+            <Card className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg ${activeFilter === 'completed' ? 'ring-2 ring-secondary bg-secondary/10 shadow-lg' : 'bg-secondary/5 hover:bg-secondary/10 shadow-md'} border-secondary/20 h-20 md:h-32 min-touch-target touch-manipulation`} onClick={() => handleStatusCardClick('completed')}>
+              <CardContent className="p-3 md:p-6 text-center h-full flex flex-col justify-center">
+                <div className="flex items-center justify-center mb-1 md:mb-3">
+                  <CheckCircle className="h-4 w-4 md:h-6 md:w-6 text-secondary-foreground mr-1 md:mr-3" />
+                  <span className="text-xl md:text-3xl font-bold text-secondary-foreground">{completedTasks}</span>
                 </div>
-                <p className="text-sm text-slate-600 font-medium">Completed</p>
+                <p className="text-xs md:text-sm text-muted-foreground font-medium">Completed</p>
               </CardContent>
             </Card>
 
-            <Card className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl ${activeFilter === 'village' ? 'ring-2 ring-green-500 bg-green-100 shadow-xl' : 'bg-green-50 hover:bg-green-100 shadow-lg'} border-green-200 h-32`} onClick={() => handleStatusCardClick('village')}>
-              <CardContent className="p-6 text-center h-full flex flex-col justify-center">
-                <div className="flex items-center justify-center mb-3">
-                  <Users className="h-6 w-6 text-green-600 mr-3" />
-                  <span className="text-3xl font-bold text-green-600">{villageCount}</span>
+            <Card className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg ${activeFilter === 'village' ? 'ring-2 ring-accent bg-accent/10 shadow-lg' : 'bg-accent/5 hover:bg-accent/10 shadow-md'} border-accent/20 h-20 md:h-32 min-touch-target touch-manipulation`} onClick={() => handleStatusCardClick('village')}>
+              <CardContent className="p-3 md:p-6 text-center h-full flex flex-col justify-center">
+                <div className="flex items-center justify-center mb-1 md:mb-3">
+                  <Users className="h-4 w-4 md:h-6 md:w-6 text-accent-foreground mr-1 md:mr-3" />
+                  <span className="text-xl md:text-3xl font-bold text-accent-foreground">{villageCount}</span>
                 </div>
-                <p className="text-sm text-slate-600 font-medium">Village</p>
+                <p className="text-xs md:text-sm text-muted-foreground font-medium">Village</p>
               </CardContent>
             </Card>
 
-            <Card className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl ${activeFilter === 'goals' ? 'ring-2 ring-purple-500 bg-purple-100 shadow-xl' : 'bg-purple-50 hover:bg-purple-100 shadow-lg'} border-purple-200 h-32`} onClick={() => handleStatusCardClick('goals')}>
-              <CardContent className="p-6 text-center h-full flex flex-col justify-center">
-                <div className="flex items-center justify-center mb-3">
-                  <Target className="h-6 w-6 text-purple-600 mr-3" />
-                  <span className="text-3xl font-bold text-purple-600">{activeGoalsCount}</span>
+            <Card className={`cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg ${activeFilter === 'goals' ? 'ring-2 ring-primary bg-primary/10 shadow-lg' : 'bg-primary/5 hover:bg-primary/10 shadow-md'} border-primary/20 h-20 md:h-32 min-touch-target touch-manipulation`} onClick={() => handleStatusCardClick('goals')}>
+              <CardContent className="p-3 md:p-6 text-center h-full flex flex-col justify-center">
+                <div className="flex items-center justify-center mb-1 md:mb-3">
+                  <Target className="h-4 w-4 md:h-6 md:w-6 text-primary mr-1 md:mr-3" />
+                  <span className="text-xl md:text-3xl font-bold text-primary">{activeGoalsCount}</span>
                 </div>
-                <p className="text-sm text-slate-600 font-medium">Goals</p>
+                <p className="text-xs md:text-sm text-muted-foreground font-medium">Goals</p>
               </CardContent>
             </Card>
           </div>
         </div>
 
-        {/* 4. Main Content (3-Column Layout) - Always show task list */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* 3. Main Content - Tasks Prominently Displayed */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 md:gap-6">
+          {/* Center Column - Task Overview (always visible and prominent) */}
+          <div className={`${activeFilter !== 'default' && shouldShowSection('priorities') ? 'lg:col-span-6' : activeFilter !== 'default' && (shouldShowSection('social') || shouldShowSection('goals')) ? 'lg:col-span-9' : 'lg:col-span-12'} order-first`}>
+              <Card className="shadow-lg">
+                <CardHeader className="pb-2 md:pb-4">
+                  <div className="flex items-center justify-between gap-2">
+                     <CardTitle className="flex items-center gap-2 text-base md:text-lg font-semibold text-card-foreground min-w-0 flex-1">
+                        <Target className="h-4 w-4 md:h-5 md:w-5 text-primary flex-shrink-0" />
+                        <span className="truncate">
+                          {activeFilter === 'today' ? "Today's Tasks" : activeFilter === 'completed' ? 'Completed Tasks' : activeFilter === 'village' ? 'Village-Related Tasks' : activeFilter === 'goals' ? 'Goal-Related Tasks' : "All Tasks"}
+                        </span>
+                     </CardTitle>
+                    <Button 
+                      size="sm" 
+                      onClick={() => setShowQuickAddTask(true)} 
+                      className="flex items-center gap-1 min-touch-target touch-manipulation text-xs md:text-sm px-2 md:px-3"
+                    >
+                      <Plus className="h-3 w-3 md:h-4 md:w-4" />
+                      <span className="hidden md:inline">Quick Add</span>
+                      <span className="md:hidden">Add</span>
+                    </Button>
+                  </div>
+                </CardHeader>
+                 <CardContent className="py-3 md:py-6">
+                   <div className="space-y-1">
+                     {(activeFilter === 'default' ? tasks : filteredTasks).map((task, index) => (
+                       <div key={task.id} className="flex items-center justify-between p-2 md:p-3 bg-card rounded-lg border hover:shadow-md transition-shadow group cursor-move shadow-sm min-touch-target" draggable onDragStart={e => handleDragStart(e, task.id)} onDragOver={handleDragOver} onDrop={e => handleDrop(e, index)}>
+                        <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+                          <input 
+                            type="checkbox" 
+                            checked={task.completed} 
+                            onChange={() => handleTaskToggle(task.id)} 
+                            className="w-4 h-4 text-primary rounded cursor-pointer flex-shrink-0 min-touch-target" 
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-xs md:text-sm font-medium ${task.completed ? 'line-through text-muted-foreground' : 'text-card-foreground'} truncate`}>
+                              {task.title}
+                            </p>
+                            <div className="flex items-center gap-1 md:gap-3 mt-0.5">
+                              <p className="text-xs text-muted-foreground flex items-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                {task.due_date ? new Date(task.due_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'No time set'}
+                              </p>
+                              <Badge variant="outline" className={`text-xs px-1 py-0.5 ${task.category === 'childcare' ? 'bg-primary/10 text-primary border-primary/20' : task.category === 'eldercare' ? 'bg-secondary/10 text-secondary-foreground border-secondary/20' : task.category === 'work' ? 'bg-accent/10 text-accent-foreground border-accent/20' : task.category === 'household' ? 'bg-muted/50 text-muted-foreground border-muted' : 'bg-muted/25 text-muted-foreground border-muted'} hidden md:inline-flex`}>
+                                {task.category}
+                              </Badge>
+                            </div>
+                          </div>
+                        </div>
+                        {task.is_urgent && !task.completed && (
+                          <Badge variant="outline" className="bg-destructive/10 text-destructive border-destructive/20 text-xs px-1.5 py-0.5 ml-2 flex-shrink-0">
+                            urgent
+                          </Badge>
+                        )}
+                      </div>
+                     ))}
+                     {(activeFilter === 'default' ? tasks : filteredTasks).length === 0 && (
+                       <div className="text-center py-6 md:py-8 text-muted-foreground">
+                         <p className="text-sm md:text-base">No tasks found{activeFilter !== 'default' ? ' for the selected filter' : ''}.</p>
+                       </div>
+                     )}
+                  </div>
+                </CardContent>
+               </Card>
+             </div>
+
             {/* Left Column - Priorities & Upcoming (3 columns) */}
             {shouldShowSection('priorities') && (
-              <div className="lg:col-span-3 space-y-6">
+              <div className="lg:col-span-3 space-y-3 md:space-y-6 order-2">
                 {/* Today's Priorities */}
                 <Card className="shadow-lg">
-                  <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
-                      <AlertTriangle className="h-5 w-5 text-red-500" />
+                  <CardHeader className="pb-2 md:pb-4">
+                    <CardTitle className="flex items-center gap-2 text-base md:text-lg font-semibold text-card-foreground">
+                      <AlertTriangle className="h-4 w-4 md:h-5 md:w-5 text-destructive" />
                       Today's Priorities
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-2 md:space-y-3">
                     {priorities.map(priority => (
-                      <div key={priority.id} className={`p-3 rounded-lg border-l-4 ${priority.priority_type === 'urgent' ? 'bg-red-50 border-red-400' : priority.priority_type === 'high' ? 'bg-yellow-50 border-yellow-400' : 'bg-blue-50 border-blue-400'}`}>
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <p className="font-medium text-slate-800 text-sm">{priority.title}</p>
-                            <p className="text-xs text-slate-600 mt-1">Due: {priority.due_time || 'TBD'}</p>
+                      <div key={priority.id} className={`p-2 md:p-3 rounded-lg border-l-4 ${priority.priority_type === 'urgent' ? 'bg-destructive/10 border-destructive' : priority.priority_type === 'high' ? 'bg-secondary/10 border-secondary' : 'bg-primary/10 border-primary'}`}>
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-card-foreground text-xs md:text-sm truncate">{priority.title}</p>
+                            <p className="text-xs text-muted-foreground mt-1">Due: {priority.due_time || 'TBD'}</p>
                           </div>
-                          <Badge variant="outline" className={`text-xs ${priority.priority_type === 'urgent' ? 'bg-red-100 text-red-700 border-red-200' : priority.priority_type === 'high' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' : 'bg-blue-100 text-blue-700 border-blue-200'}`}>
+                          <Badge variant="outline" className={`text-xs ${priority.priority_type === 'urgent' ? 'bg-destructive/10 text-destructive border-destructive/20' : priority.priority_type === 'high' ? 'bg-secondary/10 text-secondary-foreground border-secondary/20' : 'bg-primary/10 text-primary border-primary/20'} flex-shrink-0`}>
                             {priority.priority_type === 'urgent' ? 'Urgent' : priority.priority_type === 'high' ? 'High' : 'Scheduled'}
                           </Badge>
                         </div>
@@ -327,13 +396,12 @@ const DailyBrief = () => {
                 </Card>
 
                 {/* Upcoming This Week */}
-                <Card className="shadow-lg">
+                <Card className="shadow-lg hidden md:block">
                   <CardHeader className="pb-4">
-                    <CardTitle className="text-lg font-semibold text-slate-800">Upcoming This Week</CardTitle>
+                    <CardTitle className="text-lg font-semibold text-card-foreground">Upcoming This Week</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    {/* Show placeholder for upcoming events since we removed dummy data */}
-                    <div className="text-center py-8 text-slate-500">
+                    <div className="text-center py-8 text-muted-foreground">
                       <Calendar className="h-8 w-8 mx-auto mb-2" />
                       <p className="text-sm">No upcoming events this week</p>
                       <p className="text-xs mt-1">Add events to your calendar to see them here!</p>
@@ -342,61 +410,6 @@ const DailyBrief = () => {
                 </Card>
               </div>
             )}
-
-          {/* Center Column - Task Overview (always visible) */}
-          <div className={`${activeFilter !== 'default' && shouldShowSection('priorities') ? 'lg:col-span-6' : activeFilter !== 'default' && (shouldShowSection('social') || shouldShowSection('goals')) ? 'lg:col-span-9' : 'lg:col-span-12'}`}>
-              <Card className="shadow-lg">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between">
-                     <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-800">
-                        <Target className="h-5 w-5 text-green-600" />
-                        {activeFilter === 'today' ? "Today's Tasks" : activeFilter === 'completed' ? 'Completed Tasks' : activeFilter === 'village' ? 'Village-Related Tasks' : activeFilter === 'goals' ? 'Goal-Related Tasks' : "All Tasks"}
-                     </CardTitle>
-                    <Button size="sm" onClick={() => setShowQuickAddTask(true)} className="flex items-center gap-1">
-                      <Plus className="h-4 w-4" />
-                      Quick Add
-                    </Button>
-                  </div>
-                </CardHeader>
-                 <CardContent className="py-6">
-                   <div className="space-y-1">
-                     {(activeFilter === 'default' ? tasks : filteredTasks).map((task, index) => (
-                       <div key={task.id} className="flex items-center justify-between p-2 bg-white rounded-lg border hover:shadow-md transition-shadow group cursor-move shadow-sm" draggable onDragStart={e => handleDragStart(e, task.id)} onDragOver={handleDragOver} onDrop={e => handleDrop(e, index)}>
-                        <div className="flex items-center gap-2 flex-1">
-                          <input type="checkbox" checked={task.completed} onChange={() => handleTaskToggle(task.id)} className="w-4 h-4 text-green-600 rounded cursor-pointer flex-shrink-0" />
-                          <div className="flex-1 min-w-0">
-                            <p className={`text-sm font-medium ${task.completed ? 'line-through text-slate-400' : 'text-slate-800'} truncate`}>
-                              {task.title}
-                            </p>
-                            <div className="flex items-center gap-3 mt-0.5">
-                              <p className="text-xs text-slate-500 flex items-center gap-1">
-                                <Clock className="h-3 w-3" />
-                                {task.due_date ? new Date(task.due_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'No time set'}
-                              </p>
-                              <Badge variant="outline" className={`text-xs px-1.5 py-0.5 ${task.category === 'childcare' ? 'bg-green-50 text-green-700 border-green-200' : task.category === 'eldercare' ? 'bg-orange-50 text-orange-700 border-orange-200' : task.category === 'work' ? 'bg-purple-50 text-purple-700 border-purple-200' : task.category === 'household' ? 'bg-blue-50 text-blue-700 border-blue-200' : 'bg-gray-50 text-gray-700 border-gray-200'}`}>
-                                {task.category}
-                              </Badge>
-                            </div>
-                          </div>
-                        </div>
-                        {task.is_urgent && !task.completed && (
-                          <Badge variant="outline" className="bg-red-50 text-red-600 border-red-200 text-xs px-1.5 py-0.5 ml-2 flex-shrink-0">
-                            urgent
-                          </Badge>
-                        )}
-                      </div>
-                     ))}
-                     {(activeFilter === 'default' ? tasks : filteredTasks).length === 0 && (
-                       <div className="text-center py-8 text-slate-500">
-                         <p>No tasks found{activeFilter !== 'default' ? ' for the selected filter' : ''}.</p>
-                       </div>
-                     )}
-                  </div>
-                </CardContent>
-               </Card>
-             </div>
-
-          {/* Right Column - Social Connection & Goals (3 columns) */}
           {(shouldShowSection('social') || shouldShowSection('goals')) && (
             <div className="lg:col-span-3 space-y-6">
               {/* Social Connection - Moved up for importance */}
@@ -467,25 +480,29 @@ const DailyBrief = () => {
           )}
         </div>
 
-        {/* 5. Footer Section - Enhanced */}
-        <div className="mt-12 mb-4 flex justify-center relative">
+        {/* 4. Footer Section - Mobile Optimized */}
+        <div className="mt-6 md:mt-12 mb-4 flex justify-center relative">
           {/* Celebration overlay effect */}
           {showCelebration && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-50">
               <div className="animate-scale-in">
-                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-8 py-4 rounded-full shadow-2xl">
-                  <div className="flex items-center gap-3">
-                    <Sparkles className="h-6 w-6 animate-pulse" />
-                    <span className="text-xl font-bold">🎉 Fantastic job today!</span>
-                    <Sparkles className="h-6 w-6 animate-pulse" />
+                <div className="bg-gradient-to-r from-primary to-secondary text-primary-foreground px-4 md:px-8 py-3 md:py-4 rounded-full shadow-2xl">
+                  <div className="flex items-center gap-2 md:gap-3">
+                    <Sparkles className="h-4 w-4 md:h-6 md:w-6 animate-pulse" />
+                    <span className="text-sm md:text-xl font-bold">🎉 Fantastic job today!</span>
+                    <Sparkles className="h-4 w-4 md:h-6 md:w-6 animate-pulse" />
                   </div>
                 </div>
               </div>
             </div>
           )}
           
-          <Button variant="outline" className="min-h-[52px] px-8 border-2 border-green-300 text-green-700 hover:bg-green-50 hover:border-green-400 transition-all duration-300 hover:scale-105 font-medium text-lg shadow-lg hover:shadow-xl" onClick={handleMarkDayComplete}>
-            <CheckCircle className="h-5 w-5 mr-3" />
+          <Button 
+            variant="outline" 
+            className="min-touch-target touch-manipulation px-4 md:px-8 border-2 border-primary/30 text-primary hover:bg-primary/5 hover:border-primary/40 transition-all duration-300 hover:scale-105 font-medium text-sm md:text-lg shadow-lg hover:shadow-xl" 
+            onClick={handleMarkDayComplete}
+          >
+            <CheckCircle className="h-4 w-4 md:h-5 md:w-5 mr-2 md:mr-3" />
             Mark Day Complete
           </Button>
         </div>
@@ -549,7 +566,7 @@ const DailyBrief = () => {
         onSaveRatings={(taskId: number, ratings) => handleSaveTaskRatings(taskId.toString(), ratings)}
       />
       
-      <div className="md:hidden">
+      <div className="lg:hidden sticky bottom-0 z-50">
         <FeatureFooter />
       </div>
     </div>
