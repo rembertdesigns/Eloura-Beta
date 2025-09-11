@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, Calendar, Heart, MessageSquare, UserPlus, Menu } from 'lucide-react';
+import { Users, Calendar, Heart, MessageSquare, UserPlus, MoreVertical } from 'lucide-react';
 import AddVillageMemberModal from '@/components/village/AddVillageMemberModal';
 import RequestHelpModal from '@/components/village/RequestHelpModal';
 import MessageModal from '@/components/village/MessageModal';
@@ -69,8 +69,8 @@ const Village = () => {
           <div className="sm:hidden">
             <Sheet open={showMobileActions} onOpenChange={setShowMobileActions}>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="touch-manipulation min-h-[44px] min-w-[44px]">
-                  <Menu className="h-5 w-5" />
+                <Button variant="outline" size="icon" className="touch-manipulation min-h-[44px] min-w-[44px]" aria-label="Village actions">
+                  <MoreVertical className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="bottom" className="h-auto">
