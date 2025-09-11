@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Trophy, Award, Target, TrendingUp, Calendar, Clock, CheckCircle2, AlertCircle, Star } from 'lucide-react';
+import { Trophy, Award, Target, TrendingUp, Calendar, Clock, CheckCircle2, AlertCircle, Star, Plus } from 'lucide-react';
 
 interface WeekData {
   day: string;
@@ -123,14 +123,39 @@ const WeekView: React.FC<WeekViewProps> = ({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Weekly Calendar Grid */}
-      <Card className="shadow-2xl">
-        <CardHeader>
-          <CardTitle className="text-gray-700">This Week's Schedule</CardTitle>
+    <div className="space-y-3 md:space-y-6">
+      {/* Weekly Calendar Grid - Mobile Optimized */}
+      <Card className="shadow-lg md:shadow-2xl">
+        <CardHeader className="pb-2 md:pb-4">
+          <CardTitle className="text-gray-700 text-base md:text-lg">This Week's Schedule</CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-7 gap-4">
+        <CardContent className="p-3 md:p-6">
+          {/* Mobile: Scrollable horizontal calendar */}
+          <div className="md:hidden overflow-x-auto mb-4">
+            <div className="flex gap-3 min-w-max">
+              {weekData.map((day, index) => (
+                <div key={index} className="flex-shrink-0 w-48 space-y-2">
+                  <h3 className="font-medium text-center text-gray-700 py-2 border-b text-sm">{day.day}</h3>
+                  <div className="space-y-2">
+                    {day.tasks.map((task, taskIndex) => (
+                      <Card key={taskIndex} className="p-2 hover:shadow-sm transition-shadow min-touch-target">
+                        <CardContent className="p-0">
+                          <div className="text-xs text-gray-500 mb-1">{task.time}</div>
+                          <div className="font-medium text-xs text-gray-700 mb-1 line-clamp-2">{task.title}</div>
+                          <Badge className={`text-xs ${task.color}`}>
+                            {task.category}
+                          </Badge>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop: Grid layout */}
+          <div className="hidden md:grid grid-cols-7 gap-4">
             {weekData.map((day, index) => (
               <div key={index} className="space-y-2">
                 <h3 className="font-medium text-center text-gray-700 py-2 border-b">{day.day}</h3>
@@ -153,35 +178,48 @@ const WeekView: React.FC<WeekViewProps> = ({
         </CardContent>
       </Card>
 
-      {/* Weekly Insights Tabs */}
-      <Card className="shadow-2xl">
-        <CardContent className="p-6">
+      {/* Weekly Insights Tabs - Mobile Optimized */}
+      <Card className="shadow-lg md:shadow-2xl">
+        <CardContent className="p-3 md:p-6">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-6">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="goals">Goals Progress</TabsTrigger>
-              <TabsTrigger value="patterns">Patterns</TabsTrigger>
-              <TabsTrigger value="reflection">Reflection</TabsTrigger>
-            </TabsList>
+            {/* Mobile: Compact horizontal tabs */}
+            <div className="md:hidden mb-3">
+              <TabsList className="grid w-full grid-cols-4 h-10">
+                <TabsTrigger value="overview" className="text-xs px-1 min-touch-target">Overview</TabsTrigger>
+                <TabsTrigger value="goals" className="text-xs px-1 min-touch-target">Goals</TabsTrigger>
+                <TabsTrigger value="patterns" className="text-xs px-1 min-touch-target">Patterns</TabsTrigger>
+                <TabsTrigger value="reflection" className="text-xs px-1 min-touch-target">Reflect</TabsTrigger>
+              </TabsList>
+            </div>
+
+            {/* Desktop: Standard tabs */}
+            <div className="hidden md:block">
+              <TabsList className="grid w-full grid-cols-4 mb-6">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="goals">Goals Progress</TabsTrigger>
+                <TabsTrigger value="patterns">Patterns</TabsTrigger>
+                <TabsTrigger value="reflection">Reflection</TabsTrigger>
+              </TabsList>
+            </div>
             
-            <TabsContent value="overview" className="space-y-6">
+            <TabsContent value="overview" className="space-y-3 md:space-y-6">
               {/* Weekly Highlights */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-3 md:gap-6 md:grid-cols-2">
                 <Card className="bg-white/60">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-gray-700">
-                      <Trophy className="h-5 w-5 text-yellow-600" />
+                  <CardHeader className="pb-2 md:pb-4">
+                    <CardTitle className="flex items-center gap-2 text-gray-700 text-sm md:text-base">
+                      <Trophy className="h-4 w-4 md:h-5 md:w-5 text-yellow-600" />
                       This Week's Highlights
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-2 md:space-y-3">
                     {weeklyHighlights.map((highlight, index) => (
-                      <div key={index} className="flex items-start gap-3 p-3 bg-white/80 rounded-lg">
-                        <div className="text-sm text-gray-500 font-medium min-w-[60px]">
+                      <div key={index} className="flex items-start gap-2 md:gap-3 p-2 md:p-3 bg-white/80 rounded-lg">
+                        <div className="text-xs md:text-sm text-gray-500 font-medium min-w-[50px] md:min-w-[60px]">
                           {highlight.date}
                         </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-700">{highlight.title}</p>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs md:text-sm font-medium text-gray-700 truncate">{highlight.title}</p>
                           <Badge variant="outline" className="mt-1 text-xs">
                             {highlight.type}
                           </Badge>
@@ -193,19 +231,19 @@ const WeekView: React.FC<WeekViewProps> = ({
 
                 {/* Weekly Achievements */}
                 <Card className="bg-white/60">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-gray-700">
-                      <Award className="h-5 w-5 text-purple-600" />
+                  <CardHeader className="pb-2 md:pb-4">
+                    <CardTitle className="flex items-center gap-2 text-gray-700 text-sm md:text-base">
+                      <Award className="h-4 w-4 md:h-5 md:w-5 text-purple-600" />
                       Weekly Achievements
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-2 md:space-y-3">
                     {weeklyAchievements.map((achievement, index) => (
-                      <div key={index} className="flex items-start gap-3 p-3 bg-white/80 rounded-lg">
-                        <achievement.icon className="h-5 w-5 text-yellow-500 mt-0.5" />
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-gray-700">{achievement.name}</p>
-                          <p className="text-xs text-gray-500">{achievement.description}</p>
+                      <div key={index} className="flex items-start gap-2 md:gap-3 p-2 md:p-3 bg-white/80 rounded-lg">
+                        <achievement.icon className="h-4 w-4 md:h-5 md:w-5 text-yellow-500 mt-0.5 flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs md:text-sm font-medium text-gray-700 truncate">{achievement.name}</p>
+                          <p className="text-xs text-gray-500 line-clamp-2">{achievement.description}</p>
                         </div>
                       </div>
                     ))}
@@ -213,20 +251,20 @@ const WeekView: React.FC<WeekViewProps> = ({
                 </Card>
               </div>
 
-              {/* Time Allocation */}
+              {/* Time Allocation - Mobile Optimized */}
               <Card className="bg-white/60">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-gray-700">
-                    <Clock className="h-5 w-5 text-blue-600" />
+                <CardHeader className="pb-2 md:pb-4">
+                  <CardTitle className="flex items-center gap-2 text-gray-700 text-sm md:text-base">
+                    <Clock className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                     Weekly Time Allocation
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-2 md:space-y-4">
                   {Object.entries(timeAllocation).map(([category, data]) => (
-                    <div key={category} className="space-y-2">
+                    <div key={category} className="space-y-1 md:space-y-2">
                       <div className="flex justify-between items-center">
-                        <span className="capitalize font-medium text-gray-700">{category}</span>
-                        <span className="text-sm text-gray-500">{data.hours}h ({data.percentage}%)</span>
+                        <span className="capitalize font-medium text-gray-700 text-sm">{category}</span>
+                        <span className="text-xs md:text-sm text-gray-500">{data.hours}h ({data.percentage}%)</span>
                       </div>
                       <Progress value={data.percentage} className="h-2" />
                     </div>
@@ -235,20 +273,20 @@ const WeekView: React.FC<WeekViewProps> = ({
               </Card>
             </TabsContent>
 
-            <TabsContent value="goals" className="space-y-4">
-              <div className="grid gap-4">
+            <TabsContent value="goals" className="space-y-2 md:space-y-4">
+              <div className="grid gap-2 md:gap-4">
                 {weeklyGoals.map((goal, index) => (
                   <Card key={index} className="bg-white/60">
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <h4 className="font-medium text-gray-700">{goal.title}</h4>
+                    <CardContent className="p-3 md:p-4">
+                      <div className="flex items-start justify-between mb-2 md:mb-3 gap-2">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-gray-700 text-sm md:text-base truncate">{goal.title}</h4>
                           <Badge variant="outline" className="mt-1 text-xs">
                             {goal.category}
                           </Badge>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-gray-500">{goal.progress}%</span>
+                        <div className="flex items-center gap-2 flex-shrink-0">
+                          <span className="text-xs md:text-sm text-gray-500">{goal.progress}%</span>
                           {goal.status === 'completed' && <CheckCircle2 className="h-4 w-4 text-green-500" />}
                           {goal.status === 'needs-attention' && <AlertCircle className="h-4 w-4 text-orange-500" />}
                           {goal.status === 'on-track' && <Target className="h-4 w-4 text-blue-500" />}
@@ -261,40 +299,40 @@ const WeekView: React.FC<WeekViewProps> = ({
               </div>
             </TabsContent>
 
-            <TabsContent value="patterns" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <TabsContent value="patterns" className="space-y-3 md:space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4">
                 {productivityPattern && (
                   <Card className="bg-green-50">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-sm text-green-700">Peak Productivity</CardTitle>
+                    <CardHeader className="pb-2 md:pb-3">
+                      <CardTitle className="text-xs md:text-sm text-green-700">Peak Productivity</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="pt-0">
                       <p className="text-lg font-medium text-green-800">{productivityPattern.pattern_value}</p>
-                      <p className="text-xs text-green-600">{productivityPattern.pattern_description}</p>
+                      <p className="text-xs text-green-600 line-clamp-2">{productivityPattern.pattern_description}</p>
                     </CardContent>
                   </Card>
                 )}
                 
                 {bestCategory && (
                   <Card className="bg-blue-50">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-sm text-blue-700">Best Category</CardTitle>
+                    <CardHeader className="pb-2 md:pb-3">
+                      <CardTitle className="text-xs md:text-sm text-blue-700">Best Category</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="pt-0">
                       <p className="text-lg font-medium text-blue-800">{bestCategory.pattern_value}</p>
-                      <p className="text-xs text-blue-600">{bestCategory.pattern_description}</p>
+                      <p className="text-xs text-blue-600 line-clamp-2">{bestCategory.pattern_description}</p>
                     </CardContent>
                   </Card>
                 )}
                 
                 {streakRecord && (
                   <Card className="bg-purple-50">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-sm text-purple-700">Streak Record</CardTitle>
+                    <CardHeader className="pb-2 md:pb-3">
+                      <CardTitle className="text-xs md:text-sm text-purple-700">Streak Record</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="pt-0">
                       <p className="text-lg font-medium text-purple-800">{streakRecord.pattern_value}</p>
-                      <p className="text-xs text-purple-600">{streakRecord.pattern_description}</p>
+                      <p className="text-xs text-purple-600 line-clamp-2">{streakRecord.pattern_description}</p>
                     </CardContent>
                   </Card>
                 )}

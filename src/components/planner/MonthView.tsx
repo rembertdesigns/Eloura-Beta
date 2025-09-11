@@ -19,7 +19,8 @@ import {
   ChevronRight,
   Star,
   Flame,
-  Edit3
+  Edit3,
+  Plus
 } from 'lucide-react';
 
 interface Achievement {
@@ -144,41 +145,41 @@ const MonthView: React.FC<MonthViewProps> = ({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Monthly Calendar */}
+    <div className="space-y-3 md:space-y-6">
+      {/* Monthly Calendar - Mobile Optimized */}
       <Card className="card-warm">
-        <CardHeader className="pb-4">
-          <CardTitle className="flex items-center gap-3 text-slate-700">
-            <CalendarIcon className="h-5 w-5" />
+        <CardHeader className="pb-2 md:pb-4">
+          <CardTitle className="flex items-center gap-2 md:gap-3 text-slate-700 text-base md:text-lg">
+            <CalendarIcon className="h-4 w-4 md:h-5 md:w-5" />
             Monthly Productivity Overview
           </CardTitle>
-          <div className="flex items-center gap-4 text-sm text-slate-600">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-green-500 rounded"></div>
+          <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs md:text-sm text-slate-600">
+            <div className="flex items-center gap-1 md:gap-2">
+              <div className="w-2 h-2 md:w-3 md:h-3 bg-green-500 rounded"></div>
               <span>High Productivity</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-purple-500 rounded"></div>
+            <div className="flex items-center gap-1 md:gap-2">
+              <div className="w-2 h-2 md:w-3 md:h-3 bg-purple-500 rounded"></div>
               <span>Goal Completion</span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 bg-blue-500 rounded"></div>
+            <div className="flex items-center gap-1 md:gap-2">
+              <div className="w-2 h-2 md:w-3 md:h-3 bg-blue-500 rounded"></div>
               <span>Events</span>
             </div>
           </div>
         </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-7 gap-2 mb-4">
+        <CardContent className="p-3 md:p-6">
+          <div className="grid grid-cols-7 gap-1 md:gap-2 mb-2 md:mb-4">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-              <div key={day} className="text-center font-medium text-slate-600 py-2">
+              <div key={day} className="text-center font-medium text-slate-600 py-1 md:py-2 text-xs md:text-sm">
                 {day}
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-7 gap-2">
+          <div className="grid grid-cols-7 gap-1 md:gap-2">
             {/* Empty cells for days before month starts */}
             {Array.from({ length: 3 }, (_, i) => (
-              <div key={`empty-${i}`} className="h-16 bg-slate-50 rounded border"></div>
+              <div key={`empty-${i}`} className="h-12 md:h-16 bg-slate-50 rounded border"></div>
             ))}
             
             {monthDays.map((day) => {
@@ -186,11 +187,11 @@ const MonthView: React.FC<MonthViewProps> = ({
               return (
                 <div
                   key={day}
-                  className={`h-16 p-2 border rounded hover:bg-slate-50 transition-colors ${getProductivityColor(productivityLevel)} ${
+                  className={`h-12 md:h-16 p-1 md:p-2 border rounded hover:bg-slate-50 transition-colors ${getProductivityColor(productivityLevel)} ${
                     productivityLevel !== 'normal' ? 'text-white' : 'bg-white text-slate-700'
                   }`}
                 >
-                  <div className="font-medium">{day}</div>
+                  <div className="font-medium text-xs md:text-sm">{day}</div>
                   {productivityLevel !== 'normal' && (
                     <div className="text-xs opacity-90">
                       {productivityLevel === 'high' && '🔥'}
@@ -205,35 +206,48 @@ const MonthView: React.FC<MonthViewProps> = ({
         </CardContent>
       </Card>
 
-      {/* Monthly Insights Tabs */}
+      {/* Monthly Insights Tabs - Mobile Optimized */}
       <Card className="card-warm">
-        <CardContent className="p-6">
+        <CardContent className="p-3 md:p-6">
           <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-6">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="goals">Goals Progress</TabsTrigger>
-              <TabsTrigger value="patterns">Patterns</TabsTrigger>
-              <TabsTrigger value="reflection">Reflection</TabsTrigger>
-            </TabsList>
+            {/* Mobile: Compact horizontal tabs */}
+            <div className="md:hidden mb-3">
+              <TabsList className="grid w-full grid-cols-4 h-10">
+                <TabsTrigger value="overview" className="text-xs px-1 min-touch-target">Overview</TabsTrigger>
+                <TabsTrigger value="goals" className="text-xs px-1 min-touch-target">Goals</TabsTrigger>
+                <TabsTrigger value="patterns" className="text-xs px-1 min-touch-target">Patterns</TabsTrigger>
+                <TabsTrigger value="reflection" className="text-xs px-1 min-touch-target">Reflect</TabsTrigger>
+              </TabsList>
+            </div>
+
+            {/* Desktop: Standard tabs */}
+            <div className="hidden md:block">
+              <TabsList className="grid w-full grid-cols-4 mb-6">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="goals">Goals Progress</TabsTrigger>
+                <TabsTrigger value="patterns">Patterns</TabsTrigger>
+                <TabsTrigger value="reflection">Reflection</TabsTrigger>
+              </TabsList>
+            </div>
             
-            <TabsContent value="overview" className="space-y-6">
+            <TabsContent value="overview" className="space-y-3 md:space-y-6">
               {/* Monthly Highlights */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-3 md:gap-6 md:grid-cols-2">
                 <Card className="bg-white/60">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-slate-700">
-                      <Trophy className="h-5 w-5 text-yellow-600" />
+                  <CardHeader className="pb-2 md:pb-4">
+                    <CardTitle className="flex items-center gap-2 text-slate-700 text-sm md:text-base">
+                      <Trophy className="h-4 w-4 md:h-5 md:w-5 text-yellow-600" />
                       This Month's Milestones
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-2 md:space-y-3">
                     {monthlyMilestones.map((milestone, index) => (
-                      <div key={index} className="flex items-start gap-3 p-3 bg-white/80 rounded-lg">
-                        <div className="text-sm text-slate-500 font-medium min-w-[60px]">
+                      <div key={index} className="flex items-start gap-2 md:gap-3 p-2 md:p-3 bg-white/80 rounded-lg">
+                        <div className="text-xs md:text-sm text-slate-500 font-medium min-w-[40px] md:min-w-[60px]">
                           {milestone.date.split(' ')[1]}
                         </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-slate-700">{milestone.title}</p>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs md:text-sm font-medium text-slate-700 truncate">{milestone.title}</p>
                           <Badge variant="outline" className="mt-1 text-xs">
                             {milestone.type}
                           </Badge>
@@ -245,19 +259,19 @@ const MonthView: React.FC<MonthViewProps> = ({
 
                 {/* Monthly Awards */}
                 <Card className="bg-white/60">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-slate-700">
-                      <Award className="h-5 w-5 text-purple-600" />
+                  <CardHeader className="pb-2 md:pb-4">
+                    <CardTitle className="flex items-center gap-2 text-slate-700 text-sm md:text-base">
+                      <Award className="h-4 w-4 md:h-5 md:w-5 text-purple-600" />
                       Monthly Achievements
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
+                  <CardContent className="space-y-2 md:space-y-3">
                     {monthlyBadges.map((badge, index) => (
-                      <div key={index} className="flex items-start gap-3 p-3 bg-white/80 rounded-lg">
-                        <badge.icon className="h-5 w-5 text-yellow-500 mt-0.5" />
-                        <div className="flex-1">
-                          <p className="text-sm font-medium text-slate-700">{badge.name}</p>
-                          <p className="text-xs text-slate-500">{badge.description}</p>
+                      <div key={index} className="flex items-start gap-2 md:gap-3 p-2 md:p-3 bg-white/80 rounded-lg">
+                        <badge.icon className="h-4 w-4 md:h-5 md:w-5 text-yellow-500 mt-0.5 flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs md:text-sm font-medium text-slate-700 truncate">{badge.name}</p>
+                          <p className="text-xs text-slate-500 line-clamp-2">{badge.description}</p>
                         </div>
                       </div>
                     ))}
@@ -265,20 +279,20 @@ const MonthView: React.FC<MonthViewProps> = ({
                 </Card>
               </div>
 
-              {/* Time Allocation Chart */}
+              {/* Time Allocation Chart - Mobile Optimized */}
               <Card className="bg-white/60">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-slate-700">
-                    <PieChart className="h-5 w-5 text-blue-600" />
+                <CardHeader className="pb-2 md:pb-4">
+                  <CardTitle className="flex items-center gap-2 text-slate-700 text-sm md:text-base">
+                    <PieChart className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
                     Monthly Time Allocation
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-2 md:space-y-4">
                   {Object.entries(timeAllocation).map(([category, data]) => (
-                    <div key={category} className="space-y-2">
+                    <div key={category} className="space-y-1 md:space-y-2">
                       <div className="flex justify-between items-center">
-                        <span className="capitalize font-medium text-slate-700">{category}</span>
-                        <span className="text-sm text-slate-500">{data.hours}h ({data.percentage}%)</span>
+                        <span className="capitalize font-medium text-slate-700 text-sm">{category}</span>
+                        <span className="text-xs md:text-sm text-slate-500">{data.hours}h ({data.percentage}%)</span>
                       </div>
                       <Progress value={data.percentage} className="h-2" />
                     </div>
@@ -287,23 +301,23 @@ const MonthView: React.FC<MonthViewProps> = ({
               </Card>
             </TabsContent>
 
-            <TabsContent value="goals" className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <TabsContent value="goals" className="space-y-2 md:space-y-4">
+              <div className="grid grid-cols-1 gap-2 md:gap-4 md:grid-cols-2">
                 {monthlyGoals.map((goal, index) => (
                   <Card key={index} className="bg-white/60">
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <h4 className="font-medium text-slate-700">{goal.name}</h4>
+                    <CardContent className="p-3 md:p-4">
+                      <div className="flex items-start justify-between mb-2 md:mb-3 gap-2">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-slate-700 text-sm md:text-base truncate">{goal.name}</h4>
                           <Badge 
                             variant={goal.status === 'completed' ? 'default' : 'outline'} 
-                            className="mt-1"
+                            className="mt-1 text-xs"
                           >
                             {goal.category}
                           </Badge>
                         </div>
                         <Badge 
-                          className={`ml-2 ${
+                          className={`ml-2 text-xs flex-shrink-0 ${
                             goal.status === 'completed' ? 'bg-green-100 text-green-700' :
                             goal.status === 'ahead' ? 'bg-blue-100 text-blue-700' :
                             goal.status === 'behind' ? 'bg-red-100 text-red-700' :
@@ -313,8 +327,8 @@ const MonthView: React.FC<MonthViewProps> = ({
                           {goal.status}
                         </Badge>
                       </div>
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-sm">
+                      <div className="space-y-1 md:space-y-2">
+                        <div className="flex justify-between text-xs md:text-sm">
                           <span>Progress</span>
                           <span>{goal.progress}%</span>
                         </div>
@@ -326,32 +340,32 @@ const MonthView: React.FC<MonthViewProps> = ({
               </div>
             </TabsContent>
 
-            <TabsContent value="patterns" className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <TabsContent value="patterns" className="space-y-2 md:space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4">
                 {productivityPattern && (
                   <Card className="bg-white/60">
-                    <CardContent className="p-4">
-                      <h4 className="font-medium text-slate-700 mb-2">Peak Productivity</h4>
-                      <p className="text-2xl font-bold text-green-600">{productivityPattern.pattern_value}</p>
-                      <p className="text-sm text-slate-500">{productivityPattern.pattern_description}</p>
+                    <CardContent className="p-3 md:p-4">
+                      <h4 className="font-medium text-slate-700 mb-2 text-sm">Peak Productivity</h4>
+                      <p className="text-lg md:text-2xl font-bold text-green-600">{productivityPattern.pattern_value}</p>
+                      <p className="text-xs md:text-sm text-slate-500 line-clamp-2">{productivityPattern.pattern_description}</p>
                     </CardContent>
                   </Card>
                 )}
                 <Card className="bg-white/60">
-                  <CardContent className="p-4">
-                    <h4 className="font-medium text-slate-700 mb-2">Goal Completion Rate</h4>
-                    <p className="text-2xl font-bold text-blue-600">
+                  <CardContent className="p-3 md:p-4">
+                    <h4 className="font-medium text-slate-700 mb-2 text-sm">Goal Completion Rate</h4>
+                    <p className="text-lg md:text-2xl font-bold text-blue-600">
                       {goals.length > 0 ? Math.round((goals.filter(g => g.is_completed).length / goals.length) * 100) : 0}%
                     </p>
-                    <p className="text-sm text-slate-500">{goals.filter(g => g.is_completed).length} of {goals.length} goals</p>
+                    <p className="text-xs md:text-sm text-slate-500">{goals.filter(g => g.is_completed).length} of {goals.length} goals</p>
                   </CardContent>
                 </Card>
                 {streakRecord && (
                   <Card className="bg-white/60">
-                    <CardContent className="p-4">
-                      <h4 className="font-medium text-slate-700 mb-2">Streak Record</h4>
-                      <p className="text-2xl font-bold text-purple-600">{streakRecord.pattern_value}</p>
-                      <p className="text-sm text-slate-500">{streakRecord.pattern_description}</p>
+                    <CardContent className="p-3 md:p-4">
+                      <h4 className="font-medium text-slate-700 mb-2 text-sm">Streak Record</h4>
+                      <p className="text-lg md:text-2xl font-bold text-purple-600">{streakRecord.pattern_value}</p>
+                      <p className="text-xs md:text-sm text-slate-500 line-clamp-2">{streakRecord.pattern_description}</p>
                     </CardContent>
                   </Card>
                 )}
@@ -442,6 +456,14 @@ const MonthView: React.FC<MonthViewProps> = ({
           </Tabs>
         </CardContent>
       </Card>
+      {/* Floating Add Button - Mobile Only */}
+      <div className="fixed bottom-20 right-4 md:hidden z-40">
+        <Button
+          className="h-14 w-14 rounded-full shadow-lg hover:shadow-xl bg-blue-600 hover:bg-blue-700 min-touch-target touch-manipulation"
+        >
+          <Plus className="h-6 w-6" />
+        </Button>
+      </div>
     </div>
   );
 };

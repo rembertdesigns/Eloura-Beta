@@ -50,35 +50,41 @@ const PlannerInsights = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 sm:px-6 pt-4 sm:pt-6 pb-4 max-w-7xl space-y-4 sm:space-y-6">
-        <div className="px-2 sm:px-0">
+      <div className="container mx-auto px-3 md:px-6 pt-3 md:pt-6 pb-4 max-w-7xl space-y-3 md:space-y-6 pb-safe">
+        <div className="px-1 md:px-0">
           <PlannerHeader />
         </div>
 
-        {/* Planner Tabs */}
-        <Card className="shadow-lg sm:shadow-2xl">
-          <CardContent className="p-4 sm:p-6">
+        {/* Planner Tabs - Mobile Optimized */}
+        <Card className="shadow-lg md:shadow-2xl">
+          <CardContent className="p-3 md:p-6">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              {/* Mobile - Scrollable tabs */}
-              <div className="sm:hidden overflow-x-auto mb-4">
-                <TabsList className="flex w-max min-w-full h-auto">
-                  <TabsTrigger value="week" className="text-xs whitespace-nowrap px-3 py-2 min-h-[44px]">Week View</TabsTrigger>
-                  <TabsTrigger value="month" className="text-xs whitespace-nowrap px-3 py-2 min-h-[44px]">Month View</TabsTrigger>
-                  <TabsTrigger value="goals" className="text-xs whitespace-nowrap px-3 py-2 min-h-[44px]">Goals</TabsTrigger>
+              {/* Mobile - Icon-based horizontal tabs */}
+              <div className="md:hidden mb-3">
+                <TabsList className="grid w-full grid-cols-3 h-12">
+                  <TabsTrigger value="week" className="text-xs whitespace-nowrap px-2 py-2 min-touch-target touch-manipulation flex flex-col gap-1">
+                    <div className="text-xs">Week</div>
+                  </TabsTrigger>
+                  <TabsTrigger value="month" className="text-xs whitespace-nowrap px-2 py-2 min-touch-target touch-manipulation flex flex-col gap-1">
+                    <div className="text-xs">Month</div>
+                  </TabsTrigger>
+                  <TabsTrigger value="goals" className="text-xs whitespace-nowrap px-2 py-2 min-touch-target touch-manipulation flex flex-col gap-1">
+                    <div className="text-xs">Goals</div>
+                  </TabsTrigger>
                 </TabsList>
               </div>
 
               {/* Desktop - Standard tabs */}
-              <div className="hidden sm:block">
+              <div className="hidden md:block">
                 <TabsList className="grid w-full grid-cols-3 mb-6">
-                  <TabsTrigger value="week" className="min-h-[44px]">Week View</TabsTrigger>
-                  <TabsTrigger value="month" className="min-h-[44px]">Month View</TabsTrigger>
-                  <TabsTrigger value="goals" className="min-h-[44px]">Goals</TabsTrigger>
+                  <TabsTrigger value="week" className="min-touch-target">Week View</TabsTrigger>
+                  <TabsTrigger value="month" className="min-touch-target">Month View</TabsTrigger>
+                  <TabsTrigger value="goals" className="min-touch-target">Goals</TabsTrigger>
                 </TabsList>
               </div>
               
-              <div className="space-y-4">
-                <TabsContent value="week" className="space-y-4 pb-safe">
+              <div className="space-y-3 md:space-y-4">
+                <TabsContent value="week" className="space-y-3 md:space-y-4 pb-safe">
                   <WeekView 
                     weekData={plannerData.weekData}
                     achievements={plannerData.achievements}
@@ -90,7 +96,7 @@ const PlannerInsights = () => {
                   />
                 </TabsContent>
                 
-                <TabsContent value="month" className="space-y-4 pb-safe">
+                <TabsContent value="month" className="space-y-3 md:space-y-4 pb-safe">
                   <MonthView 
                     achievements={plannerData.achievements}
                     milestones={plannerData.milestones}
@@ -101,7 +107,7 @@ const PlannerInsights = () => {
                   />
                 </TabsContent>
                 
-                <TabsContent value="goals" className="space-y-4 pb-safe">
+                <TabsContent value="goals" className="space-y-3 md:space-y-4 pb-safe">
                   <GoalsView 
                     goals={plannerData.goals}
                     onUpdateProgress={plannerData.updateGoalProgress}
@@ -115,7 +121,7 @@ const PlannerInsights = () => {
 
       </div>
       
-      <div className="lg:hidden">
+      <div className="lg:hidden sticky bottom-0 z-50">
         <FeatureFooter />
       </div>
     </div>
