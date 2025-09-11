@@ -12,6 +12,7 @@ import SmartCareSettings from '@/components/settings/SmartCareSettings';
 import AppPreferences from '@/components/settings/AppPreferences';
 import VillageSettings from '@/components/settings/VillageSettings';
 import ToolkitSettings from '@/components/settings/ToolkitSettings';
+import SecuritySettings from '@/components/auth/SecuritySettings';
 import DataPrivacySettings from '@/components/settings/DataPrivacySettings';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +23,7 @@ const Settings = () => {
 
   const settingsTabs = [
     { id: 'account', label: 'Account', shortLabel: 'Account' },
+    { id: 'security', label: 'Security', shortLabel: 'Security' },
     { id: 'family', label: 'Family', shortLabel: 'Family' },
     { id: 'notifications', label: 'Notifications', shortLabel: 'Alerts' },
     { id: 'smartcare', label: 'AI Assistant', shortLabel: 'AI' },
@@ -95,20 +97,20 @@ const Settings = () => {
                     </div>
                   </div>
                   
-                  {/* Tablet - 2x4 grid layout */}
-                  <div className="hidden sm:block md:hidden">
-                    <TabsList className="grid w-full grid-cols-4 grid-rows-2 h-auto p-1 gap-1 bg-muted rounded-md">
-                      {settingsTabs.map((tab) => (
-                        <TabsTrigger 
-                          key={tab.id}
-                          value={tab.id} 
-                          className="text-xs p-2.5 min-h-[44px] text-center data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
-                        >
-                          {tab.shortLabel}
-                        </TabsTrigger>
-                      ))}
-                    </TabsList>
-                  </div>
+                   {/* Tablet - 3x3 grid layout */}
+                   <div className="hidden sm:block md:hidden">
+                     <TabsList className="grid w-full grid-cols-3 grid-rows-3 h-auto p-1 gap-1 bg-muted rounded-md">
+                       {settingsTabs.map((tab) => (
+                         <TabsTrigger 
+                           key={tab.id}
+                           value={tab.id} 
+                           className="text-xs p-2.5 min-h-[44px] text-center data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm"
+                         >
+                           {tab.shortLabel}
+                         </TabsTrigger>
+                       ))}
+                     </TabsList>
+                   </div>
 
                   {/* Desktop - Responsive columns */}
                   <div className="hidden md:block">
@@ -129,6 +131,10 @@ const Settings = () => {
                   <div className="pb-safe">
                     <TabsContent value="account">
                       <AccountSettings />
+                    </TabsContent>
+
+                    <TabsContent value="security">
+                      <SecuritySettings />
                     </TabsContent>
 
                     <TabsContent value="family">
