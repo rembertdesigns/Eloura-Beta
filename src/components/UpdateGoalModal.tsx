@@ -153,8 +153,7 @@ const UpdateGoalModal = ({ isOpen, onOpenChange, goal, onUpdateGoal, onGoalCompl
       progress: goalData.progress,
       target_date: goalData.target_date ? goalData.target_date.toISOString().split('T')[0] : null,
       is_completed: goalData.is_completed || goalData.progress >= 100,
-      is_recurring: goalData.is_recurring,
-      recurrence_pattern: goalData.is_recurring ? goalData.recurrence_pattern : null
+      is_recurring: goalData.is_recurring
     };
 
     try {
