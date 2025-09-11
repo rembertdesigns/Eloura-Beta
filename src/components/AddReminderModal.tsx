@@ -7,7 +7,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CalendarIcon, Clock } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { CalendarIcon, Clock, RefreshCw } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
@@ -21,9 +22,12 @@ const AddReminderModal: React.FC<AddReminderModalProps> = ({ isOpen, onOpenChang
   const [reminderData, setReminderData] = useState({
     title: '',
     description: '',
+    recurring: false,
+    recurrence_pattern: '',
   });
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [selectedTime, setSelectedTime] = useState<string>();
+  const [recurrenceEndDate, setRecurrenceEndDate] = useState<Date>();
 
   // Generate time options for full 24 hours
   const timeOptions = [
@@ -35,6 +39,13 @@ const AddReminderModal: React.FC<AddReminderModalProps> = ({ isOpen, onOpenChang
     '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM',
     '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', '8:00 PM', '8:30 PM',
     '9:00 PM', '9:30 PM', '10:00 PM', '10:30 PM', '11:00 PM', '11:30 PM'
+  ];
+
+  const recurrenceOptions = [
+    { value: 'daily', label: 'Daily' },
+    { value: 'weekly', label: 'Weekly' },
+    { value: 'monthly', label: 'Monthly' },
+    { value: 'yearly', label: 'Yearly' },
   ];
 
   const convertTimeToDate = (date: Date, timeString: string) => {
@@ -60,15 +71,21 @@ const AddReminderModal: React.FC<AddReminderModalProps> = ({ isOpen, onOpenChang
         description: reminderData.description || null,
         reminder_time: reminderDateTime.toISOString(),
         completed: false,
+        recurring: reminderData.recurring,
+        recurrence_pattern: reminderData.recurring ? reminderData.recurrence_pattern : null,
+        recurrence_end_date: reminderData.recurring && recurrenceEndDate ? recurrenceEndDate.toISOString().split('T')[0] : null,
       });
 
       // Reset form
       setReminderData({
         title: '',
         description: '',
+        recurring: false,
+        recurrence_pattern: '',
       });
       setSelectedDate(undefined);
       setSelectedTime(undefined);
+      setRecurrenceEndDate(undefined);
       onOpenChange(false);
     } catch (error) {
       console.error('Error adding reminder:', error);
@@ -157,6 +174,67 @@ const AddReminderModal: React.FC<AddReminderModalProps> = ({ isOpen, onOpenChang
             <Button type="submit" disabled={!reminderData.title || !selectedDate || !selectedTime}>
               Add Reminder
             </Button>
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="recurring"
+                checked={reminderData.recurring}
+                onCheckedChange={(checked) => setReminderData({ ...reminderData, recurring: !!checked })}
+              />
+              <Label htmlFor="recurring" className="flex items-center gap-2">
+                <RefreshCw className="h-4 w-4" />
+                Make this reminder recurring
+              </Label>
+            </div>
+
+            {reminderData.recurring && (
+              <div className="grid grid-cols-2 gap-4 pl-6">
+                <div>
+                  <Label>Repeat Pattern</Label>
+                  <Select value={reminderData.recurrence_pattern} onValueChange={(value) => setReminderData({ ...reminderData, recurrence_pattern: value })}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select pattern" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {recurrenceOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label>End Date (Optional)</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !recurrenceEndDate && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {recurrenceEndDate ? format(recurrenceEndDate, "PPP") : "Pick end date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={recurrenceEndDate}
+                        onSelect={setRecurrenceEndDate}
+                        initialFocus
+                        className="pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+            )}
           </div>
         </form>
       </DialogContent>

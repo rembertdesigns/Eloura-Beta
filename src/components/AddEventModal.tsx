@@ -7,7 +7,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, Clock } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { CalendarIcon, Clock, RefreshCw } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
@@ -27,6 +28,9 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ isOpen, onOpenChange, onA
     end_time: '',
     category: '',
     location: '',
+    recurring: false,
+    recurrence_pattern: '',
+    recurrence_end_date: undefined as Date | undefined,
   });
 
   const categories = [
@@ -55,6 +59,13 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ isOpen, onOpenChange, onA
 
   const timeOptions = generateTimeOptions();
 
+  const recurrenceOptions = [
+    { value: 'daily', label: 'Daily' },
+    { value: 'weekly', label: 'Weekly' },
+    { value: 'monthly', label: 'Monthly' },
+    { value: 'yearly', label: 'Yearly' },
+  ];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!eventData.title || !eventData.start_date || !eventData.start_time) return;
@@ -80,6 +91,9 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ isOpen, onOpenChange, onA
         end_time: endDateTime ? endDateTime.toISOString() : null,
         category: eventData.category || null,
         location: eventData.location || null,
+        recurring: eventData.recurring,
+        recurrence_pattern: eventData.recurring ? eventData.recurrence_pattern : null,
+        recurrence_end_date: eventData.recurring && eventData.recurrence_end_date ? eventData.recurrence_end_date.toISOString().split('T')[0] : null,
       });
 
       // Reset form
@@ -92,6 +106,9 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ isOpen, onOpenChange, onA
         end_time: '',
         category: '',
         location: '',
+        recurring: false,
+        recurrence_pattern: '',
+        recurrence_end_date: undefined,
       });
       onOpenChange(false);
     } catch (error) {
@@ -249,6 +266,67 @@ const AddEventModal: React.FC<AddEventModalProps> = ({ isOpen, onOpenChange, onA
               onChange={(e) => setEventData({ ...eventData, location: e.target.value })}
               placeholder="Enter location"
             />
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="recurring"
+                checked={eventData.recurring}
+                onCheckedChange={(checked) => setEventData({ ...eventData, recurring: !!checked })}
+              />
+              <Label htmlFor="recurring" className="flex items-center gap-2">
+                <RefreshCw className="h-4 w-4" />
+                Make this event recurring
+              </Label>
+            </div>
+
+            {eventData.recurring && (
+              <div className="grid grid-cols-2 gap-4 pl-6">
+                <div>
+                  <Label>Repeat Pattern</Label>
+                  <Select value={eventData.recurrence_pattern} onValueChange={(value) => setEventData({ ...eventData, recurrence_pattern: value })}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select pattern" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {recurrenceOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label>End Date (Optional)</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !eventData.recurrence_end_date && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {eventData.recurrence_end_date ? format(eventData.recurrence_end_date, "PPP") : "Pick end date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={eventData.recurrence_end_date}
+                        onSelect={(date) => setEventData({ ...eventData, recurrence_end_date: date })}
+                        initialFocus
+                        className="pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="flex justify-end space-x-2 pt-4">

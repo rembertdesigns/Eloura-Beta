@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, Clock } from 'lucide-react';
+import { CalendarIcon, Clock, RefreshCw } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 
@@ -27,6 +27,9 @@ const QuickAddTaskModal: React.FC<QuickAddTaskModalProps> = ({ isOpen, onOpenCha
     is_urgent: false,
     due_date: undefined as Date | undefined,
     due_time: '',
+    recurring: false,
+    recurrence_pattern: '',
+    recurrence_end_date: undefined as Date | undefined,
   });
 
   const categories = [
@@ -61,6 +64,13 @@ const QuickAddTaskModal: React.FC<QuickAddTaskModalProps> = ({ isOpen, onOpenCha
 
   const timeOptions = generateTimeOptions();
 
+  const recurrenceOptions = [
+    { value: 'daily', label: 'Daily' },
+    { value: 'weekly', label: 'Weekly' },
+    { value: 'monthly', label: 'Monthly' },
+    { value: 'yearly', label: 'Yearly' },
+  ];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!taskData.title) return;
@@ -86,6 +96,9 @@ const QuickAddTaskModal: React.FC<QuickAddTaskModalProps> = ({ isOpen, onOpenCha
         due_date: dueDateTime ? dueDateTime.toISOString() : null,
         assigned_to: null,
         delegated_to: null,
+        recurring: taskData.recurring,
+        recurrence_pattern: taskData.recurring ? taskData.recurrence_pattern : null,
+        recurrence_end_date: taskData.recurring && taskData.recurrence_end_date ? taskData.recurrence_end_date.toISOString().split('T')[0] : null,
       });
 
       // Reset form
@@ -97,6 +110,9 @@ const QuickAddTaskModal: React.FC<QuickAddTaskModalProps> = ({ isOpen, onOpenCha
         is_urgent: false,
         due_date: undefined,
         due_time: '',
+        recurring: false,
+        recurrence_pattern: '',
+        recurrence_end_date: undefined,
       });
       onOpenChange(false);
     } catch (error) {
@@ -221,6 +237,67 @@ const QuickAddTaskModal: React.FC<QuickAddTaskModalProps> = ({ isOpen, onOpenCha
               onCheckedChange={(checked) => setTaskData({ ...taskData, is_urgent: !!checked })}
             />
             <Label htmlFor="is_urgent">Mark as urgent</Label>
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="recurring"
+                checked={taskData.recurring}
+                onCheckedChange={(checked) => setTaskData({ ...taskData, recurring: !!checked })}
+              />
+              <Label htmlFor="recurring" className="flex items-center gap-2">
+                <RefreshCw className="h-4 w-4" />
+                Make this task recurring
+              </Label>
+            </div>
+
+            {taskData.recurring && (
+              <div className="grid grid-cols-2 gap-4 pl-6">
+                <div>
+                  <Label>Repeat Pattern</Label>
+                  <Select value={taskData.recurrence_pattern} onValueChange={(value) => setTaskData({ ...taskData, recurrence_pattern: value })}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select pattern" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {recurrenceOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label>End Date (Optional)</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !taskData.recurrence_end_date && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {taskData.recurrence_end_date ? format(taskData.recurrence_end_date, "PPP") : "Pick end date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={taskData.recurrence_end_date}
+                        onSelect={(date) => setTaskData({ ...taskData, recurrence_end_date: date })}
+                        initialFocus
+                        className="pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="flex justify-end space-x-2 pt-4">

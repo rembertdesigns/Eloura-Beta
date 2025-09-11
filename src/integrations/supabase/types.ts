@@ -228,6 +228,9 @@ export type Database = {
           end_time: string | null
           id: string
           location: string | null
+          recurrence_end_date: string | null
+          recurrence_pattern: string | null
+          recurring: boolean | null
           start_time: string
           title: string
           updated_at: string
@@ -240,6 +243,9 @@ export type Database = {
           end_time?: string | null
           id?: string
           location?: string | null
+          recurrence_end_date?: string | null
+          recurrence_pattern?: string | null
+          recurring?: boolean | null
           start_time: string
           title: string
           updated_at?: string
@@ -252,6 +258,9 @@ export type Database = {
           end_time?: string | null
           id?: string
           location?: string | null
+          recurrence_end_date?: string | null
+          recurrence_pattern?: string | null
+          recurring?: boolean | null
           start_time?: string
           title?: string
           updated_at?: string
@@ -591,6 +600,9 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
+          recurrence_end_date: string | null
+          recurrence_pattern: string | null
+          recurring: boolean | null
           reminder_time: string
           title: string
           updated_at: string
@@ -601,6 +613,9 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          recurrence_end_date?: string | null
+          recurrence_pattern?: string | null
+          recurring?: boolean | null
           reminder_time: string
           title: string
           updated_at?: string
@@ -611,6 +626,9 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
+          recurrence_end_date?: string | null
+          recurrence_pattern?: string | null
+          recurring?: boolean | null
           reminder_time?: string
           title?: string
           updated_at?: string
@@ -667,6 +685,8 @@ export type Database = {
           notes: string | null
           priority: string | null
           progress: number | null
+          recurrence_end_date: string | null
+          recurrence_pattern: string | null
           recurring: boolean | null
           status: string | null
           title: string
@@ -689,6 +709,8 @@ export type Database = {
           notes?: string | null
           priority?: string | null
           progress?: number | null
+          recurrence_end_date?: string | null
+          recurrence_pattern?: string | null
           recurring?: boolean | null
           status?: string | null
           title: string
@@ -711,6 +733,8 @@ export type Database = {
           notes?: string | null
           priority?: string | null
           progress?: number | null
+          recurrence_end_date?: string | null
+          recurrence_pattern?: string | null
           recurring?: boolean | null
           status?: string | null
           title?: string
