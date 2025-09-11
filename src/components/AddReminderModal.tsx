@@ -4,6 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { CalendarIcon, Clock } from 'lucide-react';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 interface AddReminderModalProps {
   isOpen: boolean;
@@ -15,18 +21,41 @@ const AddReminderModal: React.FC<AddReminderModalProps> = ({ isOpen, onOpenChang
   const [reminderData, setReminderData] = useState({
     title: '',
     description: '',
-    reminder_time: '',
   });
+  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [selectedTime, setSelectedTime] = useState<string>();
+
+  // Generate time options
+  const timeOptions = [
+    '9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM',
+    '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM', '2:00 PM', '2:30 PM',
+    '3:00 PM', '3:30 PM', '4:00 PM', '4:30 PM', '5:00 PM', '5:30 PM',
+    '6:00 PM', '6:30 PM', '7:00 PM', '7:30 PM', '8:00 PM', '8:30 PM',
+    '9:00 PM', '9:30 PM'
+  ];
+
+  const convertTimeToDate = (date: Date, timeString: string) => {
+    const [time, period] = timeString.split(' ');
+    const [hours, minutes] = time.split(':').map(Number);
+    const adjustedHours = period === 'PM' && hours !== 12 ? hours + 12 : 
+                         period === 'AM' && hours === 12 ? 0 : hours;
+    
+    const newDate = new Date(date);
+    newDate.setHours(adjustedHours, minutes, 0, 0);
+    return newDate;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!reminderData.title || !reminderData.reminder_time) return;
+    if (!reminderData.title || !selectedDate || !selectedTime) return;
 
     try {
+      const reminderDateTime = convertTimeToDate(selectedDate, selectedTime);
+      
       await onAddReminder({
         title: reminderData.title,
         description: reminderData.description || null,
-        reminder_time: new Date(reminderData.reminder_time).toISOString(),
+        reminder_time: reminderDateTime.toISOString(),
         completed: false,
       });
 
@@ -34,8 +63,9 @@ const AddReminderModal: React.FC<AddReminderModalProps> = ({ isOpen, onOpenChang
       setReminderData({
         title: '',
         description: '',
-        reminder_time: '',
       });
+      setSelectedDate(undefined);
+      setSelectedTime(undefined);
       onOpenChange(false);
     } catch (error) {
       console.error('Error adding reminder:', error);
@@ -70,22 +100,58 @@ const AddReminderModal: React.FC<AddReminderModalProps> = ({ isOpen, onOpenChang
             />
           </div>
 
-          <div>
-            <Label htmlFor="reminder_time">Reminder Time *</Label>
-            <Input
-              id="reminder_time"
-              type="datetime-local"
-              value={reminderData.reminder_time}
-              onChange={(e) => setReminderData({ ...reminderData, reminder_time: e.target.value })}
-              required
-            />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label>Reminder Date *</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !selectedDate && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {selectedDate ? format(selectedDate, "PPP") : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+            
+            <div>
+              <Label>Reminder Time *</Label>
+              <Select value={selectedTime} onValueChange={setSelectedTime}>
+                <SelectTrigger>
+                  <Clock className="mr-2 h-4 w-4" />
+                  <SelectValue placeholder="Select time" />
+                </SelectTrigger>
+                <SelectContent>
+                  {timeOptions.map((time) => (
+                    <SelectItem key={time} value={time}>
+                      {time}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="flex justify-end space-x-2 pt-4">
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={!reminderData.title || !reminderData.reminder_time}>
+            <Button type="submit" disabled={!reminderData.title || !selectedDate || !selectedTime}>
               Add Reminder
             </Button>
           </div>
