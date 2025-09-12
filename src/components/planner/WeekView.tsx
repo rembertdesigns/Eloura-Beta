@@ -6,6 +6,8 @@ import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useIsMobile } from '@/hooks/use-mobile';
+import DayDetailModal from './DayDetailModal';
 import { 
   Trophy, 
   Award, 
@@ -115,6 +117,14 @@ const WeekView: React.FC<WeekViewProps> = ({
   const [weeklyReflection, setWeeklyReflection] = useState('');
   const [weeklyPlanning, setWeeklyPlanning] = useState('');
   const [weeklyChallenges, setWeeklyChallenges] = useState('');
+  const [selectedDay, setSelectedDay] = useState<{
+    dayName: string;
+    date: Date;
+    tasks: any[];
+    reminders: any[];
+  } | null>(null);
+  
+  const isMobile = useIsMobile();
 
   // Get current week dates
   const getCurrentWeekDates = () => {
@@ -191,58 +201,109 @@ const WeekView: React.FC<WeekViewProps> = ({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-7 gap-2 md:gap-4">
-            {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => {
-              const dayData = weekData.find(d => d.day === day) || { day, tasks: [], reminders: [] };
-              const isToday = weekDates[index].toDateString() === new Date().toDateString();
-              
-              return (
-                <div key={day} className={`p-2 md:p-3 rounded-lg border-2 ${isToday ? 'border-blue-500 bg-blue-50' : 'border-gray-200'}`}>
-                  <div className="text-center mb-2">
-                    <div className="text-xs text-gray-500">{day}</div>
-                    <div className={`text-sm md:text-base font-semibold ${isToday ? 'text-blue-600' : 'text-gray-700'}`}>
-                      {weekDates[index].getDate()}
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-1">
-                    {dayData.tasks.map((task, taskIndex) => (
-                      <div key={taskIndex} className="text-xs p-1 rounded bg-white border">
-                        <div className="font-medium truncate">{task.title}</div>
-                        <div className="text-gray-500">{task.time}</div>
+          {isMobile ? (
+            // Mobile: Simplified horizontal layout with day numbers and task counts
+            <div className="flex justify-between items-center gap-1 px-2">
+              {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => {
+                const dayData = weekData.find(d => d.day === day) || { day, tasks: [], reminders: [] };
+                const isToday = weekDates[index].toDateString() === new Date().toDateString();
+                const totalItems = dayData.tasks.length + (dayData.reminders?.length || 0);
+                
+                return (
+                  <button
+                    key={day}
+                    onClick={() => setSelectedDay({
+                      dayName: day,
+                      date: weekDates[index],
+                      tasks: dayData.tasks,
+                      reminders: dayData.reminders || []
+                    })}
+                    className={`flex-1 p-3 rounded-lg border-2 transition-all ${
+                      isToday ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                    } min-h-[70px] touch-manipulation`}
+                  >
+                    <div className="text-center">
+                      <div className={`text-lg font-bold ${isToday ? 'text-blue-600' : 'text-gray-900'}`}>
+                        {weekDates[index].getDate()}
                       </div>
-                    ))}
-                    
-                    {dayData.reminders && dayData.reminders.map((reminder, reminderIndex) => (
-                      <div key={reminderIndex} className="text-xs p-1 rounded bg-yellow-50 border border-yellow-200 flex items-center gap-1">
-                        {toggleReminderCompletion && (
-                          <Checkbox 
-                            checked={reminder.completed}
-                            onCheckedChange={(checked) => {
-                              toggleReminderCompletion(reminder.id, !!checked);
-                            }}
-                            className="h-3 w-3"
-                          />
-                        )}
-                        <AlarmClock className="h-2 w-2 text-yellow-600 flex-shrink-0" />
-                        <div className={`flex-1 ${reminder.completed ? 'line-through text-gray-500' : ''}`}>
-                          <div className="font-medium truncate">{reminder.title}</div>
-                          <div className="text-gray-500">{reminder.time}</div>
+                      {totalItems > 0 && (
+                        <div className={`text-xs mt-1 px-2 py-0.5 rounded-full ${
+                          isToday ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'
+                        }`}>
+                          {totalItems}
                         </div>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            // Desktop/Tablet: Full detailed grid layout
+            <div className="grid grid-cols-7 gap-2 md:gap-4">
+              {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => {
+                const dayData = weekData.find(d => d.day === day) || { day, tasks: [], reminders: [] };
+                const isToday = weekDates[index].toDateString() === new Date().toDateString();
+                
+                return (
+                  <button
+                    key={day}
+                    onClick={() => setSelectedDay({
+                      dayName: day,
+                      date: weekDates[index],
+                      tasks: dayData.tasks,
+                      reminders: dayData.reminders || []
+                    })}
+                    className={`p-2 md:p-3 rounded-lg border-2 text-left transition-all hover:border-gray-400 ${
+                      isToday ? 'border-blue-500 bg-blue-50' : 'border-gray-200'
+                    }`}
+                  >
+                    <div className="text-center mb-2">
+                      <div className="text-xs text-gray-500">{day}</div>
+                      <div className={`text-sm md:text-base font-semibold ${isToday ? 'text-blue-600' : 'text-gray-700'}`}>
+                        {weekDates[index].getDate()}
                       </div>
-                    ))}
+                    </div>
                     
-                    {dayData.tasks.length === 0 && (!dayData.reminders || dayData.reminders.length === 0) && (
-                      <div className="text-center py-4">
-                        <Plus className="h-4 w-4 text-gray-400 mx-auto mb-1" />
-                        <div className="text-xs text-gray-400">No items</div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                    <div className="space-y-1">
+                      {dayData.tasks.map((task, taskIndex) => (
+                        <div key={taskIndex} className="text-xs p-1 rounded bg-white border">
+                          <div className="font-medium truncate">{task.title}</div>
+                          <div className="text-gray-500">{task.time}</div>
+                        </div>
+                      ))}
+                      
+                      {dayData.reminders && dayData.reminders.map((reminder, reminderIndex) => (
+                        <div key={reminderIndex} className="text-xs p-1 rounded bg-yellow-50 border border-yellow-200 flex items-center gap-1">
+                          {toggleReminderCompletion && (
+                            <Checkbox 
+                              checked={reminder.completed}
+                              onCheckedChange={(checked) => {
+                                toggleReminderCompletion(reminder.id, !!checked);
+                              }}
+                              className="h-3 w-3"
+                            />
+                          )}
+                          <AlarmClock className="h-2 w-2 text-yellow-600 flex-shrink-0" />
+                          <div className={`flex-1 ${reminder.completed ? 'line-through text-gray-500' : ''}`}>
+                            <div className="font-medium truncate">{reminder.title}</div>
+                            <div className="text-gray-500">{reminder.time}</div>
+                          </div>
+                        </div>
+                      ))}
+                      
+                      {dayData.tasks.length === 0 && (!dayData.reminders || dayData.reminders.length === 0) && (
+                        <div className="text-center py-4">
+                          <Plus className="h-4 w-4 text-gray-400 mx-auto mb-1" />
+                          <div className="text-xs text-gray-400">No items</div>
+                        </div>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -507,6 +568,17 @@ const WeekView: React.FC<WeekViewProps> = ({
           </Tabs>
         </CardContent>
       </Card>
+
+      {/* Day Detail Modal */}
+      <DayDetailModal
+        isOpen={!!selectedDay}
+        onOpenChange={(open) => !open && setSelectedDay(null)}
+        dayName={selectedDay?.dayName || ''}
+        date={selectedDay?.date || new Date()}
+        tasks={selectedDay?.tasks || []}
+        reminders={selectedDay?.reminders || []}
+        toggleReminderCompletion={toggleReminderCompletion}
+      />
     </div>
   );
 };
