@@ -29,6 +29,11 @@ const PlannerInsights = () => {
     addGoalReflection,
     restartGoal,
     shareGoal,
+    addEvent,
+    searchQuery,
+    setSearchQuery,
+    filters,
+    setFilters,
   } = usePlannerInsightsData();
 
   if (loading) {
@@ -68,7 +73,13 @@ const PlannerInsights = () => {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-3 md:px-6 pt-3 md:pt-6 pb-4 max-w-7xl space-y-3 md:space-y-6 pb-safe">
         <div className="px-1 md:px-0">
-          <PlannerHeader />
+          <PlannerHeader 
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            filters={filters}
+            onFiltersChange={setFilters}
+            onAddEvent={addEvent}
+          />
         </div>
 
         {/* Planner Tabs - Mobile Optimized */}

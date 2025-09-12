@@ -88,6 +88,15 @@ export const usePlannerInsightsData = () => {
     loading: true,
     error: null,
   });
+  
+  // Search and filter state
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({
+    dateRange: { from: undefined as Date | undefined, to: undefined as Date | undefined },
+    category: 'all',
+    status: 'all',
+    type: 'all'
+  });
 
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
@@ -173,11 +182,99 @@ export const usePlannerInsightsData = () => {
     return result;
   };
 
+  const buildFilteredQueries = () => {
+    const baseQuery = { eq: ['user_id', user.id] };
+    const dateFilters: any[] = [];
+    
+    // Apply date range filter
+    if (filters.dateRange?.from) {
+      dateFilters.push(['gte', 'due_date', filters.dateRange.from.toISOString()]);
+      dateFilters.push(['gte', 'start_time', filters.dateRange.from.toISOString()]);
+      dateFilters.push(['gte', 'target_date', filters.dateRange.from.toISOString().split('T')[0]]);
+    }
+    if (filters.dateRange?.to) {
+      dateFilters.push(['lte', 'due_date', filters.dateRange.to.toISOString()]);
+      dateFilters.push(['lte', 'start_time', filters.dateRange.to.toISOString()]);
+      dateFilters.push(['lte', 'target_date', filters.dateRange.to.toISOString().split('T')[0]]);
+    }
+
+    // Build search query
+    let searchFilter = '';
+    if (searchQuery.trim()) {
+      searchFilter = `to_tsvector('english', title || ' ' || COALESCE(description, '')).@@.to_tsquery('english', '${searchQuery.trim().split(' ').join(' & ')}')`;
+    }
+
+    return { baseQuery, dateFilters, searchFilter };
+  };
+
   const fetchAllData = async () => {
     if (!user) return;
 
     try {
       setData(prev => ({ ...prev, loading: true, error: null }));
+      
+      const { searchFilter, dateFilters } = buildFilteredQueries();
+
+      // Build tasks query
+      let tasksQuery = supabase.from('tasks').select('*').eq('user_id', user.id);
+      if (searchQuery.trim()) {
+        tasksQuery = tasksQuery.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
+      }
+      if (filters.category !== 'all') {
+        tasksQuery = tasksQuery.eq('category', filters.category);
+      }
+      if (filters.status !== 'all') {
+        if (filters.status === 'completed') {
+          tasksQuery = tasksQuery.eq('completed', true);
+        } else if (filters.status === 'pending') {
+          tasksQuery = tasksQuery.eq('completed', false);
+        } else if (filters.status === 'overdue') {
+          tasksQuery = tasksQuery.eq('completed', false).lt('due_date', new Date().toISOString());
+        }
+      }
+      if (filters.dateRange?.from) {
+        tasksQuery = tasksQuery.gte('due_date', filters.dateRange.from.toISOString());
+      }
+      if (filters.dateRange?.to) {
+        tasksQuery = tasksQuery.lte('due_date', filters.dateRange.to.toISOString());
+      }
+
+      // Build events query
+      let eventsQuery = supabase.from('events').select('*').eq('user_id', user.id);
+      if (searchQuery.trim()) {
+        eventsQuery = eventsQuery.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
+      }
+      if (filters.category !== 'all') {
+        eventsQuery = eventsQuery.eq('category', filters.category);
+      }
+      if (filters.dateRange?.from) {
+        eventsQuery = eventsQuery.gte('start_time', filters.dateRange.from.toISOString());
+      }
+      if (filters.dateRange?.to) {
+        eventsQuery = eventsQuery.lte('start_time', filters.dateRange.to.toISOString());
+      }
+
+      // Build goals query
+      let goalsQuery = supabase.from('goals').select('*').eq('user_id', user.id);
+      if (searchQuery.trim()) {
+        goalsQuery = goalsQuery.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%`);
+      }
+      if (filters.category !== 'all') {
+        goalsQuery = goalsQuery.eq('category', filters.category);
+      }
+      if (filters.status !== 'all') {
+        if (filters.status === 'completed') {
+          goalsQuery = goalsQuery.eq('is_completed', true);
+        } else if (filters.status === 'pending') {
+          goalsQuery = goalsQuery.eq('is_completed', false);
+        }
+      }
+      if (filters.dateRange?.from) {
+        goalsQuery = goalsQuery.gte('target_date', filters.dateRange.from.toISOString().split('T')[0]);
+      }
+      if (filters.dateRange?.to) {
+        goalsQuery = goalsQuery.lte('target_date', filters.dateRange.to.toISOString().split('T')[0]);
+      }
 
       const [
         { data: achievements, error: achievementsError },
@@ -192,9 +289,9 @@ export const usePlannerInsightsData = () => {
         supabase.from('milestones').select('*').eq('user_id', user.id).order('date', { ascending: false }),
         supabase.from('user_patterns').select('*').eq('user_id', user.id).order('date_computed', { ascending: false }),
         supabase.from('time_tracking').select('*').eq('user_id', user.id).gte('date', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]),
-        supabase.from('goals').select('*').eq('user_id', user.id).order('created_at', { ascending: false }),
-        supabase.from('tasks').select('*').eq('user_id', user.id).gte('due_date', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()).lte('due_date', new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()),
-        supabase.from('events').select('*').eq('user_id', user.id).gte('start_time', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()).lte('start_time', new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString())
+        goalsQuery.order('created_at', { ascending: false }),
+        tasksQuery.order('due_date', { ascending: true }),
+        eventsQuery.order('start_time', { ascending: true })
       ]);
 
       if (achievementsError) throw achievementsError;
@@ -421,9 +518,53 @@ export const usePlannerInsightsData = () => {
     }
   };
 
+  // Add event function
+  const addEvent = async (eventData: {
+    title: string;
+    description?: string;
+    category: string;
+    start_time: string;
+    end_time?: string;
+    location?: string;
+    recurring?: boolean;
+    recurrence_pattern?: string;
+  }) => {
+    if (!user) return;
+
+    try {
+      const { error } = await supabase
+        .from('events')
+        .insert([{
+          user_id: user.id,
+          ...eventData,
+        }]);
+
+      if (error) throw error;
+      
+      // Refresh data after adding
+      await fetchAllData();
+
+      toast({
+        title: "Success",
+        description: "Event added successfully",
+      });
+
+      return { success: true };
+
+    } catch (error) {
+      console.error('Error adding event:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add event",
+        variant: "destructive",
+      });
+      throw error;
+    }
+  };
+
   useEffect(() => {
     fetchAllData();
-  }, [user]);
+  }, [user, searchQuery, filters]);
 
   const addGoalReflection = async (goalId: string, reflection: any) => {
     try {
@@ -540,5 +681,11 @@ export const usePlannerInsightsData = () => {
     addGoalReflection,
     restartGoal,
     shareGoal,
+    addEvent,
+    // Search and filter functionality
+    searchQuery,
+    setSearchQuery,
+    filters,
+    setFilters,
   };
 };
