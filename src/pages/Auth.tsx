@@ -18,6 +18,7 @@ const Auth = () => {
   const [password, setPassword] = useState('');
   const [authStep, setAuthStep] = useState<'credentials' | 'mfa-challenge' | 'mfa-enrollment'>('credentials');
   const [rateLimitInfo, setRateLimitInfo] = useState<{ attempts: number; resetTime?: Date } | null>(null);
+  const [userRiskLevel, setUserRiskLevel] = useState<'low' | 'high'>('low');
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -26,6 +27,14 @@ const Auth = () => {
     const checkRateLimit = () => {
       const attempts = parseInt(localStorage.getItem('auth_attempts') || '0');
       const lastAttempt = localStorage.getItem('auth_last_attempt');
+      const emailAttempts = parseInt(localStorage.getItem(`auth_attempts_${email}`) || '0');
+      
+      // Set risk level based on overall and email-specific attempts
+      if (attempts >= 3 || emailAttempts >= 2) {
+        setUserRiskLevel('high');
+      } else {
+        setUserRiskLevel('low');
+      }
       
       if (attempts >= 5 && lastAttempt) {
         const lastAttemptTime = new Date(lastAttempt);
@@ -37,6 +46,7 @@ const Auth = () => {
           // Reset rate limit
           localStorage.removeItem('auth_attempts');
           localStorage.removeItem('auth_last_attempt');
+          localStorage.removeItem(`auth_attempts_${email}`);
         }
       }
     };
@@ -44,12 +54,20 @@ const Auth = () => {
     checkRateLimit();
     const interval = setInterval(checkRateLimit, 60000); // Check every minute
     return () => clearInterval(interval);
-  }, []);
+  }, [email]);
 
   const trackFailedAttempt = () => {
     const attempts = parseInt(localStorage.getItem('auth_attempts') || '0') + 1;
+    const emailAttempts = parseInt(localStorage.getItem(`auth_attempts_${email}`) || '0') + 1;
+    
     localStorage.setItem('auth_attempts', attempts.toString());
+    localStorage.setItem(`auth_attempts_${email}`, emailAttempts.toString());
     localStorage.setItem('auth_last_attempt', new Date().toISOString());
+    
+    // Update risk level for future attempts
+    if (attempts >= 3 || emailAttempts >= 2) {
+      setUserRiskLevel('high');
+    }
     
     if (attempts >= 5) {
       const resetTime = new Date(Date.now() + 15 * 60 * 1000);
@@ -60,10 +78,12 @@ const Auth = () => {
   const clearRateLimit = () => {
     localStorage.removeItem('auth_attempts');
     localStorage.removeItem('auth_last_attempt');
+    localStorage.removeItem(`auth_attempts_${email}`);
     setRateLimitInfo(null);
+    setUserRiskLevel('low');
   };
 
-  const getEnhancedErrorMessage = (error: any) => {
+  const getEnhancedErrorMessage = (error: any, isSignupFlow: boolean = false) => {
     const message = error.message.toLowerCase();
     
     if (message.includes('rate_limit') || message.includes('too_many_requests')) {
@@ -77,7 +97,11 @@ const Auth = () => {
     } else if (message.includes('signup_disabled')) {
       return "New account registration is currently disabled. Please contact support.";
     } else if (message.includes('captcha') || message.includes('hcaptcha')) {
-      return "Please complete the security verification to continue.";
+      if (isSignupFlow) {
+        return "Please complete the security verification to create your account.";
+      } else {
+        return "For security, please complete the verification. This happens when we detect unusual activity.";
+      }
     } else if (message.includes('bot_like_activity') || message.includes('suspicious_activity')) {
       return "We've detected unusual activity. Please try again or contact support if this persists.";
     } else if (message.includes('challenge_required')) {
@@ -117,7 +141,7 @@ const Auth = () => {
           trackFailedAttempt();
           toast({
             title: "Sign Up Failed",
-            description: getEnhancedErrorMessage(error),
+            description: getEnhancedErrorMessage(error, true),
             variant: "destructive",
           });
         } else {
@@ -128,6 +152,15 @@ const Auth = () => {
           });
         }
       } else {
+        // Show info toast for high-risk signin attempts
+        if (userRiskLevel === 'high') {
+          toast({
+            title: "Security Notice", 
+            description: "Due to previous failed attempts, additional verification may be required for sign-in.",
+            variant: "default",
+          });
+        }
+        
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -137,7 +170,7 @@ const Auth = () => {
           trackFailedAttempt();
           toast({
             title: "Sign In Failed",
-            description: getEnhancedErrorMessage(error),
+            description: getEnhancedErrorMessage(error, false),
             variant: "destructive",
           });
         } else {
@@ -201,7 +234,7 @@ const Auth = () => {
         trackFailedAttempt();
         toast({
           title: "OAuth Error",
-          description: getEnhancedErrorMessage(error),
+          description: getEnhancedErrorMessage(error, false),
           variant: "destructive",
         });
       }
@@ -280,6 +313,17 @@ const Auth = () => {
             <AlertDescription>
               Too many failed attempts. Access temporarily restricted until{' '}
               {rateLimitInfo.resetTime?.toLocaleTimeString()} for security.
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {/* Security Notice for High-Risk Users */}
+        {userRiskLevel === 'high' && !isSignUp && !rateLimitInfo && (
+          <Alert className="mb-6 border-yellow-500 bg-yellow-50">
+            <Shield className="h-4 w-4 text-yellow-600" />
+            <AlertDescription className="text-yellow-800">
+              Additional security verification may be required due to previous failed sign-in attempts. 
+              This helps protect your account and typically takes just a few seconds.
             </AlertDescription>
           </Alert>
         )}
