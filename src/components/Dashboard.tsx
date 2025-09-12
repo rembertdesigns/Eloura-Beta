@@ -149,6 +149,8 @@ const Dashboard = () => {
     const now = new Date();
     const hour = now.getHours();
     const dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'long' });
+    const month = now.getMonth() + 1; // getMonth() returns 0-11
+    const day = now.getDate();
     
     // Get household name from profile or localStorage, fallback to first name
     const householdName = profile?.household_name || localStorage.getItem('householdName');
@@ -159,7 +161,7 @@ const Dashboard = () => {
     else if (hour < 17) timeGreeting = 'Good Afternoon';
     else timeGreeting = 'Good Evening';
     
-    return `${timeGreeting}, ${displayName} - ${dayOfWeek}`;
+    return `${timeGreeting}, ${displayName} - ${dayOfWeek}, ${month}/${day}`;
   };
 
   // Get random tip
