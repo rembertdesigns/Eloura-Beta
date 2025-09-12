@@ -2,3 +2,6 @@ project_id = "pwpmbodswholshdocurk"
 
 [functions.chat-with-ai]
 verify_jwt = true
+
+[functions.send-email]
+verify_jwt = false

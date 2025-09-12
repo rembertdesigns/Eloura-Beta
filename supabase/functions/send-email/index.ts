@@ -6,6 +6,8 @@ import { MagicLinkEmail } from './_templates/magic-link.tsx'
 import { WelcomeEmail } from './_templates/welcome-email.tsx'
 import { PasswordResetEmail } from './_templates/password-reset.tsx'
 import { VillageInvitationEmail } from './_templates/village-invitation.tsx'
+import { ChangeEmailEmail } from './_templates/change-email.tsx'
+import { ReauthenticationEmail } from './_templates/reauthentication.tsx'
 
 // Initialize SMTP client with Gmail configuration
 const client = new SMTPClient({
@@ -122,6 +124,28 @@ Deno.serve(async (req) => {
             })
           )
           subject = `${data.inviterName} invited you to join their Eloura village`
+          break
+          
+        case 'change-email':
+          html = await renderAsync(
+            React.createElement(ChangeEmailEmail, {
+              userName: data.userName || 'there',
+              newEmail: data.newEmail || '',
+              confirmUrl: data.confirmUrl || '',
+            })
+          )
+          subject = 'Confirm your new email address for Eloura'
+          break
+          
+        case 'reauthentication':
+          html = await renderAsync(
+            React.createElement(ReauthenticationEmail, {
+              userName: data.userName || 'there',
+              verificationCode: data.verificationCode || '',
+              actionDescription: data.actionDescription || 'complete this action',
+            })
+          )
+          subject = 'Your Eloura Verification Code'
           break
           
         default:
