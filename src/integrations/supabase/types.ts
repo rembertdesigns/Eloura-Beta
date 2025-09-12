@@ -1264,7 +1264,45 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      safe_profiles: {
+        Row: {
+          address_display: string | null
+          avatar_url: string | null
+          created_at: string | null
+          family_type: string | null
+          full_name: string | null
+          household_name: string | null
+          id: string | null
+          phone_display: string | null
+          pronouns: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address_display?: never
+          avatar_url?: string | null
+          created_at?: string | null
+          family_type?: string | null
+          full_name?: string | null
+          household_name?: string | null
+          id?: string | null
+          phone_display?: never
+          pronouns?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address_display?: never
+          avatar_url?: string | null
+          created_at?: string | null
+          family_type?: string | null
+          full_name?: string | null
+          household_name?: string | null
+          id?: string | null
+          phone_display?: never
+          pronouns?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       encrypt_pii: {
