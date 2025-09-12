@@ -131,12 +131,13 @@ const Auth = () => {
 
     // Show captcha for signups or high-risk logins
     if ((isSignUp || userRiskLevel === 'high') && !captchaToken) {
+      console.log('Triggering captcha - isSignUp:', isSignUp, 'userRiskLevel:', userRiskLevel, 'captchaToken:', !!captchaToken);
       setShowCaptcha(true);
       toast({
         title: "Security Verification Required",
         description: isSignUp 
-          ? "Please complete the verification to create your account."
-          : "Additional verification needed due to security measures.",
+          ? "Please complete the security verification to create your account."
+          : "Additional verification needed for security. This helps protect your account.",
         variant: "default",
       });
       return;
@@ -191,8 +192,12 @@ const Auth = () => {
           password,
         };
         
+        // Include captcha token if available
         if (captchaToken) {
           authOptions.options = { captchaToken };
+          console.log('Including captcha token in auth request');
+        } else if (userRiskLevel === 'high') {
+          console.log('High risk user but no captcha token - this may cause auth to fail');
         }
         
         const { data, error } = await supabase.auth.signInWithPassword(authOptions);
@@ -249,16 +254,23 @@ const Auth = () => {
   };
 
   const handleCaptchaVerify = (token: string) => {
+    console.log('hCaptcha verified with token:', token ? 'Token received' : 'No token');
     setCaptchaToken(token);
     toast({
       title: "Verification Complete",
-      description: "You can now proceed with authentication.",
+      description: "Security check passed. You can now proceed.",
       variant: "default",
     });
   };
 
   const handleCaptchaExpire = () => {
+    console.log('hCaptcha token expired');
     setCaptchaToken(null);
+    toast({
+      title: "Verification Expired",
+      description: "Please complete the security check again.",
+      variant: "destructive",
+    });
   };
 
   const handleSocialLogin = async (provider: 'google') => {
@@ -417,7 +429,10 @@ const Auth = () => {
               
               {/* hCaptcha Widget */}
               {showCaptcha && (
-                <div className="flex justify-center py-4">
+                <div className="flex flex-col items-center py-4">
+                  <p className="text-sm text-slate-600 mb-3 text-center">
+                    Please complete the security verification to continue
+                  </p>
                   <HCaptcha
                     ref={captchaRef}
                     sitekey="98faeab4-5bb8-4ad8-8bf8-e516230af57a"
@@ -427,13 +442,20 @@ const Auth = () => {
                       console.error('hCaptcha error:', error);
                       toast({
                         title: "Captcha Error",
-                        description: "Failed to load security verification. Please refresh and try again.",
+                        description: "Security verification failed to load. Please refresh the page and try again.",
                         variant: "destructive",
                       });
                     }}
+                    onLoad={() => {
+                      console.log('hCaptcha loaded successfully');
+                    }}
                     theme="light"
                     size="normal"
+                    tabIndex={0}
                   />
+                  <p className="text-xs text-slate-500 mt-2 text-center">
+                    Having trouble? Try refreshing the page or contact support if this persists.
+                  </p>
                 </div>
               )}
               
