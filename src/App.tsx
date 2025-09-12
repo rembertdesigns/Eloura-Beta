@@ -12,7 +12,6 @@ import Index from "./pages/Index";
 import HomepageV2 from "./pages/HomepageV2";
 import Auth from "./pages/Auth";
 import PasswordReset from "./pages/PasswordReset";
-import EmailTesting from "./pages/EmailTesting";
 import FamilySetup from "./pages/FamilySetup";
 import PersonalInfo from "./pages/PersonalInfo";
 import FamilyStructure from "./pages/FamilyStructure";
@@ -49,8 +48,7 @@ const App = () => (
             <Route path="/v2" element={<HomepageV2 />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/reset" element={<PasswordReset />} />
-              <Route path="/email-testing" element={<ProtectedRoute><EmailTesting /></ProtectedRoute>} />
-              <Route path="/welcome" element={<ProtectedRoute><Welcome /></ProtectedRoute>} />
+            <Route path="/welcome" element={<ProtectedRoute><Welcome /></ProtectedRoute>} />
               <Route path="/intro" element={<ProtectedRoute><IntroFlow /></ProtectedRoute>} />
               
               {/* Onboarding Flow with Layout - Protected */}
