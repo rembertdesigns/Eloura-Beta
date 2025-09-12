@@ -1,6 +1,5 @@
 import React from 'npm:react@18.3.1'
 import { Webhook } from 'https://esm.sh/standardwebhooks@1.0.0'
-import { SMTPClient } from 'https://deno.land/x/denomailer@1.6.0/mod.ts'
 import { renderAsync } from 'npm:@react-email/components@0.0.22'
 import { MagicLinkEmail } from './_templates/magic-link.tsx'
 import { WelcomeEmail } from './_templates/welcome-email.tsx'
@@ -9,20 +8,83 @@ import { VillageInvitationEmail } from './_templates/village-invitation.tsx'
 import { ChangeEmailEmail } from './_templates/change-email.tsx'
 import { ReauthenticationEmail } from './_templates/reauthentication.tsx'
 
-// Initialize SMTP client with Gmail configuration
-const client = new SMTPClient({
-  connection: {
-    hostname: 'smtp.gmail.com',
-    port: 587,
-    tls: true,
-    auth: {
-      username: Deno.env.get('GMAIL_USERNAME') as string,
-      password: Deno.env.get('GMAIL_APP_PASSWORD') as string,
-    },
-  },
-})
+// Gmail API configuration
+const gmail = {
+  clientId: Deno.env.get('GMAIL_CLIENT_ID'),
+  clientSecret: Deno.env.get('GMAIL_CLIENT_SECRET'),
+  refreshToken: Deno.env.get('GMAIL_REFRESH_TOKEN'),
+  fromEmail: Deno.env.get('GMAIL_FROM_EMAIL') || 'elouraadmin@elouraapp.com'
+}
 
 const hookSecret = Deno.env.get('SEND_EMAIL_HOOK_SECRET') as string
+
+// Function to get Gmail access token
+async function getGmailAccessToken() {
+  const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      client_id: gmail.clientId!,
+      client_secret: gmail.clientSecret!,
+      refresh_token: gmail.refreshToken!,
+      grant_type: 'refresh_token',
+    }),
+  })
+
+  if (!tokenResponse.ok) {
+    throw new Error('Failed to get Gmail access token')
+  }
+
+  const data = await tokenResponse.json()
+  return data.access_token
+}
+
+// Function to send email via Gmail API
+async function sendEmailViaGmail(to: string, subject: string, html: string) {
+  try {
+    const accessToken = await getGmailAccessToken()
+    
+    // Create the email message
+    const emailMessage = [
+      `To: ${to}`,
+      `From: Eloura Support <${gmail.fromEmail}>`,
+      `Subject: ${subject}`,
+      'Content-Type: text/html; charset=utf-8',
+      '',
+      html
+    ].join('\n')
+
+    // Base64 encode the message
+    const encodedMessage = btoa(emailMessage)
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '')
+
+    // Send via Gmail API
+    const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        raw: encodedMessage
+      })
+    })
+
+    if (!response.ok) {
+      const error = await response.text()
+      throw new Error(`Gmail API error: ${response.status} - ${error}`)
+    }
+
+    return await response.json()
+  } catch (error) {
+    console.error('Gmail API error:', error)
+    throw error
+  }
+}
 
 Deno.serve(async (req) => {
   const corsHeaders = {
@@ -86,12 +148,7 @@ Deno.serve(async (req) => {
         })
       )
 
-      await client.send({
-        from: 'Eloura Support <elouraadmin@elouraapp.com>',
-        to: user.email,
-        subject: 'Sign in to Eloura',
-        html,
-      })
+      await sendEmailViaGmail(user.email, 'Sign in to Eloura', html)
     } else {
       // Handle direct API calls (for welcome emails, etc.)
       const { type, email, data } = parsedPayload || JSON.parse(payload)
@@ -166,12 +223,7 @@ Deno.serve(async (req) => {
           )
       }
 
-      await client.send({
-        from: 'Eloura Support <elouraadmin@elouraapp.com>',
-        to: email,
-        subject,
-        html,
-      })
+      await sendEmailViaGmail(email, subject, html)
     }
 
     return new Response(JSON.stringify({ success: true }), {
