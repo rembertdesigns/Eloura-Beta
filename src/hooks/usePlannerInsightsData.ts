@@ -71,6 +71,11 @@ interface PlannerInsightsData {
   patterns: UserPattern[];
   timeAllocation: TimeAllocation;
   goals: Goal[];
+  monthlyProductivity?: {
+    productiveDays: number[];
+    goalCompletionDays: number[];
+    eventDays: number[];
+  };
   loading: boolean;
   error: string | null;
 }
@@ -85,6 +90,11 @@ export const usePlannerInsightsData = () => {
     patterns: [],
     timeAllocation: {},
     goals: [],
+    monthlyProductivity: {
+      productiveDays: [],
+      goalCompletionDays: [],
+      eventDays: []
+    },
     loading: true,
     error: null,
   });
@@ -207,6 +217,69 @@ export const usePlannerInsightsData = () => {
     return { baseQuery, dateFilters, searchFilter };
   };
 
+  const calculateMonthlyProductivity = (tasks: any[], goals: any[], events: any[]) => {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth();
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    
+    const monthlyData: {
+      productiveDays: number[];
+      goalCompletionDays: number[];
+      eventDays: number[];
+    } = {
+      productiveDays: [],
+      goalCompletionDays: [],
+      eventDays: []
+    };
+
+    // Calculate for each day of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dayDate = new Date(currentYear, currentMonth, day);
+      const dayStr = dayDate.toISOString().split('T')[0];
+      
+      // Count completed tasks for this day (either completed on this day or due on this day and completed)
+      const completedTasksForDay = tasks.filter(task => {
+        if (!task.completed) return false;
+        
+        // Check if task was completed on this day
+        const taskCompletedDate = task.updated_at ? new Date(task.updated_at).toISOString().split('T')[0] : null;
+        const taskDueDate = task.due_date ? new Date(task.due_date).toISOString().split('T')[0] : null;
+        
+        return taskCompletedDate === dayStr || (taskDueDate === dayStr && task.completed);
+      }).length;
+
+      // Count completed goals for this day  
+      const completedGoalsForDay = goals.filter(goal => {
+        if (!goal.is_completed) return false;
+        
+        const goalCompletedDate = goal.last_completed_at ? 
+          new Date(goal.last_completed_at).toISOString().split('T')[0] : null;
+        const goalTargetDate = goal.target_date ? 
+          new Date(goal.target_date).toISOString().split('T')[0] : null;
+          
+        return goalCompletedDate === dayStr || (goalTargetDate === dayStr && goal.is_completed);
+      }).length;
+
+      // Count events for this day
+      const eventsForDay = events.filter(event => {
+        const eventDate = new Date(event.start_time).toISOString().split('T')[0];
+        return eventDate === dayStr;
+      }).length;
+
+      // Determine day type based on activity (prioritize high productivity)
+      if (completedTasksForDay >= 3) {
+        monthlyData.productiveDays.push(day);
+      } else if (completedGoalsForDay >= 1) {
+        monthlyData.goalCompletionDays.push(day);
+      } else if (eventsForDay > 0) {
+        monthlyData.eventDays.push(day);
+      }
+    }
+
+    return monthlyData;
+  };
+
   const fetchAllData = async () => {
     if (!user) return;
 
@@ -304,6 +377,30 @@ export const usePlannerInsightsData = () => {
 
       const timeAllocation = calculateTimeAllocation(timeTracking || []);
       const weekData = generateWeekData(tasks || [], events || []);
+      
+      // Fetch monthly tasks and goals for productivity calculation
+      const now = new Date();
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+      const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString();
+      
+      const [
+        { data: monthlyTasks, error: monthlyTasksError },
+        { data: monthlyGoals, error: monthlyGoalsError },
+        { data: monthlyEvents, error: monthlyEventsError }
+      ] = await Promise.all([
+        supabase.from('tasks').select('*').eq('user_id', user.id)
+          .or(`and(updated_at.gte.${startOfMonth},updated_at.lte.${endOfMonth}),and(due_date.gte.${startOfMonth.split('T')[0]},due_date.lte.${endOfMonth.split('T')[0]})`),
+        supabase.from('goals').select('*').eq('user_id', user.id)
+          .or(`and(last_completed_at.gte.${startOfMonth.split('T')[0]},last_completed_at.lte.${endOfMonth.split('T')[0]}),and(target_date.gte.${startOfMonth.split('T')[0]},target_date.lte.${endOfMonth.split('T')[0]})`),
+        supabase.from('events').select('*').eq('user_id', user.id)
+          .gte('start_time', startOfMonth).lte('start_time', endOfMonth)
+      ]);
+
+      const monthlyProductivity = calculateMonthlyProductivity(
+        monthlyTasks || [],
+        monthlyGoals || [], 
+        monthlyEvents || []
+      );
 
       setData({
         achievements: achievements || [],
@@ -312,6 +409,7 @@ export const usePlannerInsightsData = () => {
         timeAllocation,
         goals: goals || [],
         weekData,
+        monthlyProductivity,
         loading: false,
         error: null,
       });

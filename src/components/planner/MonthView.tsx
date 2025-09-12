@@ -73,6 +73,11 @@ interface MonthViewProps {
   timeAllocation: TimeAllocation;
   goals: Goal[];
   patterns: UserPattern[];
+  monthlyProductivity?: {
+    productiveDays: number[];
+    goalCompletionDays: number[];
+    eventDays: number[];
+  };
   onSaveReflection: (type: 'weekly' | 'monthly', data: any) => Promise<void>;
 }
 
@@ -82,6 +87,7 @@ const MonthView: React.FC<MonthViewProps> = ({
   timeAllocation, 
   goals, 
   patterns,
+  monthlyProductivity,
   onSaveReflection 
 }) => {
   const [activeSubTab, setActiveSubTab] = useState('overview');
@@ -99,9 +105,11 @@ const MonthView: React.FC<MonthViewProps> = ({
   const startingDayOfWeek = firstDayOfMonth.getDay(); // 0 = Sunday, 1 = Monday, etc.
   
   const monthDays = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-  const daysWithEvents: number[] = []; // No dummy events
-  const productiveDays: number[] = []; // No dummy productivity days
-  const goalCompletionDays: number[] = []; // No dummy goal completion days
+  
+  // Use real productivity data from the hook
+  const productiveDays = monthlyProductivity?.productiveDays || [];
+  const goalCompletionDays = monthlyProductivity?.goalCompletionDays || [];
+  const daysWithEvents = monthlyProductivity?.eventDays || [];
 
   const monthlyGoals = goals.map(goal => ({
     name: goal.title,
@@ -151,7 +159,7 @@ const MonthView: React.FC<MonthViewProps> = ({
       case 'high': return 'bg-green-500';
       case 'goal': return 'bg-purple-500';
       case 'event': return 'bg-blue-500';
-      default: return 'bg-white';
+      default: return 'bg-white border-border';
     }
   };
 

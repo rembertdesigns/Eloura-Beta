@@ -19,6 +19,7 @@ const PlannerInsights = () => {
     timeAllocation,
     goals,
     weekData,
+    monthlyProductivity,
     loading,
     error,
     refetch,
@@ -130,6 +131,7 @@ const PlannerInsights = () => {
                     timeAllocation={timeAllocation}
                     goals={goals}
                     patterns={patterns}
+                    monthlyProductivity={monthlyProductivity}
                     onSaveReflection={saveReflection}
                   />
                 </TabsContent>
