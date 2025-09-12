@@ -31,6 +31,11 @@ export const useOnboardingProgress = () => {
       return;
     }
 
+    if (!supabase) {
+      console.error('Supabase client not initialized');
+      throw new Error('Database connection not available');
+    }
+
     try {
       setLoading(true);
       console.log('🔍 Starting saveProgress for user:', user.id);
@@ -160,7 +165,7 @@ export const useOnboardingProgress = () => {
         .from('user_onboarding')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (error || !data) {
         return null;
