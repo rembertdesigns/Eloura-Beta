@@ -662,43 +662,64 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string | null
           avatar_url: string | null
+          city: string | null
           created_at: string
           date_of_birth: string | null
           email: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          emergency_contact_relationship: string | null
           family_type: string | null
           full_name: string | null
           household_name: string | null
           id: string
           phone: string | null
           pronouns: string | null
+          state: string | null
           updated_at: string
+          zip_code: string | null
         }
         Insert: {
+          address?: string | null
           avatar_url?: string | null
+          city?: string | null
           created_at?: string
           date_of_birth?: string | null
           email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          emergency_contact_relationship?: string | null
           family_type?: string | null
           full_name?: string | null
           household_name?: string | null
           id: string
           phone?: string | null
           pronouns?: string | null
+          state?: string | null
           updated_at?: string
+          zip_code?: string | null
         }
         Update: {
+          address?: string | null
           avatar_url?: string | null
+          city?: string | null
           created_at?: string
           date_of_birth?: string | null
           email?: string | null
+          emergency_contact_name?: string | null
+          emergency_contact_phone?: string | null
+          emergency_contact_relationship?: string | null
           family_type?: string | null
           full_name?: string | null
           household_name?: string | null
           id?: string
           phone?: string | null
           pronouns?: string | null
+          state?: string | null
           updated_at?: string
+          zip_code?: string | null
         }
         Relationships: []
       }
@@ -1009,85 +1030,49 @@ export type Database = {
       }
       user_onboarding: {
         Row: {
-          address: string | null
           challenges: Json | null
-          city: string | null
           completed_steps: string[] | null
           created_at: string
           current_step: string | null
-          date_of_birth: string | null
-          email: string | null
-          emergency_contact_name: string | null
-          emergency_contact_phone: string | null
-          emergency_contact_relationship: string | null
           family_type: string | null
-          first_name: string | null
           household_name: string | null
           id: string
-          last_name: string | null
           onboarding_completed: boolean | null
-          phone: string | null
           priorities: Json | null
           pronouns: string | null
-          state: string | null
           tour_completed: boolean | null
           updated_at: string
           user_id: string
-          zip_code: string | null
         }
         Insert: {
-          address?: string | null
           challenges?: Json | null
-          city?: string | null
           completed_steps?: string[] | null
           created_at?: string
           current_step?: string | null
-          date_of_birth?: string | null
-          email?: string | null
-          emergency_contact_name?: string | null
-          emergency_contact_phone?: string | null
-          emergency_contact_relationship?: string | null
           family_type?: string | null
-          first_name?: string | null
           household_name?: string | null
           id?: string
-          last_name?: string | null
           onboarding_completed?: boolean | null
-          phone?: string | null
           priorities?: Json | null
           pronouns?: string | null
-          state?: string | null
           tour_completed?: boolean | null
           updated_at?: string
           user_id: string
-          zip_code?: string | null
         }
         Update: {
-          address?: string | null
           challenges?: Json | null
-          city?: string | null
           completed_steps?: string[] | null
           created_at?: string
           current_step?: string | null
-          date_of_birth?: string | null
-          email?: string | null
-          emergency_contact_name?: string | null
-          emergency_contact_phone?: string | null
-          emergency_contact_relationship?: string | null
           family_type?: string | null
-          first_name?: string | null
           household_name?: string | null
           id?: string
-          last_name?: string | null
           onboarding_completed?: boolean | null
-          phone?: string | null
           priorities?: Json | null
           pronouns?: string | null
-          state?: string | null
           tour_completed?: boolean | null
           updated_at?: string
           user_id?: string
-          zip_code?: string | null
         }
         Relationships: []
       }
@@ -1279,9 +1264,51 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      safe_profiles: {
+        Row: {
+          address_masked: string | null
+          avatar_url: string | null
+          created_at: string | null
+          family_type: string | null
+          full_name: string | null
+          household_name: string | null
+          id: string | null
+          phone_masked: string | null
+          pronouns: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address_masked?: never
+          avatar_url?: string | null
+          created_at?: string | null
+          family_type?: string | null
+          full_name?: string | null
+          household_name?: string | null
+          id?: string | null
+          phone_masked?: never
+          pronouns?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address_masked?: never
+          avatar_url?: string | null
+          created_at?: string | null
+          family_type?: string | null
+          full_name?: string | null
+          household_name?: string | null
+          id?: string | null
+          phone_masked?: never
+          pronouns?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
+      encrypt_pii: {
+        Args: { data: string }
+        Returns: string
+      }
       get_current_user_id: {
         Args: Record<PropertyKey, never>
         Returns: string
