@@ -6,7 +6,24 @@ import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Trophy, Award, Target, TrendingUp, Calendar, Clock, CheckCircle2, AlertCircle, Star, Plus, AlarmClock } from 'lucide-react';
+import { 
+  Trophy, 
+  Award, 
+  Target, 
+  TrendingUp, 
+  Calendar, 
+  Clock, 
+  CheckCircle2, 
+  AlertCircle, 
+  Star, 
+  Plus, 
+  AlarmClock,
+  PieChart,
+  BarChart3,
+  BookOpen,
+  Edit3,
+  Flame
+} from 'lucide-react';
 
 interface WeekData {
   day: string;
@@ -94,9 +111,10 @@ const WeekView: React.FC<WeekViewProps> = ({
   onSaveReflection,
   toggleReminderCompletion
 }) => {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeSubTab, setActiveSubTab] = useState('overview');
   const [weeklyReflection, setWeeklyReflection] = useState('');
-  const [nextWeekPlanning, setNextWeekPlanning] = useState('');
+  const [weeklyPlanning, setWeeklyPlanning] = useState('');
+  const [weeklyChallenges, setWeeklyChallenges] = useState('');
 
   // Get current week dates
   const getCurrentWeekDates = () => {
@@ -120,18 +138,46 @@ const WeekView: React.FC<WeekViewProps> = ({
   const weekOfMonth = Math.ceil(weekDates[0].getDate() / 7);
 
   // Prepare data for display
-  const weekHighlights = milestones.slice(0, 3);
-  const topAchievements = achievements.slice(0, 3);
-  const activeGoals = goals.filter(goal => goal.status === 'active').slice(0, 3);
+  const weeklyMilestones = milestones.map(milestone => ({
+    date: new Date(milestone.date).toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' }),
+    title: milestone.title,
+    type: milestone.milestone_type
+  }));
+
+  const weeklyBadges = achievements.slice(0, 4).map(achievement => ({
+    name: achievement.achievement_name,
+    description: achievement.description,
+    icon: Star
+  }));
+
+  const weeklyGoals = goals.map(goal => ({
+    name: goal.title,
+    progress: goal.progress,
+    category: goal.category,
+    status: goal.is_completed ? 'completed' : goal.progress > 70 ? 'ahead' : goal.progress < 30 ? 'behind' : 'on-track'
+  }));
+
+  const productivityPattern = patterns.find(p => p.pattern_type === 'productivity_peak');
+  const bestCategory = patterns.find(p => p.pattern_type === 'best_category');
+  const streakRecord = patterns.find(p => p.pattern_type === 'streak_record');
 
   const handleSaveReflection = () => {
+    const now = new Date();
+    const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay() + 1));
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+
     onSaveReflection('weekly', {
-      weeklyReflection,
-      nextWeekPlanning,
-      date: new Date().toISOString()
+      periodStart: startOfWeek.toISOString().split('T')[0],
+      periodEnd: endOfWeek.toISOString().split('T')[0],
+      wentWell: weeklyReflection,
+      challenges: weeklyChallenges,
+      nextPlans: weeklyPlanning
     });
+    
     setWeeklyReflection('');
-    setNextWeekPlanning('');
+    setWeeklyChallenges('');
+    setWeeklyPlanning('');
   };
 
   return (
@@ -200,182 +246,263 @@ const WeekView: React.FC<WeekViewProps> = ({
         </CardContent>
       </Card>
 
-      {/* Insights Tabs */}
-      <Card>
-        <CardContent className="p-4 md:p-6">
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-4 mb-4">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="goals">Goals</TabsTrigger>
-              <TabsTrigger value="patterns">Patterns</TabsTrigger>
-              <TabsTrigger value="reflection">Reflection</TabsTrigger>
-            </TabsList>
+      {/* Weekly Insights Tabs - Mobile Optimized */}
+      <Card className="card-warm">
+        <CardContent className="p-3 md:p-6">
+          <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="w-full">
+            {/* Mobile: Compact horizontal tabs */}
+            <div className="md:hidden mb-3">
+              <TabsList className="grid w-full grid-cols-4 h-10">
+                <TabsTrigger value="overview" className="text-xs px-1 min-touch-target">Overview</TabsTrigger>
+                <TabsTrigger value="goals" className="text-xs px-1 min-touch-target">Goals</TabsTrigger>
+                <TabsTrigger value="patterns" className="text-xs px-1 min-touch-target">Patterns</TabsTrigger>
+                <TabsTrigger value="reflection" className="text-xs px-1 min-touch-target">Reflect</TabsTrigger>
+              </TabsList>
+            </div>
 
-            <TabsContent value="overview" className="space-y-4">
+            {/* Desktop: Standard tabs */}
+            <div className="hidden md:block">
+              <TabsList className="grid w-full grid-cols-4 mb-6">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="goals">Goals Progress</TabsTrigger>
+                <TabsTrigger value="patterns">Patterns</TabsTrigger>
+                <TabsTrigger value="reflection">Reflection</TabsTrigger>
+              </TabsList>
+            </div>
+
+            <TabsContent value="overview" className="space-y-3 md:space-y-6">
               {/* Weekly Highlights */}
-              <div>
-                <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                  <Star className="h-5 w-5 text-yellow-500" />
-                  Weekly Highlights
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {weekHighlights.map((highlight) => (
-                    <Card key={highlight.id} className="p-3">
-                      <div className="text-sm font-medium">{highlight.title}</div>
-                      <div className="text-xs text-gray-500 mt-1">{highlight.description}</div>
-                      <Badge variant="outline" className="mt-2 text-xs">
-                        {highlight.milestone_type}
-                      </Badge>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-
-              {/* Achievements */}
-              <div>
-                <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                  <Trophy className="h-5 w-5 text-gold-500" />
-                  Recent Achievements
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {topAchievements.map((achievement) => (
-                    <Card key={achievement.id} className="p-3">
-                      <div className="text-sm font-medium">{achievement.achievement_name}</div>
-                      <div className="text-xs text-gray-500 mt-1">{achievement.description}</div>
-                      <Badge variant="outline" className="mt-2 text-xs">
-                        {achievement.category}
-                      </Badge>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-
-              {/* Time Allocation */}
-              <div>
-                <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-blue-500" />
-                  Time Allocation This Week
-                </h3>
-                  <div className="space-y-3">
-                    {Object.entries(timeAllocation as any).map(([category, data]: [string, any]) => (
-                      <div key={category} className="space-y-1">
-                        <div className="flex justify-between text-sm">
-                          <span className="capitalize">{category}</span>
-                          <span>{data.hours}h ({data.percentage}%)</span>
+              <div className="grid grid-cols-1 gap-3 md:gap-6 md:grid-cols-2">
+                <Card className="bg-white/60">
+                  <CardHeader className="pb-2 md:pb-4">
+                    <CardTitle className="flex items-center gap-2 text-slate-700 text-sm md:text-base">
+                      <Trophy className="h-4 w-4 md:h-5 md:w-5 text-yellow-600" />
+                      This Week's Milestones
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2 md:space-y-3">
+                    {weeklyMilestones.map((milestone, index) => (
+                      <div key={index} className="flex items-start gap-2 md:gap-3 p-2 md:p-3 bg-white/80 rounded-lg">
+                        <div className="text-xs md:text-sm text-slate-500 font-medium min-w-[40px] md:min-w-[60px]">
+                          {milestone.date}
                         </div>
-                        <Progress value={data.percentage} className="h-2" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs md:text-sm font-medium text-slate-700 truncate">{milestone.title}</p>
+                          <Badge variant="outline" className="mt-1 text-xs">
+                            {milestone.type}
+                          </Badge>
+                        </div>
                       </div>
                     ))}
-                  </div>
+                  </CardContent>
+                </Card>
+
+                {/* Weekly Achievements */}
+                <Card className="bg-white/60">
+                  <CardHeader className="pb-2 md:pb-4">
+                    <CardTitle className="flex items-center gap-2 text-slate-700 text-sm md:text-base">
+                      <Award className="h-4 w-4 md:h-5 md:w-5 text-purple-600" />
+                      Weekly Achievements
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2 md:space-y-3">
+                    {weeklyBadges.map((badge, index) => (
+                      <div key={index} className="flex items-start gap-2 md:gap-3 p-2 md:p-3 bg-white/80 rounded-lg">
+                        <badge.icon className="h-4 w-4 md:h-5 md:w-5 text-yellow-500 mt-0.5 flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs md:text-sm font-medium text-slate-700 truncate">{badge.name}</p>
+                          <p className="text-xs text-slate-500 line-clamp-2">{badge.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </CardContent>
+                </Card>
               </div>
+
+              {/* Time Allocation Chart - Mobile Optimized */}
+              <Card className="bg-white/60">
+                <CardHeader className="pb-2 md:pb-4">
+                  <CardTitle className="flex items-center gap-2 text-slate-700 text-sm md:text-base">
+                    <PieChart className="h-4 w-4 md:h-5 md:w-5 text-blue-600" />
+                    Weekly Time Allocation
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 md:space-y-4">
+                  {Object.entries(timeAllocation).map(([category, data]: [string, any]) => (
+                    <div key={category} className="space-y-1 md:space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="capitalize font-medium text-slate-700 text-sm">{category}</span>
+                        <span className="text-xs md:text-sm text-slate-500">{data.hours}h ({data.percentage}%)</span>
+                      </div>
+                      <Progress value={data.percentage} className="h-2" />
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
             </TabsContent>
 
-            <TabsContent value="goals" className="space-y-4">
-              <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                <Target className="h-5 w-5 text-green-500" />
-                Active Goals Progress
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {activeGoals.map((goal) => (
-                  <Card key={goal.id} className="p-4">
-                    <div className="space-y-3">
-                      <div>
-                        <div className="text-sm font-medium">{goal.title}</div>
-                        <Badge variant="outline" className="text-xs mt-1">
-                          {goal.category}
+            <TabsContent value="goals" className="space-y-2 md:space-y-4">
+              <div className="grid grid-cols-1 gap-2 md:gap-4 md:grid-cols-2">
+                {weeklyGoals.map((goal, index) => (
+                  <Card key={index} className="bg-white/60">
+                    <CardContent className="p-3 md:p-4">
+                      <div className="flex items-start justify-between mb-2 md:mb-3 gap-2">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-slate-700 text-sm md:text-base truncate">{goal.name}</h4>
+                          <Badge 
+                            variant={goal.status === 'completed' ? 'default' : 'outline'} 
+                            className="mt-1 text-xs"
+                          >
+                            {goal.category}
+                          </Badge>
+                        </div>
+                        <Badge 
+                          className={`ml-2 text-xs flex-shrink-0 ${
+                            goal.status === 'completed' ? 'bg-green-100 text-green-700' :
+                            goal.status === 'ahead' ? 'bg-blue-100 text-blue-700' :
+                            goal.status === 'behind' ? 'bg-red-100 text-red-700' :
+                            'bg-yellow-100 text-yellow-700'
+                          }`}
+                        >
+                          {goal.status}
                         </Badge>
                       </div>
-                      
-                      <div className="space-y-2">
-                        <div className="flex justify-between text-xs">
+                      <div className="space-y-1 md:space-y-2">
+                        <div className="flex justify-between text-xs md:text-sm">
                           <span>Progress</span>
                           <span>{goal.progress}%</span>
                         </div>
                         <Progress value={goal.progress} className="h-2" />
                       </div>
-                      
-                      <div className="flex justify-between text-xs text-gray-500">
-                        <span>Streak: {goal.streak_count} days</span>
-                        <span>Rate: {goal.completion_rate}%</span>
-                      </div>
-                    </div>
+                    </CardContent>
                   </Card>
                 ))}
               </div>
             </TabsContent>
 
-            <TabsContent value="patterns" className="space-y-4">
-              <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-purple-500" />
-                Personal Patterns & Insights
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {patterns.map((pattern) => (
-                  <Card key={pattern.id} className="p-4">
-                    <div className="space-y-3">
-                      <div>
-                        <div className="text-sm font-medium capitalize">{pattern.pattern_type}</div>
-                        <div className="text-xs text-gray-500 mt-1">{pattern.description}</div>
-                      </div>
-                      
-                      <div className="flex items-center gap-2">
-                        <div className="text-xs">
-                          Best time: <span className="font-medium">{pattern.best_time_category}</span>
-                        </div>
-                        <Badge variant={pattern.trend === 'up' ? 'default' : pattern.trend === 'down' ? 'destructive' : 'secondary'} className="text-xs">
-                          {pattern.trend}
-                        </Badge>
-                      </div>
-                      
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-xs">
-                          <span>Productivity Score</span>
-                          <span>{pattern.productivity_score}/100</span>
-                        </div>
-                        <Progress value={pattern.productivity_score} className="h-2" />
-                      </div>
-                    </div>
+            <TabsContent value="patterns" className="space-y-2 md:space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4">
+                {productivityPattern && (
+                  <Card className="bg-white/60">
+                    <CardContent className="p-3 md:p-4">
+                      <h4 className="font-medium text-slate-700 mb-2 text-sm">Peak Productivity</h4>
+                      <p className="text-lg md:text-2xl font-bold text-green-600">{productivityPattern.pattern_value}</p>
+                      <p className="text-xs md:text-sm text-slate-500 line-clamp-2">{productivityPattern.pattern_description}</p>
+                    </CardContent>
                   </Card>
-                ))}
+                )}
+                <Card className="bg-white/60">
+                  <CardContent className="p-3 md:p-4">
+                    <h4 className="font-medium text-slate-700 mb-2 text-sm">Goal Completion Rate</h4>
+                    <p className="text-lg md:text-2xl font-bold text-blue-600">
+                      {goals.length > 0 ? Math.round((goals.filter(g => g.is_completed).length / goals.length) * 100) : 0}%
+                    </p>
+                    <p className="text-xs md:text-sm text-slate-500">{goals.filter(g => g.is_completed).length} of {goals.length} goals</p>
+                  </CardContent>
+                </Card>
+                {streakRecord && (
+                  <Card className="bg-white/60">
+                    <CardContent className="p-3 md:p-4">
+                      <h4 className="font-medium text-slate-700 mb-2 text-sm">Streak Record</h4>
+                      <p className="text-lg md:text-2xl font-bold text-purple-600">{streakRecord.pattern_value}</p>
+                      <p className="text-xs md:text-sm text-slate-500 line-clamp-2">{streakRecord.pattern_description}</p>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
+
+              <Card className="bg-white/60">
+                <CardHeader>
+                  <CardTitle className="text-slate-700">Weekly Insights</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {productivityPattern && (
+                    <div className="p-3 bg-green-50 rounded-lg border border-green-200">
+                      <p className="text-sm text-green-700">
+                        <strong>Peak Performance:</strong> {productivityPattern.pattern_description}
+                      </p>
+                    </div>
+                  )}
+                  {bestCategory && (
+                    <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                      <p className="text-sm text-blue-700">
+                        <strong>Best Category:</strong> {bestCategory.pattern_value} - {bestCategory.pattern_description}
+                      </p>
+                    </div>
+                  )}
+                  {streakRecord && (
+                    <div className="p-3 bg-orange-50 rounded-lg border border-orange-200">
+                      <p className="text-sm text-orange-700">
+                        <strong>Streak Achievement:</strong> {streakRecord.pattern_description}
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             </TabsContent>
 
-            <TabsContent value="reflection" className="space-y-4">
-              <h3 className="text-lg font-semibold mb-3">Weekly Reflection & Planning</h3>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium block mb-2">
-                    How was your week? What went well?
-                  </label>
-                  <Textarea
-                    value={weeklyReflection}
-                    onChange={(e) => setWeeklyReflection(e.target.value)}
-                    placeholder="Reflect on your achievements, challenges, and lessons learned this week..."
-                    className="min-h-[100px]"
-                  />
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium block mb-2">
-                    What are your priorities for next week?
-                  </label>
-                  <Textarea
-                    value={nextWeekPlanning}
-                    onChange={(e) => setNextWeekPlanning(e.target.value)}
-                    placeholder="Set your intentions and key priorities for the upcoming week..."
-                    className="min-h-[100px]"
-                  />
-                </div>
-                
-                <Button 
-                  onClick={handleSaveReflection}
-                  className="w-full"
-                  disabled={!weeklyReflection.trim() && !nextWeekPlanning.trim()}
-                >
-                  Save Weekly Reflection
-                </Button>
-              </div>
+            <TabsContent value="reflection" className="space-y-2 md:space-y-4">
+              <Card className="bg-white/60">
+                <CardHeader className="pb-2 md:pb-4">
+                  <CardTitle className="flex items-center gap-2 text-slate-700 text-sm md:text-base">
+                    <BookOpen className="h-4 w-4 md:h-5 md:w-5 text-indigo-600" />
+                    Weekly Reflection & Planning
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 md:space-y-4">
+                  <div>
+                    <label className="text-sm md:text-base font-medium text-slate-700 block mb-2">
+                      What went well?
+                    </label>
+                    <Textarea
+                      value={weeklyReflection}
+                      onChange={(e) => setWeeklyReflection(e.target.value)}
+                      placeholder="Reflect on your successes this week..."
+                      className="min-h-[80px] md:min-h-[100px] resize-none"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="text-sm md:text-base font-medium text-slate-700 block mb-2">
+                      What was challenging?
+                    </label>
+                    <Textarea
+                      value={weeklyChallenges}
+                      onChange={(e) => setWeeklyChallenges(e.target.value)}
+                      placeholder="Note the obstacles you faced..."
+                      className="min-h-[80px] md:min-h-[100px] resize-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-sm md:text-base font-medium text-slate-700 block mb-2">
+                      Plans for next week
+                    </label>
+                    <Textarea
+                      value={weeklyPlanning}
+                      onChange={(e) => setWeeklyPlanning(e.target.value)}
+                      placeholder="Set intentions for next week..."
+                      className="min-h-[80px] md:min-h-[100px] resize-none"
+                    />
+                  </div>
+
+                  <div className="pt-2">
+                    <h4 className="text-sm md:text-base font-medium text-slate-700 mb-2">Upcoming Events</h4>
+                    <div className="text-xs md:text-sm text-slate-500 p-3 bg-slate-50 rounded-lg border">
+                      No upcoming events scheduled. Add events to see them here.
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    onClick={handleSaveReflection}
+                    className="w-full mt-4 bg-slate-800 hover:bg-slate-900 text-white min-h-[44px] touch-manipulation"
+                    disabled={!weeklyReflection.trim() && !weeklyChallenges.trim() && !weeklyPlanning.trim()}
+                  >
+                    <Edit3 className="h-4 w-4 mr-2" />
+                    Save Weekly Reflection
+                  </Button>
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </CardContent>
