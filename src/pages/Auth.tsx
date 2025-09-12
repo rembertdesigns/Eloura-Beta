@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import MFAChallenge from '@/components/auth/MFAChallenge';
 import MFAEnrollment from '@/components/auth/MFAEnrollment';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 const Auth = () => {
   const [loading, setLoading] = useState(false);
@@ -19,6 +20,9 @@ const Auth = () => {
   const [authStep, setAuthStep] = useState<'credentials' | 'mfa-challenge' | 'mfa-enrollment'>('credentials');
   const [rateLimitInfo, setRateLimitInfo] = useState<{ attempts: number; resetTime?: Date } | null>(null);
   const [userRiskLevel, setUserRiskLevel] = useState<'low' | 'high'>('low');
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [showCaptcha, setShowCaptcha] = useState(false);
+  const captchaRef = useRef<HCaptcha>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -125,6 +129,17 @@ const Auth = () => {
       return;
     }
 
+    // Show captcha for signups or high-risk logins
+    if ((isSignUp || userRiskLevel === 'high') && !captchaToken) {
+      setShowCaptcha(true);
+      toast({
+        title: "Security Verification Required",
+        description: "Please complete the security verification below.",
+        variant: "default",
+      });
+      return;
+    }
+
     try {
       setLoading(true);
       
@@ -134,10 +149,16 @@ const Auth = () => {
           password,
           options: {
             emailRedirectTo: `${window.location.origin}/welcome`,
+            captchaToken,
           },
         });
 
         if (error) {
+          if (error.message.toLowerCase().includes('captcha')) {
+            setShowCaptcha(true);
+            setCaptchaToken(null);
+            captchaRef.current?.resetCaptcha();
+          }
           trackFailedAttempt();
           toast({
             title: "Sign Up Failed",
@@ -146,6 +167,8 @@ const Auth = () => {
           });
         } else {
           clearRateLimit();
+          setCaptchaToken(null);
+          setShowCaptcha(false);
           toast({
             title: "Account Created!",
             description: "Check your email to verify your account before signing in.",
@@ -161,12 +184,23 @@ const Auth = () => {
           });
         }
         
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const authOptions: any = {
           email,
           password,
-        });
+        };
+        
+        if (captchaToken) {
+          authOptions.options = { captchaToken };
+        }
+        
+        const { data, error } = await supabase.auth.signInWithPassword(authOptions);
 
         if (error) {
+          if (error.message.toLowerCase().includes('captcha')) {
+            setShowCaptcha(true);
+            setCaptchaToken(null);
+            captchaRef.current?.resetCaptcha();
+          }
           trackFailedAttempt();
           toast({
             title: "Sign In Failed",
@@ -175,6 +209,8 @@ const Auth = () => {
           });
         } else {
           clearRateLimit();
+          setCaptchaToken(null);
+          setShowCaptcha(false);
           
           // Check if MFA is required
           const { data: { session } } = await supabase.auth.getSession();
@@ -208,6 +244,19 @@ const Auth = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCaptchaVerify = (token: string) => {
+    setCaptchaToken(token);
+    toast({
+      title: "Verification Complete",
+      description: "You can now proceed with authentication.",
+      variant: "default",
+    });
+  };
+
+  const handleCaptchaExpire = () => {
+    setCaptchaToken(null);
   };
 
   const handleSocialLogin = async (provider: 'google') => {
@@ -363,6 +412,20 @@ const Auth = () => {
                   autoComplete={isSignUp ? "new-password" : "current-password"}
                 />
               </div>
+              
+              {/* hCaptcha Widget */}
+              {showCaptcha && (
+                <div className="flex justify-center py-4">
+                  <HCaptcha
+                    ref={captchaRef}
+                    sitekey="10000000-ffff-ffff-ffff-000000000001" // hCaptcha test key - replace with your actual site key
+                    onVerify={handleCaptchaVerify}
+                    onExpire={handleCaptchaExpire}
+                    theme="light"
+                  />
+                </div>
+              )}
+              
               <Button
                 type="submit"
                 className="w-full h-12 sm:h-14 text-base bg-[#223b0a] hover:bg-[#223b0a]/90 touch-manipulation font-medium"
