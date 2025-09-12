@@ -418,7 +418,7 @@ const Auth = () => {
                 <div className="flex justify-center py-4">
                   <HCaptcha
                     ref={captchaRef}
-                    sitekey="YOUR_HCAPTCHA_SITE_KEY" // Replace with your actual hCaptcha site key
+                    sitekey="98faeab4-5bb8-4ad8-8bf8-e516230af57a"
                     onVerify={handleCaptchaVerify}
                     onExpire={handleCaptchaExpire}
                     onError={() => {
