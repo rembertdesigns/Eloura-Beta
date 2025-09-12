@@ -145,7 +145,7 @@ const Dashboard = () => {
   });
 
   // Get personalized greeting
-  const getGreeting = () => {
+  const greeting = (() => {
     const now = new Date();
     const hour = now.getHours();
     const dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'long' });
@@ -161,8 +161,13 @@ const Dashboard = () => {
     else if (hour < 17) timeGreeting = 'Good Afternoon';
     else timeGreeting = 'Good Evening';
     
-    return `${timeGreeting}, ${displayName} - ${dayOfWeek}, ${month}/${day}`;
-  };
+    return {
+      timeGreeting,
+      displayName,
+      dayOfWeek,
+      date: `${month}/${day}`
+    };
+  })();
 
   // Get random tip
   const currentTip = getRandomTip();
@@ -213,7 +218,12 @@ const Dashboard = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 md:gap-0">
         <div className="min-w-0 flex-1">
-          <h1 className="text-xl md:text-3xl font-light text-slate-800 truncate">{getGreeting()}</h1>
+          <div className="text-xl md:text-3xl font-light text-slate-800">
+            <div className="flex flex-col md:flex-row md:items-center md:gap-2">
+              <span>{greeting.timeGreeting}, {greeting.displayName}</span>
+              <span className="text-sm md:text-3xl font-light">- {greeting.dayOfWeek}, {greeting.date}</span>
+            </div>
+          </div>
           <div className="flex items-center gap-2 md:gap-4 mt-2 flex-wrap">
             <span className="text-slate-600 text-sm md:text-base">Today's Balance:</span>
             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-xs md:text-sm">
