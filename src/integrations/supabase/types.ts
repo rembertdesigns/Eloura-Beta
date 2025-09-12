@@ -1346,21 +1346,6 @@ export type Database = {
           pronouns: string
         }[]
       }
-      get_safe_profile: {
-        Args: { profile_id?: string }
-        Returns: {
-          address_masked: string
-          avatar_url: string
-          created_at: string
-          family_type: string
-          full_name: string
-          household_name: string
-          id: string
-          phone_masked: string
-          pronouns: string
-          updated_at: string
-        }[]
-      }
       is_conversation_participant: {
         Args: { _conversation_id: string; _user_id: string }
         Returns: boolean
