@@ -26,6 +26,14 @@ const Auth = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Pre-fill email from URL params
+  useEffect(() => {
+    const emailParam = new URLSearchParams(window.location.search).get('email');
+    if (emailParam) {
+      setEmail(emailParam);
+    }
+  }, []);
+
   // Check for rate limiting on component mount
   useEffect(() => {
     const checkRateLimit = () => {
@@ -147,11 +155,12 @@ const Auth = () => {
       setLoading(true);
       
       if (isSignUp) {
+        const returnTo = new URLSearchParams(window.location.search).get('returnTo');
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: `https://elouraapp.com/welcome`,
+            emailRedirectTo: returnTo || `https://elouraapp.com/welcome`,
             captchaToken,
           },
         });
@@ -238,7 +247,8 @@ const Auth = () => {
             title: "Welcome back!",
             description: "Redirecting to your dashboard...",
           });
-          navigate('/dashboard');
+          const returnTo = new URLSearchParams(window.location.search).get('returnTo');
+          navigate(returnTo || '/dashboard');
         }
       }
     } catch (error) {

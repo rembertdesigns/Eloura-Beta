@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+    PostgrestVersion: "13.0.5"
   }
   public: {
     Tables: {
@@ -1142,6 +1142,54 @@ export type Database = {
           notification_preferences?: Json | null
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      village_invitations: {
+        Row: {
+          accepted_at: string | null
+          accepted_by_user_id: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          invitation_token: string
+          invited_email: string
+          invited_name: string
+          inviter_id: string
+          personal_message: string | null
+          role: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by_user_id?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          invitation_token?: string
+          invited_email: string
+          invited_name: string
+          inviter_id: string
+          personal_message?: string | null
+          role: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by_user_id?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          invitation_token?: string
+          invited_email?: string
+          invited_name?: string
+          inviter_id?: string
+          personal_message?: string | null
+          role?: string
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }

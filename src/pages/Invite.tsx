@@ -5,15 +5,21 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { UserPlus, Users, Mail, Copy, Share2, X, MailOpen } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Invite = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [personalMessage, setPersonalMessage] = useState('');
   const [selectedRole, setSelectedRole] = useState('helper');
   const [invitedMembers, setInvitedMembers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   const roles = [
@@ -23,29 +29,104 @@ const Invite = () => {
     { value: 'emergency', label: 'Emergency Contact', description: 'Limited access for emergencies only' }
   ];
 
-  const handleSendInvite = () => {
-    if (!name.trim() || !email.trim()) return;
+  const handleSendInvite = async () => {
+    if (!name.trim() || !email.trim() || !user) return;
     
-    const newInvite = {
-      id: Date.now(),
-      email: email.trim(),
-      role: selectedRole,
-      status: 'pending',
-      name: name.trim()
-    };
-    
-    setInvitedMembers([...invitedMembers, newInvite]);
-    setName('');
-    setEmail('');
-    
-    toast({
-      title: "Invite sent!",
-      description: `Invitation sent to ${email}`,
-    });
+    try {
+      setLoading(true);
+      
+      // Create invitation in database
+      const { data: invitation, error: inviteError } = await supabase
+        .from('village_invitations')
+        .insert({
+          inviter_id: user.id,
+          invited_email: email.trim(),
+          invited_name: name.trim(),
+          role: selectedRole,
+          personal_message: personalMessage.trim() || null
+        })
+        .select('*')
+        .single();
+
+      if (inviteError) throw inviteError;
+
+      // Get inviter profile for email
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name, household_name')
+        .eq('id', user.id)
+        .single();
+
+      // Send invitation email
+      const { error: emailError } = await supabase.functions.invoke('send-email', {
+        body: {
+          type: 'village-invitation',
+          email: email.trim(),
+          data: {
+            invitedName: name.trim(),
+            inviterName: profile?.full_name || user.user_metadata?.full_name || user.email || 'A family',
+            inviterEmail: user.email,
+            role: roles.find(r => r.value === selectedRole)?.label || selectedRole,
+            personalMessage: personalMessage.trim() || `I'd love to have you as part of my support network on Eloura. This will help us coordinate and stay connected as we manage our household together.`,
+            signupUrl: `${window.location.origin}/village-invite?token=${invitation.invitation_token}`
+          }
+        }
+      });
+
+      if (emailError) {
+        console.error('Failed to send invitation email:', emailError);
+        // Don't fail the whole operation if email fails
+        toast({
+          title: "Invitation created",
+          description: `Invitation created for ${email}, but failed to send email. You can share the link manually.`,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Invite sent!",
+          description: `Invitation sent to ${email}`,
+        });
+      }
+
+      // Add to local state for display
+      const newInvite = {
+        id: invitation.id,
+        email: email.trim(),
+        role: selectedRole,
+        status: 'pending',
+        name: name.trim(),
+        invitation_token: invitation.invitation_token,
+        personal_message: personalMessage.trim()
+      };
+      
+      setInvitedMembers([...invitedMembers, newInvite]);
+      setName('');
+      setEmail('');
+      setPersonalMessage('');
+    } catch (error) {
+      console.error('Error sending invitation:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send invitation. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const copyInviteLink = () => {
-    const link = `https://elouraapp.com/join?invite=abc123`;
+    if (invitedMembers.length === 0) {
+      toast({
+        title: "No invitations",
+        description: "Send an invitation first to get a shareable link.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    const latestInvite = invitedMembers[invitedMembers.length - 1];
+    const link = `${window.location.origin}/village-invite?token=${latestInvite.invitation_token}`;
     navigator.clipboard.writeText(link);
     toast({
       title: "Link copied!",
@@ -157,10 +238,25 @@ const Invite = () => {
                 </Select>
               </div>
 
-              <Button onClick={handleSendInvite} className="w-full" disabled={!name.trim() || !email.trim()}>
-                <Mail className="h-4 w-4 mr-2" />
-                Send Invites
-              </Button>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Personal Message (Optional)</label>
+                  <Textarea
+                    placeholder="Add a personal note to your invitation..."
+                    value={personalMessage}
+                    onChange={(e) => setPersonalMessage(e.target.value)}
+                    className="w-full resize-none"
+                    rows={3}
+                  />
+                </div>
+
+                <Button 
+                  onClick={handleSendInvite} 
+                  className="w-full" 
+                  disabled={!name.trim() || !email.trim() || loading}
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  {loading ? 'Sending...' : 'Send Invites'}
+                </Button>
 
               {/* Share Link */}
               <div className="pt-4 border-t">
@@ -203,9 +299,16 @@ const Invite = () => {
                           </Badge>
                         </div>
                         <p className="text-xs text-muted-foreground truncate">{member.email}</p>
-                        <Badge className={`${getRoleColor(member.role)} border-0 text-xs mt-1`}>
-                          {roles.find(r => r.value === member.role)?.label}
-                        </Badge>
+                        <div className="flex items-center gap-2 mt-1">
+                          <Badge className={`${getRoleColor(member.role)} border-0 text-xs`}>
+                            {roles.find(r => r.value === member.role)?.label}
+                          </Badge>
+                          {member.personal_message && (
+                            <Badge variant="outline" className="text-xs">
+                              Has message
+                            </Badge>
+                          )}
+                        </div>
                       </div>
                       
                       <Button
