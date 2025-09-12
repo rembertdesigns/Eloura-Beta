@@ -1,5 +1,6 @@
 import React from 'npm:react@18.3.1'
 import { Webhook } from 'https://esm.sh/standardwebhooks@1.0.0'
+import { Resend } from 'npm:resend@4.0.0'
 import { renderAsync } from 'npm:@react-email/components@0.0.22'
 import { MagicLinkEmail } from './_templates/magic-link.tsx'
 import { WelcomeEmail } from './_templates/welcome-email.tsx'
@@ -8,80 +9,27 @@ import { VillageInvitationEmail } from './_templates/village-invitation.tsx'
 import { ChangeEmailEmail } from './_templates/change-email.tsx'
 import { ReauthenticationEmail } from './_templates/reauthentication.tsx'
 
-// Gmail API configuration
-const gmail = {
-  clientId: Deno.env.get('GMAIL_CLIENT_ID'),
-  clientSecret: Deno.env.get('GMAIL_CLIENT_SECRET'),
-  refreshToken: Deno.env.get('GMAIL_REFRESH_TOKEN'),
-  fromEmail: Deno.env.get('GMAIL_FROM_EMAIL') || 'elouraadmin@elouraapp.com'
-}
-
+// Resend configuration
+const resend = new Resend(Deno.env.get('RESEND_API_KEY'))
+const fromEmail = 'Eloura Support <elouraadmin@elouraapp.com>'
 const hookSecret = Deno.env.get('SEND_EMAIL_HOOK_SECRET') as string
 
-// Function to get Gmail access token
-async function getGmailAccessToken() {
-  const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: new URLSearchParams({
-      client_id: gmail.clientId!,
-      client_secret: gmail.clientSecret!,
-      refresh_token: gmail.refreshToken!,
-      grant_type: 'refresh_token',
-    }),
-  })
-
-  if (!tokenResponse.ok) {
-    throw new Error('Failed to get Gmail access token')
-  }
-
-  const data = await tokenResponse.json()
-  return data.access_token
-}
-
-// Function to send email via Gmail API
-async function sendEmailViaGmail(to: string, subject: string, html: string) {
+// Function to send email via Resend
+async function sendEmailViaResend(to: string, subject: string, html: string) {
   try {
-    const accessToken = await getGmailAccessToken()
+    console.log(`Sending email to ${to} with subject: ${subject}`)
     
-    // Create the email message
-    const emailMessage = [
-      `To: ${to}`,
-      `From: Eloura Support <${gmail.fromEmail}>`,
-      `Subject: ${subject}`,
-      'Content-Type: text/html; charset=utf-8',
-      '',
-      html
-    ].join('\n')
-
-    // Base64 encode the message
-    const encodedMessage = btoa(emailMessage)
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '')
-
-    // Send via Gmail API
-    const response = await fetch('https://gmail.googleapis.com/gmail/v1/users/me/messages/send', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        raw: encodedMessage
-      })
+    const response = await resend.emails.send({
+      from: fromEmail,
+      to: [to],
+      subject: subject,
+      html: html,
     })
-
-    if (!response.ok) {
-      const error = await response.text()
-      throw new Error(`Gmail API error: ${response.status} - ${error}`)
-    }
-
-    return await response.json()
+    
+    console.log('Email sent successfully:', response)
+    return response
   } catch (error) {
-    console.error('Gmail API error:', error)
+    console.error('Resend API error:', error)
     throw error
   }
 }
@@ -118,6 +66,7 @@ Deno.serve(async (req) => {
     
     // Handle webhook verification if secret is provided and this looks like a webhook
     if (hookSecret && !parsedPayload) {
+      console.log('Processing webhook for magic link email')
       const wh = new Webhook(hookSecret)
       const {
         user,
@@ -148,9 +97,10 @@ Deno.serve(async (req) => {
         })
       )
 
-      await sendEmailViaGmail(user.email, 'Sign in to Eloura', html)
+      await sendEmailViaResend(user.email, 'Sign in to Eloura', html)
     } else {
       // Handle direct API calls (for welcome emails, etc.)
+      console.log('Processing direct API call for email')
       const { type, email, data } = parsedPayload || JSON.parse(payload)
       
       let html: string
@@ -223,7 +173,7 @@ Deno.serve(async (req) => {
           )
       }
 
-      await sendEmailViaGmail(email, subject, html)
+      await sendEmailViaResend(email, subject, html)
     }
 
     return new Response(JSON.stringify({ success: true }), {
