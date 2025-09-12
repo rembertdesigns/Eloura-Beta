@@ -37,7 +37,7 @@ const Dashboard = () => {
   const [quickAddModal, setQuickAddModal] = useState<'task' | 'event' | 'reminder' | null>(null);
   const { isOnboardingComplete, isTourComplete, loading } = useOnboardingStatus();
   const { user } = useAuth();
-  const { getFirstName } = useUserProfile();
+  const { getFirstName, profile } = useUserProfile();
   const {
     tasks,
     events,
@@ -146,11 +146,20 @@ const Dashboard = () => {
 
   // Get personalized greeting
   const getGreeting = () => {
-    const hour = new Date().getHours();
-    const name = getFirstName();
-    if (hour < 12) return `Good Morning, ${name}`;
-    if (hour < 17) return `Good Afternoon, ${name}`;
-    return `Good Evening, ${name}`;
+    const now = new Date();
+    const hour = now.getHours();
+    const dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'long' });
+    
+    // Get household name from profile or localStorage, fallback to first name
+    const householdName = profile?.household_name || localStorage.getItem('householdName');
+    const displayName = householdName || getFirstName();
+    
+    let timeGreeting = '';
+    if (hour < 12) timeGreeting = 'Good Morning';
+    else if (hour < 17) timeGreeting = 'Good Afternoon';
+    else timeGreeting = 'Good Evening';
+    
+    return `${timeGreeting}, ${displayName} - ${dayOfWeek}`;
   };
 
   // Get random tip
