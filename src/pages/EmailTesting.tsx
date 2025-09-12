@@ -103,7 +103,7 @@ const EmailTesting = () => {
         email: testEmail,
         password: type === 'signup' ? 'testpassword123' : undefined,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`
+          emailRedirectTo: `https://elouraapp.com/dashboard`
         }
       });
 

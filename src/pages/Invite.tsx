@@ -45,7 +45,7 @@ const Invite = () => {
   };
 
   const copyInviteLink = () => {
-    const link = `${window.location.origin}/join?invite=abc123`;
+    const link = `https://elouraapp.com/join?invite=abc123`;
     navigator.clipboard.writeText(link);
     toast({
       title: "Link copied!",

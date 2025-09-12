@@ -151,7 +151,7 @@ const Auth = () => {
           email,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/welcome`,
+            emailRedirectTo: `https://elouraapp.com/welcome`,
             captchaToken,
           },
         });
@@ -289,7 +289,7 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `https://elouraapp.com/dashboard`,
         },
       });
 
