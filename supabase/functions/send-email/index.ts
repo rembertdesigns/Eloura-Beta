@@ -46,8 +46,16 @@ Deno.serve(async (req) => {
     const payload = await req.text()
     const headers = Object.fromEntries(req.headers)
     
-    // Handle webhook verification if secret is provided
-    if (hookSecret) {
+    // Try to parse as JSON first for direct API calls
+    let parsedPayload;
+    try {
+      parsedPayload = JSON.parse(payload);
+    } catch {
+      // Not JSON, likely a webhook
+    }
+    
+    // Handle webhook verification if secret is provided and this looks like a webhook
+    if (hookSecret && !parsedPayload) {
       const wh = new Webhook(hookSecret)
       const {
         user,
@@ -86,7 +94,7 @@ Deno.serve(async (req) => {
       })
     } else {
       // Handle direct API calls (for welcome emails, etc.)
-      const { type, email, data } = await req.json()
+      const { type, email, data } = parsedPayload || JSON.parse(payload)
       
       let html: string
       let subject: string
