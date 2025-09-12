@@ -11,6 +11,7 @@ import OnboardingProtectedRoute from "./components/OnboardingProtectedRoute";
 import Index from "./pages/Index";
 import HomepageV2 from "./pages/HomepageV2";
 import Auth from "./pages/Auth";
+import PasswordReset from "./pages/PasswordReset";
 import EmailTesting from "./pages/EmailTesting";
 import FamilySetup from "./pages/FamilySetup";
 import PersonalInfo from "./pages/PersonalInfo";
@@ -44,9 +45,10 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/v2" element={<HomepageV2 />} />
-              <Route path="/auth" element={<Auth />} />
+            <Route path="/" element={<Index />} />
+            <Route path="/v2" element={<HomepageV2 />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/auth/reset" element={<PasswordReset />} />
               <Route path="/email-testing" element={<ProtectedRoute><EmailTesting /></ProtectedRoute>} />
               <Route path="/welcome" element={<ProtectedRoute><Welcome /></ProtectedRoute>} />
               <Route path="/intro" element={<ProtectedRoute><IntroFlow /></ProtectedRoute>} />

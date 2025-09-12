@@ -17,7 +17,7 @@ const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [authStep, setAuthStep] = useState<'credentials' | 'mfa-challenge' | 'mfa-enrollment'>('credentials');
+  const [authStep, setAuthStep] = useState<'credentials' | 'mfa-challenge' | 'mfa-enrollment' | 'forgot-password'>('credentials');
   const [rateLimitInfo, setRateLimitInfo] = useState<{ attempts: number; resetTime?: Date } | null>(null);
   const [userRiskLevel, setUserRiskLevel] = useState<'low' | 'high'>('low');
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
@@ -320,6 +320,47 @@ const Auth = () => {
     navigate('/dashboard');
   };
 
+  // Handle forgot password
+  const handleForgotPassword = async () => {
+    if (!email) {
+      toast({
+        title: "Email Required",
+        description: "Please enter your email address first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `https://elouraapp.com/auth/reset`,
+      });
+
+      if (error) {
+        toast({
+          title: "Password Reset Failed",
+          description: getEnhancedErrorMessage(error),
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Password Reset Email Sent",
+          description: "Check your email for password reset instructions.",
+        });
+        setAuthStep('credentials');
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Handle back to credentials
   const handleBackToCredentials = () => {
     setAuthStep('credentials');
@@ -352,6 +393,66 @@ const Auth = () => {
             navigate('/dashboard');
           }}
         />
+      </div>
+    );
+  }
+
+  // Render Forgot Password
+  if (authStep === 'forgot-password') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center p-4 sm:p-6">
+        <div className="w-full max-w-md mx-auto">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#a8e6ff] to-[#223b0a] rounded-2xl mb-6 shadow-lg">
+              <Heart className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-2 leading-tight">Reset Password</h1>
+            <p className="text-slate-600 text-base sm:text-lg px-4">Enter your email to receive reset instructions</p>
+          </div>
+
+          <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
+            <CardContent className="p-4 sm:p-6">
+              <form onSubmit={(e) => { e.preventDefault(); handleForgotPassword(); }} className="space-y-4">
+                <div className="space-y-2">
+                  <label htmlFor="reset-email" className="text-sm font-medium text-slate-700">
+                    Email Address
+                  </label>
+                  <Input
+                    id="reset-email"
+                    type="email"
+                    placeholder="Enter your email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="h-12 sm:h-14 text-base"
+                    required
+                    autoComplete="email"
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <Button
+                    type="submit"
+                    className="w-full h-12 sm:h-14 text-base bg-[#223b0a] hover:bg-[#223b0a]/90 touch-manipulation font-medium"
+                    disabled={loading}
+                  >
+                    <Mail className="h-4 w-4 mr-2" />
+                    {loading ? 'Sending...' : 'Send Reset Email'}
+                  </Button>
+
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="w-full h-12 sm:h-14 text-base touch-manipulation font-medium"
+                    onClick={handleBackToCredentials}
+                    disabled={loading}
+                  >
+                    Back to Sign In
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     );
   }
@@ -470,14 +571,24 @@ const Auth = () => {
             </form>
 
             {/* Toggle Sign Up/Sign In */}
-            <div className="text-center py-2">
+            <div className="text-center py-2 space-y-2">
               <button
                 type="button"
                 onClick={() => setIsSignUp(!isSignUp)}
-                className="text-sm sm:text-base text-[#223b0a] hover:underline font-medium min-h-[44px] px-4 touch-manipulation"
+                className="text-sm sm:text-base text-[#223b0a] hover:underline font-medium min-h-[44px] px-4 touch-manipulation block w-full"
               >
                 {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
               </button>
+              
+              {!isSignUp && (
+                <button
+                  type="button"
+                  onClick={() => setAuthStep('forgot-password')}
+                  className="text-sm text-slate-600 hover:text-[#223b0a] hover:underline font-medium min-h-[44px] px-4 touch-manipulation block w-full"
+                >
+                  Forgot your password?
+                </button>
+              )}
             </div>
 
             {/* Divider */}
