@@ -134,7 +134,9 @@ const Auth = () => {
       setShowCaptcha(true);
       toast({
         title: "Security Verification Required",
-        description: "Please complete the security verification below.",
+        description: isSignUp 
+          ? "Please complete the verification to create your account."
+          : "Additional verification needed due to security measures.",
         variant: "default",
       });
       return;
