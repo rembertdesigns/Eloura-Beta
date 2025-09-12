@@ -1264,45 +1264,7 @@ export type Database = {
       }
     }
     Views: {
-      safe_profiles: {
-        Row: {
-          address_masked: string | null
-          avatar_url: string | null
-          created_at: string | null
-          family_type: string | null
-          full_name: string | null
-          household_name: string | null
-          id: string | null
-          phone_masked: string | null
-          pronouns: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          address_masked?: never
-          avatar_url?: string | null
-          created_at?: string | null
-          family_type?: string | null
-          full_name?: string | null
-          household_name?: string | null
-          id?: string | null
-          phone_masked?: never
-          pronouns?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          address_masked?: never
-          avatar_url?: string | null
-          created_at?: string | null
-          family_type?: string | null
-          full_name?: string | null
-          household_name?: string | null
-          id?: string | null
-          phone_masked?: never
-          pronouns?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       encrypt_pii: {
@@ -1312,6 +1274,21 @@ export type Database = {
       get_current_user_id: {
         Args: Record<PropertyKey, never>
         Returns: string
+      }
+      get_safe_profile: {
+        Args: { profile_id?: string }
+        Returns: {
+          address_masked: string
+          avatar_url: string
+          created_at: string
+          family_type: string
+          full_name: string
+          household_name: string
+          id: string
+          phone_masked: string
+          pronouns: string
+          updated_at: string
+        }[]
       }
       is_conversation_participant: {
         Args: { _conversation_id: string; _user_id: string }
