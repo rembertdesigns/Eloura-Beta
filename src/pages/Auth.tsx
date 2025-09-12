@@ -420,17 +420,19 @@ const Auth = () => {
                 <div className="flex justify-center py-4">
                   <HCaptcha
                     ref={captchaRef}
-                    sitekey="98faeab4-5bb8-4ad8-8bf8-e516230af57a"
+                    sitekey="10000000-ffff-ffff-ffff-000000000001"
                     onVerify={handleCaptchaVerify}
                     onExpire={handleCaptchaExpire}
-                    onError={() => {
+                    onError={(error) => {
+                      console.error('hCaptcha error:', error);
                       toast({
                         title: "Captcha Error",
-                        description: "Failed to load captcha. Please refresh and try again.",
+                        description: "Failed to load security verification. Please refresh and try again.",
                         variant: "destructive",
                       });
                     }}
                     theme="light"
+                    size="normal"
                   />
                 </div>
               )}
