@@ -203,7 +203,7 @@ const WeekView: React.FC<WeekViewProps> = ({
         <CardContent>
           {isMobile ? (
             // Mobile: Simplified horizontal layout with day numbers and task counts
-            <div className="flex justify-between items-center gap-1 px-2">
+            <div className="grid grid-cols-7 gap-0.5 px-1">
               {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => {
                 const dayData = weekData.find(d => d.day === day) || { day, tasks: [], reminders: [] };
                 const isToday = weekDates[index].toDateString() === new Date().toDateString();
@@ -218,16 +218,16 @@ const WeekView: React.FC<WeekViewProps> = ({
                       tasks: dayData.tasks,
                       reminders: dayData.reminders || []
                     })}
-                    className={`flex-1 p-3 rounded-lg border-2 transition-all ${
+                    className={`p-2 rounded-lg border-2 transition-all ${
                       isToday ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
                     } min-h-[70px] touch-manipulation`}
                   >
                     <div className="text-center">
-                      <div className={`text-lg font-bold ${isToday ? 'text-blue-600' : 'text-gray-900'}`}>
+                      <div className={`text-sm font-bold ${isToday ? 'text-blue-600' : 'text-gray-900'}`}>
                         {weekDates[index].getDate()}
                       </div>
                       {totalItems > 0 && (
-                        <div className={`text-xs mt-1 px-2 py-0.5 rounded-full ${
+                        <div className={`text-xs mt-1 px-1.5 py-0.5 rounded-full ${
                           isToday ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'
                         }`}>
                           {totalItems}
