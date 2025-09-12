@@ -1329,10 +1329,6 @@ export type Database = {
       }
     }
     Functions: {
-      encrypt_pii: {
-        Args: { data: string }
-        Returns: string
-      }
       get_current_user_id: {
         Args: Record<PropertyKey, never>
         Returns: string

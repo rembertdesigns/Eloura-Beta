@@ -48,12 +48,7 @@ export const useOnboardingProgress = () => {
         onboarding_completed: data.onboardingCompleted || false,
       };
 
-      // Add fields if they exist
-      if (data.firstName) onboardingData.first_name = data.firstName;
-      if (data.lastName) onboardingData.last_name = data.lastName;
-      if (data.email) onboardingData.email = data.email;
-      if (data.phone) onboardingData.phone = data.phone;
-      if (data.dateOfBirth) onboardingData.date_of_birth = data.dateOfBirth;
+      // Add non-PII fields only (PII data goes to profiles table)
       if (data.pronouns) onboardingData.pronouns = data.pronouns;
       if (data.familyType) onboardingData.family_type = data.familyType;
       if (data.householdName) onboardingData.household_name = data.householdName;
@@ -78,7 +73,7 @@ export const useOnboardingProgress = () => {
 
       console.log('✅ Onboarding data saved successfully:', upsertResult);
 
-      // Also update profiles table with relevant fields
+      // Update profiles table with PII and other relevant fields
       const profileData: any = {};
       if (data.firstName && data.lastName) {
         profileData.full_name = `${data.firstName} ${data.lastName}`;
@@ -161,13 +156,31 @@ export const useOnboardingProgress = () => {
     if (!user) return null;
 
     try {
-      const { data, error } = await supabase
+      // Fetch onboarding data
+      const { data: onboardingData, error: onboardingError } = await supabase
         .from('user_onboarding')
         .select('*')
         .eq('user_id', user.id)
         .maybeSingle();
 
-      if (error || !data) {
+      if (onboardingError) {
+        console.error('Error loading onboarding progress:', onboardingError);
+        return null;
+      }
+
+      // Fetch profile data for PII fields
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (profileError && profileError.code !== 'PGRST116') {
+        console.warn('Profile data not found or error:', profileError);
+      }
+
+      // If no onboarding data exists, return null
+      if (!onboardingData) {
         return null;
       }
 
@@ -184,20 +197,26 @@ export const useOnboardingProgress = () => {
         }
       };
 
+      // Extract first and last name from full_name
+      const fullName = profileData?.full_name || '';
+      const nameParts = fullName.split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+
       return {
-        firstName: data.first_name || '',
-        lastName: data.last_name || '',
-        email: data.email || '',
-        phone: data.phone || '',
-        dateOfBirth: data.date_of_birth || '',
-        pronouns: data.pronouns || '',
-        familyType: data.family_type || '',
-        householdName: data.household_name || '',
-        challenges: safeJSONParse(data.challenges, []),
-        priorities: safeJSONParse(data.priorities, []),
-        currentStep: data.current_step || 'intro',
-        onboardingCompleted: data.onboarding_completed || false,
-        tourCompleted: data.tour_completed || false,
+        firstName,
+        lastName,
+        email: profileData?.email || '',
+        phone: profileData?.phone || '',
+        dateOfBirth: profileData?.date_of_birth || '',
+        pronouns: onboardingData.pronouns || profileData?.pronouns || '',
+        familyType: onboardingData.family_type || profileData?.family_type || '',
+        householdName: onboardingData.household_name || profileData?.household_name || '',
+        challenges: safeJSONParse(onboardingData.challenges, []),
+        priorities: safeJSONParse(onboardingData.priorities, []),
+        currentStep: onboardingData.current_step || 'intro',
+        onboardingCompleted: onboardingData.onboarding_completed || false,
+        tourCompleted: onboardingData.tour_completed || false,
       };
     } catch (error) {
       console.error('Error loading onboarding progress:', error);
