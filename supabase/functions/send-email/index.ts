@@ -5,6 +5,7 @@ import { renderAsync } from 'npm:@react-email/components@0.0.22'
 import { MagicLinkEmail } from './_templates/magic-link.tsx'
 import { WelcomeEmail } from './_templates/welcome-email.tsx'
 import { PasswordResetEmail } from './_templates/password-reset.tsx'
+import { VillageInvitationEmail } from './_templates/village-invitation.tsx'
 
 const resend = new Resend(Deno.env.get('RESEND_API_KEY') as string)
 const hookSecret = Deno.env.get('SEND_EMAIL_HOOK_SECRET') as string
@@ -99,6 +100,20 @@ Deno.serve(async (req) => {
             })
           )
           subject = 'Reset your Eloura password'
+          break
+          
+        case 'village-invitation':
+          html = await renderAsync(
+            React.createElement(VillageInvitationEmail, {
+              invitedName: data.invitedName || 'there',
+              inviterName: data.inviterName || 'someone',
+              inviterEmail: data.inviterEmail || '',
+              role: data.role || 'support member',
+              personalMessage: data.personalMessage || '',
+              signupUrl: data.signupUrl || 'https://elouraapp.com/auth',
+            })
+          )
+          subject = `${data.inviterName} invited you to join their Eloura village`
           break
           
         default:

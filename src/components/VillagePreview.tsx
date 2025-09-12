@@ -1,54 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Users, X, Mail } from 'lucide-react';
-
-interface Invite {
-  id: number;
-  name: string;
-  email: string;
-  role: string;
-  status: string;
-  sentAt: string;
-}
+import { Users, Mail } from 'lucide-react';
+import { useVillageData } from '@/hooks/useVillageData';
 
 const VillagePreview = () => {
-  const [invites, setInvites] = useState<Invite[]>([]);
+  const { villageMembers, loading } = useVillageData();
 
-  useEffect(() => {
-    const loadInvites = () => {
-      const savedInvites = localStorage.getItem('pendingInvites');
-      if (savedInvites) {
-        setInvites(JSON.parse(savedInvites));
-      }
-    };
+  // Filter members who were invited as users (show as pending invitations)
+  const invitedMembers = villageMembers.filter(member => member.invited_as_user);
 
-    loadInvites();
-    
-    // Listen for storage changes to update when new invites are added
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'pendingInvites') {
-        loadInvites();
-      }
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    
-    // Also listen for local changes (same tab)
-    const interval = setInterval(loadInvites, 1000);
-    
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      clearInterval(interval);
-    };
-  }, []);
-
-  const removeInvite = (id: number) => {
-    const updatedInvites = invites.filter(invite => invite.id !== id);
-    setInvites(updatedInvites);
-    localStorage.setItem('pendingInvites', JSON.stringify(updatedInvites));
-  };
+  if (loading) {
+    return (
+      <div className="text-center py-4 space-y-2">
+        <div className="w-10 h-10 mx-auto bg-muted rounded-full flex items-center justify-center opacity-40">
+          <Users className="h-5 w-5 text-muted-foreground animate-pulse" />
+        </div>
+        <p className="text-xs text-muted-foreground font-medium">Loading village...</p>
+      </div>
+    );
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -79,7 +49,7 @@ const VillagePreview = () => {
     return roleMap[role] || role;
   };
 
-  if (invites.length === 0) {
+  if (invitedMembers.length === 0) {
     return (
       <div className="text-center py-4 space-y-2">
         <div className="w-10 h-10 mx-auto bg-muted rounded-full flex items-center justify-center opacity-40">
@@ -97,34 +67,26 @@ const VillagePreview = () => {
 
   return (
     <div className="space-y-2">
-      {invites.map((invite) => (
+      {invitedMembers.map((member) => (
         <div
-          key={invite.id}
+          key={member.id}
           className="flex items-center justify-between p-2 bg-card rounded-lg border"
         >
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
               <h4 className="font-medium text-xs truncate">
-                {invite.name}
+                {member.name}
               </h4>
-              <Badge className={`${getStatusColor(invite.status)} border-0 text-xs px-1.5 py-0.5`}>
-                {invite.status}
+              <Badge className="bg-yellow-100 text-yellow-700 border-0 text-xs px-1.5 py-0.5">
+                Invitation Sent
               </Badge>
             </div>
-            <p className="text-xs text-muted-foreground truncate">{invite.email}</p>
-            <Badge className={`${getRoleColor(invite.role)} border-0 text-xs mt-1 px-1.5 py-0.5`}>
-              {getRoleLabel(invite.role)}
-            </Badge>
+            <p className="text-xs text-muted-foreground truncate">{member.email}</p>
+            <div className="flex items-center gap-1 mt-1">
+              <Mail className="h-3 w-3 text-muted-foreground" />
+              <span className="text-xs text-muted-foreground">Email invitation sent</span>
+            </div>
           </div>
-          
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => removeInvite(invite.id)}
-            className="text-muted-foreground hover:text-destructive h-6 w-6 p-0"
-          >
-            <X className="h-3 w-3" />
-          </Button>
         </div>
       ))}
     </div>

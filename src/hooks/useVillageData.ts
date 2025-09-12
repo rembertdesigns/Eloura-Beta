@@ -110,6 +110,31 @@ export const useVillageData = () => {
         .single();
 
       if (error) throw error;
+      
+      // Send invitation email if invited as user
+      if (memberData.invited_as_user && memberData.email) {
+        try {
+          await supabase.functions.invoke('send-email', {
+            body: {
+              type: 'village-invitation',
+              email: memberData.email,
+              data: {
+                invitedName: memberData.name,
+                inviterName: user.user_metadata?.full_name || user.email || 'A family',
+                inviterEmail: user.email,
+                role: memberData.roles?.[0] || 'support member',
+                personalMessage: `I'd love to have you as part of my support network on Eloura. This will help us coordinate and stay connected as we manage our household together.`,
+                signupUrl: 'https://elouraapp.com/auth'
+              }
+            }
+          });
+          console.log('Village invitation email sent successfully');
+        } catch (emailError) {
+          console.error('Failed to send invitation email:', emailError);
+          // Don't fail the whole operation if email fails
+        }
+      }
+      
       setVillageMembers(prev => [...prev, data]);
       return true;
     } catch (err) {
