@@ -1303,6 +1303,69 @@ export type Database = {
         }
         Relationships: []
       }
+      secure_profiles: {
+        Row: {
+          address: string | null
+          avatar_url: string | null
+          birth_year_only: string | null
+          city: string | null
+          created_at: string | null
+          date_of_birth: string | null
+          emergency_contact_name: string | null
+          emergency_contact_phone: string | null
+          emergency_contact_relationship: string | null
+          family_type: string | null
+          full_name: string | null
+          household_name: string | null
+          id: string | null
+          phone: string | null
+          pronouns: string | null
+          state: string | null
+          updated_at: string | null
+          zip_code: string | null
+        }
+        Insert: {
+          address?: never
+          avatar_url?: string | null
+          birth_year_only?: never
+          city?: never
+          created_at?: string | null
+          date_of_birth?: never
+          emergency_contact_name?: never
+          emergency_contact_phone?: never
+          emergency_contact_relationship?: never
+          family_type?: string | null
+          full_name?: string | null
+          household_name?: string | null
+          id?: string | null
+          phone?: never
+          pronouns?: string | null
+          state?: never
+          updated_at?: string | null
+          zip_code?: never
+        }
+        Update: {
+          address?: never
+          avatar_url?: string | null
+          birth_year_only?: never
+          city?: never
+          created_at?: string | null
+          date_of_birth?: never
+          emergency_contact_name?: never
+          emergency_contact_phone?: never
+          emergency_contact_relationship?: never
+          family_type?: string | null
+          full_name?: string | null
+          household_name?: string | null
+          id?: string | null
+          phone?: never
+          pronouns?: string | null
+          state?: never
+          updated_at?: string | null
+          zip_code?: never
+        }
+        Relationships: []
+      }
     }
     Functions: {
       encrypt_pii: {
@@ -1332,9 +1395,21 @@ export type Database = {
         Args: { _conversation_id: string; _user_id: string }
         Returns: boolean
       }
+      log_pii_access: {
+        Args: {
+          accessed_user_id: string
+          accessor_user_id?: string
+          table_name: string
+        }
+        Returns: undefined
+      }
       log_security_event: {
         Args: { details?: Json; event_type: string; user_id?: string }
         Returns: undefined
+      }
+      mask_pii: {
+        Args: { data: string }
+        Returns: string
       }
     }
     Enums: {
