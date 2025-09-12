@@ -1,13 +1,25 @@
 import React from 'npm:react@18.3.1'
 import { Webhook } from 'https://esm.sh/standardwebhooks@1.0.0'
-import { Resend } from 'npm:resend@4.0.0'
+import { SMTPClient } from 'https://deno.land/x/denomailer@1.6.0/mod.ts'
 import { renderAsync } from 'npm:@react-email/components@0.0.22'
 import { MagicLinkEmail } from './_templates/magic-link.tsx'
 import { WelcomeEmail } from './_templates/welcome-email.tsx'
 import { PasswordResetEmail } from './_templates/password-reset.tsx'
 import { VillageInvitationEmail } from './_templates/village-invitation.tsx'
 
-const resend = new Resend(Deno.env.get('RESEND_API_KEY') as string)
+// Initialize SMTP client with Gmail configuration
+const client = new SMTPClient({
+  connection: {
+    hostname: 'smtp.gmail.com',
+    port: 587,
+    tls: true,
+    auth: {
+      username: Deno.env.get('GMAIL_USERNAME') as string,
+      password: Deno.env.get('GMAIL_APP_PASSWORD') as string,
+    },
+  },
+})
+
 const hookSecret = Deno.env.get('SEND_EMAIL_HOOK_SECRET') as string
 
 Deno.serve(async (req) => {
@@ -64,16 +76,12 @@ Deno.serve(async (req) => {
         })
       )
 
-      const { error } = await resend.emails.send({
-        from: 'Eloura <elouraadmin@elouraapp.com>',
-        to: [user.email],
+      await client.send({
+        from: 'Eloura Support <elouraadmin@elouraapp.com>',
+        to: user.email,
         subject: 'Sign in to Eloura',
         html,
       })
-
-      if (error) {
-        throw error
-      }
     } else {
       // Handle direct API calls (for welcome emails, etc.)
       const { type, email, data } = await req.json()
@@ -126,16 +134,12 @@ Deno.serve(async (req) => {
           )
       }
 
-      const { error } = await resend.emails.send({
-        from: 'Eloura <elouraadmin@elouraapp.com>',
-        to: [email],
+      await client.send({
+        from: 'Eloura Support <elouraadmin@elouraapp.com>',
+        to: email,
         subject,
         html,
       })
-
-      if (error) {
-        throw error
-      }
     }
 
     return new Response(JSON.stringify({ success: true }), {
