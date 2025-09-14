@@ -47,11 +47,13 @@ const CombinedHomepage = () => {
       <section className="py-20 bg-gradient-to-br from-[#E1CFE3]/30 via-white to-[#FFE5C4]/20 text-center">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-light text-[#223B0A] mb-8 leading-tight">Built for families. Better for everyone.</h2>
+            <h2 className="text-4xl md:text-6xl font-light text-[#223B0A] mb-8 leading-tight">
+
+Built for families. Better for everyone.</h2>
             
             <p className="text-lg md:text-xl text-[#302D2C]/80 mb-12 leading-relaxed max-w-3xl mx-auto">
-              Eloura turns your overwhelming to-dos into manageable plans with smart coordination, AI task breakdown, and tools that cut through the chaos. Designed for family harmony and smarter planning, your way.
-            </p>
+
+Eloura turns your overwhelming to-dos into manageable plans with smart coordination, AI task breakdown, and tools that cut through the chaos. Designed for family harmony and smarter planning, your way.</p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Button size="lg" className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 py-4 text-lg font-medium" onClick={handleGetStarted}>
