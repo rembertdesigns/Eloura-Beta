@@ -24,17 +24,14 @@ const CombinedHomepage = () => {
               <div className="bg-gradient-to-br from-[#223B0A] to-[#D7642A] p-2 rounded-xl">
                 <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
-              <span className="text-xl sm:text-2xl font-medium text-[#302D2C]">Eloura</span>
+              <span className="text-xl sm:text-2xl font-medium text-[#302D2C]">Eloura - Beta</span>
             </div>
             <div className="hidden md:flex items-center gap-6 lg:gap-8">
               <a href="#about" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">About Us</a>
               <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">Features</a>
               
-              <a href="#community" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors flex items-center gap-1 min-h-[44px] px-2">
-                Community
-                <ExternalLink className="h-3 w-3" />
-              </a>
-              <a href="#resources" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">Resources</a>
+              
+              
             </div>
             <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-4 sm:px-6 min-h-[44px] touch-manipulation" onClick={handleLogin}>
               Log In
@@ -44,44 +41,13 @@ const CombinedHomepage = () => {
       </nav>
 
       {/* Hero Section - Clean Simple Style */}
-      <section className="bg-gradient-to-br from-[#E1CFE3]/40 via-[#FFE5C4]/30 to-[#E1CFE3]/20 py-16 sm:py-24 lg:py-32 text-center overflow-hidden">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-4xl mx-auto">
-            {/* Award badge */}
-            
-
-            {/* Main headline */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-[#223B0A] mb-6 sm:mb-8 leading-tight">
-              Make family caregiving
-              <br />
-              <span className="font-medium">feel manageable</span>
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-[#302D2C]/80 mb-8 sm:mb-12 leading-relaxed max-w-3xl mx-auto px-4 sm:px-0">
-              The digital daily planner that helps you coordinate care, reduce mental load, and stay connected with your family.
-            </p>
-
-            {/* CTA Button */}
-            <Button size="lg" className="bg-[#D7642A] hover:bg-[#223B0A] text-white rounded-full px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg font-medium shadow-lg touch-manipulation min-h-[48px] sm:min-h-[56px]" onClick={handleGetStarted}>
-              Try for free
-            </Button>
-
-            {/* Small print */}
-            <p className="text-xs sm:text-sm text-[#302D2C]/60 mt-4 px-4">
-              14-day free trial, no credit card required
-            </p>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Built for Caregivers Section */}
       <section className="py-20 bg-gradient-to-br from-[#E1CFE3]/30 via-white to-[#FFE5C4]/20 text-center">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-light text-[#223B0A] mb-8 leading-tight">
-              Built for caregivers. Better for everyone.
-            </h2>
+            <h2 className="text-4xl md:text-6xl font-light text-[#223B0A] mb-8 leading-tight">Built for families. Better for everyone.</h2>
             
             <p className="text-lg md:text-xl text-[#302D2C]/80 mb-12 leading-relaxed max-w-3xl mx-auto">
               Eloura turns your overwhelming to-dos into manageable plans with smart coordination, AI task breakdown, and tools that cut through the chaos. Designed for family harmony and smarter planning, your way.
@@ -91,14 +57,10 @@ const CombinedHomepage = () => {
               <Button size="lg" className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 py-4 text-lg font-medium" onClick={handleGetStarted}>
                 Start planning on desktop
               </Button>
-              <Button size="lg" variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A]/5 rounded-full px-8 py-4 text-lg font-medium" onClick={handleGetStarted}>
-                Start planning on mobile
-              </Button>
+              
             </div>
 
-            <p className="text-sm text-[#302D2C]/60">
-              Available on iOS, Android & Desktop
-            </p>
+            <p className="text-sm text-[#302D2C]/60">Available on Desktop only. iOS & Android Coming Soon</p>
           </div>
         </div>
       </section>
@@ -258,228 +220,22 @@ const CombinedHomepage = () => {
       </section>
 
       {/* AI Scheduler Section */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* iPhone Mockup */}
-            <div className="order-2 lg:order-1">
-              <div className="relative max-w-sm mx-auto">
-                <div className="bg-black rounded-[3rem] p-2 shadow-2xl">
-                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{
-                  aspectRatio: '9/19.5'
-                }}>
-                    {/* Status Bar */}
-                    <div className="bg-black text-white text-xs px-6 py-2 flex justify-between items-center">
-                      <span className="font-medium">1:33</span>
-                      <div className="flex items-center gap-1">
-                        <div className="flex gap-1">
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                        </div>
-                        <div className="text-white">📶 📶 🔋</div>
-                      </div>
-                    </div>
-                    {/* Screen Content - Blank for now */}
-                    <div className="h-full bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
-                      <div className="text-center text-gray-400">
-                        <div className="w-16 h-16 bg-gray-200 rounded-2xl mx-auto mb-4"></div>
-                        <p className="text-sm">App Interface</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="order-1 lg:order-2">
-              <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
-                The AI scheduler that
-                <br />
-                <span className="font-semibold">gets it done</span>
-              </h2>
-              <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
-                Eloura's AI helps you plan faster by turning your tasks into a clear, realistic schedule. Just type or speak what's on your mind and it will break things down, estimate how long each step might take, and organize everything into a plan that works for your day.
-              </p>
-              <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium">
-                How AI helps you plan smarter
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* To-Do List Section */}
-      <section className="py-24 bg-gradient-to-br from-[#E1CFE3]/30 to-[#FFE5C4]/40">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Content */}
-            <div>
-              <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
-                Your to-do list, finally
-                <br />
-                <span className="font-semibold">doable</span>
-              </h2>
-              <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
-                Add what's on your mind, break it into steps, and see exactly what needs your attention. When you're ready, turn any task into a scheduled plan with one tap so you can move from braindump to follow-through without overthinking it.
-              </p>
-              <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium">
-                How to-dos get done with Eloura
-              </Button>
-            </div>
-
-            {/* iPhone Mockup */}
-            <div>
-              <div className="relative max-w-sm mx-auto">
-                <div className="bg-black rounded-[3rem] p-2 shadow-2xl">
-                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{
-                  aspectRatio: '9/19.5'
-                }}>
-                    {/* Status Bar */}
-                    <div className="bg-black text-white text-xs px-6 py-2 flex justify-between items-center">
-                      <span className="font-medium">1:28</span>
-                      <div className="flex items-center gap-1">
-                        <div className="flex gap-1">
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                        </div>
-                        <div className="text-white">📶 📶 🔋</div>
-                      </div>
-                    </div>
-                    {/* Screen Content - Blank for now */}
-                    <div className="h-full bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
-                      <div className="text-center text-gray-400">
-                        <div className="w-16 h-16 bg-gray-200 rounded-2xl mx-auto mb-4"></div>
-                        <p className="text-sm">To-Do List Interface</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Cross-Device Sync Section */}
-      <section className="py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Angled MacBook Mockup */}
-            <div className="order-2 lg:order-1">
-              <div className="relative max-w-2xl mx-auto">
-                <div className="transform rotate-12 perspective-1000">
-                  <div className="bg-gray-300 rounded-xl p-1 shadow-2xl">
-                    <div className="bg-black rounded-lg h-3 flex items-center justify-start px-2 mb-1">
-                      <div className="flex gap-1">
-                        <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                        <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-                        <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                      </div>
-                    </div>
-                    <div className="bg-gray-100 rounded-b-lg" style={{
-                    aspectRatio: '16/10'
-                  }}>
-                      {/* Screen Content - Blank */}
-                      <div className="h-full bg-gradient-to-br from-gray-50 to-gray-200 rounded-b-lg flex items-center justify-center">
-                        <div className="text-center text-gray-400">
-                          <div className="w-20 h-20 bg-gray-300 rounded-2xl mx-auto mb-4"></div>
-                          <p className="text-sm">Desktop Interface</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* MacBook Base */}
-                  <div className="bg-gray-300 h-4 rounded-b-2xl transform -skew-x-12 mx-auto" style={{
-                  width: '90%'
-                }}></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="order-1 lg:order-2">
-              <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
-                One planner, synced
-                <br />
-                <span className="font-semibold">across every device</span>
-              </h2>
-              <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
-                Plan on your computer with Eloura's web app and pick up right where you left off on mobile. Everything stays connected across desktop, phone, tablet, and watch so your schedule is always up to date, no matter where you're working.
-              </p>
-              <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium">
-                How planning stays in sync
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Mood Tracking Section */}
-      <section className="py-24 bg-gradient-to-br from-[#FFE5C4]/40 to-[#E1CFE3]/30">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Content */}
-            <div>
-              <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
-                Track your mood and
-                <br />
-                <span className="font-semibold">build better days</span>
-              </h2>
-              <p className="text-lg text-[#302D2C] mb-8 leading-relaxed">
-                Log how you feel, reflect on your day, and start noticing what supports your focus and energy. Mood check-ins help you build better routines, spot patterns over time, and make small adjustments that actually stick.
-              </p>
-              <Button variant="outline" className="border-[#223B0A] text-[#223B0A] hover:bg-[#223B0A] hover:text-white rounded-full px-8 py-6 text-lg font-medium">
-                How mood tracking builds better habits
-              </Button>
-            </div>
-
-            {/* iPhone Mockup */}
-            <div>
-              <div className="relative max-w-sm mx-auto">
-                <div className="bg-black rounded-[3rem] p-2 shadow-2xl">
-                  <div className="bg-white rounded-[2.5rem] overflow-hidden" style={{
-                  aspectRatio: '9/19.5'
-                }}>
-                    {/* Status Bar */}
-                    <div className="bg-black text-white text-xs px-6 py-2 flex justify-between items-center">
-                      <span className="font-medium">1:28</span>
-                      <div className="flex items-center gap-1">
-                        <div className="flex gap-1">
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                        </div>
-                        <div className="text-white">📶 📶 🔋</div>
-                      </div>
-                    </div>
-                    {/* Screen Content - Blank for now */}
-                    <div className="h-full bg-gradient-to-b from-gray-50 to-gray-100 flex items-center justify-center">
-                      <div className="text-center text-gray-400">
-                        <div className="w-16 h-16 bg-gray-200 rounded-2xl mx-auto mb-4"></div>
-                        <p className="text-sm">Mood Tracking Interface</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Designed for the way you work Section */}
       <section className="py-24 bg-gradient-to-br from-[#E1CFE3]/20 to-[#FFE5C4]/20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
-              Designed for the way you work
-            </h2>
+            <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">Features</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -490,9 +246,7 @@ const CombinedHomepage = () => {
                   <Users className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Care Coordination</h3>
-                <p className="text-[#302D2C] leading-relaxed">
-                  Keep everyone in your care network informed and aligned.
-                </p>
+                <p className="text-[#302D2C] leading-relaxed">Keep everyone in your care circle informed and aligned.</p>
               </CardContent>
             </Card>
 
@@ -502,25 +256,13 @@ const CombinedHomepage = () => {
                 <div className="w-12 h-12 bg-[#D7642A] rounded-xl flex items-center justify-center mb-4">
                   <Clock className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Smart Reminders</h3>
-                <p className="text-[#302D2C] leading-relaxed">
-                  Never miss important appointments or medication times.
-                </p>
+                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Daily Brief</h3>
+                <p className="text-[#302D2C] leading-relaxed">See the most important tasks in one view</p>
               </CardContent>
             </Card>
 
             {/* Auto-scheduling */}
-            <Card className="border-none shadow-lg rounded-2xl bg-white p-6">
-              <CardContent className="p-0">
-                <div className="w-12 h-12 bg-[#FCC931] rounded-xl flex items-center justify-center mb-4">
-                  <div className="text-white text-sm">❄️</div>
-                </div>
-                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Auto-scheduling</h3>
-                <p className="text-[#302D2C] leading-relaxed">
-                  Automate scheduling your tasks to your calendar.
-                </p>
-              </CardContent>
-            </Card>
+            
 
             {/* Weekly Review and Planning */}
             <Card className="border-none shadow-lg rounded-2xl bg-white p-6">
@@ -528,100 +270,37 @@ const CombinedHomepage = () => {
                 <div className="w-12 h-12 bg-[#E1CFE3] rounded-xl flex items-center justify-center mb-4">
                   <div className="text-[#223B0A] text-sm">✓</div>
                 </div>
-                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Weekly Review and Planning</h3>
-                <p className="text-[#302D2C] leading-relaxed">
-                  Be intentional about your weekly goals and progress.
-                </p>
+                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Build Your Village</h3>
+                <p className="text-[#302D2C] leading-relaxed">Coordinate and share the load with trusted people easily.</p>
               </CardContent>
             </Card>
 
             {/* Keyboard shortcuts */}
-            <Card className="border-none shadow-lg rounded-2xl bg-white p-6">
-              <CardContent className="p-0">
-                <div className="w-12 h-12 bg-[#D7642A] rounded-xl flex items-center justify-center mb-4">
-                  <div className="text-white text-sm">⌘</div>
-                </div>
-                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Keyboard shortcuts</h3>
-                <p className="text-[#302D2C] leading-relaxed">
-                  Move faster and do everything with your keyboard.
-                </p>
-              </CardContent>
-            </Card>
+            
 
             {/* Analytics */}
-            <Card className="border-none shadow-lg rounded-2xl bg-white p-6">
-              <CardContent className="p-0">
-                <div className="w-12 h-12 bg-[#223B0A] rounded-xl flex items-center justify-center mb-4">
-                  <div className="text-white text-sm">📊</div>
-                </div>
-                <h3 className="text-xl font-semibold text-[#223B0A] mb-3">Analytics</h3>
-                <p className="text-[#302D2C] leading-relaxed">
-                  Understand how you spend your time at work.
-                </p>
-              </CardContent>
-            </Card>
+            
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-light text-center text-[#223B0A] mb-4">
-            Real stories from caregivers like you
-          </h2>
-          <p className="text-lg text-center text-[#302D2C] mb-16 max-w-2xl mx-auto">
-            See how Eloura is transforming the lives of millennial and Gen Z caregivers everywhere
-          </p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[{
-            quote: "Eloura completely transformed how I manage care for my kids and aging parents. I finally feel like I have my life back.",
-            author: "Sarah M.",
-            role: "Working Mom of 2, Caring for Dad",
-            rating: 5
-          }, {
-            quote: "The village feature saved my relationship with my siblings. We're finally coordinated on mom's care instead of stressed and scattered.",
-            author: "Marcus K.",
-            role: "Tech Professional, Sandwich Generation",
-            rating: 5
-          }, {
-            quote: "As someone juggling toddler tantrums and parent doctor visits, Eloura gives me the structure and peace of mind I desperately needed.",
-            author: "Priya L.",
-            role: "Entrepreneur & Caregiver",
-            rating: 5
-          }].map((testimonial, index) => <Card key={index} className="border-none shadow-lg rounded-2xl bg-gradient-to-br from-[#FFE5C4]/20 to-[#E1CFE3]/20">
-                <CardContent className="p-8">
-                  <div className="text-[#FCC931] mb-4 text-lg">
-                    {'★'.repeat(testimonial.rating)}
-                  </div>
-                  <p className="text-[#302D2C] mb-6 italic leading-relaxed">"{testimonial.quote}"</p>
-                  <div>
-                    <div className="font-semibold text-[#223B0A]">{testimonial.author}</div>
-                    <div className="text-sm text-[#302D2C]/70">{testimonial.role}</div>
-                  </div>
-                </CardContent>
-              </Card>)}
-          </div>
-        </div>
-      </section>
+      
 
 
       {/* Enhanced CTA Section with urgency */}
       <section className="py-24 bg-gradient-to-r from-[#223B0A] to-[#302D2C] text-white text-center">
         <div className="container mx-auto px-4">
-          <div className="bg-[#FCC931]/10 backdrop-blur-sm rounded-xl p-2 w-fit mx-auto mb-6">
-            <span className="text-sm font-medium text-[#FCC931]">⏰ Limited Time: 14-Day Free Trial</span>
-          </div>
           
-          <h2 className="text-4xl md:text-5xl font-light mb-6">
-            Ready to transform your
-            <br />
-            <span className="font-semibold">caregiving experience?</span>
-          </h2>
-          <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">
-            Join 15,000+ families who've reduced their caregiving stress by 50%. Start your free trial today—no credit card required.
-          </p>
+          
+          
+          <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">What to expect in beta
+
+
+Features are still evolving and you might see some bugs.
+Your feedback is important and shapes how we improve.
+
+        </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
             <Button size="lg" className="bg-[#FCC931] hover:bg-[#D7642A] text-[#302D2C] rounded-full px-8 text-lg font-semibold" onClick={handleGetStarted}>
               Join 15,000+ families reducing stress
@@ -647,34 +326,32 @@ const CombinedHomepage = () => {
                 </div>
                 <span className="text-2xl font-medium">Eloura</span>
               </div>
-              <p className="text-white/70 mb-6">
-                The operating system for modern family caregiving. Built for millennials and Gen Z who are redefining what care looks like.
-              </p>
+              <p className="text-white/70 mb-6">The operating system for modern families caregiving. Built for millennials and Gen Z who are redefining what care looks like.</p>
             </div>
             <div>
               <h4 className="font-semibold mb-6">Product</h4>
               <ul className="space-y-3 text-white/70">
                 <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">How It Works</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
+                
+                
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-6">Support</h4>
               <ul className="space-y-3 text-white/70">
-                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
+                
                 <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+                
+                
               </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-6">Company</h4>
               <ul className="space-y-3 text-white/70">
                 <li><a href="#" className="hover:text-white transition-colors">About</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Press</a></li>
+                
+                
                 <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
               </ul>
             </div>
