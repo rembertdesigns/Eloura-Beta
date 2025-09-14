@@ -51,9 +51,7 @@ const CombinedHomepage = () => {
 
 Built for families. Better for everyone.</h2>
             
-            <p className="text-lg md:text-xl text-[#302D2C]/80 mb-12 leading-relaxed max-w-3xl mx-auto">
-
-Eloura turns your overwhelming to-dos into manageable plans with smart coordination, AI task breakdown, and tools that cut through the chaos. Designed for family harmony and smarter planning, your way.</p>
+            <p className="text-lg md:text-xl text-[#302D2C]/80 mb-12 leading-relaxed max-w-3xl mx-auto">Eloura is an all-in-one way to manage family life without the overwhelm. It lightens the mental load of parenting so you can spend less time managing and more time connecting.</p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <Button size="lg" className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-8 py-4 text-lg font-medium" onClick={handleGetStarted}>
@@ -145,9 +143,7 @@ Eloura turns your overwhelming to-dos into manageable plans with smart coordinat
             <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">
               For Every Family Type
             </h2>
-            <p className="text-xl text-[#302D2C] max-w-3xl mx-auto leading-relaxed">
-              Whether you're flying solo, juggling dual careers, co-parenting, or managing multiple generations—Eloura adapts to your unique caregiving situation.
-            </p>
+            <p className="text-xl text-[#302D2C] max-w-3xl mx-auto leading-relaxed">Families come in all structures. Whether you're parenting solo, sharing the load with a partner, co-parenting across household or caring for multiple generations, Eloura adapts to the way your family works.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
@@ -161,9 +157,7 @@ Eloura turns your overwhelming to-dos into manageable plans with smart coordinat
                 </div>
               </div>
               <h3 className="text-2xl font-semibold text-[#223B0A] mb-3">Solo</h3>
-              <p className="text-[#302D2C] text-sm leading-relaxed">
-                Single parents and independent caregivers managing it all
-              </p>
+              <p className="text-[#302D2C] text-sm leading-relaxed">For single parents and independent caregivers managing it all.</p>
             </div>
 
             {/* Dual */}
@@ -177,9 +171,7 @@ Eloura turns your overwhelming to-dos into manageable plans with smart coordinat
                 </div>
               </div>
               <h3 className="text-2xl font-semibold text-[#223B0A] mb-3">Dual</h3>
-              <p className="text-[#302D2C] text-sm leading-relaxed">
-                Partners coordinating care together as a team
-              </p>
+              <p className="text-[#302D2C] text-sm leading-relaxed">For partners coordinating care and routines together.</p>
             </div>
 
             {/* Split/Co-Parent */}
@@ -197,9 +189,7 @@ Eloura turns your overwhelming to-dos into manageable plans with smart coordinat
                 </div>
               </div>
               <h3 className="text-2xl font-semibold text-[#223B0A] mb-3">Split/Co-Parent</h3>
-              <p className="text-[#302D2C] text-sm leading-relaxed">
-                Shared custody and co-parenting coordination
-              </p>
+              <p className="text-[#302D2C] text-sm leading-relaxed">Fr parents sharing custody and responsibilities across homes.</p>
             </div>
 
             {/* Multi-Gen */}
@@ -213,9 +203,7 @@ Eloura turns your overwhelming to-dos into manageable plans with smart coordinat
                 </div>
               </div>
               <h3 className="text-2xl font-semibold text-[#223B0A] mb-3">Multi-Gen</h3>
-              <p className="text-[#302D2C] text-sm leading-relaxed">
-                Sandwich generation caring for kids and parents
-              </p>
+              <p className="text-[#302D2C] text-sm leading-relaxed">For families balancing care for children and aging parents.</p>
             </div>
           </div>
         </div>
@@ -296,13 +284,10 @@ Eloura turns your overwhelming to-dos into manageable plans with smart coordinat
           
           
           
-          <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">What to expect in beta
+          <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">What to Expect in Beta
 
 
-Features are still evolving and you might see some bugs.
-Your feedback is important and shapes how we improve.
-
-        </p>
+Eloura is still evolving. As a beta user, you'll be among the first to try it out, explore new features and help shape where we go next. If you notice any issues - please let us know by submitting feedback below.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
             <Button size="lg" className="bg-[#FCC931] hover:bg-[#D7642A] text-[#302D2C] rounded-full px-8 text-lg font-semibold" onClick={handleGetStarted}>
               Join 15,000+ families reducing stress
