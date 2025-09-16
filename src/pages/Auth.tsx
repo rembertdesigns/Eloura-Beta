@@ -214,11 +214,7 @@ const Auth = () => {
           error
         } = await supabase.auth.signInWithPassword(authOptions);
         if (error) {
-          if (error.message.toLowerCase().includes('captcha')) {
-            setShowCaptcha(true);
-            setCaptchaToken(null);
-            captchaRef.current?.resetCaptcha();
-          }
+          // Remove captcha requirement for sign-in errors
           trackFailedAttempt();
           toast({
             title: "Sign In Failed",
