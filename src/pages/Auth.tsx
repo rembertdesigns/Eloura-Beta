@@ -44,13 +44,15 @@ const Auth = () => {
       const lastAttempt = localStorage.getItem('auth_last_attempt');
       const emailAttempts = parseInt(localStorage.getItem(`auth_attempts_${email}`) || '0');
 
-      // Set risk level based on overall and email-specific attempts
-      if (attempts >= 3 || emailAttempts >= 2) {
+      // More reasonable risk assessment - only mark high risk for severe cases
+      if (attempts >= 8 || emailAttempts >= 5) {
         setUserRiskLevel('high');
       } else {
         setUserRiskLevel('low');
       }
-      if (attempts >= 5 && lastAttempt) {
+      
+      // Only apply rate limiting for truly excessive attempts
+      if (attempts >= 10 && lastAttempt) {
         const lastAttemptTime = new Date(lastAttempt);
         const resetTime = new Date(lastAttemptTime.getTime() + 15 * 60 * 1000); // 15 minutes
 
@@ -78,11 +80,13 @@ const Auth = () => {
     localStorage.setItem(`auth_attempts_${email}`, emailAttempts.toString());
     localStorage.setItem('auth_last_attempt', new Date().toISOString());
 
-    // Update risk level for future attempts
-    if (attempts >= 3 || emailAttempts >= 2) {
+    // Update risk level for future attempts with more reasonable thresholds
+    if (attempts >= 8 || emailAttempts >= 5) {
       setUserRiskLevel('high');
     }
-    if (attempts >= 5) {
+    
+    // Only apply rate limiting for truly excessive attempts
+    if (attempts >= 10) {
       const resetTime = new Date(Date.now() + 15 * 60 * 1000);
       setRateLimitInfo({
         attempts,
@@ -91,9 +95,17 @@ const Auth = () => {
     }
   };
   const clearRateLimit = () => {
+    // Clear all rate limiting and risk assessment data
     localStorage.removeItem('auth_attempts');
     localStorage.removeItem('auth_last_attempt');
     localStorage.removeItem(`auth_attempts_${email}`);
+    // Clear all email-specific attempts for this user
+    const keys = Object.keys(localStorage);
+    keys.forEach(key => {
+      if (key.startsWith('auth_attempts_')) {
+        localStorage.removeItem(key);
+      }
+    });
     setRateLimitInfo(null);
     setUserRiskLevel('low');
   };
@@ -136,13 +148,13 @@ const Auth = () => {
       return;
     }
 
-    // Show captcha for signups or high-risk logins
-    if ((isSignUp || userRiskLevel === 'high') && !captchaToken) {
+    // Show captcha for signups or truly high-risk logins (more restrictive)
+    if ((isSignUp || (userRiskLevel === 'high' && !captchaToken)) && !captchaToken) {
       console.log('Triggering captcha - isSignUp:', isSignUp, 'userRiskLevel:', userRiskLevel, 'captchaToken:', !!captchaToken);
       setShowCaptcha(true);
       toast({
         title: "Security Verification Required",
-        description: isSignUp ? "Please complete the security verification to create your account." : "Additional verification needed for security. This helps protect your account.",
+        description: isSignUp ? "Please complete the security verification to create your account." : "Additional verification needed due to multiple failed attempts. This helps protect your account.",
         variant: "default"
       });
       return;
