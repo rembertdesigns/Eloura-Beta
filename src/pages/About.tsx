@@ -1,7 +1,14 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { ArrowRight, Heart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 const About = () => {
+  const navigate = useNavigate();
+
+  const handleGetStarted = () => {
+    navigate('/auth');
+  };
   return <>
       <SEOHead title="About Us - Eloura" description="Learn about Eloura's mission to help families manage care with less stress and more support." keywords="about eloura, family care, caregiving support, our mission" />
       
@@ -133,22 +140,63 @@ const About = () => {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-br from-[#223b0a] to-[#1a2e08] text-white">
+        {/* Enhanced CTA Section with urgency */}
+        <section className="py-24 bg-gradient-to-r from-[#223B0A] to-[#302D2C] text-white text-center">
           <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-light mb-6">
-                Ready to get started?
-              </h2>
-              <p className="text-xl text-[#a8e6ff]/90 mb-8">
-                [Add your call-to-action message here]
-              </p>
-              <Button size="lg" className="bg-[#a8e6ff] hover:bg-[#7ad1f5] text-[#223b0a] font-medium rounded-md">
-                GET STARTED TODAY
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">What to Expect</h2>
+            <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">Eloura is still evolving. As a beta user, you'll be among the first to try it out, explore new features and help shape where we go next. If you notice any issues - please let us know by submitting feedback below.</p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
+              <Button size="lg" className="bg-[#FCC931] hover:bg-[#D7642A] text-[#302D2C] rounded-full px-8 text-lg font-semibold" onClick={handleGetStarted}>
+                Try Eloura Beta
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button size="lg" className="bg-transparent border-2 border-[#FCC931] text-white hover:bg-[#FCC931] hover:text-[#223B0A] rounded-full px-8 text-lg font-semibold" onClick={() => window.open('https://forms.gle/3m5w5APDfsRCgGsP9', '_blank')}>
+                Share Feedback
               </Button>
             </div>
+            <p className="text-sm text-white/70">✓ No credit card required • ✓ Cancel anytime • ✓ Setup in under 5 minutes</p>
           </div>
         </section>
+
+        {/* Footer */}
+        <footer className="bg-[#302D2C] text-white py-16">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="bg-gradient-to-br from-[#FCC931] to-[#D7642A] p-2 rounded-xl">
+                    <Heart className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-2xl font-medium">Eloura</span>
+                </div>
+                <p className="text-white/70 mb-6">The operating system for modern families caregiving. Built for millennials and Gen Z who are redefining what care looks like.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-6">Product</h4>
+                <ul className="space-y-3 text-white/70">
+                  <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
+                  <li><a href="/how-it-works" className="hover:text-white transition-colors">How It Works</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-6">Support</h4>
+                <ul className="space-y-3 text-white/70">
+                  <li><a href="https://forms.gle/3m5w5APDfsRCgGsP9" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Contact Us</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-6">Company</h4>
+                <ul className="space-y-3 text-white/70">
+                  <li><a href="/about" className="hover:text-white transition-colors">About</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
+                </ul>
+              </div>
+            </div>
+            <div className="border-t border-white/20 pt-8 text-center text-white/70">
+              <p>© 2024 Eloura. Made with ❤️ for modern caregiving families.</p>
+            </div>
+          </div>
+        </footer>
       </div>
     </>;
 };
