@@ -139,7 +139,7 @@ const HowItWorks = () => {
               </div>
               <div className="hidden md:flex items-center gap-6 lg:gap-8">
                 <button onClick={handleAboutUs} className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">About Us</button>
-                <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">Features</a>
+                <a href="/#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">Features</a>
                 
               </div>
               <div className="flex items-center gap-4">
@@ -164,7 +164,7 @@ const HowItWorks = () => {
             }} className="text-left text-[#302D2C] hover:text-[#223B0A] font-medium py-2">
                   About Us
                 </button>
-                <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-[#302D2C] hover:text-[#223B0A] font-medium py-2">
+                <a href="/#features" onClick={() => setMobileMenuOpen(false)} className="text-[#302D2C] hover:text-[#223B0A] font-medium py-2">
                   Features
                 </a>
                 <a href="/how-it-works" onClick={() => setMobileMenuOpen(false)} className="text-[#302D2C] hover:text-[#223B0A] font-medium py-2">
@@ -276,7 +276,7 @@ const HowItWorks = () => {
               <div>
                 <h4 className="font-semibold mb-6">Product</h4>
                 <ul className="space-y-3 text-white/70">
-                  <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
+                  <li><a href="/#features" className="hover:text-white transition-colors">Features</a></li>
                   <li><a href="#" className="hover:text-white transition-colors">How It Works</a></li>
                 </ul>
               </div>
