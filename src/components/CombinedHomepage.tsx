@@ -317,7 +317,7 @@ Built for families. Better for everyone.</h2>
               <h4 className="font-semibold mb-6">Product</h4>
               <ul className="space-y-3 text-white/70">
                 <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">How It Works</a></li>
+                <li><a href="/how-it-works" className="hover:text-white transition-colors">How It Works</a></li>
                 
                 
               </ul>
