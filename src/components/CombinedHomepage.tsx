@@ -98,13 +98,65 @@ Built for families. Better for everyone.</h2>
       {/* Device Showcase Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex justify-center items-center relative max-w-6xl mx-auto">
+          {/* Mobile Layout - Stacked vertically */}
+          <div className="lg:hidden space-y-8 max-w-md mx-auto">
+            {/* Phone */}
+            <div className="flex justify-center">
+              <div className="bg-gray-900 rounded-3xl p-2 shadow-xl" style={{
+                width: '180px',
+                height: '360px'
+              }}>
+                <div className="bg-white rounded-2xl w-full h-full flex items-center justify-center text-gray-400">
+                  <div className="text-center">
+                    <div className="w-12 h-12 bg-gray-200 rounded-lg mx-auto mb-3"></div>
+                    <p className="text-xs">Phone View</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Tablet */}
+            <div className="flex justify-center">
+              <div className="bg-gray-100 rounded-2xl p-4 shadow-2xl" style={{
+                width: '300px',
+                height: '225px'
+              }}>
+                <div className="bg-white rounded-lg w-full h-full flex items-center justify-center text-gray-400">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-3"></div>
+                    <p className="text-sm">Tablet View</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Desktop */}
+            <div className="flex justify-center">
+              <div className="bg-gray-100 rounded-t-xl shadow-2xl" style={{
+                width: '320px',
+                height: '200px'
+              }}>
+                <div className="bg-white rounded-t-lg w-full h-4/5 flex items-center justify-center text-gray-400">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-3"></div>
+                    <p className="text-sm">Desktop View</p>
+                  </div>
+                </div>
+                <div className="bg-gray-200 h-1/5 rounded-b-xl flex items-center justify-center">
+                  <div className="w-24 h-1 bg-gray-300 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop Layout - Overlapping as before */}
+          <div className="hidden lg:flex justify-center items-center relative max-w-6xl mx-auto">
             {/* Tablet */}
             <div className="relative z-10">
               <div className="bg-gray-100 rounded-2xl p-4 shadow-2xl" style={{
-              width: '400px',
-              height: '300px'
-            }}>
+                width: '400px',
+                height: '300px'
+              }}>
                 <div className="bg-white rounded-lg w-full h-full flex items-center justify-center text-gray-400">
                   <div className="text-center">
                     <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-3"></div>
@@ -117,9 +169,9 @@ Built for families. Better for everyone.</h2>
             {/* Phone */}
             <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2 z-20">
               <div className="bg-gray-900 rounded-3xl p-2 shadow-xl" style={{
-              width: '180px',
-              height: '360px'
-            }}>
+                width: '180px',
+                height: '360px'
+              }}>
                 <div className="bg-white rounded-2xl w-full h-full flex items-center justify-center text-gray-400">
                   <div className="text-center">
                     <div className="w-12 h-12 bg-gray-200 rounded-lg mx-auto mb-3"></div>
@@ -132,9 +184,9 @@ Built for families. Better for everyone.</h2>
             {/* Apple Watch */}
             <div className="absolute left-1/3 bottom-0 z-15">
               <div className="bg-gray-800 rounded-2xl p-2 shadow-lg" style={{
-              width: '120px',
-              height: '140px'
-            }}>
+                width: '120px',
+                height: '140px'
+              }}>
                 <div className="bg-black rounded-xl w-full h-full flex items-center justify-center text-gray-600">
                   <div className="text-center">
                     <div className="w-8 h-8 bg-gray-700 rounded-lg mx-auto mb-2"></div>
@@ -147,9 +199,9 @@ Built for families. Better for everyone.</h2>
             {/* Laptop */}
             <div className="absolute right-0 top-1/4 z-5">
               <div className="bg-gray-100 rounded-t-xl shadow-2xl" style={{
-              width: '500px',
-              height: '320px'
-            }}>
+                width: '500px',
+                height: '320px'
+              }}>
                 <div className="bg-white rounded-t-lg w-full h-5/6 flex items-center justify-center text-gray-400">
                   <div className="text-center">
                     <div className="w-20 h-20 bg-gray-200 rounded-lg mx-auto mb-4"></div>
