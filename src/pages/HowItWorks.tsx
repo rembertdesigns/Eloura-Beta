@@ -80,44 +80,72 @@ const HowItWorks = () => {
 
   const faqs = [
     {
-      question: "How does Eloura help with both childcare and eldercare?",
-      answer: "Eloura is designed for the sandwich generation - those caring for both children and aging parents. Our AI understands the unique challenges of managing multiple generations and provides tailored guidance, scheduling, and coordination tools for both types of caregiving responsibilities."
+      question: "What is Eloura?",
+      answer: "Eloura is an AI-powered home base that helps families manage schedules, tasks, routines, and shared responsibilities in one place."
     },
     {
-      question: "Is my family's information secure and private?",
-      answer: "Absolutely. We use enterprise-grade security measures including end-to-end encryption, secure data storage, and strict privacy controls. Your family's information is never shared with third parties, and you maintain full control over who has access to what information within your network."
+      question: "Who is the beta for?",
+      answer: "Parents and caregivers who want to test early features and share honest feedback."
     },
     {
-      question: "How does the AI Daily Brief work?",
-      answer: "Each morning, our AI analyzes your calendar, tasks, family schedules, and priorities to create a personalized brief. It highlights the most important items for the day, suggests optimal scheduling, and alerts you to potential conflicts or opportunities for efficiency."
+      question: "How do I join the beta?",
+      answer: "Use your invite link or enter an invite code on the homepage. If you need an invite, join the waitlist."
     },
     {
-      question: "Can I invite family members who aren't tech-savvy?",
-      answer: "Yes! Eloura is designed to be intuitive for users of all technical skill levels. We provide simple onboarding, clear interfaces, and optional training resources. Family members can participate as much or as little as they're comfortable with."
+      question: "Is the beta free?",
+      answer: "Yes. Some features may become paid after public launch. We will give notice before any changes."
     },
     {
-      question: "What makes Eloura different from other family apps?",
-      answer: "Eloura is specifically built for caregivers managing multiple generations. Unlike general family apps, we understand the complexity of coordinating medical appointments, school schedules, medication reminders, and emotional support across different age groups and needs."
+      question: "What should I expect in beta?",
+      answer: "You may see bugs or unfinished areas. We push updates often. Your feedback helps us decide what to improve next."
     },
     {
-      question: "How much does Eloura cost?",
-      answer: "We offer a 14-day free trial so you can experience the full value of Eloura. After the trial, we have affordable monthly and annual plans designed to provide significant value for busy caregiving families. Contact us for current pricing details."
+      question: "How do I report a bug?",
+      answer: "Use the \"Feedback Form\" to report any issues you have."
     },
     {
-      question: "Can I use Eloura if I only have children or only aging parents?",
-      answer: "Absolutely! While Eloura excels at managing multi-generational care, it's equally powerful for families focused on childcare only or eldercare only. The AI and coordination tools adapt to your specific family structure and needs."
+      question: "How do I share product feedback or ideas?",
+      answer: "Use the \"Feedback Form\". Tell us what worked, what was confusing, or what you want us to add."
     },
     {
-      question: "How quickly can I get started?",
-      answer: "You can set up your basic profile in under 5 minutes and start receiving value immediately. The more information you add about your family's routines and preferences, the more personalized and helpful Eloura becomes over time."
+      question: "What devices are supported right now?",
+      answer: "Modern desktop and mobile browsers. For best results, use the latest Chrome or Safari."
     },
     {
-      question: "Do I need to download an app?",
-      answer: "Eloura works seamlessly in your web browser on any device - desktop, tablet, or mobile. No app download required, though we're working on native mobile apps for even better convenience."
+      question: "Is there a mobile app yet?",
+      answer: "Not yet. The web app works on phones and tablets. Native apps are planned."
     },
     {
-      question: "What if I need help getting started?",
-      answer: "We provide comprehensive onboarding support including setup guidance, video tutorials, and responsive customer support. Our team is committed to helping every family succeed with Eloura."
+      question: "Can I invite my partner or caregiver?",
+      answer: "Yes. Add them to your Eloura \"Village\" to share calendars, tasks, and routines."
+    },
+    {
+      question: "Will my data carry over after the beta?",
+      answer: "Yes. Your account and core data will carry over as we move toward public launch."
+    },
+    {
+      question: "How does Eloura handle privacy?",
+      answer: "Your data stays yours. We use encryption and limit access internally. See our Privacy Policy for details."
+    },
+    {
+      question: "Can I delete my account and data?",
+      answer: "Yes. You can request deletion from Account settings. We will confirm when the deletion is complete."
+    },
+    {
+      question: "How fast do you reply to support messages?",
+      answer: "We aim to reply within 1 to 2 business days during beta."
+    },
+    {
+      question: "Do you have a community space?",
+      answer: "Yes. The Village community is available for beta members. Share tips, ask questions, and learn from others."
+    },
+    {
+      question: "What features are in beta today?",
+      answer: "Daily Brief, Smart Parenting Assistant, shared tasks and lists, routines, and the Village."
+    },
+    {
+      question: "Will features change during beta?",
+      answer: "Yes. We may add, remove, or refine features based on what we learn from you."
     }
   ];
 
