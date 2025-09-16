@@ -1,8 +1,27 @@
 
 import React from 'react';
 import { Heart, Mail, Phone, MapPin } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Footer = () => {
+  const navigate = useNavigate();
+
+  const handleFeaturesClick = () => {
+    const currentPath = window.location.pathname;
+    if (currentPath !== '/') {
+      navigate('/', { replace: false });
+      // Wait for navigation to complete, then scroll
+      setTimeout(() => {
+        const element = document.querySelector('#features');
+        element?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      // Already on homepage, just scroll
+      const element = document.querySelector('#features');
+      element?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="bg-[#223b0a] text-white">
       <div className="container mx-auto px-4 py-12">
@@ -28,7 +47,14 @@ const Footer = () => {
             <h4 className="font-medium text-lg mb-4 border-b border-white/30 pb-2">Quick Links</h4>
             <ul className="space-y-2 text-gray-300">
               <li>About Us</li>
-              <li>Our Features</li>
+              <li>
+                <button 
+                  onClick={handleFeaturesClick}
+                  className="hover:text-[#a8e6ff] transition-colors text-left"
+                >
+                  Our Features
+                </button>
+              </li>
               <li>Support Options</li>
               <li>Blog</li>
               <li>FAQ</li>

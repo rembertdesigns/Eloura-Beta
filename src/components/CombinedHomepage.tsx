@@ -562,7 +562,7 @@ Built for families. Better for everyone.</h2>
       
 
       {/* Designed for the way you work Section */}
-      <section className="py-24 bg-gradient-to-br from-[#E1CFE3]/20 to-[#FFE5C4]/20">
+      <section className="py-24 bg-gradient-to-br from-[#E1CFE3]/20 to-[#FFE5C4]/20" id="features">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">Features</h2>

@@ -27,8 +27,20 @@ const Navigation = () => {
 
   const handleNavClick = (href: string) => {
     if (href.startsWith('#')) {
-      const element = document.querySelector(href);
-      element?.scrollIntoView({ behavior: 'smooth' });
+      // If it's a hash link, navigate to homepage first if not already there
+      const currentPath = window.location.pathname;
+      if (currentPath !== '/') {
+        navigate('/', { replace: false });
+        // Wait for navigation to complete, then scroll
+        setTimeout(() => {
+          const element = document.querySelector(href);
+          element?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else {
+        // Already on homepage, just scroll
+        const element = document.querySelector(href);
+        element?.scrollIntoView({ behavior: 'smooth' });
+      }
     } else if (href.startsWith('/')) {
       navigate(href);
     }
