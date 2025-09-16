@@ -381,7 +381,7 @@ const Dashboard = () => {
                         toggleReminderCompletion(item.id, !!checked);
                       }
                     }}
-                    className={`h-2.5 w-2.5 min-touch-target ${'completed' in item && item.completed ? "data-[state=checked]:bg-green-500" : ""}`}
+                    className={`min-touch-target ${'completed' in item && item.completed ? "h-3 w-3 data-[state=checked]:bg-green-500" : "h-2.5 w-2.5"}`}
                   />
                   <div className="flex items-center gap-2 flex-1">
                     {'type' in item && item.type === 'reminder' && (
@@ -536,7 +536,7 @@ const Dashboard = () => {
                               toggleTaskCompletion(item.id, !!checked);
                             }
                           }}
-                          className="h-2.5 w-2.5 min-touch-target"
+                          className={`min-touch-target ${'completed' in item && item.completed ? "h-3 w-3 data-[state=checked]:bg-green-500" : "h-2.5 w-2.5"}`}
                         />
                         <div className="flex items-center gap-1 flex-1">
                           {'type' in item && item.type === 'reminder' && (
