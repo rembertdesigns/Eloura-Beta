@@ -216,7 +216,7 @@ Built for families. Better for everyone.</h2>
                 height: '200px'
               }}>
                 <div className="bg-white rounded-t-lg w-full h-4/5 p-3">
-                  <div className="text-xs font-semibold mb-2">Hi, Sarah - Monday, 9/16</div>
+                  <div className="text-xs font-semibold mb-2">Hi, Sarah - Tuesday, 9/16</div>
                   <div className="text-right text-xs text-green-600 font-bold mb-2">75% Complete</div>
                   {/* Status cards */}
                   <div className="grid grid-cols-4 gap-1 mb-2">
@@ -379,7 +379,7 @@ Built for families. Better for everyone.</h2>
                 height: '320px'
               }}>
                 <div className="bg-white rounded-t-lg w-full h-5/6 p-6">
-                  <div className="text-lg font-semibold mb-3">Hi, Sarah - Monday, 9/16</div>
+                  <div className="text-lg font-semibold mb-3">Hi, Sarah - Tuesday, 9/16</div>
                   <div className="flex justify-between items-center mb-4">
                     <div className="text-sm text-gray-600">Your daily family dashboard</div>
                     <div className="text-2xl font-bold text-green-600">75% Complete</div>
