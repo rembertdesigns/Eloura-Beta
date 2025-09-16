@@ -199,20 +199,20 @@
   /* Mobile checkbox overrides */
   @media (max-width: 768px) {
     button[role="checkbox"] {
-      width: 0.75rem !important;
-      height: 0.75rem !important;
-      min-width: 0.75rem !important;
-      min-height: 0.75rem !important;
+      width: 1rem !important;
+      height: 1rem !important;
+      min-width: 1rem !important;
+      min-height: 1rem !important;
     }
     
     button[role="checkbox"] svg {
-      width: 0.625rem !important;
-      height: 0.625rem !important;
+      width: 0.75rem !important;
+      height: 0.75rem !important;
     }
     
     button[role="checkbox"] span svg {
-      width: 0.625rem !important;
-      height: 0.625rem !important;
+      width: 0.75rem !important;
+      height: 0.75rem !important;
     }
   }
 }
