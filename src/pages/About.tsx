@@ -32,10 +32,9 @@ const About = () => {
                 </div>
                 <span className="text-xl sm:text-2xl font-medium text-[#302D2C]">Eloura - Beta</span>
               </div>
-              <div className="hidden md:flex items-center gap-6 lg:gap-8">
+               <div className="hidden md:flex items-center gap-6 lg:gap-8">
                 <button onClick={handleAboutUs} className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">About Us</button>
                 <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">Features</a>
-                <a href="/how-it-works" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">How It Works</a>
               </div>
               <div className="flex items-center gap-4">
                 <Button className="hidden md:block bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-4 sm:px-6 min-h-[44px] touch-manipulation" onClick={handleLogin}>
@@ -64,9 +63,6 @@ const About = () => {
                 </button>
                 <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-[#302D2C] hover:text-[#223B0A] font-medium py-2">
                   Features
-                </a>
-                <a href="/how-it-works" onClick={() => setMobileMenuOpen(false)} className="text-[#302D2C] hover:text-[#223B0A] font-medium py-2">
-                  How It Works
                 </a>
                 <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6 py-2 mt-4 w-full" onClick={() => { handleLogin(); setMobileMenuOpen(false); }}>
                   Log In
