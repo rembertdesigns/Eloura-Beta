@@ -101,11 +101,13 @@ const HowItWorks = () => {
     },
     {
       question: "How do I report a bug?",
-      answer: "Use the \"Feedback Form\" to report any issues you have."
+      answer: "Use the Feedback Form to report any issues you have.",
+      hasLink: true
     },
     {
       question: "How do I share product feedback or ideas?",
-      answer: "Use the \"Feedback Form\". Tell us what worked, what was confusing, or what you want us to add."
+      answer: "Use the Feedback Form. Tell us what worked, what was confusing, or what you want us to add.",
+      hasLink: true
     },
     {
       question: "What devices are supported right now?",
@@ -288,9 +290,29 @@ const HowItWorks = () => {
                         </div>
                       </CollapsibleTrigger>
                       <CollapsibleContent className="px-6 pb-6">
-                        <p className="text-slate-600 leading-relaxed">
-                          {faq.answer}
-                        </p>
+                        <div className="text-slate-600 leading-relaxed">
+                          {faq.hasLink ? (
+                            <span>
+                              {faq.answer.split('Feedback Form').map((part, index, array) => (
+                                <span key={index}>
+                                  {part}
+                                  {index < array.length - 1 && (
+                                    <a 
+                                      href="https://forms.gle/3m5w5APDfsRCgGsP9" 
+                                      target="_blank" 
+                                      rel="noopener noreferrer"
+                                      className="text-[#223b0a] hover:text-[#1a2e08] underline font-medium"
+                                    >
+                                      Feedback Form
+                                    </a>
+                                  )}
+                                </span>
+                              ))}
+                            </span>
+                          ) : (
+                            <p>{faq.answer}</p>
+                          )}
+                        </div>
                       </CollapsibleContent>
                     </Card>
                   </Collapsible>
