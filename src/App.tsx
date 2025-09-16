@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import OnboardingProtectedRoute from "./components/OnboardingProtectedRoute";
 import Index from "./pages/Index";
 import HomepageV2 from "./pages/HomepageV2";
+import About from "./pages/About";
 import Auth from "./pages/Auth";
 import PasswordReset from "./pages/PasswordReset";
 import VillageInvite from "./pages/VillageInvite";
@@ -47,6 +48,7 @@ const App = () => (
             <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/v2" element={<HomepageV2 />} />
+            <Route path="/about" element={<About />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/reset" element={<PasswordReset />} />
             <Route path="/village-invite" element={<VillageInvite />} />
