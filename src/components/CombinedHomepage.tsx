@@ -8,6 +8,10 @@ const CombinedHomepage = () => {
   const handleGetStarted = () => {
     navigate('/auth');
   };
+
+  const handleAboutUs = () => {
+    navigate('/about');
+  };
   const handleLogin = () => {
     navigate('/auth');
   };
@@ -27,7 +31,7 @@ const CombinedHomepage = () => {
               <span className="text-xl sm:text-2xl font-medium text-[#302D2C]">Eloura - Beta</span>
             </div>
             <div className="hidden md:flex items-center gap-6 lg:gap-8">
-              <a href="#about" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">About Us</a>
+              <button onClick={handleAboutUs} className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">About Us</button>
               <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">Features</a>
               
               
