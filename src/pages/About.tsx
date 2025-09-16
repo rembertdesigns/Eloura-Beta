@@ -171,7 +171,7 @@ const About = () => {
               </h2>
               
               {/* Linda McGee Photo */}
-              <div className="w-64 h-64 mx-auto mb-8 rounded-xl overflow-hidden">
+              <div className="w-80 h-80 mx-auto mb-8 rounded-xl overflow-hidden">
                 <img 
                   src={lindaMcGeePhoto} 
                   alt="Linda McGee, Founder of Eloura, with her child"
