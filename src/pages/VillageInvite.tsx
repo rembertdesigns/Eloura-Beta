@@ -143,6 +143,25 @@ const VillageInvite = () => {
 
       if (villageError) throw villageError;
 
+      // Also add the inviter to the invitee's village (create reciprocal relationship)
+      const { error: reciprocalError } = await supabase
+        .from('village_members')
+        .insert({
+          user_id: user.id, // The invitee's user ID
+          name: invitation.inviter_profile?.full_name || 'Family Member',
+          email: '', // We don't store the inviter's email for privacy
+          relationship: 'Family',
+          roles: ['family'],
+          status: 'Available',
+          invited_as_user: false,
+          group_name: 'Family & Friends'
+        });
+
+      if (reciprocalError) {
+        console.error('Failed to create reciprocal village relationship:', reciprocalError);
+        // Don't fail the whole process for this
+      }
+
       // If inviter has a household, join it
       if (invitation.inviter_profile?.household_name) {
         const { error: profileError } = await supabase
