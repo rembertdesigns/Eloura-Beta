@@ -133,27 +133,6 @@ const About = () => {
           </div>
         </section>
 
-        {/* Quote Section */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div className="bg-slate-50 rounded-xl p-8">
-                  <div className="aspect-square bg-gradient-to-br from-[#223b0a]/10 to-[#a8e6ff]/20 rounded-lg"></div>
-                </div>
-                <div>
-                  <blockquote className="text-2xl md:text-3xl font-light text-[#223b0a] mb-6 leading-relaxed">
-                    "[Add your inspiring quote here about caregiving, family support, or your vision for the future.]"
-                  </blockquote>
-                  <p className="text-slate-600 font-medium">
-                    — [Your Name], Founder of Eloura
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-br from-[#223b0a] to-[#1a2e08] text-white">
           <div className="container mx-auto px-4">
