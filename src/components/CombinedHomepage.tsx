@@ -99,68 +99,18 @@ Built for families. Better for everyone.</h2>
       {/* Device Showcase Section */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="flex justify-center items-center relative max-w-6xl mx-auto">
-            {/* Tablet */}
-            <div className="relative z-10">
-              <div className="bg-gray-100 rounded-2xl p-4 shadow-2xl" style={{
-              width: '400px',
-              height: '300px'
+          <div className="flex justify-center items-center max-w-md mx-auto">
+            {/* Large Phone */}
+            <div className="bg-gray-900 rounded-3xl p-3 shadow-2xl" style={{
+              width: '320px',
+              height: '640px'
             }}>
-                <div className="bg-white rounded-lg w-full h-full flex items-center justify-center text-gray-400">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-3"></div>
-                    <p className="text-sm">Tablet View</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Phone */}
-            <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2 z-20">
-              <div className="bg-gray-900 rounded-3xl p-2 shadow-xl" style={{
-              width: '180px',
-              height: '360px'
-            }}>
-                <div className="bg-white rounded-2xl w-full h-full overflow-hidden">
-                  <img 
-                    src={dashboardMockup} 
-                    alt="Eloura Dashboard Mobile View - Family care management interface showing daily tasks, schedule, and balance indicators"
-                    className="w-full h-full object-cover object-top"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Apple Watch */}
-            <div className="absolute left-1/3 bottom-0 z-15">
-              <div className="bg-gray-800 rounded-2xl p-2 shadow-lg" style={{
-              width: '120px',
-              height: '140px'
-            }}>
-                <div className="bg-black rounded-xl w-full h-full flex items-center justify-center text-gray-600">
-                  <div className="text-center">
-                    <div className="w-8 h-8 bg-gray-700 rounded-lg mx-auto mb-2"></div>
-                    <p className="text-xs">Watch</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Laptop */}
-            <div className="absolute right-0 top-1/4 z-5">
-              <div className="bg-gray-100 rounded-t-xl shadow-2xl" style={{
-              width: '500px',
-              height: '320px'
-            }}>
-                <div className="bg-white rounded-t-lg w-full h-5/6 flex items-center justify-center text-gray-400">
-                  <div className="text-center">
-                    <div className="w-20 h-20 bg-gray-200 rounded-lg mx-auto mb-4"></div>
-                    <p className="text-sm">Desktop View</p>
-                  </div>
-                </div>
-                <div className="bg-gray-200 h-1/6 rounded-b-xl flex items-center justify-center">
-                  <div className="w-32 h-2 bg-gray-300 rounded-full"></div>
-                </div>
+              <div className="bg-white rounded-2xl w-full h-full overflow-hidden">
+                <img 
+                  src={dashboardMockup} 
+                  alt="Eloura Dashboard Mobile View - Family care management interface showing daily tasks, schedule, and balance indicators"
+                  className="w-full h-full object-cover object-top"
+                />
               </div>
             </div>
           </div>
