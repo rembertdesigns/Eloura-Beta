@@ -2,10 +2,9 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronDown, Calendar, Users, Brain, PieChart, Folder, Check, ArrowRight } from 'lucide-react';
+import { ChevronDown, Calendar, Users, Brain, PieChart, Folder, Check, ArrowRight, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
-import Footer from '@/components/Footer';
 import SEOHead from '@/components/SEOHead';
 
 const HowItWorks = () => {
@@ -281,7 +280,45 @@ const HowItWorks = () => {
           </div>
         </section>
 
-        <Footer />
+        {/* Footer */}
+        <footer className="bg-[#302D2C] text-white py-16">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="bg-gradient-to-br from-[#FCC931] to-[#D7642A] p-2 rounded-xl">
+                    <Heart className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="text-2xl font-medium">Eloura</span>
+                </div>
+                <p className="text-white/70 mb-6">The operating system for modern families caregiving. Built for millennials and Gen Z who are redefining what care looks like.</p>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-6">Product</h4>
+                <ul className="space-y-3 text-white/70">
+                  <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">How It Works</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-6">Support</h4>
+                <ul className="space-y-3 text-white/70">
+                  <li><a href="https://forms.gle/3m5w5APDfsRCgGsP9" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Contact Us</a></li>
+                </ul>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-6">Company</h4>
+                <ul className="space-y-3 text-white/70">
+                  <li><a href="#" className="hover:text-white transition-colors">About</a></li>
+                  <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
+                </ul>
+              </div>
+            </div>
+            <div className="border-t border-white/20 pt-8 text-center text-white/70">
+              <p>© 2024 Eloura. Made with ❤️ for modern caregiving families.</p>
+            </div>
+          </div>
+        </footer>
       </div>
     </>
   );
