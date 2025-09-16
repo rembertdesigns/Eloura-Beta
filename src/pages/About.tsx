@@ -10,10 +10,7 @@ const About = () => {
         <section className="py-16 md:py-24 bg-gradient-to-b from-[#a8e6ff]/20 to-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-light text-[#223b0a] mb-8">Who We Are</h1>
-              <p className="text-lg md:text-xl text-slate-700 leading-relaxed max-w-2xl mx-auto">
-                [Add your story here - Why did you start Eloura? What inspired you to help families with caregiving? Share your personal journey and mission.]
-              </p>
+              <h1 className="text-4xl md:text-5xl font-light text-[#223b0a] mb-8">About Eloura</h1>
             </div>
           </div>
         </section>
@@ -25,10 +22,10 @@ const About = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
                   <h2 className="text-3xl md:text-4xl font-light text-[#223b0a] mb-6">
-                    Our mission is to make family caregiving feel manageable.
+                    Who We Are
                   </h2>
                   <p className="text-lg text-slate-600 leading-relaxed">
-                    [Expand on your mission here - How do you help families? What makes your approach unique? What impact do you want to create?]
+                    Eloura is the first family management system powered by a dynamic AI assistant that adapts to your family's real needs. It is designed to reduce mental fatigue so you no longer have to play the role of full-time project manager in your own home.
                   </p>
                 </div>
                 <div className="bg-white rounded-xl p-8 shadow-sm">
