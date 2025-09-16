@@ -1,24 +1,16 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import SEOHead from '@/components/SEOHead';
-
 const About = () => {
-  return (
-    <>
-      <SEOHead
-        title="About Us - Eloura"
-        description="Learn about Eloura's mission to help families manage care with less stress and more support."
-        keywords="about eloura, family care, caregiving support, our mission"
-      />
+  return <>
+      <SEOHead title="About Us - Eloura" description="Learn about Eloura's mission to help families manage care with less stress and more support." keywords="about eloura, family care, caregiving support, our mission" />
       
       <div className="min-h-screen bg-white">
         {/* Hero Section */}
         <section className="py-16 md:py-24 bg-gradient-to-b from-[#a8e6ff]/20 to-white">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl font-light text-[#223b0a] mb-8">
-                About Us
-              </h1>
+              <h1 className="text-4xl md:text-5xl font-light text-[#223b0a] mb-8">Who We Are</h1>
               <p className="text-lg md:text-xl text-slate-700 leading-relaxed max-w-2xl mx-auto">
                 [Add your story here - Why did you start Eloura? What inspired you to help families with caregiving? Share your personal journey and mission.]
               </p>
@@ -91,8 +83,6 @@ const About = () => {
           </div>
         </section>
       </div>
-    </>
-  );
+    </>;
 };
-
 export default About;
