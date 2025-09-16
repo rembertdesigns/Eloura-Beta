@@ -332,7 +332,7 @@ Eloura is still evolving. As a beta user, you'll be among the first to try it ou
               <h4 className="font-semibold mb-6">Support</h4>
               <ul className="space-y-3 text-white/70">
                 
-                <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
+                <li><a href="https://forms.gle/3m5w5APDfsRCgGsP9" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Contact Us</a></li>
                 
                 
               </ul>
