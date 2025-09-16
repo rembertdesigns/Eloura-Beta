@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Heart, Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
+import lindaMcGeePhoto from '@/assets/linda-mcgee-photo.jpg';
 const About = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -169,13 +170,13 @@ const About = () => {
                 Our Story
               </h2>
               
-              {/* Image placeholder */}
-              <div className="w-64 h-64 mx-auto mb-8 rounded-xl bg-gradient-to-br from-[#a8e6ff]/40 to-[#a8e6ff]/10 flex items-center justify-center">
-                <div className="w-20 h-20 bg-[#223b0a] rounded-full flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </div>
+              {/* Linda McGee Photo */}
+              <div className="w-64 h-64 mx-auto mb-8 rounded-xl overflow-hidden">
+                <img 
+                  src={lindaMcGeePhoto} 
+                  alt="Linda McGee, Founder of Eloura, with her child"
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               <div className="max-w-3xl mx-auto">
