@@ -148,14 +148,13 @@ const Auth = () => {
       return;
     }
 
-    // Only show captcha for signups or extreme abuse cases (15+ failed attempts)
-    const attempts = parseInt(localStorage.getItem('auth_attempts') || '0');
-    if ((isSignUp || attempts >= 15) && !captchaToken) {
-      console.log('Triggering captcha - isSignUp:', isSignUp, 'attempts:', attempts, 'captchaToken:', !!captchaToken);
+    // Only require captcha for signups - remove captcha requirement for normal sign-ins
+    if (isSignUp && !captchaToken) {
+      console.log('Triggering captcha for signup - captchaToken:', !!captchaToken);
       setShowCaptcha(true);
       toast({
         title: "Security Verification Required",
-        description: isSignUp ? "Please complete the security verification to create your account." : "Too many failed attempts detected. Please complete verification to continue.",
+        description: "Please complete the security verification to create your account.",
         variant: "default"
       });
       return;
@@ -166,7 +165,7 @@ const Auth = () => {
         const returnTo = new URLSearchParams(window.location.search).get('returnTo');
         const signUpOptions: any = { email, password };
         
-        // Only add options if we have a captcha token
+        // Include captcha token for signups
         if (captchaToken) {
           signUpOptions.options = { captchaToken };
         }
@@ -198,20 +197,16 @@ const Auth = () => {
           navigate('/welcome');
         }
       } else {
-        // Remove overly aggressive high-risk signin notice - no longer needed
-        // with the simplified captcha logic
-        // signInWithPassword expects captchaToken as a direct parameter, not in options
+        // Normal sign-in without captcha requirement
         const authOptions: any = {
           email,
           password
         };
 
-        // Include captcha token if available - signInWithPassword uses captchaToken directly
-        if (captchaToken) {
+        // Only include captcha token for signups
+        if (isSignUp && captchaToken) {
           authOptions.captchaToken = captchaToken;
-          console.log('Including captcha token in auth request');
-        } else if (userRiskLevel === 'high') {
-          console.log('High risk user but no captcha token - this may cause auth to fail');
+          console.log('Including captcha token for signup');
         }
         
         const {
