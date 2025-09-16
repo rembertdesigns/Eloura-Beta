@@ -381,7 +381,7 @@ const Dashboard = () => {
                         toggleReminderCompletion(item.id, !!checked);
                       }
                     }}
-                    className={`!h-3 !w-3 md:h-4 md:w-4 min-touch-target [&>span>svg]:!h-2 [&>span>svg]:!w-2 md:[&>span>svg]:!h-3 md:[&>span>svg]:!w-3 ${'completed' in item && item.completed ? "data-[state=checked]:bg-green-500" : ""}`}
+                    className={`!h-3 !w-3 md:h-4 md:w-4 min-touch-target ${'completed' in item && item.completed ? "data-[state=checked]:bg-green-500" : ""}`}
                   />
                   <div className="flex items-center gap-2 flex-1">
                     {'type' in item && item.type === 'reminder' && (
@@ -433,7 +433,7 @@ const Dashboard = () => {
                       onCheckedChange={(checked) => {
                         toggleReminderCompletion(item.id, !!checked);
                       }}
-                      className="!h-3 !w-3 md:h-4 md:w-4 min-touch-target flex-shrink-0 [&>span>svg]:!h-2 [&>span>svg]:!w-2 md:[&>span>svg]:!h-3 md:[&>span>svg]:!w-3"
+                      className="!h-3 !w-3 md:h-4 md:w-4 min-touch-target flex-shrink-0"
                     />
                   )}
                   <div className="text-xs md:text-sm font-medium text-blue-600 w-12 md:w-16 flex-shrink-0">
@@ -536,7 +536,7 @@ const Dashboard = () => {
                               toggleTaskCompletion(item.id, !!checked);
                             }
                           }}
-                          className="!h-3 !w-3 md:h-4 md:w-4 min-touch-target [&>span>svg]:!h-2 [&>span>svg]:!w-2 md:[&>span>svg]:!h-3 md:[&>span>svg]:!w-3"
+                          className="!h-3 !w-3 md:h-4 md:w-4 min-touch-target"
                         />
                         <div className="flex items-center gap-1 flex-1">
                           {'type' in item && item.type === 'reminder' && (
