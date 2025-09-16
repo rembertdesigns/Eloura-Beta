@@ -69,6 +69,33 @@ const About = () => {
           </div>
         </section>
 
+        {/* Our Mission Section */}
+        <section className="py-16 bg-slate-50">
+          <div className="container mx-auto px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                  <h2 className="text-3xl md:text-4xl font-light text-[#223b0a] mb-6">
+                    Our Mission
+                  </h2>
+                  <p className="text-lg text-slate-600 leading-relaxed">
+                    To reduce the cognitive mental load of every parent, everywhere, so families can thrive together in love, presence, and connection.
+                  </p>
+                </div>
+                <div className="bg-white rounded-xl p-8 shadow-sm">
+                  <div className="aspect-square bg-gradient-to-br from-[#a8e6ff]/40 to-[#a8e6ff]/10 rounded-lg flex items-center justify-center">
+                    <div className="w-16 h-16 bg-[#223b0a] rounded-full flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Quote Section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
