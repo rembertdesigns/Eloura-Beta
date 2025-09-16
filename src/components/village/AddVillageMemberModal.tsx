@@ -10,6 +10,8 @@ import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { X, Upload, User, Clock, MapPin, Shield, Tag, MessageSquare, Languages, Monitor, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface VillageMember {
   name: string;
@@ -91,6 +93,7 @@ const AddVillageMemberModal: React.FC<AddVillageMemberModalProps> = ({
   const [newLanguage, setNewLanguage] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const groups = ['Family', 'Friends', 'Neighbors', 'Extended Family', 'Professional'];
   const relationships = ['Parent', 'Sibling', 'Child', 'Spouse/Partner', 'Grandparent', 'Aunt/Uncle', 'Cousin', 'Friend', 'Neighbor', 'Colleague', 'Babysitter', 'Tutor', 'Helper', 'Other'];
@@ -258,11 +261,78 @@ const AddVillageMemberModal: React.FC<AddVillageMemberModalProps> = ({
 
     setLoading(true);
     try {
+      // Save the village member first
       await onSave(formData);
-      toast({
-        title: "Success",
-        description: editingMember ? "Village member updated successfully" : "Village member added successfully"
-      });
+      
+      // If invited as user and has email, send invitation
+      if (formData.invited_as_user && formData.email?.trim() && user) {
+        try {
+          // Create invitation in database
+          const { data: invitation, error: inviteError } = await supabase
+            .from('village_invitations')
+            .insert({
+              inviter_id: user.id,
+              invited_email: formData.email.trim(),
+              invited_name: formData.name.trim(),
+              role: formData.roles.length > 0 ? formData.roles[0] : 'helper',
+              personal_message: `I'd love to have you as part of my support network on Eloura. You'll be able to help with ${formData.roles.join(', ') || 'various tasks'}.`
+            })
+            .select('*')
+            .single();
+
+          if (inviteError) throw inviteError;
+
+          // Get inviter profile for email
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('full_name, household_name')
+            .eq('id', user.id)
+            .single();
+
+          // Send invitation email
+          const { error: emailError } = await supabase.functions.invoke('send-email', {
+            body: {
+              type: 'village-invitation',
+              email: formData.email.trim(),
+              data: {
+                invitedName: formData.name.trim(),
+                inviterName: profile?.full_name || user.user_metadata?.full_name || user.email || 'A family member',
+                inviterEmail: user.email,
+                role: formData.roles.length > 0 ? formData.roles[0] : 'helper',
+                personalMessage: `I'd love to have you as part of my support network on Eloura. You'll be able to help with ${formData.roles.join(', ') || 'various tasks'}.`,
+                signupUrl: `https://elouraapp.com/village-invite?token=${invitation.invitation_token}`
+              }
+            }
+          });
+
+          if (emailError) {
+            console.error('Failed to send invitation email:', emailError);
+            toast({
+              title: "Member added",
+              description: `${formData.name} added to village, but invitation email failed to send. You can share the invite link manually.`,
+              variant: "destructive"
+            });
+          } else {
+            toast({
+              title: "Success",
+              description: `${formData.name} added to village and invitation email sent successfully!`
+            });
+          }
+        } catch (inviteError) {
+          console.error('Failed to send invitation:', inviteError);
+          toast({
+            title: "Member added",
+            description: `${formData.name} added to village, but failed to send invitation. You can invite them manually later.`,
+            variant: "destructive"
+          });
+        }
+      } else {
+        toast({
+          title: "Success",
+          description: editingMember ? "Village member updated successfully" : "Village member added successfully"
+        });
+      }
+      
       onClose();
     } catch (error) {
       toast({
