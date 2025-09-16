@@ -216,12 +216,25 @@ const HelpRequestsLogsEnhanced = () => {
   return (
     <>
       <Tabs defaultValue="help-requests" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-8">
-          <TabsTrigger value="help-requests">Help Requests</TabsTrigger>
-          <TabsTrigger value="logs">Communication Logs</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="templates">Templates</TabsTrigger>
-        </TabsList>
+        {/* Mobile - Scrollable tabs */}
+        <div className="sm:hidden overflow-x-auto mb-6">
+          <TabsList className="flex w-max min-w-full h-auto p-1">
+            <TabsTrigger value="help-requests" className="text-xs whitespace-nowrap px-3 py-2 min-h-[40px]">Help Requests</TabsTrigger>
+            <TabsTrigger value="logs" className="text-xs whitespace-nowrap px-3 py-2 min-h-[40px]">Comm. Logs</TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs whitespace-nowrap px-3 py-2 min-h-[40px]">Analytics</TabsTrigger>
+            <TabsTrigger value="templates" className="text-xs whitespace-nowrap px-3 py-2 min-h-[40px]">Templates</TabsTrigger>
+          </TabsList>
+        </div>
+
+        {/* Desktop - Grid tabs */}
+        <div className="hidden sm:block">
+          <TabsList className="grid w-full grid-cols-4 mb-8">
+            <TabsTrigger value="help-requests" className="text-sm min-h-[44px]">Help Requests</TabsTrigger>
+            <TabsTrigger value="logs" className="text-sm min-h-[44px]">Communication Logs</TabsTrigger>
+            <TabsTrigger value="analytics" className="text-sm min-h-[44px]">Analytics</TabsTrigger>
+            <TabsTrigger value="templates" className="text-sm min-h-[44px]">Templates</TabsTrigger>
+          </TabsList>
+        </div>
 
         <TabsContent value="help-requests" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
