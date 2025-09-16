@@ -2,13 +2,14 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { ChevronDown, Calendar, Users, Brain, PieChart, Folder, Check, ArrowRight, Heart } from 'lucide-react';
+import { ChevronDown, Calendar, Users, Brain, PieChart, Folder, Check, ArrowRight, Heart, Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 
 const HowItWorks = () => {
   const navigate = useNavigate();
   const [openFAQ, setOpenFAQ] = React.useState<number | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const handleAboutUs = () => {
     navigate('/about');
@@ -182,13 +183,46 @@ const HowItWorks = () => {
               <div className="hidden md:flex items-center gap-6 lg:gap-8">
                 <button onClick={handleAboutUs} className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">About Us</button>
                 <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">Features</a>
+                <a href="/how-it-works" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">How It Works</a>
               </div>
-              <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-4 sm:px-6 min-h-[44px] touch-manipulation" onClick={handleLogin}>
-                Log In
-              </Button>
+              <div className="flex items-center gap-4">
+                <Button className="hidden md:block bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-4 sm:px-6 min-h-[44px] touch-manipulation" onClick={handleLogin}>
+                  Log In
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="md:hidden p-2"
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                >
+                  {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                </Button>
+              </div>
             </div>
           </div>
         </nav>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-white border-b border-[#E1CFE3]/20 py-4">
+            <div className="container mx-auto px-4 space-y-4">
+              <div className="flex flex-col space-y-3">
+                <button onClick={() => { handleAboutUs(); setMobileMenuOpen(false); }} className="text-left text-[#302D2C] hover:text-[#223B0A] font-medium py-2">
+                  About Us
+                </button>
+                <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-[#302D2C] hover:text-[#223B0A] font-medium py-2">
+                  Features
+                </a>
+                <a href="/how-it-works" onClick={() => setMobileMenuOpen(false)} className="text-[#302D2C] hover:text-[#223B0A] font-medium py-2">
+                  How It Works
+                </a>
+                <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6 py-2 mt-4 w-full" onClick={() => { handleLogin(); setMobileMenuOpen(false); }}>
+                  Log In
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
         
         {/* Hero Section */}
         <section className="py-16 bg-gradient-to-br from-[#f8fdff] to-white">
