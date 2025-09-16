@@ -175,6 +175,8 @@ const Auth = () => {
           clearRateLimit();
           setCaptchaToken(null);
           setShowCaptcha(false);
+          // Reset captcha after successful signup
+          captchaRef.current?.resetCaptcha();
           toast({
             title: "Welcome to Eloura!",
             description: "Your account has been created. Redirecting to get started..."
@@ -191,20 +193,20 @@ const Auth = () => {
             variant: "default"
           });
         }
+        // signInWithPassword expects captchaToken as a direct parameter, not in options
         const authOptions: any = {
           email,
           password
         };
 
-        // Include captcha token if available
+        // Include captcha token if available - signInWithPassword uses captchaToken directly
         if (captchaToken) {
-          authOptions.options = {
-            captchaToken
-          };
+          authOptions.captchaToken = captchaToken;
           console.log('Including captcha token in auth request');
         } else if (userRiskLevel === 'high') {
           console.log('High risk user but no captcha token - this may cause auth to fail');
         }
+        
         const {
           data,
           error
@@ -225,6 +227,8 @@ const Auth = () => {
           clearRateLimit();
           setCaptchaToken(null);
           setShowCaptcha(false);
+          // Reset captcha after successful login
+          captchaRef.current?.resetCaptcha();
 
           // Check if MFA is required
           const {
@@ -268,6 +272,8 @@ const Auth = () => {
   const handleCaptchaVerify = (token: string) => {
     console.log('hCaptcha verified with token:', token ? 'Token received' : 'No token');
     setCaptchaToken(token);
+    // Hide captcha form once verified
+    setShowCaptcha(false);
     toast({
       title: "Verification Complete",
       description: "Security check passed. You can now proceed.",
@@ -475,7 +481,13 @@ const Auth = () => {
 
             {/* Toggle Sign Up/Sign In */}
             <div className="text-center py-2 space-y-2">
-              <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="text-sm sm:text-base text-[#223b0a] hover:underline font-medium min-h-[44px] px-4 touch-manipulation block w-full">
+              <button type="button" onClick={() => {
+                setIsSignUp(!isSignUp);
+                // Reset captcha state when switching modes
+                setCaptchaToken(null);
+                setShowCaptcha(false);
+                captchaRef.current?.resetCaptcha();
+              }} className="text-sm sm:text-base text-[#223b0a] hover:underline font-medium min-h-[44px] px-4 touch-manipulation block w-full">
                 {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
               </button>
               
