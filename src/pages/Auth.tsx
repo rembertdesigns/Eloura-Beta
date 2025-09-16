@@ -148,7 +148,7 @@ const Auth = () => {
       return;
     }
 
-    // Only require captcha for signups - remove captcha requirement for normal sign-ins
+    // Only require captcha for signups - completely skip captcha for sign-ins
     if (isSignUp && !captchaToken) {
       console.log('Triggering captcha for signup - captchaToken:', !!captchaToken);
       setShowCaptcha(true);
@@ -197,24 +197,18 @@ const Auth = () => {
           navigate('/welcome');
         }
       } else {
-        // Normal sign-in without captcha requirement
-        const authOptions: any = {
+        // Sign-in for returning users - never include captcha
+        const authOptions = {
           email,
           password
         };
-
-        // Only include captcha token for signups
-        if (isSignUp && captchaToken) {
-          authOptions.captchaToken = captchaToken;
-          console.log('Including captcha token for signup');
-        }
         
         const {
           data,
           error
         } = await supabase.auth.signInWithPassword(authOptions);
         if (error) {
-          // Remove captcha requirement for sign-in errors
+          // For returning users, never show captcha - just show the actual error
           trackFailedAttempt();
           toast({
             title: "Sign In Failed",
