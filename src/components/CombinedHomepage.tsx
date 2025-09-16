@@ -59,7 +59,7 @@ const CombinedHomepage = () => {
               </button>
                <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-[#302D2C] hover:text-[#223B0A] font-medium py-2">
                 Features
-               </a>
+              </a>
               <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-6 py-2 mt-4 w-full" onClick={() => {
             handleLogin();
             setMobileMenuOpen(false);
@@ -252,7 +252,7 @@ Built for families. Better for everyone.</h2>
       
 
       {/* Designed for the way you work Section */}
-      <section id="features" className="py-24 bg-gradient-to-br from-[#E1CFE3]/20 to-[#FFE5C4]/20">
+      <section className="py-24 bg-gradient-to-br from-[#E1CFE3]/20 to-[#FFE5C4]/20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-light text-[#223B0A] mb-6">Features</h2>
@@ -342,7 +342,7 @@ Built for families. Better for everyone.</h2>
             <div>
               <h4 className="font-semibold mb-6">Product</h4>
               <ul className="space-y-3 text-white/70">
-                <li><a href="/#features" className="hover:text-white transition-colors">Features</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
                 <li><a href="/how-it-works" className="hover:text-white transition-colors">How It Works</a></li>
                 
                 
@@ -368,7 +368,7 @@ Built for families. Better for everyone.</h2>
             </div>
           </div>
           <div className="border-t border-white/20 pt-8 text-center text-white/70">
-            <p>© 2024 Eloura. Made with ❤️ for modern caregiving families.</p>
+            <p>© 2025 Eloura. Made with ❤️ for modern caregiving families.</p>
           </div>
         </div>
       </footer>
