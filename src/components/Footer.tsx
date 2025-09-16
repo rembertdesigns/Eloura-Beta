@@ -47,7 +47,16 @@ const Footer = () => {
           </div>
           
           <div>
-            <h4 className="font-medium text-lg mb-4 border-b border-white/30 pb-2">Contact Us</h4>
+            <h4 className="font-medium text-lg mb-4 border-b border-white/30 pb-2">
+              <a 
+                href="https://forms.gle/3m5w5APDfsRCgGsP9" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-[#a8e6ff] transition-colors"
+              >
+                Contact Us
+              </a>
+            </h4>
             <ul className="space-y-4 text-gray-300">
               <li className="flex items-center gap-2">
                 <Phone className="h-5 w-5 text-[#a8e6ff]" />
