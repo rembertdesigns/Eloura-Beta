@@ -148,13 +148,14 @@ const Auth = () => {
       return;
     }
 
-    // Show captcha for signups or truly high-risk logins (more restrictive)
-    if ((isSignUp || (userRiskLevel === 'high' && !captchaToken)) && !captchaToken) {
-      console.log('Triggering captcha - isSignUp:', isSignUp, 'userRiskLevel:', userRiskLevel, 'captchaToken:', !!captchaToken);
+    // Only show captcha for signups or extreme abuse cases (15+ failed attempts)
+    const attempts = parseInt(localStorage.getItem('auth_attempts') || '0');
+    if ((isSignUp || attempts >= 15) && !captchaToken) {
+      console.log('Triggering captcha - isSignUp:', isSignUp, 'attempts:', attempts, 'captchaToken:', !!captchaToken);
       setShowCaptcha(true);
       toast({
         title: "Security Verification Required",
-        description: isSignUp ? "Please complete the security verification to create your account." : "Additional verification needed due to multiple failed attempts. This helps protect your account.",
+        description: isSignUp ? "Please complete the security verification to create your account." : "Too many failed attempts detected. Please complete verification to continue.",
         variant: "default"
       });
       return;
@@ -197,14 +198,8 @@ const Auth = () => {
           navigate('/welcome');
         }
       } else {
-        // Show info toast for high-risk signin attempts
-        if (userRiskLevel === 'high') {
-          toast({
-            title: "Security Notice",
-            description: "Due to previous failed attempts, additional verification may be required for sign-in.",
-            variant: "default"
-          });
-        }
+        // Remove overly aggressive high-risk signin notice - no longer needed
+        // with the simplified captcha logic
         // signInWithPassword expects captchaToken as a direct parameter, not in options
         const authOptions: any = {
           email,
@@ -436,14 +431,7 @@ const Auth = () => {
             </AlertDescription>
           </Alert>}
 
-        {/* Security Notice for High-Risk Users */}
-        {userRiskLevel === 'high' && !isSignUp && !rateLimitInfo && <Alert className="mb-6 border-yellow-500 bg-yellow-50">
-            <Shield className="h-4 w-4 text-yellow-600" />
-            <AlertDescription className="text-yellow-800">
-              Additional security verification may be required due to previous failed sign-in attempts. 
-              This helps protect your account and typically takes just a few seconds.
-            </AlertDescription>
-          </Alert>}
+        {/* Remove high-risk user warning - captcha is now only for extreme cases */}
 
         {/* Auth Card */}
         <Card className="border-0 shadow-xl bg-white/70 backdrop-blur-sm">
