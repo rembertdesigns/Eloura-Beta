@@ -163,11 +163,29 @@ Built for families. Better for everyone.</h2>
                     </div>
 
                     {/* Family Updates */}
-                    <div>
+                    <div className="mb-2">
                       <div className="text-[5px] font-medium text-gray-700 mb-1">Family</div>
                       <div className="bg-green-50 rounded p-1">
                         <div className="text-[4px] text-green-700">Emma completed homework ✓</div>
                         <div className="text-[4px] text-blue-700">Village helped with carpools</div>
+                      </div>
+                    </div>
+
+                    {/* Goals Progress */}
+                    <div className="mb-2">
+                      <div className="text-[5px] font-medium text-gray-700 mb-1">Goals (3)</div>
+                      <div className="space-y-0.5">
+                        <div className="text-[4px] text-gray-600">🏃‍♀️ Exercise 3x/week: 2/3</div>
+                        <div className="text-[4px] text-gray-600">📚 Read with Emma: ✓ Done</div>
+                        <div className="text-[4px] text-gray-600">💡 Meal prep Sunday: 0/1</div>
+                      </div>
+                    </div>
+
+                    {/* Quick Stats */}
+                    <div>
+                      <div className="text-[5px] font-medium text-gray-700 mb-1">Today's Win</div>
+                      <div className="bg-purple-50 rounded p-1">
+                        <div className="text-[4px] text-purple-700">🎉 12 tasks completed!</div>
                       </div>
                     </div>
                   </div>
@@ -175,7 +193,7 @@ Built for families. Better for everyone.</h2>
               </div>
             </div>
 
-            {/* Tablet - Village replica */}
+            {/* Tablet - Enhanced Village replica */}
             <div className="flex justify-center">
               <div className="bg-gray-100 rounded-2xl p-4 shadow-2xl" style={{
                 width: '300px',
@@ -204,7 +222,32 @@ Built for families. Better for everyone.</h2>
                     <div className="px-2 py-1 text-gray-500">Active Tasks</div>
                     <div className="px-2 py-1 text-gray-500">Help & Logs</div>
                   </div>
-                  <div className="text-[6px] text-gray-600">Village members and connections...</div>
+                  
+                  {/* Village Members */}
+                  <div className="space-y-1 mb-2">
+                    <div className="text-[6px] font-medium text-gray-700">Village Members</div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
+                      <div className="text-[5px] text-gray-600">Mom - Available today</div>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+                      <div className="text-[5px] text-gray-600">Sister Julie - Carpools</div>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <div className="w-3 h-3 bg-purple-400 rounded-full"></div>
+                      <div className="text-[5px] text-gray-600">Neighbor Sarah - Backup</div>
+                    </div>
+                  </div>
+
+                  {/* Recent Activity */}
+                  <div>
+                    <div className="text-[6px] font-medium text-gray-700 mb-1">Recent Activity</div>
+                    <div className="bg-green-50 rounded p-1">
+                      <div className="text-[5px] text-green-700">✓ Mom picked up Emma</div>
+                      <div className="text-[5px] text-blue-700">📅 Julie confirmed carpool</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -345,11 +388,29 @@ Built for families. Better for everyone.</h2>
                     </div>
 
                     {/* Family Updates */}
-                    <div>
+                    <div className="mb-3">
                       <div className="text-[6px] font-medium text-gray-700 mb-1">Family</div>
                       <div className="bg-green-50 rounded p-1">
                         <div className="text-[5px] text-green-700">Emma completed homework ✓</div>
                         <div className="text-[5px] text-blue-700">Village helped with carpools</div>
+                      </div>
+                    </div>
+
+                    {/* Goals Progress */}
+                    <div className="mb-3">
+                      <div className="text-[6px] font-medium text-gray-700 mb-1">Goals (3)</div>
+                      <div className="space-y-0.5">
+                        <div className="text-[5px] text-gray-600">🏃‍♀️ Exercise 3x/week: 2/3</div>
+                        <div className="text-[5px] text-gray-600">📚 Read with Emma: ✓ Done</div>
+                        <div className="text-[5px] text-gray-600">💡 Meal prep Sunday: 0/1</div>
+                      </div>
+                    </div>
+
+                    {/* Quick Stats */}
+                    <div>
+                      <div className="text-[6px] font-medium text-gray-700 mb-1">Today's Win</div>
+                      <div className="bg-purple-50 rounded p-1">
+                        <div className="text-[5px] text-purple-700">🎉 12 tasks completed!</div>
                       </div>
                     </div>
                   </div>
