@@ -125,12 +125,23 @@ const Auth = () => {
       if (isSignupFlow) {
         return "Please complete the security verification to create your account.";
       } else {
-        return "For security, please complete the verification. This happens when we detect unusual activity.";
+        // For returning users, show the actual error instead of captcha message
+        return "Invalid email or password. Please check your credentials and try again.";
       }
     } else if (message.includes('bot_like_activity') || message.includes('suspicious_activity')) {
-      return "We've detected unusual activity. Please try again or contact support if this persists.";
+      // For returning users, don't mention verification
+      if (isSignupFlow) {
+        return "We've detected unusual activity. Please try again or contact support if this persists.";
+      } else {
+        return "Invalid email or password. Please check your credentials and try again.";
+      }
     } else if (message.includes('challenge_required')) {
-      return "Additional verification required. Please complete the security challenge.";
+      // For returning users, don't mention challenges
+      if (isSignupFlow) {
+        return "Additional verification required. Please complete the security challenge.";
+      } else {
+        return "Invalid email or password. Please check your credentials and try again.";
+      }
     }
     return error.message;
   };
