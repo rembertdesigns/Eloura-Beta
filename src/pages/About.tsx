@@ -96,6 +96,43 @@ const About = () => {
           </div>
         </section>
 
+        {/* Our Story Section */}
+        <section className="py-16 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-3xl md:text-4xl font-light text-[#223b0a] mb-12">
+                Our Story
+              </h2>
+              
+              {/* Image placeholder */}
+              <div className="w-64 h-64 mx-auto mb-8 rounded-xl bg-gradient-to-br from-[#a8e6ff]/40 to-[#a8e6ff]/10 flex items-center justify-center">
+                <div className="w-20 h-20 bg-[#223b0a] rounded-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+              </div>
+
+              <div className="max-w-3xl mx-auto">
+                <h3 className="text-2xl font-medium text-[#223b0a] mb-6">
+                  Hi I'm Linda McGee!
+                </h3>
+                <div className="text-lg text-slate-600 leading-relaxed space-y-4">
+                  <p>
+                    As an eldest daughter and immigrant, I started carrying responsibility early and had to learn how to build my support system from scratch. That weight only grew heavier when I became a parent, as I felt the invisible mental load of running a family without enough support. I wanted a way to make space for the moments that matter most; the connection, the joy, the presence with my kids without carrying everything in my head.
+                  </p>
+                  <p>
+                    Eloura is that answer. It is the first of its kind. A platform built to ease the cognitive mental load, restore a sense of community, and give parents the tools they need to feel supported instead of stretched thin.
+                  </p>
+                  <p>
+                    At its heart, Eloura is about giving parents back what every family deserves: time, peace of mind, and the freedom to enjoy parenthood without being weighed down by it.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Quote Section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
