@@ -68,7 +68,7 @@ const Invite = () => {
             inviterEmail: user.email,
             role: roles.find(r => r.value === selectedRole)?.label || selectedRole,
             personalMessage: personalMessage.trim() || `I'd love to have you as part of my support network on Eloura. This will help us coordinate and stay connected as we manage our household together.`,
-            signupUrl: `${window.location.origin}/village-invite?token=${invitation.invitation_token}`
+            signupUrl: `https://elouraapp.com/village-invite?token=${invitation.invitation_token}`
           }
         }
       });
@@ -126,7 +126,7 @@ const Invite = () => {
     }
     
     const latestInvite = invitedMembers[invitedMembers.length - 1];
-    const link = `${window.location.origin}/village-invite?token=${latestInvite.invitation_token}`;
+    const link = `https://elouraapp.com/village-invite?token=${latestInvite.invitation_token}`;
     navigator.clipboard.writeText(link);
     toast({
       title: "Link copied!",

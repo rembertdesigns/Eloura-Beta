@@ -188,7 +188,7 @@ const VillageInvite = () => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/village-invite?token=${inviteToken}`,
+          emailRedirectTo: `https://elouraapp.com/village-invite?token=${inviteToken}`,
           data: {
             full_name: invitation.invited_name,
             invitation_token: inviteToken
@@ -387,7 +387,7 @@ const VillageInvite = () => {
                 </p>
                 <Button
                   variant="outline"
-                  onClick={() => navigate(`/auth?email=${encodeURIComponent(email)}&returnTo=${encodeURIComponent(window.location.href)}`)}
+                  onClick={() => navigate(`/auth?email=${encodeURIComponent(email)}&returnTo=${encodeURIComponent(`https://elouraapp.com/village-invite?token=${inviteToken}`)}`)}
                   className="w-full"
                 >
                   <Lock className="h-4 w-4 mr-2" />
