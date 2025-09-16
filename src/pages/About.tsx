@@ -9,10 +9,38 @@ const About = () => {
   const handleGetStarted = () => {
     navigate('/auth');
   };
+
+  const handleAboutUs = () => {
+    navigate('/about');
+  };
+
+  const handleLogin = () => {
+    navigate('/auth');
+  };
   return <>
       <SEOHead title="About Us - Eloura" description="Learn about Eloura's mission to help families manage care with less stress and more support." keywords="about eloura, family care, caregiving support, our mission" />
       
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white overflow-x-hidden">
+        {/* Navigation - Clean and professional */}
+        <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-50 py-3 sm:py-4 border-b border-[#E1CFE3]/20">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="bg-gradient-to-br from-[#223B0A] to-[#D7642A] p-2 rounded-xl">
+                  <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                </div>
+                <span className="text-xl sm:text-2xl font-medium text-[#302D2C]">Eloura - Beta</span>
+              </div>
+              <div className="hidden md:flex items-center gap-6 lg:gap-8">
+                <button onClick={handleAboutUs} className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">About Us</button>
+                <a href="#features" className="text-[#302D2C] hover:text-[#223B0A] font-medium transition-colors min-h-[44px] flex items-center px-2">Features</a>
+              </div>
+              <Button className="bg-[#223B0A] hover:bg-[#302D2C] text-white rounded-full px-4 sm:px-6 min-h-[44px] touch-manipulation" onClick={handleLogin}>
+                Log In
+              </Button>
+            </div>
+          </div>
+        </nav>
         {/* Hero Section */}
         <section className="py-16 md:py-24 bg-gradient-to-b from-[#a8e6ff]/20 to-white">
           <div className="container mx-auto px-4">
