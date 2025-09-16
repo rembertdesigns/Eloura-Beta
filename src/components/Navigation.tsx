@@ -21,7 +21,7 @@ const Navigation = () => {
 
   const navigationLinks = [
     { label: 'Features', href: '#features' },
-    { label: 'How It Works', href: '#how-it-works' },
+    { label: 'How It Works', href: '/how-it-works' },
     { label: 'About', href: '#about' },
   ];
 
@@ -29,6 +29,8 @@ const Navigation = () => {
     if (href.startsWith('#')) {
       const element = document.querySelector(href);
       element?.scrollIntoView({ behavior: 'smooth' });
+    } else if (href.startsWith('/')) {
+      navigate(href);
     }
     setMobileMenuOpen(false);
   };
