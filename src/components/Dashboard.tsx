@@ -381,13 +381,13 @@ const Dashboard = () => {
                         toggleReminderCompletion(item.id, !!checked);
                       }
                     }}
-                    className={`min-touch-target ${'completed' in item && item.completed ? "data-[state=checked]:bg-green-500" : ""}`}
+                    className={`h-3 w-3 min-touch-target ${'completed' in item && item.completed ? "data-[state=checked]:bg-green-500" : ""}`}
                   />
                   <div className="flex items-center gap-2 flex-1">
                     {'type' in item && item.type === 'reminder' && (
                       <AlarmClock className="h-3 w-3 text-yellow-600" />
                     )}
-                    <span className={`text-xs md:text-sm ${'completed' in item && item.completed ? 'line-through text-slate-400' : 'text-slate-700'}`}>
+                    <span className={`text-sm md:text-base ${'completed' in item && item.completed ? 'line-through text-slate-400' : 'text-slate-700'}`}>
                       {item.title}
                     </span>
                   </div>
@@ -433,7 +433,7 @@ const Dashboard = () => {
                       onCheckedChange={(checked) => {
                         toggleReminderCompletion(item.id, !!checked);
                       }}
-                      className="h-4 w-4 min-touch-target flex-shrink-0"
+                      className="h-3 w-3 min-touch-target flex-shrink-0"
                     />
                   )}
                   <div className="text-xs md:text-sm font-medium text-blue-600 w-12 md:w-16 flex-shrink-0">
@@ -444,7 +444,7 @@ const Dashboard = () => {
                       <AlarmClock className="h-3 w-3 text-yellow-600 flex-shrink-0" />
                     )}
                     <div className="min-w-0 flex-1">
-                      <div className={`text-xs md:text-sm truncate ${item.completed ? 'line-through text-slate-500' : 'text-slate-700'}`}>{item.event}</div>
+                      <div className={`text-sm md:text-base truncate ${item.completed ? 'line-through text-slate-500' : 'text-slate-700'}`}>{item.event}</div>
                       {item.location && (
                         <div className="text-xs text-slate-500 mt-1 truncate">{item.location}</div>
                       )}
@@ -536,13 +536,13 @@ const Dashboard = () => {
                               toggleTaskCompletion(item.id, !!checked);
                             }
                           }}
-                          className="h-4 w-4 min-touch-target"
+                          className="h-3 w-3 min-touch-target"
                         />
                         <div className="flex items-center gap-1 flex-1">
                           {'type' in item && item.type === 'reminder' && (
                             <AlarmClock className="h-3 w-3 text-yellow-600" />
                           )}
-                          <span className={`text-xs md:text-sm ${'completed' in item && item.completed ? 'line-through text-slate-400' : 'text-slate-600'}`}>
+                          <span className={`text-sm md:text-base ${'completed' in item && item.completed ? 'line-through text-slate-400' : 'text-slate-600'}`}>
                             {item.title}
                           </span>
                         </div>
