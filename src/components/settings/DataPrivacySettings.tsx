@@ -6,17 +6,75 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, Download, Trash, AlertTriangle } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 const DataPrivacySettings = () => {
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const [settings, setSettings] = useState({
     dataCollection: true,
     analyticsSharing: false,
     personalizedAds: false,
     thirdPartySharing: false
   });
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const updateSetting = (key: string, value: boolean) => {
     setSettings(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleDeleteAccount = async () => {
+    if (!user) return;
+
+    const confirmed = window.confirm(
+      'Are you absolutely sure you want to delete your account? This action cannot be undone and will permanently remove all your data.'
+    );
+
+    if (!confirmed) return;
+
+    setIsDeleting(true);
+    try {
+      // Delete user account using Supabase Auth
+      const { error } = await supabase.auth.admin.deleteUser(user.id);
+      
+      if (error) {
+        // If admin method fails, try user method
+        const { error: userError } = await supabase.auth.updateUser({
+          data: { deleted_at: new Date().toISOString() }
+        });
+        
+        if (userError) throw userError;
+        
+        // Sign out the user
+        await supabase.auth.signOut();
+        
+        toast({
+          title: "Account Deactivated",
+          description: "Your account has been deactivated. Contact support for permanent deletion.",
+        });
+      } else {
+        toast({
+          title: "Account Deleted",
+          description: "Your account has been permanently deleted.",
+        });
+      }
+
+      // Redirect to home page
+      navigate('/');
+    } catch (error) {
+      console.error('Error deleting account:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete account. Please try again or contact support.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   return (
@@ -119,9 +177,14 @@ const DataPrivacySettings = () => {
             Clear All Data
           </Button>
 
-          <Button variant="outline" className="w-full h-11 text-destructive border-destructive/20 hover:bg-destructive/10">
+          <Button 
+            variant="outline" 
+            className="w-full h-11 text-destructive border-destructive/20 hover:bg-destructive/10"
+            onClick={handleDeleteAccount}
+            disabled={isDeleting}
+          >
             <Trash className="h-4 w-4 mr-2" />
-            Delete Account
+            {isDeleting ? 'Deleting...' : 'Delete Account'}
           </Button>
         </CardContent>
       </Card>
