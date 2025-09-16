@@ -216,13 +216,13 @@ const HelpRequestsLogsEnhanced = () => {
   return (
     <>
       <Tabs defaultValue="help-requests" className="w-full">
-        {/* Mobile - Scrollable tabs */}
-        <div className="sm:hidden overflow-x-auto mb-6">
-          <TabsList className="flex w-max min-w-full h-auto p-1">
-            <TabsTrigger value="help-requests" className="text-xs whitespace-nowrap px-3 py-2 min-h-[40px]">Help Requests</TabsTrigger>
-            <TabsTrigger value="logs" className="text-xs whitespace-nowrap px-3 py-2 min-h-[40px]">Comm. Logs</TabsTrigger>
-            <TabsTrigger value="analytics" className="text-xs whitespace-nowrap px-3 py-2 min-h-[40px]">Analytics</TabsTrigger>
-            <TabsTrigger value="templates" className="text-xs whitespace-nowrap px-3 py-2 min-h-[40px]">Templates</TabsTrigger>
+        {/* Mobile - 2x2 Grid tabs */}
+        <div className="sm:hidden mb-6">
+          <TabsList className="grid grid-cols-2 w-full h-auto p-1 gap-1">
+            <TabsTrigger value="help-requests" className="text-xs px-2 py-3 min-h-[44px]">Help Requests</TabsTrigger>
+            <TabsTrigger value="logs" className="text-xs px-2 py-3 min-h-[44px]">Comm. Logs</TabsTrigger>
+            <TabsTrigger value="analytics" className="text-xs px-2 py-3 min-h-[44px]">Analytics</TabsTrigger>
+            <TabsTrigger value="templates" className="text-xs px-2 py-3 min-h-[44px]">Templates</TabsTrigger>
           </TabsList>
         </div>
 
