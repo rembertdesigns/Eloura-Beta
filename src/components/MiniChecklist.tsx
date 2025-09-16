@@ -19,8 +19,12 @@ import {
   Mail
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 const MiniChecklist = () => {
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
   const [householdName, setHouseholdName] = useState('');
   const [newTask, setNewTask] = useState('');
@@ -30,7 +34,6 @@ const MiniChecklist = () => {
   const [householdDialogOpen, setHouseholdDialogOpen] = useState(false);
   const [taskDialogOpen, setTaskDialogOpen] = useState(false);
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
-  const { toast } = useToast();
 
   // Load saved data on component mount
   useEffect(() => {
@@ -133,34 +136,80 @@ const MiniChecklist = () => {
     }
   };
 
-  const handleSendInvite = (e?: React.FormEvent) => {
+  const handleSendInvite = async (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (inviteName.trim() && inviteEmail.trim()) {
-      // Save invite to localStorage
-      const existingInvites = JSON.parse(localStorage.getItem('pendingInvites') || '[]');
-      const newInvite = {
-        id: Date.now(),
-        name: inviteName.trim(),
-        email: inviteEmail.trim(),
-        role: selectedRole,
-        status: 'pending',
-        sentAt: new Date().toISOString()
-      };
-      existingInvites.push(newInvite);
-      localStorage.setItem('pendingInvites', JSON.stringify(existingInvites));
-      
-      setCheckedItems(prev => ({ ...prev, 'invite-someone': true }));
-      const remaining = checklistItems.length - Object.values({...checkedItems, 'invite-someone': true}).filter(Boolean).length;
-      toast({
-        title: "Perfect! 🌟",
-        description: remaining > 0 ? `Invitation sent to ${inviteEmail}! ${remaining} more step${remaining > 1 ? 's' : ''} to complete.` : `Invitation sent to ${inviteEmail}! You're all set!`,
+    if (!inviteName.trim() || !inviteEmail.trim() || !user) return;
+    
+    try {
+      // Create invitation in database
+      const { data: invitation, error: inviteError } = await supabase
+        .from('village_invitations')
+        .insert({
+          inviter_id: user.id,
+          invited_email: inviteEmail.trim(),
+          invited_name: inviteName.trim(),
+          role: selectedRole,
+          personal_message: `I'd love to have you as part of my support network on Eloura. This will help us coordinate and stay connected as we manage our household together.`
+        })
+        .select('*')
+        .single();
+
+      if (inviteError) throw inviteError;
+
+      // Get inviter profile for email
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name, household_name')
+        .eq('id', user.id)
+        .single();
+
+      // Send invitation email
+      const { error: emailError } = await supabase.functions.invoke('send-email', {
+        body: {
+          type: 'village-invitation',
+          email: inviteEmail.trim(),
+          data: {
+            invitedName: inviteName.trim(),
+            inviterName: profile?.full_name || user.user_metadata?.full_name || user.email || 'A family member',
+            inviterEmail: user.email,
+            role: roles.find(r => r.value === selectedRole)?.label || selectedRole,
+            personalMessage: `I'd love to have you as part of my support network on Eloura. This will help us coordinate and stay connected as we manage our household together.`,
+            signupUrl: `https://elouraapp.com/village-invite?token=${invitation.invitation_token}`
+          }
+        }
       });
+
+      if (emailError) {
+        console.error('Failed to send invitation email:', emailError);
+        toast({
+          title: "Invitation created",
+          description: `Invitation created for ${inviteEmail}, but failed to send email. You can share the link manually.`,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Invite sent! ✉️",
+          description: `Invitation sent to ${inviteEmail}`,
+        });
+      }
+
+      // Clear form and close dialog
       setInviteName('');
       setInviteEmail('');
+      setSelectedRole('helper');
       setInviteDialogOpen(false);
-    }
-  };
 
+      // Mark as completed
+      handleCheck('invite-someone');
+    } catch (error) {
+      console.error('Error sending invitation:', error);
+      toast({
+        title: "Error",
+        description: "Failed to send invitation. Please try again.",
+        variant: "destructive",
+      });
+    }
+   };
 
   const completedCount = Object.values(checkedItems).filter(Boolean).length;
   const totalCount = checklistItems.length;
