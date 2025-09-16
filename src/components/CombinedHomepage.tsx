@@ -100,50 +100,109 @@ Built for families. Better for everyone.</h2>
         <div className="container mx-auto px-4">
           {/* Mobile Layout - Stacked vertically */}
           <div className="lg:hidden space-y-8 max-w-md mx-auto">
-            {/* Phone - Care Coordination */}
+            {/* Phone - Dashboard replica */}
             <div className="flex justify-center">
               <div className="bg-gray-900 rounded-3xl p-2 shadow-xl" style={{
                 width: '180px',
                 height: '360px'
               }}>
-                <div className="bg-white rounded-2xl w-full h-full p-4 flex flex-col justify-center">
-                  <div className="w-8 h-8 bg-[#223B0A] rounded-lg flex items-center justify-center mb-3 mx-auto">
-                    <Users className="w-4 h-4 text-white" />
+                <div className="bg-white rounded-2xl w-full h-full flex">
+                  {/* Mini sidebar */}
+                  <div className="w-8 bg-gray-100 rounded-l-2xl flex flex-col items-center py-2">
+                    <div className="w-4 h-4 bg-green-600 rounded mb-1"></div>
+                    <div className="w-3 h-3 bg-gray-300 rounded mb-1"></div>
+                    <div className="w-3 h-3 bg-gray-300 rounded mb-1"></div>
+                    <div className="w-3 h-3 bg-gray-300 rounded"></div>
                   </div>
-                  <h3 className="text-xs font-semibold text-[#223B0A] mb-2 text-center">Care Coordination</h3>
-                  <p className="text-[8px] text-[#302D2C] leading-tight text-center">Keep everyone in your care circle informed and aligned.</p>
+                  {/* Main content */}
+                  <div className="flex-1 p-2 rounded-r-2xl">
+                    <div className="text-[6px] font-medium mb-1">Good Morning, Sarah</div>
+                    <div className="bg-blue-50 rounded p-1 mb-2">
+                      <div className="text-[4px] text-blue-600">💡 Tip</div>
+                    </div>
+                    {/* Task list */}
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 border border-gray-300 rounded-sm"></div>
+                        <div className="text-[4px] text-gray-600">Pick up groceries</div>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 bg-green-600 rounded-sm"></div>
+                        <div className="text-[4px] text-gray-400 line-through">Doctor appointment</div>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 border border-gray-300 rounded-sm"></div>
+                        <div className="text-[4px] text-gray-600">Call mom</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Tablet - Daily Brief */}
+            {/* Tablet - Village replica */}
             <div className="flex justify-center">
               <div className="bg-gray-100 rounded-2xl p-4 shadow-2xl" style={{
                 width: '300px',
                 height: '225px'
               }}>
-                <div className="bg-white rounded-lg w-full h-full p-6 flex flex-col justify-center">
-                  <div className="w-12 h-12 bg-[#D7642A] rounded-xl flex items-center justify-center mb-4 mx-auto">
-                    <Clock className="w-6 h-6 text-white" />
+                <div className="bg-white rounded-lg w-full h-full p-4">
+                  <div className="text-xs font-semibold mb-2">My Village</div>
+                  {/* Stats cards */}
+                  <div className="grid grid-cols-3 gap-2 mb-3">
+                    <div className="bg-green-50 rounded p-1 text-center">
+                      <div className="text-xs font-bold text-green-600">5</div>
+                      <div className="text-[6px] text-gray-600">Members</div>
+                    </div>
+                    <div className="bg-blue-50 rounded p-1 text-center">
+                      <div className="text-xs font-bold text-blue-600">3</div>
+                      <div className="text-[6px] text-gray-600">Tasks</div>
+                    </div>
+                    <div className="bg-purple-50 rounded p-1 text-center">
+                      <div className="text-xs font-bold text-purple-600">1</div>
+                      <div className="text-[6px] text-gray-600">Requests</div>
+                    </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-[#223B0A] mb-3 text-center">Daily Brief</h3>
-                  <p className="text-sm text-[#302D2C] leading-relaxed text-center">See the most important tasks in one view</p>
+                  {/* Tabs */}
+                  <div className="flex gap-1 text-[6px] border-b mb-2">
+                    <div className="px-2 py-1 bg-gray-100 rounded-t">Care Circle</div>
+                    <div className="px-2 py-1 text-gray-500">Active Tasks</div>
+                    <div className="px-2 py-1 text-gray-500">Help & Logs</div>
+                  </div>
+                  <div className="text-[6px] text-gray-600">Village members and connections...</div>
                 </div>
               </div>
             </div>
 
-            {/* Desktop - Build Your Village */}
+            {/* Desktop - Daily Brief replica */}
             <div className="flex justify-center">
               <div className="bg-gray-100 rounded-t-xl shadow-2xl" style={{
                 width: '320px',
                 height: '200px'
               }}>
-                <div className="bg-white rounded-t-lg w-full h-4/5 p-4 flex flex-col justify-center">
-                  <div className="w-10 h-10 bg-[#E1CFE3] rounded-xl flex items-center justify-center mb-3 mx-auto">
-                    <div className="text-[#223B0A] text-xs font-bold">✓</div>
+                <div className="bg-white rounded-t-lg w-full h-4/5 p-3">
+                  <div className="text-xs font-semibold mb-2">Hi, Sarah - Monday, 9/16</div>
+                  <div className="text-right text-xs text-green-600 font-bold mb-2">75% Complete</div>
+                  {/* Status cards */}
+                  <div className="grid grid-cols-4 gap-1 mb-2">
+                    <div className="bg-orange-50 rounded p-1 text-center border border-orange-200">
+                      <div className="text-xs font-bold text-orange-600">4</div>
+                      <div className="text-[6px] text-gray-600">Today</div>
+                    </div>
+                    <div className="bg-blue-50 rounded p-1 text-center border border-blue-200">
+                      <div className="text-xs font-bold text-blue-600">8</div>
+                      <div className="text-[6px] text-gray-600">Done</div>
+                    </div>
+                    <div className="bg-green-50 rounded p-1 text-center border border-green-200">
+                      <div className="text-xs font-bold text-green-600">5</div>
+                      <div className="text-[6px] text-gray-600">Village</div>
+                    </div>
+                    <div className="bg-purple-50 rounded p-1 text-center border border-purple-200">
+                      <div className="text-xs font-bold text-purple-600">3</div>
+                      <div className="text-[6px] text-gray-600">Goals</div>
+                    </div>
                   </div>
-                  <h3 className="text-sm font-semibold text-[#223B0A] mb-2 text-center">Build Your Village</h3>
-                  <p className="text-xs text-[#302D2C] leading-tight text-center">Coordinate and share the load with trusted people easily.</p>
+                  <div className="text-[6px] text-gray-600">All Tasks section...</div>
                 </div>
                 <div className="bg-gray-200 h-1/5 rounded-b-xl flex items-center justify-center">
                   <div className="w-24 h-1 bg-gray-300 rounded-full"></div>
@@ -154,34 +213,80 @@ Built for families. Better for everyone.</h2>
 
           {/* Desktop Layout - Overlapping as before */}
           <div className="hidden lg:flex justify-center items-center relative max-w-6xl mx-auto">
-            {/* Tablet - Daily Brief */}
+            {/* Tablet - Village replica */}
             <div className="relative z-10">
               <div className="bg-gray-100 rounded-2xl p-4 shadow-2xl" style={{
                 width: '400px',
                 height: '300px'
               }}>
-                <div className="bg-white rounded-lg w-full h-full p-8 flex flex-col justify-center">
-                  <div className="w-16 h-16 bg-[#D7642A] rounded-xl flex items-center justify-center mb-6 mx-auto">
-                    <Clock className="w-8 h-8 text-white" />
+                <div className="bg-white rounded-lg w-full h-full p-6">
+                  <div className="text-lg font-semibold mb-4">My Village</div>
+                  {/* Stats cards */}
+                  <div className="grid grid-cols-3 gap-3 mb-6">
+                    <div className="bg-green-50 rounded-lg p-3 text-center border border-green-200">
+                      <div className="text-lg font-bold text-green-600">5</div>
+                      <div className="text-xs text-gray-600">Village Members</div>
+                    </div>
+                    <div className="bg-blue-50 rounded-lg p-3 text-center border border-blue-200">
+                      <div className="text-lg font-bold text-blue-600">3</div>
+                      <div className="text-xs text-gray-600">Active Tasks</div>
+                    </div>
+                    <div className="bg-purple-50 rounded-lg p-3 text-center border border-purple-200">
+                      <div className="text-lg font-bold text-purple-600">1</div>
+                      <div className="text-xs text-gray-600">Open Requests</div>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-[#223B0A] mb-4 text-center">Daily Brief</h3>
-                  <p className="text-base text-[#302D2C] leading-relaxed text-center">See the most important tasks in one view</p>
+                  {/* Tabs */}
+                  <div className="flex gap-2 text-sm border-b mb-4">
+                    <div className="px-4 py-2 bg-gray-100 rounded-t border-b-2 border-blue-500">Care Circle</div>
+                    <div className="px-4 py-2 text-gray-500">Active Tasks</div>
+                    <div className="px-4 py-2 text-gray-500">Help & Logs</div>
+                  </div>
+                  <div className="text-sm text-gray-600">Village members and care coordination...</div>
                 </div>
               </div>
             </div>
 
-            {/* Phone - Care Coordination */}
+            {/* Phone - Dashboard replica */}
             <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2 z-20">
               <div className="bg-gray-900 rounded-3xl p-2 shadow-xl" style={{
                 width: '180px',
                 height: '360px'
               }}>
-                <div className="bg-white rounded-2xl w-full h-full p-4 flex flex-col justify-center">
-                  <div className="w-10 h-10 bg-[#223B0A] rounded-xl flex items-center justify-center mb-4 mx-auto">
-                    <Users className="w-5 h-5 text-white" />
+                <div className="bg-white rounded-2xl w-full h-full flex">
+                  {/* Mini sidebar */}
+                  <div className="w-8 bg-gray-100 rounded-l-2xl flex flex-col items-center py-3">
+                    <div className="w-5 h-5 bg-green-600 rounded mb-2"></div>
+                    <div className="w-4 h-4 bg-gray-300 rounded mb-2"></div>
+                    <div className="w-4 h-4 bg-gray-300 rounded mb-2"></div>
+                    <div className="w-4 h-4 bg-gray-300 rounded"></div>
                   </div>
-                  <h3 className="text-sm font-semibold text-[#223B0A] mb-3 text-center">Care Coordination</h3>
-                  <p className="text-xs text-[#302D2C] leading-tight text-center px-2">Keep everyone in your care circle informed and aligned.</p>
+                  {/* Main content */}
+                  <div className="flex-1 p-3 rounded-r-2xl">
+                    <div className="text-[7px] font-medium mb-2">Good Morning, Sarah</div>
+                    <div className="text-right text-[6px] text-green-600 mb-1">Today's Balance: 4/10</div>
+                    <div className="bg-blue-50 rounded p-2 mb-3">
+                      <div className="text-[5px] text-blue-600">💡 Daily Tip</div>
+                    </div>
+                    {/* Task list */}
+                    <div className="space-y-2">
+                      <div className="text-[6px] font-medium">Must-Do Today</div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 border border-gray-300 rounded-sm"></div>
+                          <div className="text-[5px] text-gray-600">Pick up groceries</div>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 bg-green-600 rounded-sm"></div>
+                          <div className="text-[5px] text-gray-400 line-through">Doctor appointment</div>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 border border-gray-300 rounded-sm"></div>
+                          <div className="text-[5px] text-gray-600">Call mom</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -201,18 +306,38 @@ Built for families. Better for everyone.</h2>
               </div>
             </div>
 
-            {/* Laptop - Build Your Village */}
+            {/* Laptop - Daily Brief replica */}
             <div className="absolute right-0 top-1/4 z-5">
               <div className="bg-gray-100 rounded-t-xl shadow-2xl" style={{
                 width: '500px',
                 height: '320px'
               }}>
-                <div className="bg-white rounded-t-lg w-full h-5/6 p-8 flex flex-col justify-center">
-                  <div className="w-16 h-16 bg-[#E1CFE3] rounded-xl flex items-center justify-center mb-6 mx-auto">
-                    <div className="text-[#223B0A] text-lg font-bold">✓</div>
+                <div className="bg-white rounded-t-lg w-full h-5/6 p-6">
+                  <div className="text-lg font-semibold mb-3">Hi, Sarah - Monday, 9/16</div>
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="text-sm text-gray-600">Your daily family dashboard</div>
+                    <div className="text-2xl font-bold text-green-600">75% Complete</div>
                   </div>
-                  <h3 className="text-xl font-semibold text-[#223B0A] mb-4 text-center">Build Your Village</h3>
-                  <p className="text-sm text-[#302D2C] leading-relaxed text-center">Coordinate and share the load with trusted people easily.</p>
+                  {/* Status cards */}
+                  <div className="grid grid-cols-4 gap-4 mb-4">
+                    <div className="bg-orange-50 rounded-lg p-3 text-center border border-orange-200">
+                      <div className="text-xl font-bold text-orange-600">4</div>
+                      <div className="text-xs text-gray-600">Today's Tasks</div>
+                    </div>
+                    <div className="bg-blue-50 rounded-lg p-3 text-center border border-blue-200">
+                      <div className="text-xl font-bold text-blue-600">8</div>
+                      <div className="text-xs text-gray-600">Completed</div>
+                    </div>
+                    <div className="bg-green-50 rounded-lg p-3 text-center border border-green-200">
+                      <div className="text-xl font-bold text-green-600">5</div>
+                      <div className="text-xs text-gray-600">Village</div>
+                    </div>
+                    <div className="bg-purple-50 rounded-lg p-3 text-center border border-purple-200">
+                      <div className="text-xl font-bold text-purple-600">3</div>
+                      <div className="text-xs text-gray-600">Goals</div>
+                    </div>
+                  </div>
+                  <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded">All Tasks section with priorities and scheduling...</div>
                 </div>
                 <div className="bg-gray-200 h-1/6 rounded-b-xl flex items-center justify-center">
                   <div className="w-32 h-2 bg-gray-300 rounded-full"></div>
