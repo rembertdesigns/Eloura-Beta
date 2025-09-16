@@ -100,47 +100,50 @@ Built for families. Better for everyone.</h2>
         <div className="container mx-auto px-4">
           {/* Mobile Layout - Stacked vertically */}
           <div className="lg:hidden space-y-8 max-w-md mx-auto">
-            {/* Phone */}
+            {/* Phone - Care Coordination */}
             <div className="flex justify-center">
               <div className="bg-gray-900 rounded-3xl p-2 shadow-xl" style={{
                 width: '180px',
                 height: '360px'
               }}>
-                <div className="bg-white rounded-2xl w-full h-full flex items-center justify-center text-gray-400">
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-gray-200 rounded-lg mx-auto mb-3"></div>
-                    <p className="text-xs">Phone View</p>
+                <div className="bg-white rounded-2xl w-full h-full p-4 flex flex-col justify-center">
+                  <div className="w-8 h-8 bg-[#223B0A] rounded-lg flex items-center justify-center mb-3 mx-auto">
+                    <Users className="w-4 h-4 text-white" />
                   </div>
+                  <h3 className="text-xs font-semibold text-[#223B0A] mb-2 text-center">Care Coordination</h3>
+                  <p className="text-[8px] text-[#302D2C] leading-tight text-center">Keep everyone in your care circle informed and aligned.</p>
                 </div>
               </div>
             </div>
 
-            {/* Tablet */}
+            {/* Tablet - Daily Brief */}
             <div className="flex justify-center">
               <div className="bg-gray-100 rounded-2xl p-4 shadow-2xl" style={{
                 width: '300px',
                 height: '225px'
               }}>
-                <div className="bg-white rounded-lg w-full h-full flex items-center justify-center text-gray-400">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-3"></div>
-                    <p className="text-sm">Tablet View</p>
+                <div className="bg-white rounded-lg w-full h-full p-6 flex flex-col justify-center">
+                  <div className="w-12 h-12 bg-[#D7642A] rounded-xl flex items-center justify-center mb-4 mx-auto">
+                    <Clock className="w-6 h-6 text-white" />
                   </div>
+                  <h3 className="text-lg font-semibold text-[#223B0A] mb-3 text-center">Daily Brief</h3>
+                  <p className="text-sm text-[#302D2C] leading-relaxed text-center">See the most important tasks in one view</p>
                 </div>
               </div>
             </div>
 
-            {/* Desktop */}
+            {/* Desktop - Build Your Village */}
             <div className="flex justify-center">
               <div className="bg-gray-100 rounded-t-xl shadow-2xl" style={{
                 width: '320px',
                 height: '200px'
               }}>
-                <div className="bg-white rounded-t-lg w-full h-4/5 flex items-center justify-center text-gray-400">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-3"></div>
-                    <p className="text-sm">Desktop View</p>
+                <div className="bg-white rounded-t-lg w-full h-4/5 p-4 flex flex-col justify-center">
+                  <div className="w-10 h-10 bg-[#E1CFE3] rounded-xl flex items-center justify-center mb-3 mx-auto">
+                    <div className="text-[#223B0A] text-xs font-bold">✓</div>
                   </div>
+                  <h3 className="text-sm font-semibold text-[#223B0A] mb-2 text-center">Build Your Village</h3>
+                  <p className="text-xs text-[#302D2C] leading-tight text-center">Coordinate and share the load with trusted people easily.</p>
                 </div>
                 <div className="bg-gray-200 h-1/5 rounded-b-xl flex items-center justify-center">
                   <div className="w-24 h-1 bg-gray-300 rounded-full"></div>
@@ -151,32 +154,34 @@ Built for families. Better for everyone.</h2>
 
           {/* Desktop Layout - Overlapping as before */}
           <div className="hidden lg:flex justify-center items-center relative max-w-6xl mx-auto">
-            {/* Tablet */}
+            {/* Tablet - Daily Brief */}
             <div className="relative z-10">
               <div className="bg-gray-100 rounded-2xl p-4 shadow-2xl" style={{
                 width: '400px',
                 height: '300px'
               }}>
-                <div className="bg-white rounded-lg w-full h-full flex items-center justify-center text-gray-400">
-                  <div className="text-center">
-                    <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-3"></div>
-                    <p className="text-sm">Tablet View</p>
+                <div className="bg-white rounded-lg w-full h-full p-8 flex flex-col justify-center">
+                  <div className="w-16 h-16 bg-[#D7642A] rounded-xl flex items-center justify-center mb-6 mx-auto">
+                    <Clock className="w-8 h-8 text-white" />
                   </div>
+                  <h3 className="text-xl font-semibold text-[#223B0A] mb-4 text-center">Daily Brief</h3>
+                  <p className="text-base text-[#302D2C] leading-relaxed text-center">See the most important tasks in one view</p>
                 </div>
               </div>
             </div>
 
-            {/* Phone */}
+            {/* Phone - Care Coordination */}
             <div className="absolute left-1/4 top-1/2 transform -translate-y-1/2 z-20">
               <div className="bg-gray-900 rounded-3xl p-2 shadow-xl" style={{
                 width: '180px',
                 height: '360px'
               }}>
-                <div className="bg-white rounded-2xl w-full h-full flex items-center justify-center text-gray-400">
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-gray-200 rounded-lg mx-auto mb-3"></div>
-                    <p className="text-xs">Phone View</p>
+                <div className="bg-white rounded-2xl w-full h-full p-4 flex flex-col justify-center">
+                  <div className="w-10 h-10 bg-[#223B0A] rounded-xl flex items-center justify-center mb-4 mx-auto">
+                    <Users className="w-5 h-5 text-white" />
                   </div>
+                  <h3 className="text-sm font-semibold text-[#223B0A] mb-3 text-center">Care Coordination</h3>
+                  <p className="text-xs text-[#302D2C] leading-tight text-center px-2">Keep everyone in your care circle informed and aligned.</p>
                 </div>
               </div>
             </div>
@@ -196,17 +201,18 @@ Built for families. Better for everyone.</h2>
               </div>
             </div>
 
-            {/* Laptop */}
+            {/* Laptop - Build Your Village */}
             <div className="absolute right-0 top-1/4 z-5">
               <div className="bg-gray-100 rounded-t-xl shadow-2xl" style={{
                 width: '500px',
                 height: '320px'
               }}>
-                <div className="bg-white rounded-t-lg w-full h-5/6 flex items-center justify-center text-gray-400">
-                  <div className="text-center">
-                    <div className="w-20 h-20 bg-gray-200 rounded-lg mx-auto mb-4"></div>
-                    <p className="text-sm">Desktop View</p>
+                <div className="bg-white rounded-t-lg w-full h-5/6 p-8 flex flex-col justify-center">
+                  <div className="w-16 h-16 bg-[#E1CFE3] rounded-xl flex items-center justify-center mb-6 mx-auto">
+                    <div className="text-[#223B0A] text-lg font-bold">✓</div>
                   </div>
+                  <h3 className="text-xl font-semibold text-[#223B0A] mb-4 text-center">Build Your Village</h3>
+                  <p className="text-sm text-[#302D2C] leading-relaxed text-center">Coordinate and share the load with trusted people easily.</p>
                 </div>
                 <div className="bg-gray-200 h-1/6 rounded-b-xl flex items-center justify-center">
                   <div className="w-32 h-2 bg-gray-300 rounded-full"></div>
