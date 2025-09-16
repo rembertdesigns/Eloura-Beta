@@ -151,17 +151,14 @@ const Auth = () => {
       setLoading(true);
       if (isSignUp) {
         const returnTo = new URLSearchParams(window.location.search).get('returnTo');
-        const {
-          data,
-          error
-        } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: returnTo || `https://elouraapp.com/welcome`,
-            captchaToken
-          }
-        });
+        const signUpOptions: any = { email, password };
+        
+        // Only add options if we have a captcha token
+        if (captchaToken) {
+          signUpOptions.options = { captchaToken };
+        }
+        
+        const { data, error } = await supabase.auth.signUp(signUpOptions);
         if (error) {
           if (error.message.toLowerCase().includes('captcha')) {
             setShowCaptcha(true);
@@ -179,9 +176,11 @@ const Auth = () => {
           setCaptchaToken(null);
           setShowCaptcha(false);
           toast({
-            title: "Account Created!",
-            description: "Check your email to verify your account before signing in."
+            title: "Welcome to Eloura!",
+            description: "Your account has been created. Redirecting to get started..."
           });
+          // Navigate directly to welcome/onboarding
+          navigate('/welcome');
         }
       } else {
         // Show info toast for high-risk signin attempts
