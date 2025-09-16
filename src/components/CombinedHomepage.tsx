@@ -112,74 +112,27 @@ Built for families. Better for everyone.</h2>
                     <div className="w-4 h-4 bg-green-600 rounded mb-1"></div>
                     <div className="w-3 h-3 bg-gray-300 rounded mb-1"></div>
                     <div className="w-3 h-3 bg-gray-300 rounded mb-1"></div>
-                    <div className="w-3 h-3 bg-gray-300 rounded mb-1"></div>
                     <div className="w-3 h-3 bg-gray-300 rounded"></div>
                   </div>
                   {/* Main content */}
-                  <div className="flex-1 p-2 rounded-r-2xl overflow-hidden">
+                  <div className="flex-1 p-2 rounded-r-2xl">
                     <div className="text-[6px] font-medium mb-1">Good Morning, Sarah</div>
-                    <div className="text-[4px] text-green-600 mb-1">Monday, 9/16 - 4/10 Balanced day</div>
-                    <div className="bg-blue-50 rounded p-1 mb-1">
-                      <div className="text-[3px] text-blue-600">💡 Start your day with the most important task</div>
+                    <div className="bg-blue-50 rounded p-1 mb-2">
+                      <div className="text-[4px] text-blue-600">💡 Tip</div>
                     </div>
-                    {/* Quick add buttons */}
-                    <div className="grid grid-cols-4 gap-0.5 mb-2">
-                      <div className="bg-gray-50 rounded text-[3px] p-0.5 text-center">Task</div>
-                      <div className="bg-gray-50 rounded text-[3px] p-0.5 text-center">Event</div>
-                      <div className="bg-gray-50 rounded text-[3px] p-0.5 text-center">Del</div>
-                      <div className="bg-gray-50 rounded text-[3px] p-0.5 text-center">Rem</div>
-                    </div>
-                    {/* Must-do section */}
-                    <div className="bg-white border rounded p-1 mb-2">
-                      <div className="text-[5px] font-semibold mb-1 text-blue-600">1. Must-Do Today</div>
-                      <div className="bg-orange-100 text-orange-600 text-[3px] px-1 rounded mb-1">3 pending</div>
-                      <div className="space-y-0.5">
-                        <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 border border-red-400 rounded-sm bg-red-50"></div>
-                          <div className="text-[4px] text-gray-800 flex-1">Pick up Emma from school</div>
-                          <div className="text-[3px] bg-red-100 text-red-600 px-0.5 rounded">urgent</div>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 bg-green-600 rounded-sm"></div>
-                          <div className="text-[4px] text-gray-400 line-through flex-1">Call pediatrician</div>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 border border-gray-400 rounded-sm"></div>
-                          <div className="text-[4px] text-gray-600 flex-1">Grocery shopping</div>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <div className="w-2 h-2 border border-gray-400 rounded-sm"></div>
-                          <div className="text-[4px] text-gray-600 flex-1">Prep dinner ingredients</div>
-                        </div>
+                    {/* Task list */}
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 border border-gray-300 rounded-sm"></div>
+                        <div className="text-[4px] text-gray-600">Pick up groceries</div>
                       </div>
-                    </div>
-                    {/* Schedule section */}
-                    <div className="bg-white border rounded p-1 mb-2">
-                      <div className="text-[5px] font-semibold mb-1 text-blue-600">2. Today's Schedule</div>
-                      <div className="space-y-0.5">
-                        <div className="text-[3px] text-gray-600">9:00 AM - Team meeting (Work)</div>
-                        <div className="text-[3px] text-gray-600">12:00 PM - Lunch with mom</div>
-                        <div className="text-[3px] text-gray-600">3:30 PM - Emma's piano lesson</div>
-                        <div className="text-[3px] text-gray-600">6:00 PM - Family dinner</div>
-                        <div className="text-[3px] text-gray-600">8:00 PM - Bedtime routine</div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 bg-green-600 rounded-sm"></div>
+                        <div className="text-[4px] text-gray-400 line-through">Doctor appointment</div>
                       </div>
-                    </div>
-                    {/* Task categories */}
-                    <div className="bg-white border rounded p-1">
-                      <div className="text-[5px] font-semibold mb-1 text-blue-600">3. Family Tasks</div>
-                      <div className="space-y-0.5">
-                        <div className="bg-green-50 rounded p-0.5">
-                          <div className="text-[3px] text-green-700 font-medium">Parenting (3)</div>
-                          <div className="text-[3px] text-gray-600">Pack lunch, homework help...</div>
-                        </div>
-                        <div className="bg-purple-50 rounded p-0.5">
-                          <div className="text-[3px] text-purple-700 font-medium">Daily Tasks (2)</div>
-                          <div className="text-[3px] text-gray-600">Laundry, dishes...</div>
-                        </div>
-                        <div className="bg-blue-50 rounded p-0.5">
-                          <div className="text-[3px] text-blue-700 font-medium">Work (1)</div>
-                          <div className="text-[3px] text-gray-600">Review presentation...</div>
-                        </div>
+                      <div className="flex items-center gap-1">
+                        <div className="w-2 h-2 border border-gray-300 rounded-sm"></div>
+                        <div className="text-[4px] text-gray-600">Call mom</div>
                       </div>
                     </div>
                   </div>
@@ -310,39 +263,28 @@ Built for families. Better for everyone.</h2>
                   </div>
                   {/* Main content */}
                   <div className="flex-1 p-3 rounded-r-2xl">
-                    <div className="text-[7px] font-medium mb-1">Good Morning, Sarah</div>
-                    <div className="text-[5px] text-green-600 mb-1">Today's Balance: 4/10 - Balanced</div>
-                    <div className="bg-blue-50 rounded p-2 mb-2">
-                      <div className="text-[4px] text-blue-600">💡 Start your day with the most important task</div>
+                    <div className="text-[7px] font-medium mb-2">Good Morning, Sarah</div>
+                    <div className="text-right text-[6px] text-green-600 mb-1">Today's Balance: 4/10</div>
+                    <div className="bg-blue-50 rounded p-2 mb-3">
+                      <div className="text-[5px] text-blue-600">💡 Daily Tip</div>
                     </div>
-                    {/* Quick add */}
-                    <div className="grid grid-cols-2 gap-1 mb-2">
-                      <div className="bg-gray-50 rounded text-[4px] p-0.5 text-center">+ Task</div>
-                      <div className="bg-gray-50 rounded text-[4px] p-0.5 text-center">+ Event</div>
-                    </div>
-                    {/* Must-do section */}
-                    <div className="text-[6px] font-medium mb-1 text-blue-600">1. Must-Do Today (3 pending)</div>
-                    <div className="space-y-1 mb-2">
-                      <div className="flex items-center gap-1">
-                        <div className="w-2 h-2 border border-red-400 rounded-sm bg-red-50"></div>
-                        <div className="text-[5px] text-gray-800">Pick up Emma from school</div>
-                        <div className="text-[3px] bg-red-100 text-red-600 px-0.5 rounded">urgent</div>
+                    {/* Task list */}
+                    <div className="space-y-2">
+                      <div className="text-[6px] font-medium">Must-Do Today</div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 border border-gray-300 rounded-sm"></div>
+                          <div className="text-[5px] text-gray-600">Pick up groceries</div>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 bg-green-600 rounded-sm"></div>
+                          <div className="text-[5px] text-gray-400 line-through">Doctor appointment</div>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <div className="w-2 h-2 border border-gray-300 rounded-sm"></div>
+                          <div className="text-[5px] text-gray-600">Call mom</div>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-2 h-2 bg-green-600 rounded-sm"></div>
-                        <div className="text-[5px] text-gray-400 line-through">Call pediatrician</div>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <div className="w-2 h-2 border border-gray-400 rounded-sm"></div>
-                        <div className="text-[5px] text-gray-600">Prep dinner ingredients</div>
-                      </div>
-                    </div>
-                    {/* Schedule */}
-                    <div className="text-[6px] font-medium mb-1 text-blue-600">2. Today's Schedule</div>
-                    <div className="space-y-0.5">
-                      <div className="text-[4px] text-gray-600">9:00 AM - Team meeting</div>
-                      <div className="text-[4px] text-gray-600">3:30 PM - Emma's piano</div>
-                      <div className="text-[4px] text-gray-600">6:00 PM - Family dinner</div>
                     </div>
                   </div>
                 </div>
@@ -364,67 +306,38 @@ Built for families. Better for everyone.</h2>
               </div>
             </div>
 
-            {/* Laptop - Dashboard replica */}
+            {/* Laptop - Daily Brief replica */}
             <div className="absolute right-0 top-1/4 z-5">
               <div className="bg-gray-100 rounded-t-xl shadow-2xl" style={{
                 width: '500px',
                 height: '320px'
               }}>
-                <div className="bg-white rounded-t-lg w-full h-5/6 flex">
-                  {/* Mini sidebar */}
-                  <div className="w-16 bg-gray-100 rounded-tl-lg flex flex-col items-center py-4">
-                    <div className="w-8 h-8 bg-green-600 rounded mb-3"></div>
-                    <div className="w-6 h-6 bg-gray-300 rounded mb-3"></div>
-                    <div className="w-6 h-6 bg-gray-300 rounded mb-3"></div>
-                    <div className="w-6 h-6 bg-gray-300 rounded mb-3"></div>
-                    <div className="w-6 h-6 bg-gray-300 rounded"></div>
+                <div className="bg-white rounded-t-lg w-full h-5/6 p-6">
+                  <div className="text-lg font-semibold mb-3">Hi, Sarah - Monday, 9/16</div>
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="text-sm text-gray-600">Your daily family dashboard</div>
+                    <div className="text-2xl font-bold text-green-600">75% Complete</div>
                   </div>
-                  {/* Main content */}
-                  <div className="flex-1 p-4">
-                    <div className="text-base font-medium mb-2">Good Morning, Sarah</div>
-                    <div className="text-sm text-green-600 mb-2">Monday, 9/16 - Today's Balance: 4/10 - Balanced day</div>
-                    <div className="bg-blue-50 rounded p-2 mb-3">
-                      <div className="text-xs text-blue-600">💡 Start your day with the most important task</div>
+                  {/* Status cards */}
+                  <div className="grid grid-cols-4 gap-4 mb-4">
+                    <div className="bg-orange-50 rounded-lg p-3 text-center border border-orange-200">
+                      <div className="text-xl font-bold text-orange-600">4</div>
+                      <div className="text-xs text-gray-600">Today's Tasks</div>
                     </div>
-                    {/* Quick add buttons */}
-                    <div className="grid grid-cols-4 gap-2 mb-4">
-                      <div className="bg-gray-50 rounded text-xs p-2 text-center">+ Task</div>
-                      <div className="bg-gray-50 rounded text-xs p-2 text-center">+ Event</div>
-                      <div className="bg-gray-50 rounded text-xs p-2 text-center">Delegate</div>
-                      <div className="bg-gray-50 rounded text-xs p-2 text-center">Reminder</div>
+                    <div className="bg-blue-50 rounded-lg p-3 text-center border border-blue-200">
+                      <div className="text-xl font-bold text-blue-600">8</div>
+                      <div className="text-xs text-gray-600">Completed</div>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      {/* Must-do section */}
-                      <div className="bg-white border rounded p-3">
-                        <div className="text-sm font-semibold mb-2 text-blue-600">1. Must-Do Today</div>
-                        <div className="bg-orange-100 text-orange-600 text-xs px-2 py-1 rounded mb-2">3 pending</div>
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 border border-red-400 rounded-sm bg-red-50"></div>
-                            <div className="text-xs text-gray-800 flex-1">Pick up Emma from school</div>
-                            <div className="text-xs bg-red-100 text-red-600 px-1 rounded">urgent</div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 bg-green-600 rounded-sm"></div>
-                            <div className="text-xs text-gray-400 line-through flex-1">Call pediatrician</div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-3 h-3 border border-gray-400 rounded-sm"></div>
-                            <div className="text-xs text-gray-600 flex-1">Prep dinner ingredients</div>
-                          </div>
-                        </div>
-                      </div>
-                      {/* Schedule section */}
-                      <div className="bg-white border rounded p-3">
-                        <div className="text-sm font-semibold mb-2 text-blue-600">2. Today's Schedule</div>
-                        <div className="space-y-1">
-                          <div className="text-xs text-gray-600">9:00 AM - Team meeting</div>
-                          <div className="text-xs text-gray-600">3:30 PM - Emma's piano</div>
-                          <div className="text-xs text-gray-600">6:00 PM - Family dinner</div>
-                        </div>
-                      </div>
+                    <div className="bg-green-50 rounded-lg p-3 text-center border border-green-200">
+                      <div className="text-xl font-bold text-green-600">5</div>
+                      <div className="text-xs text-gray-600">Village</div>
+                    </div>
+                    <div className="bg-purple-50 rounded-lg p-3 text-center border border-purple-200">
+                      <div className="text-xl font-bold text-purple-600">3</div>
+                      <div className="text-xs text-gray-600">Goals</div>
                     </div>
                   </div>
+                  <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded">All Tasks section with priorities and scheduling...</div>
                 </div>
                 <div className="bg-gray-200 h-1/6 rounded-b-xl flex items-center justify-center">
                   <div className="w-32 h-2 bg-gray-300 rounded-full"></div>
