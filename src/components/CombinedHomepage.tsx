@@ -337,7 +337,7 @@ Built for families. Better for everyone.</h2>
                 </div>
                 <span className="text-2xl font-medium">Eloura</span>
               </div>
-              <p className="text-white/70 mb-6">The operating system for modern families caregiving. Built for millennials and Gen Z who are redefining what care looks like.</p>
+              <p className="text-white/70 mb-6">The life management system for modern families. </p>
             </div>
             <div>
               <h4 className="font-semibold mb-6">Product</h4>
@@ -368,7 +368,7 @@ Built for families. Better for everyone.</h2>
             </div>
           </div>
           <div className="border-t border-white/20 pt-8 text-center text-white/70">
-            <p>© 2025 Eloura. Made with ❤️ for modern caregiving families.</p>
+            <p>© 2025 Eloura. Made with ❤️ for families.</p>
           </div>
         </div>
       </footer>
