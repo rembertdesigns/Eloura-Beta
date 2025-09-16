@@ -285,21 +285,15 @@ Built for families. Better for everyone.</h2>
       {/* Enhanced CTA Section with urgency */}
       <section className="py-24 bg-gradient-to-r from-[#223B0A] to-[#302D2C] text-white text-center">
         <div className="container mx-auto px-4">
-          
-          
-          
-          <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">What to Expect in Beta
-
-
-Eloura is still evolving. As a beta user, you'll be among the first to try it out, explore new features and help shape where we go next. If you notice any issues - please let us know by submitting feedback below.</p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">What to Expect</h2>
+          <p className="text-xl mb-8 text-white/90 max-w-2xl mx-auto">Eloura is still evolving. As a beta user, you'll be among the first to try it out, explore new features and help shape where we go next. If you notice any issues - please let us know by submitting feedback below.</p>
           <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6">
             <Button size="lg" className="bg-[#FCC931] hover:bg-[#D7642A] text-[#302D2C] rounded-full px-8 text-lg font-semibold" onClick={handleGetStarted}>
-              Join 15,000+ families reducing stress
+              Try Eloura Beta
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
-            <Button size="lg" className="bg-transparent border-2 border-[#FCC931] text-white hover:bg-[#FCC931] hover:text-[#223B0A] rounded-full px-8 text-lg font-semibold" onClick={handleMentalLoadTest}>
-              <Brain className="mr-2 h-5 w-5" />
-              Get Mental Load Score
+            <Button size="lg" className="bg-transparent border-2 border-[#FCC931] text-white hover:bg-[#FCC931] hover:text-[#223B0A] rounded-full px-8 text-lg font-semibold" onClick={() => window.open('https://forms.gle/3m5w5APDfsRCgGsP9', '_blank')}>
+              Share Feedback
             </Button>
           </div>
           <p className="text-sm text-white/70">✓ No credit card required • ✓ Cancel anytime • ✓ Setup in under 5 minutes</p>
