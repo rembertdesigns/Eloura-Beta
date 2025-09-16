@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Heart, ArrowRight, Star, Brain, Clock, CheckCircle, Quote, ExternalLink, Users, Shield, Menu, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import dashboardMockup from '@/assets/dashboard-mobile-mockup.png';
 const CombinedHomepage = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -120,11 +121,12 @@ Built for families. Better for everyone.</h2>
               width: '180px',
               height: '360px'
             }}>
-                <div className="bg-white rounded-2xl w-full h-full flex items-center justify-center text-gray-400">
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-gray-200 rounded-lg mx-auto mb-3"></div>
-                    <p className="text-xs">Phone View</p>
-                  </div>
+                <div className="bg-white rounded-2xl w-full h-full overflow-hidden">
+                  <img 
+                    src={dashboardMockup} 
+                    alt="Eloura Dashboard Mobile View - Family care management interface showing daily tasks, schedule, and balance indicators"
+                    className="w-full h-full object-cover object-top"
+                  />
                 </div>
               </div>
             </div>
